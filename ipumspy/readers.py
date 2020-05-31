@@ -1,6 +1,8 @@
+import copy
 import re
 import xml.etree.ElementTree as ET
 from contextlib import contextmanager
+from pathlib import Path
 from typing import Iterator, List, Optional, Union
 
 import pandas as pd
@@ -36,32 +38,45 @@ def _read_microdata(
   else:
     data_description = ddi.data_description
 
-  filename = filename or ddi.file_description.filename
+  filename = Path(filename or ddi.file_description.filename)
   encoding = encoding or ddi.file_description.encoding
-  with fileutils.data_opener(filename, encoding=encoding) as infile:
-    if iterator:
-      data = [pd.read_fwf(
-        infile,
-        colspecs=[(desc.start, desc.end) for desc in data_description],
-        names=[desc.name for desc in data_description],
-        **kwargs
-      )]
-    else:
-      data = pd.read_fwf(
-        infile,
-        colspecs=[(desc.start, desc.end) for desc in data_description],
-        names=[desc.name for desc in data_description],
-        iterator=True,
-        chunksize=chunksize,
-        **kwargs
-      )
 
+  # Set up the correct reader for our file type
+  kwargs = copy.deepcopy(kwargs)
+  if '.dat' in filename.suffixes:
+    # This is a fixed width file
+    kwargs.update({
+      'colspecs': [(desc.start, desc.end) for desc in data_description],
+      'names': [desc.name for desc in data_description]
+    })
+    reader = pd.read_fwf
+
+    # Fixed width files also require fixing decimal expansions
     def _fix_decimal_expansion(df):
       for desc in data_description:
         if desc.shift:
           shift = 10 ** desc.shift
           df[desc.name] /= shift
       return df
+
+  elif '.csv' in filename.suffixes:
+    # A csv!
+    reader = pd.read_csv
+    kwargs.update({'usecols': [desc.name for desc in data_description]})
+
+    # CSVs have correct decimal expansions already; so we just make this the identity function
+    def _fix_decimal_expansion(df):
+      return df
+
+  else:
+    raise ValueError('Only CSV and .dat files are supported')
+
+  with fileutils.data_opener(filename, encoding=encoding) as infile:
+    if iterator:
+      data = [reader(infile, **kwargs)]
+    else:
+      kwargs.update({'iterator': True, 'chunksize': chunksize})
+      data = reader(infile, **kwargs)
 
     yield from (_fix_decimal_expansion(df) for df in data)
 

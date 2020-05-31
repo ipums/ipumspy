@@ -29,6 +29,20 @@ def test_can_read_rectangular_dat_gz(fixtures_path: Path):
   assert (data['HWTSUPP'].iloc[:5] == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])).all()
 
 
+def test_can_read_rectangular_csv_gz(fixtures_path: Path):
+  """
+  Confirm that we can read rectangular microdata in .csv format
+  when it is gzipped
+  """
+  ddi = readers.read_ipums_ddi(fixtures_path / 'cps_00006.xml')
+  data = readers.read_microdata(ddi, fixtures_path / 'cps_00006.csv.gz')
+
+  assert len(data) == 7668
+  assert len(data.columns) == 8
+  assert (data['YEAR'].iloc[:5] == 1962).all()
+  assert (data['HWTSUPP'].iloc[:5] == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])).all()
+
+
 def test_can_read_rectangular_dat(fixtures_path: Path):
   """
   Confirm that we can read rectangular microdata in .dat format
