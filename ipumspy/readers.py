@@ -22,7 +22,7 @@ def read_microdata(ddi: ddi.Codebook) -> pd.DataFrame:
   if ddi.file_description.structure != 'rectangular':
     raise NotImplementedError('Structure must be rectangular')
 
-  with fileutils.data_opener(ddi.file_description.filename, encoding=ddi.encoding) as infile:
+  with fileutils.data_opener(ddi.file_description.filename, encoding=ddi.file_description.encoding) as infile:
     return pd.read_fwf(
       infile,
       colspecs=[(desc.start, desc.end) for desc in ddi.data_description],

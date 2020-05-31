@@ -10,7 +10,7 @@ def cli():
   """
 
 
-@click.command('convert')
+@cli.command('convert')
 @click.argument('infile', type=click.Path(exists=True))
 @click.argument('outfile', type=click.Path())
 def convert_command(infile, outfile):

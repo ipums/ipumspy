@@ -54,7 +54,7 @@ class FileDescription:
       structure=elt.find('./ddi:fileStrc', namespaces).attrib['type'],
       encoding=elt.find('./ddi:fileType', namespaces).attrib.get('charset', 'iso-8859-1').lower(),
       format=elt.find('./ddi:format', namespaces).text,
-      place=elt.file('./ddi:filePlac', namespaces).text
+      place=elt.find('./ddi:filePlac', namespaces).text
     )
 
 
@@ -73,9 +73,9 @@ class Codebook:
     if len(file_txts) != 1:
       raise NotImplementedError('Codebooks with more than one file type are not supported')
 
-    cls(
+    return cls(
       file_description=FileDescription.read(file_txts[0], ddi_namespace),
       data_description=[
-        VariableDescription.read(desc, ddi_namespace) for desc in elt.findall('./ddi:dataDscr/ddi:var')
+        VariableDescription.read(desc, ddi_namespace) for desc in elt.findall('./ddi:dataDscr/ddi:var', namespaces)
       ]
     )
