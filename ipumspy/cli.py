@@ -1,4 +1,9 @@
+import copy
+import dataclasses
+import json
+
 import click
+import pyarrow as pa
 
 from . import readers
 
@@ -24,7 +29,13 @@ def convert_command(infile, outfile):
   """
   ddi = readers.read_ipums_ddi(infile)
   data = readers.read_microdata(ddi)
-  data.to_parquet(outfile)
+
+  # Append ipums data to schema
+  schema = pa.Schema.from_pandas(data)
+  metadata = copy.deepcopy(schema.metadata)
+  metadata[b'ipums'] = json.dumps(dataclasses.asdict(ddi)).encode('utf8')
+  schema = schema.with_metadata(metadata)
+  data.to_parquet(outfile, schema=schema)
 
 
 if __name__ == '__main__':
