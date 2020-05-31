@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Optional
 from xml.etree import ElementTree as ET
 
 
@@ -16,6 +16,7 @@ class VariableDescription:
   concept: str
 
   vartype: str
+  shift: Optional[int]
 
   @classmethod
   def read(cls, elt: ET, ddi_namespace: str):
@@ -32,7 +33,8 @@ class VariableDescription:
       label=elt.find('./ddi:labl', namespaces).text,
       description=elt.find('./ddi:txt', namespaces).text,
       concept=elt.find('./ddi:concept', namespaces).text,
-      vartype=elt.find('./ddi:varFormat', namespaces).attrib['type']
+      vartype=elt.find('./ddi:varFormat', namespaces).attrib['type'],
+      shift=int(elt.attrib.get('dcml')) if 'dcml' in elt.attrib else None
     )
 
 
