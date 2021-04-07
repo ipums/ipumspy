@@ -75,6 +75,7 @@ def test_can_read_rectangular_dat(fixtures_path: Path):
     ).all()
 
 
+@pytest.mark.slow
 def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
     """
     Confirm that we can read rectangular microdata in .dat format when chunked
@@ -96,5 +97,5 @@ def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
                 df["HWTSUPP"].iloc[: 5 - seen]
                 == first_hwtsupp[seen : min(len(df) + seen, 5)]
             ).all()
-            seen == len(df)
+            seen += len(df)
     assert total_length == 7668

@@ -1,5 +1,5 @@
 """
-Utilities for working with files downloaded from IPUMS
+Utilities for interacting with the IPUMS file format
 """
 import gzip
 import io
@@ -8,18 +8,17 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Union
 
-FILE_TYPE = Union[str, Path, io.IOBase]  # pylint: disable=invalid-name
+FileType = Union[str, Path, io.IOBase]
 
 
 @contextmanager
-def xml_opener(ddi_file: FILE_TYPE):
+def xml_opener(ddi_file: FileType):
     """
     Yield an opened XML file with method 'rb'. Can be any of the following:
         * An already opened file (we just yield it back)
         * A path to an XML file or a gzipped XML file (we open and yield)
         * A path to a directory or ZIP file (we find an XML file therein,
             open and yield)
-
     Raises:
         OSError: If the passed path does not exist
         ValueError: If the path does not contain a *unique* XML file
@@ -80,16 +79,14 @@ def xml_opener(ddi_file: FILE_TYPE):
 
 
 @contextmanager
-def data_opener(data_file: FILE_TYPE, encoding="iso-8859-1"):
+def data_opener(data_file: FileType, encoding="iso-8859-1"):
     """
     Yield an opened data file with method 'rt'. Can be any of the following:
         * An already opened file (we just yield it back)
         * A path to a dat file or a gzipped dat file (we open and yield)
-
     Args:
         data_file: The path as described above
         encoding: The encoding of the data file. ISO-8859-1 seems to be IPUMS default
-
     Raises:
         OSError: If the passed path does not exist
         ValueError: If the path does not contain a *unique* XML file

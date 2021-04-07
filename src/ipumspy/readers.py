@@ -1,3 +1,6 @@
+"""
+Functions for reading and processing IPUMS data
+"""
 import copy
 import re
 import xml.etree.ElementTree as ET
@@ -10,7 +13,16 @@ from . import ddi as ddi_definitions
 from . import fileutils
 
 
-def read_ipums_ddi(ddi_file: fileutils.FILE_TYPE) -> ddi_definitions.Codebook:
+def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
+    """
+    Read a DDI from a IMPUS XML file
+
+    Args:
+        ddi_file: The location of an IPUMS DDI XML
+
+    Returns:
+        The parsed codebook
+    """
     with fileutils.xml_opener(ddi_file) as opened_file:
         root = ET.parse(opened_file).getroot()
 
@@ -23,7 +35,7 @@ def read_ipums_ddi(ddi_file: fileutils.FILE_TYPE) -> ddi_definitions.Codebook:
 
 def _read_microdata(
     ddi: ddi_definitions.Codebook,
-    filename: Optional[fileutils.FILE_TYPE] = None,
+    filename: Optional[fileutils.FileType] = None,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     iterator: bool = False,
@@ -42,6 +54,8 @@ def _read_microdata(
 
     filename = Path(filename or ddi.file_description.filename)
     encoding = encoding or ddi.file_description.encoding
+
+    iterator = iterator or (chunksize is not None)
 
     # Set up the correct reader for our file type
     kwargs = copy.deepcopy(kwargs)
@@ -68,7 +82,8 @@ def _read_microdata(
         reader = pd.read_csv
         kwargs.update({"usecols": [desc.name for desc in data_description]})
 
-        # CSVs have correct decimal expansions already; so we just make this the identity function
+        # CSVs have correct decimal expansions already; so we just make
+        # this the identity function
         def _fix_decimal_expansion(df):
             return df
 
@@ -76,7 +91,7 @@ def _read_microdata(
         raise ValueError("Only CSV and .dat files are supported")
 
     with fileutils.data_opener(filename, encoding=encoding) as infile:
-        if iterator:
+        if not iterator:
             data = [reader(infile, **kwargs)]
         else:
             kwargs.update({"iterator": True, "chunksize": chunksize})
@@ -87,14 +102,13 @@ def _read_microdata(
 
 def read_microdata(
     ddi: ddi_definitions.Codebook,
-    filename: Optional[fileutils.FILE_TYPE] = None,
+    filename: Optional[fileutils.FileType] = None,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
     Read in microdata as specified by the Codebook.
-
     Args:
       ddi: The codebook representing the data
       filename: The path to the data file. If not present, gets from
@@ -102,7 +116,6 @@ def read_microdata(
       encoding: The encoding of the data file. If not present, reads from ddi
       subset: A list of variable names to keep. If None, will keep all
       kwargs: keyword args to be passed to pd.read_fwf
-
     Returns: The dataframe to read
     """
     return next(
@@ -114,7 +127,7 @@ def read_microdata(
 
 def read_microdata_chunked(
     ddi: ddi_definitions.Codebook,
-    filename: Optional[fileutils.FILE_TYPE] = None,
+    filename: Optional[fileutils.FileType] = None,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     chunksize: Optional[int] = None,
@@ -122,25 +135,24 @@ def read_microdata_chunked(
 ) -> Iterator[pd.DataFrame]:
     """
     Read in microdata in chunks as specified by the Codebook.
-
     As these files are often large, you may wish to filter or read in chunks.
     As an example of how you might do that, consider the following example that
     filters only for rows in Rhode Island::
 
-      iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
-      df = pd.concat([df[df['STATEFIP'] == 44]] for df in iter_microdata])
+        iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
+        df = pd.concat([df[df['STATEFIP'] == 44]] for df in iter_microdata])
 
     Args:
-      ddi: The codebook representing the data
-      filename: The path to the data file. If not present, gets from
-        ddi and assumes the file is relative to the current working directory
-      encoding: The encoding of the data file. If not present, reads from ddi
-      subset: A list of variable names to keep. If None, will keep all
-      chunksize: The size of the chunk to return with iterator. See `pandas.read_csv`
-      kwargs: keyword args to be passed to pd.read_fwf
+        ddi: The codebook representing the data
+        filename: The path to the data file. If not present, gets from
+            ddi and assumes the file is relative to the current working directory
+        encoding: The encoding of the data file. If not present, reads from ddi
+        subset: A list of variable names to keep. If None, will keep all
+        chunksize: The size of the chunk to return with iterator. See `pandas.read_csv`
+        kwargs: keyword args to be passed to pd.read_fwf
 
     Yields:
-      An iterator of data frames
+        An iterator of data frames
     """
     yield from _read_microdata(
         ddi,
