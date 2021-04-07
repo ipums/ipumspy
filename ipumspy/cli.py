@@ -1,3 +1,6 @@
+"""
+A CLI for accessing IPUMS utilities
+"""
 import copy
 import dataclasses
 import json
@@ -8,14 +11,14 @@ import pyarrow as pa
 from . import readers
 
 
-@click.group()
-def cli():
+@click.group("ipums")
+def ipums_group():
     """
     Tools for working with IPUMS files via the command line
     """
 
 
-@cli.command("convert")
+@ipums_group.command("convert")
 @click.argument("infile", type=click.Path(exists=True))
 @click.argument("outfile", type=click.Path())
 def convert_command(infile, outfile):
@@ -36,7 +39,3 @@ def convert_command(infile, outfile):
     metadata[b"ipums"] = json.dumps(dataclasses.asdict(ddi)).encode("utf8")
     schema = schema.with_metadata(metadata)
     data.to_parquet(outfile, schema=schema)
-
-
-if __name__ == "__main__":
-    cli()

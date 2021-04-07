@@ -1,11 +1,23 @@
+"""
+Utilities for working with IPUMS DDI formats
+"""
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import List, Optional
 from xml.etree import ElementTree as ET
 
 
 @dataclass
 class VariableDescription:
-    id: str
+    """
+    Individual variables are described in the DDI. These are representations
+    of those descriptions as dataclasses.
+    """
+
+    # pylint: disable=too-many-instance-attributes
+
+    id: str  # pylint: disable=invalid-name
     name: str
 
     start: int
@@ -19,7 +31,7 @@ class VariableDescription:
     shift: Optional[int]
 
     @classmethod
-    def read(cls, elt: ET, ddi_namespace: str):
+    def read(cls, elt: ET, ddi_namespace: str) -> VariableDescription:
         """
         Read an XML description of a variable. Must pass a `ddi_namespace` that
         says what the xmlns is for the file
@@ -43,6 +55,11 @@ class VariableDescription:
 
 @dataclass
 class FileDescription:
+    """
+    In the IPUMS DDI, the file has its own particular description. Extract
+    that from the XML.
+    """
+
     filename: str
     description: str
     structure: str
@@ -51,7 +68,10 @@ class FileDescription:
     place: str
 
     @classmethod
-    def read(cls, elt: ET, ddi_namespace: str):
+    def read(cls, elt: ET, ddi_namespace: str) -> FileDescription:
+        """
+        Read a FileDescription from the parsed XML
+        """
         namespaces = {"ddi": ddi_namespace}
         return cls(
             filename=elt.find("./ddi:fileName", namespaces).text,
@@ -75,7 +95,10 @@ class Codebook:
     data_description: List[VariableDescription]
 
     @classmethod
-    def read(cls, elt: ET, ddi_namespace: str):
+    def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
+        """
+        Read a Codebook from the parsed XML
+        """
         namespaces = {"ddi": ddi_namespace}
         file_txts = elt.findall("./ddi:fileDscr/ddi:fileTxt", namespaces)
         if len(file_txts) != 1:

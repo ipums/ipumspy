@@ -1,3 +1,6 @@
+"""
+Utilities for working with files downloaded from IPUMS
+"""
 import gzip
 import io
 import zipfile
@@ -5,8 +8,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Union
 
-
-FILE_TYPE = Union[str, Path, io.IOBase]
+FILE_TYPE = Union[str, Path, io.IOBase]  # pylint: disable=invalid-name
 
 
 @contextmanager
@@ -15,7 +17,8 @@ def xml_opener(ddi_file: FILE_TYPE):
     Yield an opened XML file with method 'rb'. Can be any of the following:
         * An already opened file (we just yield it back)
         * A path to an XML file or a gzipped XML file (we open and yield)
-        * A path to a directory or ZIP file (we find an XML file therein, open and yield)
+        * A path to a directory or ZIP file (we find an XML file therein,
+            open and yield)
 
     Raises:
         OSError: If the passed path does not exist
@@ -41,7 +44,7 @@ def xml_opener(ddi_file: FILE_TYPE):
             ]
             if not possible_files:
                 raise ValueError(f"{ddi_file} contains no XML files")
-            elif len(possible_files) > 1:
+            if len(possible_files) > 1:
                 raise ValueError(f"{ddi_file} contains more than one XML file")
             with open(possible_files[0], "rb") as infile:
                 yield infile
@@ -56,7 +59,7 @@ def xml_opener(ddi_file: FILE_TYPE):
                 ]
                 if not possible_files:
                     raise ValueError(f"{ddi_file} contains no XML files")
-                elif len(possible_files) > 1:
+                if len(possible_files) > 1:
                     raise ValueError(f"{ddi_file} contains more than one XML file")
                 data = inzip.read(possible_files[0])
                 yield io.BytesIO(data)
