@@ -26,27 +26,19 @@ class ApiUtilities(object):
                                          headers={'Authorization': self.api_key})
         return previous_extracts
 
-    def resubmit_extract(self, product, extract_number):
-        # not sure this is really the place for this
-        # or if re-submission should even be an obect method
-        # maybe this is something users have to write for themselves
-        """
-        Resubmit an IPUMS microdata.
-        """
+    def retrieve_extract_definition(self, product, extract_number):
         ## modify base url to be for specific extract number
         extract_url = f'{self.base_url}/{extract_number}'
-        extract_definition = requests.get(extract_url,
-                                          params={'product': product,
-                                                  'version': self.api_version},
-                                          headers={'Authorization': self.api_key})
-
-        resubmission = requests.post(self.base_url, 
-                                     params={'product': product, 
-                                             'version': self.api_version},
-                                     json=extract_definition,
-                                     headers={'Authorization': self.api_key})
+        extract = requests.get(extract_url,
+                               params={'product': product,
+                                       'version': self.api_version},
+                               headers={'Authorization': self.api_key})
         # request error handling?
-        return resubmission
+        extract_definition = extract.json()
+        extract_definition.pop('download_links')
+        extract_definition.pop('number')
+        extract_definition.pop('status')
+        return extract_definition
 
 
 class ExtractRequest(ApiUtilities):
@@ -115,19 +107,19 @@ my_api_key = os.getenv("MY_KEY")
 extract_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], my_api_key)
 #print(extract_request.api_key)
 
-extract_def = extract_request.build()
-extract_def = extract_request.extract_definition
-print(extract_def)
-extract_req = extract_request.submit()
-print(extract_req)
-print(extract_request.number)
-print(extract_request.status)
+# extract_def = extract_request.build()
+# extract_def = extract_request.extract_definition
+# print(extract_def)
+# extract_req = extract_request.submit()
+# print(extract_req)
+# print(extract_request.number)
+# print(extract_request.status)
 
-# apiutil = ApiUtilities(my_api_key, api_version='v1')
-# extract_list = apiutil.retrieve_previous_extracts('usa')
-# print(extract_list.json())
-# print(len(extract_list.json()))
-# resub_ext = extract_list.json()[0]
-
-# resub = apiutil.resubmit_extract('usa', resub_ext)
-# print(resub)
+apiutil = ApiUtilities(my_api_key, api_version='v1')
+extract_list = apiutil.retrieve_previous_extracts('usa', N='2')
+#print(extract_list.json())
+print(len(extract_list.json()))
+resub_ext = extract_list.json()[0]
+print(resub_ext)
+resub = apiutil.retrieve_extract_definition('usa', '8')
+print(resub)
