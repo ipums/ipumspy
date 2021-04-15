@@ -1,5 +1,5 @@
 import requests
-
+import requests.exceptions
 
 class ApiUtilities(object):
     def __init__(self, api_key, api_version='v1'):
@@ -7,7 +7,89 @@ class ApiUtilities(object):
         self.api_version = api_version
         # maybe want to have these in an external config file somewhere?
         self.base_url = 'https://demo.api.ipums.org/extracts'
+        self.extract_request = ExtractRequest(self.api_key, 
+                                              self.api_version, 
+                                              self.base_url)
 
+class ApiRequestWrapper():
+    @staticmethod
+    def api_call(*args, **kwargs):
+        try:
+            response = requests.request(*args, **kwargs)  
+            response.raise_for_status()
+            return response
+        except requests.exceptions.HTTPError as http_err:
+            print(f'HTTP error occurred: {http_err}')
+        except Exception as err:
+            print(f'other error occured: {err}')
+
+
+class ExtractRequest():
+    def __init__(self, api_key, api_version, base_url):
+        self.api_key = api_key
+        self.api_version = api_version
+        self.base_url = base_url
+        
+
+    def build(self, product, samples, variables, 
+              description='My IPUMS extract', data_format='fixed_width'):
+        request_body = {
+            'data_structure':{
+                'rectangular':{
+                    'on': 'P'
+                }
+            },
+            'samples': {},
+            'variables': {}
+        }
+
+        # add extract description
+        request_body['description'] = description
+        # add data format
+        request_body['data_format'] = data_format
+        # add samples
+        for sample in samples:
+            request_body['samples'][sample] = {}
+
+        for variable in variables:
+            request_body['variables'][variable.upper()] = {}
+
+        #return request_body
+        self.extract_definition = request_body
+        self.product = product
+    
+    def submit(self):
+        
+        extract = ApiRequestWrapper.api_call('post', 
+                                            self.base_url, 
+                                            params = {'product': self.product, 
+                                                      'version': self.api_version},
+                                            json=self.extract_definition, 
+                                            headers={'Authorization': self.api_key})
+        return extract
+
+
+    def check_status(self):
+        new_url = f'{self.base_url}/{extract_number}'
+        extract_status = ApiRequestWrapper.api_call('get', 
+                                                    new_url, 
+                                                    params = {'product': self.product, 
+                                                              'version': self.api_version},
+                                                    json=self.extract_definition, 
+                                                    headers={'Authorization': self.api_key})
+        return extract_status.json()['status']
+
+
+    def wait_for_extract():
+        # wrap check_status
+        pass
+
+
+    def download():
+        pass
+
+
+class OtherApiStuff:
     def retrieve_previous_extracts(self, product, N='10'):
         """
         Returns a list of N previously submitted extract definitions.
@@ -24,6 +106,7 @@ class ApiUtilities(object):
                                                  'limit': N, 
                                                  'version': self.api_version}, 
                                          headers={'Authorization': self.api_key})
+        # request error handling?
         return previous_extracts
 
     def retrieve_extract_definition(self, product, extract_number):
@@ -41,70 +124,26 @@ class ApiUtilities(object):
         return extract_definition
 
 
-class ExtractRequest(ApiUtilities):
-    def __init__(self, product, samples, variables, api_key, 
-                 data_format='fixed_width', description='My IPUMS extract',
-                 api_version='v1'):
-        # the way the api_version arg is handled here seems less than ideal
-        super(ExtractRequest, self).__init__(api_key, api_version)
-        self.product = product
-        self.samples = samples
-        self.variables = variables
-        self.data_format = data_format
-        self.description = description
-        self.number = None
-        self.status = 'built'
-        
-        self.extract_definition = self.build()
-
-
-    def build(self):
-        request_body = {
-            'data_structure':{
-                'rectangular':{
-                    'on': 'P'
-                }
-            },
-            'samples': {},
-            'variables': {}
-        }
-
-        # add extract description
-        request_body['description'] = self.description
-        # add data format
-        request_body['data_format'] = self.data_format
-        # add samples
-        for sample in self.samples:
-            request_body['samples'][sample] = {}
-
-        for variable in self.variables:
-            request_body['variables'][variable.upper()] = {}
-
-        return request_body
-    
-    def submit(self):
-        extract = requests.post(self.base_url, 
-                                params = {'product': self.product, 
-                                          'version': self.api_version},
-                                json=self.extract_definition, 
-                                headers={'Authorization': self.api_key})
-        # request error handling?
-        self.number = extract.json()['number']
-        self.status = extract.json()['status']
-        return extract
-
-    def check_status(self):
-        pass
-
-    def download(self):
-        pass
-
 ###########
 # TESTING #
 ###########
 import os
 my_api_key = os.getenv("MY_KEY")
-extract_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], my_api_key)
+
+
+api_util = ApiUtilities(my_api_key)
+api_util.extract_request.build('usa', ['us2012b'], ['YEAR'])
+print(api_util.extract_request.extract_definition)
+extr = api_util.extract_request.submit()
+print(extr.status_code)
+# bad_request = ExtractRequest('usa', [], ['YEAR'], my_api_key)
+# response = bad_request.submit()
+# #print(response)
+# bad_sample = ExtractRequest('cps', ['us2012b'], ['YEAR'], my_api_key)
+# bad_sample.submit()
+# unauth_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], '1234')
+# unauth_request.submit()
+#extract_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], my_api_key)
 #print(extract_request.api_key)
 
 # extract_def = extract_request.build()
@@ -115,11 +154,11 @@ extract_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], my_api_key)
 # print(extract_request.number)
 # print(extract_request.status)
 
-apiutil = ApiUtilities(my_api_key, api_version='v1')
-extract_list = apiutil.retrieve_previous_extracts('usa', N='2')
+#apiutil = ApiUtilities(my_api_key, api_version='v1')
+#extract_list = apiutil.retrieve_previous_extracts('usa', N='2')
 #print(extract_list.json())
-print(len(extract_list.json()))
-resub_ext = extract_list.json()[0]
-print(resub_ext)
-resub = apiutil.retrieve_extract_definition('usa', '8')
-print(resub)
+#print(len(extract_list.json()))
+#resub_ext = extract_list.json()[0]
+#print(resub_ext)
+#resub = apiutil.retrieve_extract_definition('usa', '8')
+#print(resub)
