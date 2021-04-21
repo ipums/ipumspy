@@ -19,6 +19,7 @@ class ApiRequestWrapper():
             response.raise_for_status()
             return response
         except requests.exceptions.HTTPError as http_err:
+            # this isn't actually giving us the 'details' from the error json returned by the api for 400 errors
             print(f'HTTP error occurred: {http_err}')
         except Exception as err:
             print(f'other error occured: {err}')
@@ -57,6 +58,7 @@ class ExtractRequest():
         #return request_body
         self.extract_definition = request_body
         self.product = product
+
     
     def submit(self):
         
@@ -89,31 +91,27 @@ class ExtractRequest():
         pass
 
 
-class OtherApiStuff:
-    def retrieve_previous_extracts(self, product, N='10'):
-        """
-        Returns a list of N previously submitted extract definitions.
+class ExtractHistory():
+    __init__(elf, api_key, api_version, base_url):
+        self.api_key = api_key
+        self.api_version = api_version
+        self.base_url = base_url
 
-        Args:
-            N: Number of previous extracts to retrieve. Default is 10.
-
-        Returns:
-            A list of the user's N previously submitted extract definitions.
-        """
-
-        previous_extracts = requests.get(self.base_url, 
-                                         params={'product': product, 
-                                                 'limit': N, 
-                                                 'version': self.api_version}, 
-                                         headers={'Authorization': self.api_key})
-        # request error handling?
+    
+    def retrieve_previous_extracts(self, N='10'):
+        previous_extracts = ApiRequestWrapper.api_call('get', 
+                                                        self.base_url, 
+                                                        params = {'product': self.product, 
+                                                                  'limit': N,
+                                                                  'version': self.api_version},
+                                                        headers={'Authorization': self.api_key})
         return previous_extracts
 
-    def retrieve_extract_definition(self, product, extract_number):
+    def retrieve_extract_definition(self, extract_number):
         ## modify base url to be for specific extract number
         extract_url = f'{self.base_url}/{extract_number}'
         extract = requests.get(extract_url,
-                               params={'product': product,
+                               params={'product': self.product,
                                        'version': self.api_version},
                                headers={'Authorization': self.api_key})
         # request error handling?
@@ -136,9 +134,13 @@ api_util.extract_request.build('usa', ['us2012b'], ['YEAR'])
 print(api_util.extract_request.extract_definition)
 extr = api_util.extract_request.submit()
 print(extr.status_code)
-# bad_request = ExtractRequest('usa', [], ['YEAR'], my_api_key)
-# response = bad_request.submit()
-# #print(response)
+
+
+
+# api_util.extract_request.build('usa', [], ['YEAR'])
+# print(api_util.extract_request.extract_definition)
+# bad_request = api_util.extract_request.submit()
+# print(bad_request.status_code)
 # bad_sample = ExtractRequest('cps', ['us2012b'], ['YEAR'], my_api_key)
 # bad_sample.submit()
 # unauth_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], '1234')
