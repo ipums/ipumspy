@@ -70,18 +70,19 @@ class ExtractRequest():
                                                       'version': self.api_version},
                                             json=self.extract_definition, 
                                             headers={'Authorization': self.api_key})
+        self.extract_number = extract.json()['number']
+        self.extract_status = extract.json()['status']
         return extract
 
 
     def check_status(self):
-        new_url = f'{self.base_url}/{extract_number}'
+        new_url = f'{self.base_url}/{self.extract_number}'
         extract_status = ApiRequestWrapper.api_call('get', 
                                                     new_url, 
                                                     params = {'product': self.product, 
                                                               'version': self.api_version},
-                                                    json=self.extract_definition, 
                                                     headers={'Authorization': self.api_key})
-        return extract_status.json()['status']
+        self.extract_status = extract_status.json()['status']
 
 
     def wait_for_extract():
@@ -136,11 +137,11 @@ extr = api_util.extract_request.submit()
 print(extr.status_code)
 
 
-extract_hist = api_util.extract_history.retrieve_previous_extracts('usa', N='3')
-print(extract_hist)
+# extract_hist = api_util.extract_history.retrieve_previous_extracts('usa', N='3')
+# print(extract_hist)
 
-old_extract = api_util.extract_history.retrieve_extract('usa', '3')
-print(old_extract.json()['variables'])
+# old_extract = api_util.extract_history.retrieve_extract('usa', '3')
+# print(old_extract.json()['variables'])
 # api_util.extract_request.build('usa', [], ['YEAR'])
 # print(api_util.extract_request.extract_definition)
 # bad_request = api_util.extract_request.submit()
