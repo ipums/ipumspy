@@ -109,19 +109,17 @@ class ExtractHistory():
                                                         headers={'Authorization': self.api_key})
         return previous_extracts.json()
 
-    def retrieve_extract_definition(self, extract_number):
+
+    def retrieve_extract(self, product, extract_number):
         ## modify base url to be for specific extract number
         extract_url = f'{self.base_url}/{extract_number}'
-        extract = requests.get(extract_url,
-                               params={'product': self.product,
-                                       'version': self.api_version},
-                               headers={'Authorization': self.api_key})
+        extract = ApiRequestWrapper.api_call('get', 
+                                             extract_url, 
+                                             params = {'product': product, 
+                                                       'version': self.api_version},
+                                             headers={'Authorization': self.api_key})
         # request error handling?
-        extract_definition = extract.json()
-        extract_definition.pop('download_links')
-        extract_definition.pop('number')
-        extract_definition.pop('status')
-        return extract_definition
+        return extract
 
 
 ###########
@@ -140,6 +138,9 @@ print(extr.status_code)
 
 extract_hist = api_util.extract_history.retrieve_previous_extracts('usa', N='3')
 print(extract_hist)
+
+old_extract = api_util.extract_history.retrieve_extract('usa', '3')
+print(old_extract.json()['variables'])
 # api_util.extract_request.build('usa', [], ['YEAR'])
 # print(api_util.extract_request.extract_definition)
 # bad_request = api_util.extract_request.submit()
