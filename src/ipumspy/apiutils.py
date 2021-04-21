@@ -10,6 +10,9 @@ class ApiUtilities(object):
         self.extract_request = ExtractRequest(self.api_key, 
                                               self.api_version, 
                                               self.base_url)
+        self.extract_history = ExtractHistory(self.api_key,
+                                              self.api_version,
+                                              self.base_url)
 
 class ApiRequestWrapper():
     @staticmethod
@@ -61,7 +64,6 @@ class ExtractRequest():
 
     
     def submit(self):
-        
         extract = ApiRequestWrapper.api_call('post', 
                                             self.base_url, 
                                             params = {'product': self.product, 
@@ -92,20 +94,20 @@ class ExtractRequest():
 
 
 class ExtractHistory():
-    __init__(elf, api_key, api_version, base_url):
+    def __init__(self, api_key, api_version, base_url):
         self.api_key = api_key
         self.api_version = api_version
         self.base_url = base_url
 
     
-    def retrieve_previous_extracts(self, N='10'):
+    def retrieve_previous_extracts(self, product, N='10'):
         previous_extracts = ApiRequestWrapper.api_call('get', 
                                                         self.base_url, 
-                                                        params = {'product': self.product, 
+                                                        params = {'product': product, 
                                                                   'limit': N,
                                                                   'version': self.api_version},
                                                         headers={'Authorization': self.api_key})
-        return previous_extracts
+        return previous_extracts.json()
 
     def retrieve_extract_definition(self, extract_number):
         ## modify base url to be for specific extract number
@@ -136,7 +138,8 @@ extr = api_util.extract_request.submit()
 print(extr.status_code)
 
 
-
+extract_hist = api_util.extract_history.retrieve_previous_extracts('usa', N='3')
+print(extract_hist)
 # api_util.extract_request.build('usa', [], ['YEAR'])
 # print(api_util.extract_request.extract_definition)
 # bad_request = api_util.extract_request.submit()
