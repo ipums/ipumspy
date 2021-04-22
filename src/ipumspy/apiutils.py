@@ -24,8 +24,11 @@ class ApiRequestWrapper():
         except requests.exceptions.HTTPError as http_err:
             # this isn't actually giving us the 'details' from the error json returned by the api for 400 errors
             print(f'HTTP error occurred: {http_err}')
-            error_details = '\n'.join(response.json()['detail']['base'])
-            print(error_details)
+            try:
+                error_details = '\n'.join(response.json()['detail']['base'])
+                print(error_details)
+            except KeyError:
+                pass
         except Exception as err:
             print(f'other error occured: {err}')
 
