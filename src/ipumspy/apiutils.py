@@ -72,8 +72,9 @@ class ExtractRequest():
                                                       'version': self.api_version},
                                             json=self.extract_definition, 
                                             headers={'Authorization': self.api_key})
-        self.extract_number = extract.json()['number']
-        self.extract_status = extract.json()['status']
+        if extract is not None:
+            self.extract_number = extract.json()['number']
+            self.extract_status = extract.json()['status']
         return extract
 
 
