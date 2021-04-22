@@ -1,6 +1,8 @@
 import requests
 import requests.exceptions
 
+from pathlib import Path
+
 class ApiUtilities(object):
     def __init__(self, api_key, api_version='v1', site='demo'):
         self.api_key = api_key
@@ -77,18 +79,17 @@ class ExtractRequest():
                                             headers={'Authorization': self.api_key})
         if extract is not None:
             self.extract_number = extract.json()['number']
-            self.extract_status = extract.json()['status']
         return extract
 
 
-    def check_status(self):
+    def extract_status(self):
         new_url = f'{self.base_url}/{self.extract_number}'
         extract_status = ApiRequestWrapper.api_call('get', 
                                                     new_url, 
                                                     params = {'product': self.product, 
                                                               'version': self.api_version},
                                                     headers={'Authorization': self.api_key})
-        self.extract_status = extract_status.json()['status']
+        return extract_status.json()['status']
 
 
     def wait_for_extract():
@@ -96,9 +97,38 @@ class ExtractRequest():
         pass
 
 
-    def download():
-        pass
-
+    def download(self, download_dir=None):
+        # if download_dir specified check if it exists
+        if download_dir is None:
+            download_dir = str(Path.cwd())
+        else:
+            if not Path(download_dir).exists():
+                raise IOError(f'{download_dir} does not exist.')
+        # check to see if extract complete
+        if self.extract_status() != "completed":
+            raise RuntimeError(f'Your IPUMS extract is not finished yet!')
+        else:
+            print('..shouldnt be here')
+            new_url = f'{self.base_url}/{self.extract_number}'
+            extract = ApiRequestWrapper.api_call('get', 
+                                                  new_url, 
+                                                  params = {'product': self.product, 
+                                                            'version': self.api_version},
+                                                  headers={'Authorization': self.api_key})
+            download_links = extract.json()['download_links']
+            data_url = download_links['data']['url']
+            ddi_url = download_links['ddi_codebook']['url']
+            files = [data_url, ddi_url]
+            for f in files:
+                file_name = f.split('/')[-1]
+                download_path = str(Path(download_dir, file_name))
+                print(download_path)
+                with requests.get(f, stream=True, headers={'Authorization': self.api_key}) as r:
+                    r.raise_for_status()
+                    with open(download_path, 'wb') as fh:
+                        for chunk in r.inter_content(chunk_size=1024):
+                            fh.write(chunk)
+        
 
 class ExtractHistory():
     def __init__(self, api_key, api_version, base_url):
