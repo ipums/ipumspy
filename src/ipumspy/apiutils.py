@@ -24,6 +24,8 @@ class ApiRequestWrapper():
         except requests.exceptions.HTTPError as http_err:
             # this isn't actually giving us the 'details' from the error json returned by the api for 400 errors
             print(f'HTTP error occurred: {http_err}')
+            error_details = '\n'.join(response.json()['detail']['base'])
+            print(error_details)
         except Exception as err:
             print(f'other error occured: {err}')
 
@@ -123,49 +125,3 @@ class ExtractHistory():
         return extract
 
 
-###########
-# TESTING #
-###########
-import os
-my_api_key = os.getenv("MY_KEY")
-
-
-api_util = ApiUtilities(my_api_key)
-api_util.extract_request.build('usa', ['us2012b'], ['YEAR'])
-print(api_util.extract_request.extract_definition)
-extr = api_util.extract_request.submit()
-print(extr.status_code)
-
-
-# extract_hist = api_util.extract_history.retrieve_previous_extracts('usa', N='3')
-# print(extract_hist)
-
-# old_extract = api_util.extract_history.retrieve_extract('usa', '3')
-# print(old_extract.json()['variables'])
-# api_util.extract_request.build('usa', [], ['YEAR'])
-# print(api_util.extract_request.extract_definition)
-# bad_request = api_util.extract_request.submit()
-# print(bad_request.status_code)
-# bad_sample = ExtractRequest('cps', ['us2012b'], ['YEAR'], my_api_key)
-# bad_sample.submit()
-# unauth_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], '1234')
-# unauth_request.submit()
-#extract_request = ExtractRequest('usa', ['us2012b'], ['YEAR'], my_api_key)
-#print(extract_request.api_key)
-
-# extract_def = extract_request.build()
-# extract_def = extract_request.extract_definition
-# print(extract_def)
-# extract_req = extract_request.submit()
-# print(extract_req)
-# print(extract_request.number)
-# print(extract_request.status)
-
-#apiutil = ApiUtilities(my_api_key, api_version='v1')
-#extract_list = apiutil.retrieve_previous_extracts('usa', N='2')
-#print(extract_list.json())
-#print(len(extract_list.json()))
-#resub_ext = extract_list.json()[0]
-#print(resub_ext)
-#resub = apiutil.retrieve_extract_definition('usa', '8')
-#print(resub)
