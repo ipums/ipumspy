@@ -65,6 +65,7 @@ class ExtractRequest():
         #return request_body
         self.extract_definition = request_body
         self.product = product
+        self.status = 'built'
 
     
     def submit(self):
