@@ -40,6 +40,7 @@ def test_build_extract(api_util):
                             'data_format': 'fixed_width',
                         }
     assert extract.product == 'cps'
+    assert extract.status == 'built'
     
 def test_submit_extract(api_util):
     api_util.extract_request.build('cps',
