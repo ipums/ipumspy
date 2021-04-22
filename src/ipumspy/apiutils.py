@@ -2,11 +2,11 @@ import requests
 import requests.exceptions
 
 class ApiUtilities(object):
-    def __init__(self, api_key, api_version='v1'):
+    def __init__(self, api_key, api_version='v1', site='demo'):
         self.api_key = api_key
         self.api_version = api_version
-        # maybe want to have these in an external config file somewhere?
-        self.base_url = 'https://demo.api.ipums.org/extracts'
+        self.site = site
+        self.base_url = f'https://{self.site}.api.ipums.org/extracts'
         self.extract_request = ExtractRequest(self.api_key, 
                                               self.api_version, 
                                               self.base_url)
@@ -22,7 +22,6 @@ class ApiRequestWrapper():
             response.raise_for_status()
             return response
         except requests.exceptions.HTTPError as http_err:
-            # this isn't actually giving us the 'details' from the error json returned by the api for 400 errors
             print(f'HTTP error occurred: {http_err}')
             try:
                 error_details = '\n'.join(response.json()['detail']['base'])
@@ -118,14 +117,13 @@ class ExtractHistory():
 
 
     def retrieve_extract(self, product, extract_number):
-        ## modify base url to be for specific extract number
+        # modify base url to be for specific extract number
         extract_url = f'{self.base_url}/{extract_number}'
         extract = ApiRequestWrapper.api_call('get', 
                                              extract_url, 
                                              params = {'product': product, 
                                                        'version': self.api_version},
                                              headers={'Authorization': self.api_key})
-        # request error handling?
         return extract
 
 
