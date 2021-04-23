@@ -98,8 +98,10 @@ class IpumsApiClient(object):
                                                         headers={'Authorization': self.api_key})
         return previous_extracts.json()
 
+    def wait_for_extract(self):
+        # wrap check_status
+        pass
 
-        
 
 class ApiRequestWrapper():
     @staticmethod
@@ -118,10 +120,6 @@ class ApiRequestWrapper():
         except Exception as err:
             print(f'other error occured: {err}')
 
-    
-    def wait_for_extract():
-        # wrap check_status
-        pass
 
 
     
