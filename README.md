@@ -15,16 +15,17 @@ pip install ipumspy
 
 An example of how to create, submit, and download an IPUMS extract via `ipumspy`.
 
-First get an IPUMS API key [link to do that eventually].
+First get an IPUMS API key [instructions and link to do that eventually].
 
-Build an extract.
+Build an extract by supplying a data collection, a list of samples, and a list of variables.
+For a list of sample ids by collection, see [link here eventually].
 
 ```
 ipums = IpumsApiClient(your_api_key)
 
 extract_definition = ipums.build_extract('cps', 
-                               ['cps1976_01s'],
-                               ['YEAR', 'AGE'])
+                                        ['cps1976_01s'],
+                                        ['YEAR', 'AGE'])
 ```
 This returns a json formatted for submission to the IPUMS microdata extract api.
 
