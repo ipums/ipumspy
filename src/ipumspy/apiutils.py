@@ -4,11 +4,10 @@ import requests.exceptions
 from pathlib import Path
 
 class IpumsApiClient(object):
-    def __init__(self, api_key, api_version='v1', site='demo'):
+    def __init__(self, api_key, api_version='v1'):
         self.api_key = api_key
         self.api_version = api_version
-        self.site = site
-        self.base_url = f'https://{self.site}.api.ipums.org/extracts'
+        self.base_url = 'https://demo.api.ipums.org/extracts'
 
     def build_extract(self, product, samples, variables, 
                         description='My IPUMS extract', data_format='fixed_width'):
