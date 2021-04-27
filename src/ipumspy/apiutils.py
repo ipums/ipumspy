@@ -9,7 +9,7 @@ class IpumsApiClient(object):
         self.api_version = api_version
         self.base_url = 'https://demo.api.ipums.org/extracts'
 
-    def build_extract(self, product, samples, variables, 
+    def build_extract(self, collection, samples, variables, 
                         description='My IPUMS extract', data_format='fixed_width'):
         request_body = {
             'data_structure':{
@@ -34,11 +34,11 @@ class IpumsApiClient(object):
 
         return request_body
 
-    def submit_extract(self, product, request_body):
+    def submit_extract(self, collection, request_body):
         extract = ApiRequestWrapper.api_call('post', 
                                             self.base_url, 
-                                            params = {'product': product, 
-                                                    'version': self.api_version},
+                                            params = {'collection': collection, 
+                                                      'version': self.api_version},
                                             json=request_body, 
                                             headers={'Authorization': self.api_key})
         if extract is not None:
@@ -47,16 +47,16 @@ class IpumsApiClient(object):
             extract_number = None
         return (extract, extract_number)
 
-    def extract_status(self, product, extract_number):
+    def extract_status(self, collection, extract_number):
         new_url = f'{self.base_url}/{extract_number}'
         extract_status = ApiRequestWrapper.api_call('get', 
                                                     new_url, 
-                                                    params = {'product': product, 
-                                                            'version': self.api_version},
+                                                    params = {'collection': collection, 
+                                                              'version': self.api_version},
                                                     headers={'Authorization': self.api_key})
         return extract_status.json()['status']
 
-    def download_extract(self, product, extract_number, download_dir=None):
+    def download_extract(self, collection, extract_number, download_dir=None):
         # if download_dir specified check if it exists
         if download_dir is None:
             download_dir = str(Path.cwd())
@@ -64,15 +64,15 @@ class IpumsApiClient(object):
             if not Path(download_dir).exists():
                 raise IOError(f'{download_dir} does not exist.')
         # check to see if extract complete
-        if self.extract_status(product, extract_number) != "completed":
+        if self.extract_status(collection, extract_number) != "completed":
             raise RuntimeError(f'Your IPUMS extract number {extract_number} is not finished yet!')
         else:
             print('..shouldnt be here')
             new_url = f'{self.base_url}/{extract_number}'
             extract = ApiRequestWrapper.api_call('get', 
                                                 new_url, 
-                                                params = {'product': product, 
-                                                            'version': self.api_version},
+                                                params = {'collection': collection, 
+                                                          'version': self.api_version},
                                                 headers={'Authorization': self.api_key})
             download_links = extract.json()['download_links']
             data_url = download_links['data']['url']
@@ -88,10 +88,10 @@ class IpumsApiClient(object):
                         for chunk in r.iter_content(chunk_size=1024):
                             fh.write(chunk)
 
-    def retrieve_previous_extracts(self, product, N='10'):
+    def retrieve_previous_extracts(self, collection, N='10'):
         previous_extracts = ApiRequestWrapper.api_call('get', 
                                                         self.base_url, 
-                                                        params = {'product': product, 
+                                                        params = {'collection': collection, 
                                                                   'limit': N,
                                                                   'version': self.api_version},
                                                         headers={'Authorization': self.api_key})
