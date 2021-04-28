@@ -8,7 +8,7 @@ from typing import List, Optional
 import requests
 
 from ..__version__ import __version__
-from .exceptions import TransientIpumsApiException, IpumsExtractNotReady
+from .exceptions import IpumsExtractNotReady, TransientIpumsApiException
 from .types import FilenameType
 
 

@@ -9,9 +9,12 @@ from typing import Tuple
 import click
 import pandas as pd
 import pyarrow as pa
+import yaml
 from pyarrow.parquet import ParquetWriter
 
 from . import readers
+from .api import IpumsApi
+from .fileutils import open_or_yield
 
 
 @click.group("ipums")
@@ -19,6 +22,127 @@ def ipums_group():
     """
     Tools for working with IPUMS files via the command line
     """
+
+
+@ipums_group.group("api")
+def ipums_api_group():
+    """ Interact with the IPUMS API """
+
+
+@ipums_api_group.command("submit")
+@click.argument(
+    "extract",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, allow_dash=True),
+)
+@click.option(
+    "--api-key",
+    "-k",
+    envvar="IPUMS_API_KEY",
+    default=None,
+    type=str,
+    help="Your IPUMS API key. Must be provided either here or via the IPUMS_API_KEY environment variable",
+)
+@click.option(
+    "--num-retries",
+    "-n",
+    default=3,
+    type=int,
+    help="The number of retries on transient errors",
+)
+def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
+    """ Submit an extract request to the IPUMS API """
+    if not api_key:
+        click.BadOptionUsage("api_key", "You must provide an API key")
+
+    api_client = IpumsApi(api_key, num_retries=num_retries)
+    with open_or_yield(extract) as infile:
+        extract_description: dict = yaml.safe_load(infile)
+
+    # For now we only support a single extract
+    extract_description = extract_description["extracts"][0]
+    extract_description.setdefault("data_format", "fixed_width")
+    extract_description.setdefault("data_structure", {"rectangular": {"on", "P"}})
+
+    extract_number = getattr(
+        api_client, extract_description["collection"]
+    ).submit_extract(extract_description)
+    click.echo(
+        f"Your extract has been successfully submitted with number {extract_number}"
+    )
+
+
+@ipums_api_group.command("check")
+@click.argument("collection", type=str)
+@click.argument("extract_number", type=int)
+@click.option(
+    "--api-key",
+    "-k",
+    envvar="IPUMS_API_KEY",
+    default=None,
+    type=str,
+    help="Your IPUMS API key. Must be provided either here or via the IPUMS_API_KEY environment variable",
+)
+@click.option(
+    "--num-retries",
+    "-n",
+    default=3,
+    type=int,
+    help="The number of retries on transient errors",
+)
+def ipums_api_check_command(
+    collection: str, extract_number: int, api_key: str, num_retries: int
+):
+    """ Check the status of an extract """
+    if not api_key:
+        click.BadOptionUsage("api_key", "You must provide an API key")
+
+    api_client = IpumsApi(api_key, num_retries=num_retries)
+    status = getattr(api_client, "collection").extract_status(extract_number)
+
+    click.echo(
+        f"Extract {extract_number} in collection {collection} has status {status}"
+    )
+
+
+@ipums_api_group.command("download")
+@click.argument("collection", type=str)
+@click.argument("extract_number", type=int)
+@click.option(
+    "--output-dir",
+    "-o",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False),
+    help="The directory to download the extract to. If not passed, current working directory is used. If passed, must be a directory that exists.",
+)
+@click.option(
+    "--api-key",
+    "-k",
+    envvar="IPUMS_API_KEY",
+    default=None,
+    type=str,
+    help="Your IPUMS API key. Must be provided either here or via the IPUMS_API_KEY environment variable",
+)
+@click.option(
+    "--num-retries",
+    "-n",
+    default=3,
+    type=int,
+    help="The number of retries on transient errors",
+)
+def ipums_api_download_command(
+    collection: str,
+    extract_number: int,
+    output_dir: str,
+    api_key: str,
+    num_retries: int,
+):
+    """ Download an IPUMS extract """
+    if not api_key:
+        click.BadOptionUsage("api_key", "You must provide an API key")
+
+    api_client = IpumsApi(api_key, num_retries=num_retries)
+    getattr(api_client, collection).download_extract(
+        extract_number, download_dir=output_dir
+    )
 
 
 def _append_ipums_schema(df: pd.DataFrame, ddi):

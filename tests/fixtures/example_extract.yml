@@ -1,0 +1,14 @@
+extracts:
+  - description: Simple IPUMS extract
+    collection: cps
+    samples:
+      - cps_1976_01s
+      - cps_1976_02b
+    variables:
+      - YEAR
+      - MISH
+      - AGE
+      - RACE
+      - UH_SEX_B1
+    data_structure: rectangular
+    data_format: fixed_width

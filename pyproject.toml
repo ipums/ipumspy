@@ -15,6 +15,7 @@ click = "^7.0.0"
 pyarrow = "^3.0.0"
 requests = "^2.25.1"
 importlib-metadata = {version = "^4.0.1", python = "<3.8"}
+PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"

@@ -10,7 +10,7 @@ def api_client(environment_variables) -> IpumsApi:
     IpumsApi(os.environ.get("IPUMS_API_KEY"))
 
 
-def test_build_extract(api_client):
+def test_build_extract(api_client: IpumsApi):
     """
     Confirm that test extract formatted correctly
     """
@@ -27,7 +27,7 @@ def test_build_extract(api_client):
     }
 
 
-def test_submit_extract(api_client):
+def test_submit_extract(api_client: IpumsApi):
     """
     Confirm that test extract submits properly
     """
@@ -38,6 +38,6 @@ def test_submit_extract(api_client):
     assert extract.status_code == 200
 
 
-def test_retrieve_previous_extracts(api_client):
+def test_retrieve_previous_extracts(api_client: IpumsApi):
     previous = api_client.cps.retrieve_previous_extracts()
     assert len(previous) == 10
