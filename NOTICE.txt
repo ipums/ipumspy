@@ -4,7 +4,8 @@ https://github.com/ipums/ipumspy
 Copyright 2021 Regents of the University of Minnesota
 
 Contributors:
-  Kevin Wilson, The Policy Lab, Brown University
+  Kevin H. Wilson, The Policy Lab, Brown University
+  Edward Huh, The Policy Lab, Brown University
   Renae Rodgers, IPUMS, University of Minnesota
   Kyohei Yazawa, IPUMS, University of Minnesota
   Marcus Peterson, IPUMS, University of Minnesota
