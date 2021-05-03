@@ -3,13 +3,13 @@ Core utilities for interacting with the IPUMS API
 """
 from functools import wraps
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import requests
 
 from ..__version__ import __version__
+from ..types import FilenameType
 from .exceptions import IpumsExtractNotReady, TransientIpumsApiException
-from .types import FilenameType
 
 
 def retry_on_transient_error(func):
@@ -18,7 +18,7 @@ def retry_on_transient_error(func):
     ``TransientIpumsApiException``, then retry, else just immediately ``raise``
     """
 
-    @wraps
+    @wraps(func)
     def wrapped_func(self, *args, **kwargs):
         for _ in range(self.num_retries - 1):
             try:
@@ -86,6 +86,21 @@ class IpumsApiClient:
         """ POST a request from the IPUMS API """
         return self.request("post", *args, **kwargs)
 
+    def _build_body(
+        self,
+        samples: List[str],
+        variables: List[str],
+        description: str = "My IPUMS extract",
+        data_format: str = "fixed_width",
+    ) -> Dict[str, Any]:
+        return {
+            "description": description,
+            "data_format": data_format,
+            "data_structure": {"rectangular": {"on": "P"}},
+            "samples": {sample: {} for sample in samples},
+            "variables": {variable.upper(): {} for variable in variables},
+        }
+
     def submit_extract(
         self,
         samples: List[str],
@@ -105,19 +120,14 @@ class IpumsApiClient:
         Returns:
             The number of the extract for the passed user account
         """
-        body = {
-            "description": description,
-            "data_format": data_format,
-            "data_structure": {"rectangular": {"on": "P"}},
-            "samples": {sample: {} for sample in samples},
-            "variables": {variable.upper(): {} for variable in variables},
-        }
+        body = self._build_body(
+            samples, variables, description=description, data_format=data_format
+        )
 
         response = self.post(
             self.base_url,
             params={"collection": self.collection, "version": self.api_version},
             json=body,
-            headers={"Authorization": self.api_key},
         )
 
         return int(response.json()["number"])

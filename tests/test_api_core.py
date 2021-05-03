@@ -7,7 +7,7 @@ from ipumspy.api import IpumsApi
 
 @pytest.fixture(scope="function")
 def api_client(environment_variables) -> IpumsApi:
-    IpumsApi(os.environ.get("IPUMS_API_KEY"))
+    return IpumsApi(os.environ.get("IPUMS_API_KEY"))
 
 
 def test_build_extract(api_client: IpumsApi):
@@ -15,7 +15,7 @@ def test_build_extract(api_client: IpumsApi):
     Confirm that test extract formatted correctly
     """
 
-    extract = api_client.cps.build_extract(
+    extract = api_client.cps._build_body(
         ["cps1976_01s", "cps1976_02b"], ["YEAR", "MISH", "AGE", "RACE", "UH_SEX_B1"],
     )
     assert extract == {
@@ -31,10 +31,9 @@ def test_submit_extract(api_client: IpumsApi):
     """
     Confirm that test extract submits properly
     """
-    extract_def = api_client.cps.build_extract(
-        ["cps1976_01s", "cps1976_02b"], ["YEAR", "MISH", "AGE", "RACE", "UH_SEX_B1"],
+    extract, number = api_client.cps.submit_extract(
+        ["cps1976_01s", "cps1976_02b"], ["YEAR", "MISH", "AGE", "RACE", "UH_SEX_B1"]
     )
-    extract, number = api_client.cps.submit_extract(extract_def)
     assert extract.status_code == 200
 
 
