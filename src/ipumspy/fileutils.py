@@ -7,7 +7,7 @@ import sys
 import zipfile
 from contextlib import contextmanager
 from pathlib import Path
-from typing import ContextManager, Union
+from typing import ContextManager, Optional
 
 from .types import FileType
 
@@ -126,7 +126,9 @@ def data_opener(data_file: FileType, encoding="iso-8859-1"):
 
 
 @contextmanager
-def open_or_yield(filename: FileType, mode: str = "rt") -> ContextManager[io.IOBase]:
+def open_or_yield(
+    filename: Optional[FileType], mode: str = "rt"
+) -> ContextManager[io.IOBase]:
     """
     Yield an opened data file with the passed mode. Can be any of the following:
         * An already opened file (we just yield it back, ignoring mode)
@@ -139,12 +141,13 @@ def open_or_yield(filename: FileType, mode: str = "rt") -> ContextManager[io.IOB
 
     Raises:
         OSError: If the passed path does not exist
-        ValueError: If the path does not contain a *unique* XML file    """
+        ValueError: If the path does not contain a *unique* XML file
+    """
     if isinstance(filename, io.IOBase):
         yield filename
         return
 
-    if filename == "-":
+    if (not filename) or (filename == "-"):
         yield sys.stdout
         return
 

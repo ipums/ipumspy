@@ -26,7 +26,7 @@ pytest = "^6.2.3"
 python-dotenv = "^0.17.0"
 
 [tool.poetry.scripts]
-ipums = "ipumspy.cli:cli"
+ipums = "ipumspy.cli:ipums_group"
 
 [tool.isort]
 multi_line_output = 3

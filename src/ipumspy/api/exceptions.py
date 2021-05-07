@@ -14,3 +14,7 @@ class TransientIpumsApiException(IpumsApiException):
 
 class IpumsExtractNotReady(IpumsApiException):
     """ Represents the case that your extract is not yet ready """
+
+
+class IpumsTimeoutException(IpumsApiException):
+    """ Represents when waiting for the IPUMS API times out """

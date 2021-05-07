@@ -1,15 +1,22 @@
 """
 Core utilities for interacting with the IPUMS API
 """
+import copy
+import time
 from functools import wraps
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional, Tuple, Union
 
 import requests
 
 from ..__version__ import __version__
 from ..types import FilenameType
-from .exceptions import IpumsExtractNotReady, TransientIpumsApiException
+from .exceptions import (
+    IpumsExtractNotReady,
+    IpumsTimeoutException,
+    TransientIpumsApiException,
+)
+from .extract import BaseExtract, OtherExtract
 
 
 def retry_on_transient_error(func):
@@ -30,20 +37,31 @@ def retry_on_transient_error(func):
     return wrapped_func
 
 
+def _extract_and_collection(
+    extract: Union[BaseExtract, int], collection: Optional[str]
+) -> Tuple[int, str]:
+    if isinstance(extract, BaseExtract):
+        extract_id = extract.extract_id
+        collection = extract.collection
+    else:
+        extract_id = extract
+        if not collection:
+            raise ValueError(
+                "If ``extract`` is not a BaseExtract, ``collection`` must be non-null"
+            )
+    return extract_id, collection
+
+
 class IpumsApiClient:
     def __init__(
         self,
-        collection: str,
         api_key: str,
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
-        self.collection = collection
         self.api_key = api_key
         self.base_url = "https://demo.api.ipums.org/extracts"
         self.num_retries = num_retries
-
-        self.api_version = "v1"
 
         self.session = session or requests.session()
         self.session.headers.update(
@@ -86,95 +104,107 @@ class IpumsApiClient:
         """ POST a request from the IPUMS API """
         return self.request("post", *args, **kwargs)
 
-    def _build_body(
-        self,
-        samples: List[str],
-        variables: List[str],
-        description: str = "My IPUMS extract",
-        data_format: str = "fixed_width",
-    ) -> Dict[str, Any]:
-        return {
-            "description": description,
-            "data_format": data_format,
-            "data_structure": {"rectangular": {"on": "P"}},
-            "samples": {sample: {} for sample in samples},
-            "variables": {variable.upper(): {} for variable in variables},
-        }
-
     def submit_extract(
         self,
-        samples: List[str],
-        variables: List[str],
-        description: str = "My IPUMS extract",
-        data_format: str = "fixed_width",
-    ) -> int:
+        extract: Union[BaseExtract, Dict[str, Any]],
+        collection: Optional[str] = None,
+    ) -> BaseExtract:
         """
         Submit an extract request to the IPUMS API
 
         Args:
-            samples:
-            variables:
-            description:
-            data_format:
+            extract: The extract description to submit. May be either an
+                ``IpumsExtract`` object, or the ``details`` of such an
+                object, in which case it must include a key named ``collection``
 
         Returns:
             The number of the extract for the passed user account
         """
-        body = self._build_body(
-            samples, variables, description=description, data_format=data_format
-        )
+        if not isinstance(extract, BaseExtract):
+            extract = copy.deepcopy(extract)
+            if "collection" in extract:
+                collection = collection or extract["collection"]
+                del extract["collection"]
+            else:
+                if not collection:
+                    ValueError("You must provide a collection")
+
+            if collection in BaseExtract._collection_to_extract:
+                extract_type = BaseExtract._collection_to_extract[collection]
+                extract = extract_type(**extract)
+            else:
+                extract = OtherExtract(collection, extract)
 
         response = self.post(
             self.base_url,
-            params={"collection": self.collection, "version": self.api_version},
-            json=body,
+            params={"collection": extract.collection, "version": "v1"},
+            json=extract.build(),
         )
 
-        return int(response.json()["number"])
+        extract_id = int(response.json()["number"])
+        extract._id = extract_id
+        return extract
 
-    def extract_status(self, extract_number: int) -> str:
+    def extract_status(
+        self, extract: Union[BaseExtract, int], collection: Optional[str] = None
+    ) -> str:
         """
         Check on the status of an extract request
 
         Args:
-            extract_number: The id of the extract request to check
+            extract: The extract to download. This extract must have been submitted.
+                Alternatively, can be an extract id. If an extract id is provided, you
+                must supply the collection name
+            collection: The name of the collection to pull the extract from. If None,
+                then ``extract`` must be a ``BaseExtract``
 
         Returns:
             The status of the request
             TODO: What are valid statuses?
         """
+        extract_id, collection = _extract_and_collection(extract, collection)
+
         response = self.get(
-            f"{self.base_url}/{extract_number}",
-            params={"collection": self.collection, "version": self.api_version},
+            f"{self.base_url}/{extract_id}",
+            params={"collection": collection, "version": "v1"},
         )
         return response.json()["status"]
 
     def download_extract(
-        self, extract_number: int, download_dir: Optional[FilenameType] = None
+        self,
+        extract: Union[BaseExtract, int],
+        collection: Optional[str] = None,
+        download_dir: Optional[FilenameType] = None,
     ):
         """
         Download the extract with id ``extract_number`` to ``download_dir``
         (default location is current directory)
 
         Args:
-            extract_number: The id of the extract to download
+            extract: The extract to download. This extract must have been submitted.
+                Alternatively, can be an extract id. If an extract id is provided, you
+                must supply the collection name
+            collection: The name of the collection to pull the extract from. If None,
+                then ``extract`` must be a ``BaseExtract``
             download_dir: The location to download the data to.
                 MUST be a directory that currently exists
         """
+        extract_id, collection = _extract_and_collection(extract, collection)
+
         # if download_dir specified check if it exists
         download_dir = Path(download_dir or Path.cwd())
         if not download_dir.exists():
             raise FileNotFoundError(f"{download_dir} does not exist")
 
         # check to see if extract complete
-        if self.extract_status(extract_number) != "completed":
+        if self.extract_status(extract_id, collection=collection) != "completed":
             raise IpumsExtractNotReady(
-                f"Your IPUMS extract number {extract_number} is not finished yet!"
+                f"Your IPUMS extract number {extract_id} is not finished yet!"
             )
 
         response = self.get(
-            f"{self.base_url}/{extract_number}",
-            params={"collection": self.collection, "version": self.api_version},
+            f"{self.base_url}/{extract_id}",
+            params={"collection": collection, "version": "v1"},
         )
         response.raise_for_status()
 
@@ -190,32 +220,82 @@ class IpumsApiClient:
                     for chunk in response.iter_content(chunk_size=8192):
                         outfile.write(chunk)
 
-    def retrieve_previous_extracts(self, limit: int = 10) -> dict:
+    def wait_for_extract(
+        self,
+        extract: Union[BaseExtract, int],
+        collection: Optional[str] = None,
+        inital_wait_time: float = 1,
+        max_wait_time: float = 300,
+        timeout: float = 10800,
+    ):
+        """
+        Convenience function to wait for an extract to complete. Will sleep
+        until the IPUMS API returns a "completed" status for the extract.
+
+        Args:
+            extract: The extract to download. This extract must have been submitted.
+                Alternatively, can be an extract id. If an extract id is provided, you
+                must supply the collection name
+            collection: The name of the collection to pull the extract from. If None,
+                then ``extract`` must be a ``BaseExtract``
+            initial_wait_time: How long in seconds to initially wait between pings to
+                the IPUMS API. Future pings will be spaced by exponential backoff
+            max_wait_time: Pings will always occur at least once every
+                ``max_wait_time`` seconds
+            timeout: If this many seconds passes, an ``IpumsTimeoutException``
+                will be raised.
+
+        Raises:
+            IpumsTimemoutException: If ``timeout`` seconds pass before a "completed"
+                status is returned.
+        """
+        extract_id, collection = _extract_and_collection(extract, collection)
+        wait_time = inital_wait_time
+        total_time = 0
+        while True:
+            if total_time >= timeout:
+                raise IpumsTimeoutException(
+                    f"More than {timeout} seconds have passed"
+                    f"while waiting for your extract to finish building"
+                )
+
+            status = self.extract_status(extract_id, collection=collection)
+            if status != "completed":
+                time.sleep(wait_time)
+                total_time += wait_time
+                wait_time = max(wait_time * 2, max_wait_time)
+            else:
+                break
+
+    def retrieve_previous_extracts(
+        self, collection: Optional[str] = None, limit: int = 10
+    ) -> Dict[str, dict]:
         """
         Return details about the past ``limit`` requests
+
+        Args:
+            collection: The collection for which to look up previous extracts. If
+                note provided will look up extracts for _all_ collections
+            limit: The number of extracts to look up _per collection_
+
+        Returns:
+            A dictionary whose keys are collection names and whose values are the
+            the results of the API call.
         """
-        return self.get(
-            self.base_url,
-            params={
-                "collection": self.collection,
-                "limit": limit,
-                "version": self.api_version,
-            },
-        ).json()
+        if collection is None:
+            collections = [
+                name
+                for name in BaseExtract._collection_to_extract.keys()
+                if name != OtherExtract.collection
+            ]
+        else:
+            collections = [collection]
 
-
-class IpumsApi:
-    def __init__(
-        self,
-        api_key: str,
-        num_retries: int = 3,
-        session: Optional[requests.Session] = None,
-    ):
-        session = session or requests.session()
-
-        self.acs = IpumsApiClient(
-            "acs", api_key, num_retries=num_retries, session=session
-        )
-        self.cps = IpumsApiClient(
-            "cps", api_key, num_retries=num_retries, session=session
-        )
+        # TODO: Wrap results in Extract objects.
+        return {
+            collection: self.get(
+                self.base_url,
+                params={"collection": collection, "limit": limit, "version": "v1"},
+            ).json()
+            for collection in collections
+        }

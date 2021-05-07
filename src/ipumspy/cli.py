@@ -4,7 +4,9 @@ A CLI for accessing IPUMS utilities
 import copy
 import dataclasses
 import json
-from typing import Tuple
+import sys
+import time
+from typing import Optional, Tuple
 
 import click
 import pandas as pd
@@ -13,7 +15,7 @@ import yaml
 from pyarrow.parquet import ParquetWriter
 
 from . import readers
-from .api import IpumsApi
+from .api import BaseExtract, IpumsApiClient, OtherExtract
 from .fileutils import open_or_yield
 
 
@@ -40,7 +42,11 @@ def ipums_api_group():
     envvar="IPUMS_API_KEY",
     default=None,
     type=str,
-    help="Your IPUMS API key. Must be provided either here or via the IPUMS_API_KEY environment variable",
+    help=(
+        "Your IPUMS API key. Must be provided either here or "
+        "via the IPUMS_API_KEY environment variable"
+    ),
+    required=True,
 )
 @click.option(
     "--num-retries",
@@ -51,36 +57,41 @@ def ipums_api_group():
 )
 def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
     """ Submit an extract request to the IPUMS API """
-    if not api_key:
-        click.BadOptionUsage("api_key", "You must provide an API key")
-
-    api_client = IpumsApi(api_key, num_retries=num_retries)
+    api_client = IpumsApiClient(api_key, num_retries=num_retries)
     with open_or_yield(extract) as infile:
         extract_description: dict = yaml.safe_load(infile)
 
     # For now we only support a single extract
     extract_description = extract_description["extracts"][0]
-    extract_description.setdefault("data_format", "fixed_width")
-    extract_description.setdefault("data_structure", {"rectangular": {"on", "P"}})
+    if extract_description["collection"] in BaseExtract._collection_to_extract:
+        extract = BaseExtract._collection_to_extract[extract_description["collection"]](
+            **extract_description
+        )
+    else:
+        extract = OtherExtract(extract_description["collection"], extract_description)
 
-    extract_number = getattr(
-        api_client, extract_description["collection"]
-    ).submit_extract(extract_description)
+    api_client.submit_extract(extract)
+
     click.echo(
-        f"Your extract has been successfully submitted with number {extract_number}"
+        f"Your extract for collection {extract.collection} has been successfully "
+        f"submitted with number {extract.extract_id}"
     )
 
 
 @ipums_api_group.command("check")
 @click.argument("collection", type=str)
-@click.argument("extract_number", type=int)
+@click.argument("extract_id", type=int)
 @click.option(
     "--api-key",
     "-k",
     envvar="IPUMS_API_KEY",
     default=None,
     type=str,
-    help="Your IPUMS API key. Must be provided either here or via the IPUMS_API_KEY environment variable",
+    help=(
+        "Your IPUMS API key. Must be provided either here or "
+        "via the IPUMS_API_KEY environment variable"
+    ),
+    required=True,
 )
 @click.option(
     "--num-retries",
@@ -90,18 +101,13 @@ def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
     help="The number of retries on transient errors",
 )
 def ipums_api_check_command(
-    collection: str, extract_number: int, api_key: str, num_retries: int
+    collection: str, extract_id: int, api_key: str, num_retries: int
 ):
     """ Check the status of an extract """
-    if not api_key:
-        click.BadOptionUsage("api_key", "You must provide an API key")
+    api_client = IpumsApiClient(api_key, num_retries=num_retries)
+    status = api_client.extract_status(extract_id, collection=collection)
 
-    api_client = IpumsApi(api_key, num_retries=num_retries)
-    status = getattr(api_client, "collection").extract_status(extract_number)
-
-    click.echo(
-        f"Extract {extract_number} in collection {collection} has status {status}"
-    )
+    click.echo(f"Extract {extract_id} in collection {collection} has status {status}")
 
 
 @ipums_api_group.command("download")
@@ -110,8 +116,12 @@ def ipums_api_check_command(
 @click.option(
     "--output-dir",
     "-o",
+    default=None,
     type=click.Path(exists=True, dir_okay=True, file_okay=False),
-    help="The directory to download the extract to. If not passed, current working directory is used. If passed, must be a directory that exists.",
+    help=(
+        "The directory to download the extract to. If not passed, current "
+        "working directory is used. If passed, must be a directory that exists."
+    ),
 )
 @click.option(
     "--api-key",
@@ -119,7 +129,11 @@ def ipums_api_check_command(
     envvar="IPUMS_API_KEY",
     default=None,
     type=str,
-    help="Your IPUMS API key. Must be provided either here or via the IPUMS_API_KEY environment variable",
+    help=(
+        "Your IPUMS API key. Must be provided either here or "
+        "via the IPUMS_API_KEY environment variable"
+    ),
+    required=True,
 )
 @click.option(
     "--num-retries",
@@ -131,18 +145,136 @@ def ipums_api_check_command(
 def ipums_api_download_command(
     collection: str,
     extract_number: int,
-    output_dir: str,
+    output_dir: Optional[str],
     api_key: str,
     num_retries: int,
 ):
     """ Download an IPUMS extract """
-    if not api_key:
-        click.BadOptionUsage("api_key", "You must provide an API key")
-
-    api_client = IpumsApi(api_key, num_retries=num_retries)
-    getattr(api_client, collection).download_extract(
-        extract_number, download_dir=output_dir
+    api_client = IpumsApiClient(api_key, num_retries=num_retries)
+    api_client.download_extract(
+        extract_number, collection=collection, download_dir=output_dir
     )
+
+
+@ipums_api_group.command("submit-and-download")
+@click.argument(
+    "extract",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, allow_dash=True),
+)
+@click.option(
+    "--api-key",
+    "-k",
+    envvar="IPUMS_API_KEY",
+    default=None,
+    type=str,
+    help=(
+        "Your IPUMS API key. Must be provided either here or "
+        "via the IPUMS_API_KEY environment variable"
+    ),
+    required=True,
+)
+@click.option(
+    "--output-dir",
+    "-o",
+    default=None,
+    type=click.Path(exists=True, dir_okay=True, file_okay=False),
+    help=(
+        "The directory to download the extract to. If not passed, current "
+        "working directory is used. If passed, must be a directory that exists."
+    ),
+)
+@click.option(
+    "--num-retries",
+    "-n",
+    default=3,
+    type=int,
+    help="The number of retries on transient errors",
+)
+@click.option(
+    "--initial-wait-time",
+    default=1,
+    type=float,
+    help=(
+        "How long to wait (in seconds) before initially pinging the "
+        "API to download an extract"
+    ),
+)
+@click.option(
+    "--max-wait-time",
+    default=300,
+    type=float,
+    help=(
+        "Maximum time (in seconds) between pings to the API "
+        "while waiting for the extract"
+    ),
+)
+@click.option(
+    "--timeout",
+    default=None,
+    type=float,
+    help="Maximum time (in seconds) to wait for an extract before giving up",
+)
+def ipums_api_submit_and_download(
+    extract: str,
+    api_key: str,
+    output_dir: Optional[str],
+    num_retries: int,
+    inital_wait_time: float,
+    max_wait_time: float,
+    timeout: Optional[float],
+):
+    """
+    Submit an extract request to the IPUMS API, then wait for it to
+    be ready and download it
+    """
+    api_client = IpumsApiClient(api_key, num_retries=num_retries)
+    with open_or_yield(extract) as infile:
+        extract_description: dict = yaml.safe_load(infile)
+
+    # For now we only support a single extract
+    extract_description = extract_description["extracts"][0]
+    if extract_description["collection"] in BaseExtract._collection_to_extract:
+        extract = BaseExtract._collection_to_extract[extract_description["collection"]](
+            **extract_description
+        )
+    else:
+        extract = OtherExtract(extract_description["collection"], extract_description)
+
+    api_client.submit_extract(extract)
+
+    click.echo(
+        f"Your extract for collection {extract.collection} has been successfully "
+        f"submitted with number {extract.extract_id}"
+    )
+
+    click.echo("Waiting for it to be ready...")
+
+    wait_time = inital_wait_time
+    total_time = 0
+    while True:
+        if timeout and (total_time >= timeout):
+            click.echo("Too much time has passed. Stopping waiting")
+            sys.exit(1)
+
+        status = api_client.extract_status(extract)
+        if status != "completed":
+            click.echo(
+                f"Extract in collection {extract.collection} with id "
+                f"{extract.extract_id} is not yet ready. Sleeping for "
+                f"{wait_time:0.2f} seconds..."
+            )
+            time.sleep(wait_time)
+            total_time += wait_time
+            wait_time = max(wait_time * 2, max_wait_time)
+        else:
+            click.echo(
+                f"Extract in collection {extract.collection} with id "
+                f"{extract.extract_id} is ready. Downloading..."
+            )
+            break
+
+    api_client.download_extract(extract, download_dir=output_dir)
+    click.echo("Download completed.")
 
 
 def _append_ipums_schema(df: pd.DataFrame, ddi):
@@ -212,3 +344,7 @@ def convert_command(
                 tmp_df[string_column] = tmp_df[string_column].astype("string")
             batch = pa.Table.from_pandas(df)
             writer.write_table(batch)
+
+
+if __name__ == "__main__":
+    ipums_group()
