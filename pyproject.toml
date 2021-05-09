@@ -24,6 +24,8 @@ isort = "^5.8.0"
 mypy = "^0.812"
 pytest = "^6.2.3"
 python-dotenv = "^0.17.0"
+fastapi = "^0.64.0"
+uvicorn = {extras = ["standard"], version = "^0.13.4"}
 
 [tool.poetry.scripts]
 ipums = "ipumspy.cli:ipums_group"

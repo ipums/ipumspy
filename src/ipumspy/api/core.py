@@ -292,10 +292,12 @@ class IpumsApiClient:
             collections = [collection]
 
         # TODO: Wrap results in Extract objects.
-        return {
-            collection: self.get(
-                self.base_url,
-                params={"collection": collection, "limit": limit, "version": "v1"},
-            ).json()
-            for collection in collections
-        }
+        output = {}
+        for collection in collections:
+            output.update(
+                self.get(
+                    self.base_url,
+                    params={"collection": collection, "limit": limit, "version": "v1"},
+                ).json()
+            )
+        return output
