@@ -21,18 +21,18 @@ Build an extract by supplying a data collection, a list of samples, and a list o
 For a list of sample ids by collection, see [link here eventually].
 
 ```python
-from ipumspy import IpumsApi
+from ipumspy import IpumsApi, CpsExtract
 
 ipums = IpumsApi(your_api_key)
 
 # Submit an API extract request
-extract_number = ipums.cps.submit_extract(
+extract = CpsExtract(
     ["cps1976_01s"],
     ["YEAR", "AGE"],
 )
+ipums.submit_extract(extract)
+print(f"Extract submitted with id {extract.extract_id}")
 ```
-
-This returns the number of the extract you just submitted. You will need the extract number to check the status of your extract and to download it once it is completed.
 
 Wait for your extract to complete. The extract in this example is quite small and will
 take less than a minute to complete.
@@ -46,8 +46,8 @@ for i in its.count():
      time.sleep(i * 15)
 
      #check extract status
-     extract_status = ipums.cps.extract_status(extract_number)
-     print(f"extract {extract_number} is {extract_status}")
+     extract_status = ipums.extract_status(extract)
+     print(f"extract {extract.extract_id} is {extract_status}")
      if extract_status == "completed":
          break
 ```
@@ -55,5 +55,22 @@ for i in its.count():
 Once the extract is complete, specify the IPUMS data product/collection and number of your extract to download.
 
 ```python
-ipums.cps.download_extract(extract_number)
+ipums.download_extract(extract)
+```
+
+If for any reason you lose track of the `extract` object, you may check the status
+and download the extract using only the name of the `collection` and the `extract_id`.
+
+```python
+for i in its.count():
+    print("...waiting....")
+    time.sleep(i * 15)
+
+    # check extract status
+    extract_status = ipums.extract_status(extract=extract_id, collection="cps")
+     print(f"extract {extract_id} is {extract_status}")
+     if extract_status == "completed":
+         break
+
+ipums.download_extract(extract=extract_id, collection="cps")
 ```
