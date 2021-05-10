@@ -67,9 +67,9 @@ class OtherExtract(BaseExtract, collection="other"):
         return self.details
 
 
-class CpsExtract(BaseExtract, collection="cps"):
+class UsaExtract(BaseExtract, collection="usa"):
     """
-    Defining an IPUMS CPS extract.
+    Defining an IPUMS USA extract.
     """
 
     def __init__(

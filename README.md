@@ -21,14 +21,14 @@ Build an extract by supplying a data collection, a list of samples, and a list o
 For a list of sample ids by collection, see [link here eventually].
 
 ```python
-from ipumspy import IpumsApi, CpsExtract
+from ipumspy import IpumsApi, UsaExtract
 
 ipums = IpumsApi(your_api_key)
 
 # Submit an API extract request
-extract = CpsExtract(
-    ["cps1976_01s"],
-    ["YEAR", "AGE"],
+extract = UsaExtract(
+    ["us2012b"],
+    ["AGE", "SEX"],
 )
 ipums.submit_extract(extract)
 print(f"Extract submitted with id {extract.extract_id}")
@@ -67,10 +67,10 @@ for i in its.count():
     time.sleep(i * 15)
 
     # check extract status
-    extract_status = ipums.extract_status(extract=extract_id, collection="cps")
+    extract_status = ipums.extract_status(extract=extract_id, collection="usa")
      print(f"extract {extract_id} is {extract_status}")
      if extract_status == "completed":
          break
 
-ipums.download_extract(extract=extract_id, collection="cps")
+ipums.download_extract(extract=extract_id, collection="usa")
 ```

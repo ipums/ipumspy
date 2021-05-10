@@ -1,12 +1,11 @@
 extracts:
   - description: Simple IPUMS extract
-    collection: cps
+    collection: usa
     samples:
-      - cps_1976_01s
-      - cps_1976_02b
+      - us2012b
     variables:
-      - YEAR
-      - MISH
+      - AGE
+      - SEX
       - AGE
       - RACE
       - UH_SEX_B1

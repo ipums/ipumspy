@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from ipumspy.api import CpsExtract, IpumsApiClient, OtherExtract
+from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract
 
 
 @pytest.fixture(scope="module")
@@ -27,18 +27,16 @@ def api_client(environment_variables, mock_api: str) -> IpumsApiClient:
     return client
 
 
-def test_cps_build_extract():
+def test_usa_build_extract():
     """
     Confirm that test extract formatted correctly
     """
-    extract = CpsExtract(
-        ["cps1976_01s", "cps1976_02b"], ["YEAR", "MISH", "AGE", "RACE", "UH_SEX_B1"],
-    )
-    assert extract.collection == "cps"
+    extract = UsaExtract(["us2012b"], ["AGE", "SEX"],)
+    assert extract.collection == "usa"
     assert extract.build() == {
         "data_structure": {"rectangular": {"on": "P"}},
-        "samples": {"cps1976_01s": {}, "cps1976_02b": {}},
-        "variables": {"YEAR": {}, "MISH": {}, "AGE": {}, "RACE": {}, "UH_SEX_B1": {}},
+        "samples": {"us2012b": {}},
+        "variables": {"AGE": {}, "SEX": {}},
         "description": "My IPUMS extract",
         "data_format": "fixed_width",
     }
@@ -55,19 +53,17 @@ def test_submit_extract(api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
-    extract = CpsExtract(
-        ["cps1976_01s", "cps1976_02b"], ["YEAR", "MISH", "AGE", "RACE", "UH_SEX_B1"],
-    )
+    extract = UsaExtract(["us2012b"], ["AGE", "SEX"],)
 
     api_client.submit_extract(extract)
     assert extract.extract_id == 10
 
 
 def test_retrieve_previous_extracts(api_client: IpumsApiClient):
-    previous = api_client.retrieve_previous_extracts(collection="cps")
-    assert "cps" in previous
-    assert len(previous["cps"]) == 10
+    previous = api_client.retrieve_previous_extracts(collection="usa")
+    assert "usa" in previous
+    assert len(previous["usa"]) == 10
 
     previous = api_client.retrieve_previous_extracts()
-    assert "cps" in previous
-    assert len(previous["cps"]) == 10
+    assert "usa" in previous
+    assert len(previous["usa"]) == 10
