@@ -1,0 +1,18 @@
+ipumspy
+https://github.com/ipums/ipumspy
+
+Copyright 2021 Regents of the University of Minnesota
+
+Contributors:
+  Kevin H. Wilson, The Policy Lab, Brown University
+  Edward Huh, The Policy Lab, Brown University
+  Renae Rodgers, IPUMS, University of Minnesota
+  Kyohei Yazawa, IPUMS, University of Minnesota
+  Marcus Peterson, IPUMS, University of Minnesota
+  Vineela Pentyala, IPUMS, University of Minnesota
+  Jason Goray, IPUMS, University of Minnesota
+  Fran Fabrizio, IPUMS, University of Minnesota
+
+This project is licensed under the Mozilla Public License, version 2.0 (the
+"License"). A copy of the License is in the project file "LICENSE.txt",
+and is also available at https://www.mozilla.org/en-US/MPL/2.0/.

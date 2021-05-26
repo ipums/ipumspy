@@ -1,3 +1,8 @@
+# This file is part of ipumspy.
+# For copyright and licensing information, see the NOTICE and LICENSE files
+# in this project's top-level directory, and also on-line at:
+#   https://github.com/ipums/ipumspy
+
 from pathlib import Path
 
 import pytest
