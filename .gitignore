@@ -9,3 +9,6 @@ dist
 # Editor cruft
 .vscode
 .*.swp
+
+# Secrets
+.env.test

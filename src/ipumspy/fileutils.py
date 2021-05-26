@@ -3,12 +3,13 @@ Utilities for interacting with the IPUMS file format
 """
 import gzip
 import io
+import sys
 import zipfile
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Union
+from typing import ContextManager, Optional
 
-FileType = Union[str, Path, io.IOBase]
+from .types import FileType
 
 
 @contextmanager
@@ -84,9 +85,11 @@ def data_opener(data_file: FileType, encoding="iso-8859-1"):
     Yield an opened data file with method 'rt'. Can be any of the following:
         * An already opened file (we just yield it back)
         * A path to a dat file or a gzipped dat file (we open and yield)
+
     Args:
         data_file: The path as described above
         encoding: The encoding of the data file. ISO-8859-1 seems to be IPUMS default
+
     Raises:
         OSError: If the passed path does not exist
         ValueError: If the path does not contain a *unique* XML file
@@ -96,9 +99,7 @@ def data_opener(data_file: FileType, encoding="iso-8859-1"):
         yield data_file
         return
 
-    if isinstance(data_file, str):
-        # Always wrap paths in Paths
-        data_file = Path(data_file)
+    data_file = Path(data_file)
 
     if not data_file.exists():
         # If it ends in .gz, try removing the .gz
@@ -122,3 +123,33 @@ def data_opener(data_file: FileType, encoding="iso-8859-1"):
     else:
         with open(data_file, "rt", encoding=encoding) as infile:
             yield infile
+
+
+@contextmanager
+def open_or_yield(
+    filename: Optional[FileType], mode: str = "rt"
+) -> ContextManager[io.IOBase]:
+    """
+    Yield an opened data file with the passed mode. Can be any of the following:
+        * An already opened file (we just yield it back, ignoring mode)
+        * "-" in which case sys.stdout is yielded, ignoring mode
+        * A path to file, which is then opened with the passed mode
+
+    Args:
+        filename: The name of the file to open
+        mode: The mode in which to open the file
+
+    Raises:
+        OSError: If the passed path does not exist
+        ValueError: If the path does not contain a *unique* XML file
+    """
+    if isinstance(filename, io.IOBase):
+        yield filename
+        return
+
+    if (not filename) or (filename == "-"):
+        yield sys.stdout
+        return
+
+    with open(filename, mode) as opened_file:
+        yield opened_file

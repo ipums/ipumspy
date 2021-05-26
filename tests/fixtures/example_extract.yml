@@ -1,0 +1,13 @@
+extracts:
+  - description: Simple IPUMS extract
+    collection: usa
+    samples:
+      - us2012b
+    variables:
+      - AGE
+      - SEX
+      - AGE
+      - RACE
+      - UH_SEX_B1
+    data_structure: rectangular
+    data_format: fixed_width
