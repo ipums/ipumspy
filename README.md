@@ -21,9 +21,9 @@ Build an extract by supplying a data collection, a list of samples, and a list o
 For a list of sample ids by collection, see [link here eventually].
 
 ```python
-from ipumspy import IpumsApi, UsaExtract
+from ipumspy import IpumsApiClient, UsaExtract
 
-ipums = IpumsApi(your_api_key)
+ipums = IpumsApiClient(your_api_key)
 
 # Submit an API extract request
 extract = UsaExtract(
