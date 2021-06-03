@@ -18,3 +18,13 @@ class IpumsExtractNotReady(IpumsApiException):
 
 class IpumsTimeoutException(IpumsApiException):
     """ Represents when waiting for the IPUMS API times out """
+
+
+class IpumsAPIAuthenticationError(IpumsApiException):
+    """ Represents attempted unauthorized API access """
+    pass
+
+
+class BadIpumsApiRequest(IpumsApiException):
+    """ Represents an error in the api request json, such as invalid sample id or var name"""
+    pass
