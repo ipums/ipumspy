@@ -86,7 +86,7 @@ class IpumsApiClient:
         except requests.exceptions.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
             try:
-                error_details = "\n".join(response.json()["detail"]["base"])
+                error_details = "\n".join(response.json()["detail"])
                 print(error_details)
             except KeyError:
                 pass
