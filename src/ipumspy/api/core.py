@@ -90,8 +90,10 @@ class IpumsApiClient:
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
-            elif (response.status_code == HTTPStatus.UNAUTHORIZED or 
-                  response.status_code == HTTPStatus.FORBIDDEN):
+            elif (
+                response.status_code == HTTPStatus.UNAUTHORIZED
+                or response.status_code == HTTPStatus.FORBIDDEN
+            ):
                 error_details = response.json()["error"]
                 raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
