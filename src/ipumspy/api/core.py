@@ -5,6 +5,7 @@ import copy
 import time
 from functools import wraps
 from pathlib import Path
+from http import HTTPStatus
 from typing import Any, Dict, Optional, Tuple, Union
 
 import requests
@@ -84,17 +85,16 @@ class IpumsApiClient:
             response.raise_for_status()
             return response
         except requests.exceptions.HTTPError as http_err:
-            # print(f"HTTP error occurred: {http_err}")
-            if response.status_code == 400:
+            if response.status_code == HTTPStatus.BAD_REQUEST:
                 error_details = "\n".join(response.json()["detail"])
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
-            elif response.status_code == 401 or response.status_code == 403:
+            elif (response.status_code == HTTPStatus.UNAUTHORIZED or 
+                  response.status_code == HTTPStatus.FORBIDDEN):
                 error_details = response.json()["error"]
                 raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
-            # print(f"other error occured: {err}")
             raise IpumsApiException(f"other error occured: {err}")
 
     def get(self, *args, **kwargs) -> requests.Response:
