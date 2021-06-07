@@ -17,7 +17,7 @@ from .exceptions import (
     IpumsTimeoutException,
     TransientIpumsApiException,
     IpumsAPIAuthenticationError,
-    BadIpumsApiRequest
+    BadIpumsApiRequest,
 )
 from .extract import BaseExtract, OtherExtract
 
@@ -84,18 +84,18 @@ class IpumsApiClient:
             response.raise_for_status()
             return response
         except requests.exceptions.HTTPError as http_err:
-            #print(f"HTTP error occurred: {http_err}")
+            # print(f"HTTP error occurred: {http_err}")
             if response.status_code == 400:
                 error_details = "\n".join(response.json()["detail"])
-                raise BadIpumsApiRequest(f'{error_details}')
+                raise BadIpumsApiRequest(f"{error_details}")
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
             elif response.status_code == 401 or response.status_code == 403:
-                error_details = response.json()['error']
-                raise IpumsAPIAuthenticationError(f'{error_details}')
+                error_details = response.json()["error"]
+                raise IpumsAPIAuthenticationError(f"{error_details}")
         except Exception as err:
-            #print(f"other error occured: {err}")
-            raise IpumsApiException(f'other error occured: {err}')
+            # print(f"other error occured: {err}")
+            raise IpumsApiException(f"other error occured: {err}")
 
     def get(self, *args, **kwargs) -> requests.Response:
         """ GET a request from the IPUMS API """
