@@ -78,9 +78,6 @@ class IpumsApiClient:
     def request(self, method: str, *args, **kwargs) -> requests.Response:
         """
         Submit a request to the IPUMS API
-
-        TODO: Convert these prints into procesed requests and build
-            appropriate Exceptions
         """
         try:
             response = self.session.request(method, *args, **kwargs)
@@ -163,8 +160,8 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
 
         Returns:
-            The status of the request
-            TODO: What are valid statuses?
+            The status of the request. Valid statuses are:
+             'queued', 'started', 'completed', or 'failed'
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
