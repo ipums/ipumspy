@@ -5,6 +5,7 @@ import copy
 import time
 from functools import wraps
 from pathlib import Path
+from http import HTTPStatus
 from typing import Any, Dict, Optional, Tuple, Union
 
 import requests
@@ -12,9 +13,12 @@ import requests
 from ..__version__ import __version__
 from ..types import FilenameType
 from .exceptions import (
+    IpumsApiException,
     IpumsExtractNotReady,
     IpumsTimeoutException,
     TransientIpumsApiException,
+    IpumsAPIAuthenticationError,
+    BadIpumsApiRequest,
 )
 from .extract import BaseExtract, OtherExtract
 
@@ -75,26 +79,25 @@ class IpumsApiClient:
     def request(self, method: str, *args, **kwargs) -> requests.Response:
         """
         Submit a request to the IPUMS API
-
-        TODO: Convert these prints into procesed requests and build
-            appropriate Exceptions
         """
         try:
             response = self.session.request(method, *args, **kwargs)
             response.raise_for_status()
             return response
         except requests.exceptions.HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-            try:
-                error_details = "\n".join(response.json()["detail"]["base"])
-                print(error_details)
-            except KeyError:
-                pass
+            if response.status_code == HTTPStatus.BAD_REQUEST:
+                error_details = "\n".join(response.json()["detail"])
+                raise BadIpumsApiRequest(error_details)
+            # 401 errors should be preempted by the need to pass an API key to
+            # IpumsApiClient, but...
+            elif (
+                response.status_code == HTTPStatus.UNAUTHORIZED
+                or response.status_code == HTTPStatus.FORBIDDEN
+            ):
+                error_details = response.json()["error"]
+                raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
-            print(f"other error occured: {err}")
-
-        # TODO Replace this return with raises
-        return None
+            raise IpumsApiException(f"other error occured: {err}")
 
     def get(self, *args, **kwargs) -> requests.Response:
         """ GET a request from the IPUMS API """
@@ -159,8 +162,8 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
 
         Returns:
-            The status of the request
-            TODO: What are valid statuses?
+            The status of the request. Valid statuses are:
+             'queued', 'started', 'completed', or 'failed'
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
