@@ -24,6 +24,7 @@ class VariableDescription:
 
     id: str  # pylint: disable=invalid-name
     name: str
+    codes: dict
 
     start: int
     end: int
@@ -42,9 +43,21 @@ class VariableDescription:
         says what the xmlns is for the file
         """
         namespaces = {"ddi": ddi_namespace}
+
+        labels_dict = {}
+        for cat in elt.findall("./ddi:catgry", namespaces):
+            label = cat.find("./ddi:labl", namespaces).text
+            value = cat.find("./ddi:catValu", namespaces).text
+            # make values integers when possible
+            try:
+                labels_dict[label] = int(value)
+            except TypeError:
+                labels_dict[label] = int(value)
+        
         return cls(
             id=elt.attrib["ID"],
             name=elt.attrib["name"],
+            codes = labels_dict,
             start=int(elt.find("./ddi:location", namespaces).attrib["StartPos"])
             - 1,  # 0 based in python
             end=int(
