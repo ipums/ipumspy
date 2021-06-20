@@ -74,3 +74,20 @@ for i in its.count():
 
 ipums.download_extract(extract=extract_id, collection="usa")
 ```
+
+## Value Labels
+Users can filter on cateogrical variables using labels instead of numerical values
+For example, the following code retains only the female respondents in `ipums_df`.
+
+```python
+# retrieve the VaribleDescription for the variable SEX
+sex = readers.get_variable_info('SEX', ddi_codebook)
+women = ipums_df[ipums_df['SEX'] == sex.codes['Female']]
+```
+
+It is possible to filter on both categorical variables using labels and on numerical values.
+The following retains only women over the age of 16 in `ipums_df`
+
+```python
+adult_women = ipums_df[(ipums_df['SEX'] == sex.codes['Female']) & (ipums_df['AGE'] > 16)]
+```
