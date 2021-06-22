@@ -55,9 +55,9 @@ def tab(df, VariableDescription):
                                'lab': list(VariableDescription.codes.keys())})
 
         lab_tab_df = pd.merge(tab_df, lab_df, on='val', how='inner')
-        print(lab_tab_df[['val', 'lab', 'count', 'pct']])
+        print(lab_tab_df[['val', 'lab', 'count', 'pct']].to_string(index=False))
     else:
-        print(tab_df)
+        print(tab_df.to_string(index=False))
 
 
         
