@@ -4,7 +4,7 @@
 #   https://github.com/ipums/ipumspy
 
 """
-Functions for reading and processing IPUMS data
+Functions for accessing IPUMS data and metadata
 """
 import copy
 import re
@@ -44,16 +44,18 @@ def tab(df, VariableDescription):
     """
 
     # get freqs and pct
-    tab_df = pd.DataFrame({'val': df[VariableDescription.name].value_counts().sort_index(),
+    tab_df = pd.DataFrame({'val': df[VariableDescription.name].value_counts().sort_index().index,
+                           'count': df[VariableDescription.name].value_counts().sort_index(),
                            'pct': df[VariableDescription.name].value_counts(normalize=True).sort_index()})
 
     # add value labels if they exist
     if len(VariableDescription.codes.keys()) > 0:
         # get labels
-        lab_df = pd.DataFrame(VariableDescription.codes)
+        lab_df = pd.DataFrame({'val': list(VariableDescription.codes.values()),
+                               'lab': list(VariableDescription.codes.keys())})
 
-        tab_df.merge(lab_df, left_on='val')
-        print(tab_df)
+        lab_tab_df = pd.merge(tab_df, lab_df, on='val', how='inner')
+        print(lab_tab_df[['val', 'lab', 'count', 'pct']])
     else:
         print(tab_df)
 
