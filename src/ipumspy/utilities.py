@@ -6,12 +6,6 @@
 """
 Functions for accessing IPUMS data and metadata
 """
-import copy
-import re
-import xml.etree.ElementTree as ET
-from pathlib import Path
-from typing import Iterator, List, Optional, Union
-
 import pandas as pd
 
 from . import ddi as ddi_definitions
