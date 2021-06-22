@@ -168,14 +168,3 @@ def read_microdata_chunked(
         chunksize=chunksize,
         **kwargs
     )
-
-
-def get_variable_info(varname: str,
-                      ddi: ddi_definitions.Codebook,):
-    for vardesc in ddi.data_description:
-        if vardesc.id == varname.upper():
-            varname_vardesc = vardesc
-            return varname_vardesc
-    else:
-        # put a better error here eventually
-        raise RuntimeError(f'No description found for {varname}.')
