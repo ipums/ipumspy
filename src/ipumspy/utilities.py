@@ -19,6 +19,16 @@ from . import ddi as ddi_definitions
 
 def get_variable_info(varname: str,
                       ddi: ddi_definitions.Codebook,):
+    """
+    Retrieve the VariableDescription for an IPUMS variable.
+
+    Args:
+        varname: Name of a variable in your IPUMS extract
+        ddi: The codebook representing the data
+
+    Returns:
+        A VariableDescription instance
+    """
     for vardesc in ddi.data_description:
         if vardesc.id == varname.upper():
             varname_vardesc = vardesc
