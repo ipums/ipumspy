@@ -36,3 +36,27 @@ def get_variable_info(varname: str,
     else:
         # put a better error here eventually
         raise RuntimeError(f'No description found for {varname}.')
+
+
+def tab(df, VariableDescription):
+    """
+    Tabs with labels
+    """
+
+    # get freqs and pct
+    tab_df = pd.DataFrame({'val': df[VariableDescription.name].value_counts().sort_index(),
+                           'pct': df[VariableDescription.name].value_counts(normalize=True).sort_index()})
+
+    # add value labels if they exist
+    if len(VariableDescription.codes.keys()) > 0:
+        # get labels
+        lab_df = pd.DataFrame(VariableDescription.codes)
+
+        tab_df.merge(lab_df, left_on='val')
+        print(tab_df)
+    else:
+        print(tab_df)
+
+
+        
+
