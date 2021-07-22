@@ -111,6 +111,8 @@ class Codebook:
 
     file_description: FileDescription
     data_description: List[VariableDescription]
+    citation: str
+    conditions: str
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
@@ -118,11 +120,17 @@ class Codebook:
         Read a Codebook from the parsed XML
         """
         namespaces = {"ddi": ddi_namespace}
+
         file_txts = elt.findall("./ddi:fileDscr/ddi:fileTxt", namespaces)
         if len(file_txts) != 1:
             raise NotImplementedError(
                 "Codebooks with more than one file type are not supported"
             )
+
+        citation=elt.find("./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", 
+                          namespaces).text
+        conditions=elt.find("./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", 
+                            namespaces).text
 
         return cls(
             file_description=FileDescription.read(file_txts[0], ddi_namespace),
@@ -130,4 +138,6 @@ class Codebook:
                 VariableDescription.read(desc, ddi_namespace)
                 for desc in elt.findall("./ddi:dataDscr/ddi:var", namespaces)
             ],
+            citation=citation,
+            conditions=conditions
         )
