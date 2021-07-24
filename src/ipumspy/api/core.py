@@ -60,12 +60,13 @@ class IpumsApiClient:
     def __init__(
         self,
         api_key: str,
+        base_url: str = "https://api.ipums.org/extracts",
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
         self.api_key = api_key
-        self.base_url = "https://demo.api.ipums.org/extracts"
         self.num_retries = num_retries
+        self.base_url = base_url
 
         self.session = session or requests.session()
         self.session.headers.update(
