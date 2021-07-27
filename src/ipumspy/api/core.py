@@ -87,7 +87,7 @@ class IpumsApiClient:
             return response
         except requests.exceptions.HTTPError as http_err:
             if response.status_code == HTTPStatus.BAD_REQUEST:
-                error_details = "\n".join(response.json()["detail"])
+                error_details = response.json()["detail"]
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
@@ -95,7 +95,10 @@ class IpumsApiClient:
                 response.status_code == HTTPStatus.UNAUTHORIZED
                 or response.status_code == HTTPStatus.FORBIDDEN
             ):
-                error_details = response.json()["error"]
+                try:
+                    error_details = response.json()["error"]
+                except KeyError:
+                    error_details = response.json()["detail"]
                 raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
             raise IpumsApiException(f"other error occured: {err}")
