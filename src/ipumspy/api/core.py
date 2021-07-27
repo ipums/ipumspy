@@ -76,6 +76,14 @@ class IpumsApiClient:
             }
         )
 
+    
+    def _pretty_messages(self, response_message):
+        if type(response_message) is list:
+            return "\n".join(response_message)
+        else:
+            return response_message
+
+
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
         """
@@ -87,7 +95,7 @@ class IpumsApiClient:
             return response
         except requests.exceptions.HTTPError as http_err:
             if response.status_code == HTTPStatus.BAD_REQUEST:
-                error_details = response.json()["detail"]
+                error_details = self._pretty_messages(response.json()["detail"])
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
@@ -96,9 +104,9 @@ class IpumsApiClient:
                 or response.status_code == HTTPStatus.FORBIDDEN
             ):
                 try:
-                    error_details = response.json()["error"]
+                    error_details = self._pretty_messages(response.json()["error"])
                 except KeyError:
-                    error_details = response.json()["detail"]
+                    error_details = self._pretty_message(response.json()["detail"])
                 raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
             raise IpumsApiException(f"other error occured: {err}")
