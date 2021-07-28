@@ -283,36 +283,21 @@ class IpumsApiClient:
                 break
 
     def retrieve_previous_extracts(
-        self, collection: Optional[str] = None, limit: int = 10
+        self, collection: str, limit: int = 10
     ) -> list:
         """
         Return details about the past ``limit`` requests
 
         Args:
-            collection: The collection for which to look up previous extracts. If
-                note provided will look up extracts for _all_ collections
-            limit: The number of extracts to look up _per collection_
+            collection: The collection for which to look up most recent previous extracts.
+            limit: The number of extracts to look up. Default is 10
 
         Returns:
-            A dictionary whose keys are collection names and whose values are the
-            the results of the API call.
+            A list of the user's most recent previous extract definitions.
         """
-        if collection is None:
-            collections = [
-                name
-                for name in BaseExtract._collection_to_extract.keys()
-                if name != OtherExtract.collection
-            ]
-        else:
-            collections = [collection]
-
         # TODO: Wrap results in Extract objects.
-        output = []
-        for collection in collections:
-            output.extend(
-                self.get(
+        output = self.get(
                     self.base_url,
                     params={"collection": collection, "limit": limit, "version": "v1"},
                 ).json()
-            )
         return output
