@@ -284,7 +284,7 @@ class IpumsApiClient:
 
     def retrieve_previous_extracts(
         self, collection: Optional[str] = None, limit: int = 10
-    ) -> Dict[str, dict]:
+    ) -> list:
         """
         Return details about the past ``limit`` requests
 
@@ -307,9 +307,9 @@ class IpumsApiClient:
             collections = [collection]
 
         # TODO: Wrap results in Extract objects.
-        output = {}
+        output = []
         for collection in collections:
-            output.update(
+            output.extend(
                 self.get(
                     self.base_url,
                     params={"collection": collection, "limit": limit, "version": "v1"},
