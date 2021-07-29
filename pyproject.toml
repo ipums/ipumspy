@@ -48,7 +48,8 @@ disable = "C0330, C0326, R0912, R0913, R0914, R0915"
 max-line-length = "88"
 
 [tool.pytest.ini_options]
-markers = [ "slow: Run with --runslow" ]
+markers = [ "slow: Run with --runslow",
+            "integration: Run with --runint" ]
 
 [build-system]
 requires = ["poetry>=0.12"]

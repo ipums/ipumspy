@@ -4,21 +4,21 @@ Core utilities for interacting with the IPUMS API
 import copy
 import time
 from functools import wraps
-from pathlib import Path
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Tuple, Union
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
 
 from ..__version__ import __version__
 from ..types import FilenameType
 from .exceptions import (
+    BadIpumsApiRequest,
+    IpumsAPIAuthenticationError,
     IpumsApiException,
     IpumsExtractNotReady,
     IpumsTimeoutException,
     TransientIpumsApiException,
-    IpumsAPIAuthenticationError,
-    BadIpumsApiRequest,
 )
 from .extract import BaseExtract, OtherExtract
 
@@ -56,16 +56,24 @@ def _extract_and_collection(
     return extract_id, collection
 
 
+def _prettify_message(response_message: Union[str, List[str]]) -> str:
+    if isinstance(response_message, list):
+        return "\n".join(response_message)
+    else:
+        return response_message
+
+
 class IpumsApiClient:
     def __init__(
         self,
         api_key: str,
+        base_url: str = "https://api.ipums.org/extracts",
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
         self.api_key = api_key
-        self.base_url = "https://demo.api.ipums.org/extracts"
         self.num_retries = num_retries
+        self.base_url = base_url
 
         self.session = session or requests.session()
         self.session.headers.update(
@@ -86,7 +94,7 @@ class IpumsApiClient:
             return response
         except requests.exceptions.HTTPError as http_err:
             if response.status_code == HTTPStatus.BAD_REQUEST:
-                error_details = "\n".join(response.json()["detail"])
+                error_details = _prettify_message(response.json()["detail"])
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
@@ -94,7 +102,10 @@ class IpumsApiClient:
                 response.status_code == HTTPStatus.UNAUTHORIZED
                 or response.status_code == HTTPStatus.FORBIDDEN
             ):
-                error_details = response.json()["error"]
+                try:
+                    error_details = _prettify_message(response.json()["error"])
+                except KeyError:
+                    error_details = _prettify_message(response.json()["detail"])
                 raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
             raise IpumsApiException(f"other error occured: {err}")
@@ -271,36 +282,21 @@ class IpumsApiClient:
                 break
 
     def retrieve_previous_extracts(
-        self, collection: Optional[str] = None, limit: int = 10
-    ) -> Dict[str, dict]:
+        self, collection: str, limit: int = 10
+    ) -> List[Dict]:
         """
         Return details about the past ``limit`` requests
 
         Args:
-            collection: The collection for which to look up previous extracts. If
-                note provided will look up extracts for _all_ collections
-            limit: The number of extracts to look up _per collection_
+            collection: The collection for which to look up most recent previous extracts.
+            limit: The number of extracts to look up. Default is 10
 
         Returns:
-            A dictionary whose keys are collection names and whose values are the
-            the results of the API call.
+            A list of the user's most recent previous extract definitions.
         """
-        if collection is None:
-            collections = [
-                name
-                for name in BaseExtract._collection_to_extract.keys()
-                if name != OtherExtract.collection
-            ]
-        else:
-            collections = [collection]
-
         # TODO: Wrap results in Extract objects.
-        output = {}
-        for collection in collections:
-            output.update(
-                self.get(
-                    self.base_url,
-                    params={"collection": collection, "limit": limit, "version": "v1"},
-                ).json()
-            )
+        output = self.get(
+            self.base_url,
+            params={"collection": collection, "limit": limit, "version": "v1"},
+        ).json()
         return output
