@@ -4,21 +4,21 @@ Core utilities for interacting with the IPUMS API
 import copy
 import time
 from functools import wraps
-from pathlib import Path
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Tuple, Union, List
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
 
 from ..__version__ import __version__
 from ..types import FilenameType
 from .exceptions import (
+    BadIpumsApiRequest,
+    IpumsAPIAuthenticationError,
     IpumsApiException,
     IpumsExtractNotReady,
     IpumsTimeoutException,
     TransientIpumsApiException,
-    IpumsAPIAuthenticationError,
-    BadIpumsApiRequest,
 )
 from .extract import BaseExtract, OtherExtract
 
