@@ -78,7 +78,7 @@ class IpumsApiClient:
 
     
     def _pretty_message(self, response_message: Union[str, List[str]]) -> str:
-        if type(response_message) is list:
+        if isinstance(response_message, list):
             return "\n".join(response_message)
         else:
             return response_message
