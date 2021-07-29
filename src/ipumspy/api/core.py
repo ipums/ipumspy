@@ -57,10 +57,10 @@ def _extract_and_collection(
 
 
 def _prettify_message(response_message: Union[str, List[str]]) -> str:
-        if isinstance(response_message, list):
-            return "\n".join(response_message)
-        else:
-            return response_message
+    if isinstance(response_message, list):
+        return "\n".join(response_message)
+    else:
+        return response_message
 
 
 class IpumsApiClient:
@@ -82,7 +82,6 @@ class IpumsApiClient:
                 "Authorization": api_key,
             }
         )
-
 
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
@@ -297,7 +296,7 @@ class IpumsApiClient:
         """
         # TODO: Wrap results in Extract objects.
         output = self.get(
-                    self.base_url,
-                    params={"collection": collection, "limit": limit, "version": "v1"},
-                ).json()
+            self.base_url,
+            params={"collection": collection, "limit": limit, "version": "v1"},
+        ).json()
         return output

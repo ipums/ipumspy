@@ -90,8 +90,10 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(unavailable_variable)
     assert exc_info.type is BadIpumsApiRequest
-    assert exc_info.value.args[0] == ("YRIMMIG: This variable is not available in any "
-                                      "of the samples currently selected.")
+    assert exc_info.value.args[0] == (
+        "YRIMMIG: This variable is not available in any "
+        "of the samples currently selected."
+    )
 
     # bad sample
     bad_sample = UsaExtract(["us2012x"], ["AGE"])
