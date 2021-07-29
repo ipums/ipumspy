@@ -56,6 +56,13 @@ def _extract_and_collection(
     return extract_id, collection
 
 
+def _pretty_message(response_message: Union[str, List[str]]) -> str:
+        if isinstance(response_message, list):
+            return "\n".join(response_message)
+        else:
+            return response_message
+
+
 class IpumsApiClient:
     def __init__(
         self,
@@ -76,13 +83,6 @@ class IpumsApiClient:
             }
         )
 
-    
-    def _pretty_message(self, response_message: Union[str, List[str]]) -> str:
-        if isinstance(response_message, list):
-            return "\n".join(response_message)
-        else:
-            return response_message
-
 
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
@@ -95,7 +95,7 @@ class IpumsApiClient:
             return response
         except requests.exceptions.HTTPError as http_err:
             if response.status_code == HTTPStatus.BAD_REQUEST:
-                error_details = self._pretty_message(response.json()["detail"])
+                error_details = _pretty_message(response.json()["detail"])
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
@@ -104,9 +104,9 @@ class IpumsApiClient:
                 or response.status_code == HTTPStatus.FORBIDDEN
             ):
                 try:
-                    error_details = self._pretty_message(response.json()["error"])
+                    error_details = _pretty_message(response.json()["error"])
                 except KeyError:
-                    error_details = self._pretty_message(response.json()["detail"])
+                    error_details = _pretty_message(response.json()["detail"])
                 raise IpumsAPIAuthenticationError(error_details)
         except Exception as err:
             raise IpumsApiException(f"other error occured: {err}")
@@ -284,7 +284,7 @@ class IpumsApiClient:
 
     def retrieve_previous_extracts(
         self, collection: str, limit: int = 10
-    ) -> list:
+    ) -> List[Dict]:
         """
         Return details about the past ``limit`` requests
 
