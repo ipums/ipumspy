@@ -6,7 +6,7 @@ import time
 from functools import wraps
 from pathlib import Path
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Tuple, Union, List
 
 import requests
 
@@ -77,7 +77,7 @@ class IpumsApiClient:
         )
 
     
-    def _pretty_messages(self, response_message):
+    def _pretty_message(self, response_message: Union[str, List[str]]) -> str:
         if type(response_message) is list:
             return "\n".join(response_message)
         else:
@@ -95,7 +95,7 @@ class IpumsApiClient:
             return response
         except requests.exceptions.HTTPError as http_err:
             if response.status_code == HTTPStatus.BAD_REQUEST:
-                error_details = self._pretty_messages(response.json()["detail"])
+                error_details = self._pretty_message(response.json()["detail"])
                 raise BadIpumsApiRequest(error_details)
             # 401 errors should be preempted by the need to pass an API key to
             # IpumsApiClient, but...
@@ -104,7 +104,7 @@ class IpumsApiClient:
                 or response.status_code == HTTPStatus.FORBIDDEN
             ):
                 try:
-                    error_details = self._pretty_messages(response.json()["error"])
+                    error_details = self._pretty_message(response.json()["error"])
                 except KeyError:
                     error_details = self._pretty_message(response.json()["detail"])
                 raise IpumsAPIAuthenticationError(error_details)
