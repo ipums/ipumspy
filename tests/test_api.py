@@ -72,6 +72,7 @@ def test_retrieve_previous_extracts(api_client: IpumsApiClient):
     assert len(previous10["usa"]) == 10
 
 
+@pytest.mark.integration
 def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     """
     Confirm that malformed or impossible extract requests raise
