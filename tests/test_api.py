@@ -82,14 +82,12 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     bad_variable = UsaExtract(["us2012b"], ["AG"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_variable)
-    assert exc_info.type is BadIpumsApiRequest
     assert exc_info.value.args[0] == "Invalid variable name: AG"
 
     # unavailable variable
     unavailable_variable = UsaExtract(["us2012b"], ["YRIMMIG"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(unavailable_variable)
-    assert exc_info.type is BadIpumsApiRequest
     assert exc_info.value.args[0] == (
         "YRIMMIG: This variable is not available in any "
         "of the samples currently selected."
@@ -99,5 +97,4 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     bad_sample = UsaExtract(["us2012x"], ["AGE"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_sample)
-    assert exc_info.type is BadIpumsApiRequest
     assert exc_info.value.args[0] == "Invalid sample name: us2012x"
