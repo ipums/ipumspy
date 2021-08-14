@@ -53,11 +53,11 @@ class VariableDescription:
                 labels_dict[label] = int(value)
             except TypeError:
                 labels_dict[label] = int(value)
-        
+
         return cls(
             id=elt.attrib["ID"],
             name=elt.attrib["name"],
-            codes = labels_dict,
+            codes=labels_dict,
             start=int(elt.find("./ddi:location", namespaces).attrib["StartPos"])
             - 1,  # 0 based in python
             end=int(
@@ -127,10 +127,12 @@ class Codebook:
                 "Codebooks with more than one file type are not supported"
             )
 
-        citation=elt.find("./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", 
-                          namespaces).text
-        conditions=elt.find("./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", 
-                            namespaces).text
+        citation = elt.find(
+            "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", namespaces
+        ).text
+        conditions = elt.find(
+            "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", namespaces
+        ).text
 
         return cls(
             file_description=FileDescription.read(file_txts[0], ddi_namespace),
@@ -139,5 +141,5 @@ class Codebook:
                 for desc in elt.findall("./ddi:dataDscr/ddi:var", namespaces)
             ],
             citation=citation,
-            conditions=conditions
+            conditions=conditions,
         )
