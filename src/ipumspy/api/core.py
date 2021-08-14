@@ -274,7 +274,13 @@ class IpumsApiClient:
                 )
 
             status = self.extract_status(extract_id, collection=collection)
-            if status != "completed":
+            if status == 'failed':
+                # TODO: follow up with IT and user support to see if we should
+                # instruct people to email us about extract failures.
+                raise IpumsApiException(
+                    f"Oops! Your {collection} extract number {extract_id} failed "
+                    f"to complete.")
+            elif status != "completed":
                 time.sleep(wait_time)
                 total_time += wait_time
                 wait_time = max(wait_time * 2, max_wait_time)
