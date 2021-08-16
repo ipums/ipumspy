@@ -13,7 +13,7 @@ from . import ddi as ddi_definitions
 
 def get_variable_info(
     varname: str, ddi: ddi_definitions.Codebook,
-):
+) -> ddi_definitions.VariableDescription:
     """
     Retrieve the VariableDescription for an IPUMS variable.
 
