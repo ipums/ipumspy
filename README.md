@@ -55,7 +55,7 @@ The above code results in the following:
 ```
 
 ## More on value labels
-Users can filter on cateogrical variables using labels instead of numerical values
+Users can filter on categorical variables using labels instead of numerical values
 For example, the following code retains only the female respondents in `ipums_df`.
 
 ```python
