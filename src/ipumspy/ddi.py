@@ -9,7 +9,7 @@ Utilities for working with IPUMS DDI formats
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Dict, Union
 from xml.etree import ElementTree as ET
 
 
@@ -24,7 +24,7 @@ class VariableDescription:
 
     id: str  # pylint: disable=invalid-name
     name: str
-    codes: dict
+    codes: Dict[str, Union[int, str]]
 
     start: int
     end: int
