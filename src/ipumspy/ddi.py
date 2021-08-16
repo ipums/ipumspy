@@ -111,8 +111,8 @@ class Codebook:
 
     file_description: FileDescription
     data_description: List[VariableDescription]
-    citation: str
-    conditions: str
+    ipums_citation: str
+    ipums_conditions: str
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
@@ -127,10 +127,10 @@ class Codebook:
                 "Codebooks with more than one file type are not supported"
             )
 
-        citation = elt.find(
+        ipums_citation = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", namespaces
         ).text
-        conditions = elt.find(
+        ipums_conditions = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", namespaces
         ).text
 
@@ -140,6 +140,6 @@ class Codebook:
                 VariableDescription.read(desc, ddi_namespace)
                 for desc in elt.findall("./ddi:dataDscr/ddi:var", namespaces)
             ],
-            citation=citation,
-            conditions=conditions,
+            ipums_citation=ipums_citation,
+            ipums_conditions=ipums_conditions,
         )
