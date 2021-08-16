@@ -33,9 +33,14 @@ def get_variable_info(
         raise RuntimeError(f"No description found for {varname}.")
 
 
-def tab(df, VariableDescription):
+def tab(VariableDescription, df):
     """
-    Tabs with labels
+    Single-variable tab with labels.
+
+    Args:
+        VariableDescription: from the ddi codebook
+
+        df: pandas DataFrame containing data to display
     """
 
     # get freqs and pct
