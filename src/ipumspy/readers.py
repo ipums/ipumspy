@@ -37,8 +37,8 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     namespace = match.groups()[0] if match else ""
     print("Use of data from IPUMS is subject to conditions including that users "
           "should cite the data appropriately.\n"
-          "See the `ipums_conditions()` attribute of this codebook for terms of use.\n"
-          "See the `ipums_citation()` attribute of this codebook for the appropriate "
+          "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
+          "See the `ipums_citation` attribute of this codebook for the appropriate "
           "citation.")
     return ddi_definitions.Codebook.read(root, namespace)
 
