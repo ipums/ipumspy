@@ -33,7 +33,7 @@ def get_variable_info(
         raise RuntimeError(f"No description found for {varname}.")
 
 
-def tab(VariableDescription, df):
+def print_tab(VariableDescription, df):
     """
     Single-variable tab with labels.
 
