@@ -30,6 +30,7 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
         The parsed codebook
     """
     logger = logging.getLogger('my_logger')
+    logger.setLevel(logging.INFO)
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
     # create formatter and add it to the handlers
@@ -37,18 +38,18 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     ch.setFormatter(formatter)
     # add the handlers to logger
     logger.addHandler(ch)
-    
+
     with fileutils.xml_opener(ddi_file) as opened_file:
         root = ET.parse(opened_file).getroot()
 
     # Extract the namespace if there is one
     match = re.match(r"^\{(.*)\}", root.tag)
     namespace = match.groups()[0] if match else ""
-    print("Use of data from IPUMS is subject to conditions including that users "
-          "should cite the data appropriately.\n"
-          "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
-          "See the `ipums_citation` attribute of this codebook for the appropriate "
-          "citation.")
+    logger.info("Use of data from IPUMS is subject to conditions including that users "
+                "should cite the data appropriately.\n"
+                "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
+                "See the `ipums_citation` attribute of this codebook for the appropriate "
+                "citation.")
     return ddi_definitions.Codebook.read(root, namespace)
 
 
