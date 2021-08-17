@@ -30,7 +30,7 @@ def get_variable_info(
             return varname_vardesc
     else:
         # put a better error here eventually
-        raise RuntimeError(f"No description found for {varname}.")
+        raise ValueError(f"No description found for {varname}.")
 
 
 def print_tab(VariableDescription, df):
