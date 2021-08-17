@@ -51,8 +51,8 @@ class VariableDescription:
             # make values integers when possible
             try:
                 labels_dict[label] = int(value)
-            except TypeError:
-                labels_dict[label] = int(value)
+            except (TypeError, ValueError):
+                labels_dict[label] = value
 
         return cls(
             id=elt.attrib["ID"],
