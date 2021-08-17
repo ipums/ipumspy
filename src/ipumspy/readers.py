@@ -8,6 +8,7 @@ Functions for reading and processing IPUMS data
 """
 import copy
 import re
+import logging
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Iterator, List, Optional, Union
@@ -28,7 +29,15 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     Returns:
         The parsed codebook
     """
-
+    logger = logging.getLogger('my_logger')
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(message)s')
+    ch.setFormatter(formatter)
+    # add the handlers to logger
+    logger.addHandler(ch)
+    
     with fileutils.xml_opener(ddi_file) as opened_file:
         root = ET.parse(opened_file).getroot()
 
