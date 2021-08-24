@@ -14,12 +14,6 @@ import pytest
 from ipumspy import readers
 
 
-@pytest.fixture(scope="module")
-def fixtures_path() -> Path:
-    path = Path(__file__)
-    return path.absolute().parent / "fixtures"
-
-
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
     """
     Confirm that we can read rectangular microdata in .dat format

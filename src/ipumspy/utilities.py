@@ -11,60 +11,28 @@ import pandas as pd
 from . import ddi as ddi_definitions
 
 
-def get_variable_info(
-    varname: str, ddi: ddi_definitions.Codebook,
-) -> ddi_definitions.VariableDescription:
-    """
-    Retrieve the VariableDescription for an IPUMS variable.
-
-    Args:
-        varname: Name of a variable in your IPUMS extract
-        ddi: The codebook representing the data
-
-    Returns:
-        A VariableDescription instance
-    """
-    for vardesc in ddi.data_description:
-        if vardesc.id == varname.upper():
-            varname_vardesc = vardesc
-            return varname_vardesc
-    else:
-        # put a better error here eventually
-        raise ValueError(f"No description found for {varname}.")
-
-
-def print_tab(VariableDescription, df):
+def tabulate(vardesc: ddi_definitions.VariableDescription, df: pd.DataFrame) -> pd.DataFrame:
     """
     Single-variable tab with labels.
 
     Args:
-        VariableDescription: from the ddi codebook
-
+        vardesc: from the ddi codebook
         df: pandas DataFrame containing data to display
     """
 
-    # get freqs and pct
-    tab_df = pd.DataFrame(
-        {
-            "val": df[VariableDescription.name].value_counts().sort_index().index,
-            "count": df[VariableDescription.name].value_counts().sort_index(),
-            "pct": df[VariableDescription.name]
-            .value_counts(normalize=True)
-            .sort_index(),
-        }
-    )
+    tab_df = pd.concat(
+        [
+            df[vardesc.name].value_counts(),
+            df[vardesc.name].value_counts(normalize=True),
+        ],
+        axis=1,
+        keys=["counts", "pct"],
+    ).reset_index(name="val")
 
-    # add value labels if they exist
-    if len(VariableDescription.codes.keys()) > 0:
-        # get labels
-        lab_df = pd.DataFrame(
-            {
-                "val": list(VariableDescription.codes.values()),
-                "lab": list(VariableDescription.codes.keys()),
-            }
-        )
+    col_order = ["val", "counts", "pct"]
 
-        lab_tab_df = pd.merge(tab_df, lab_df, on="val", how="inner")
-        print(lab_tab_df[["val", "lab", "count", "pct"]].to_string(index=False))
-    else:
-        print(tab_df.to_string(index=False))
+    if vardesc.codes:
+        tab_df["lab"] = tab_df["val"].map({v: k for k, v in vardesc.codes.items()})
+        col_order = ["val", "lab", "counts", "pct"]
+
+    return tab_df[col_order]

@@ -9,11 +9,11 @@ Utilities for working with IPUMS DDI formats
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Union
+from typing import Dict, List, Optional, Union
 from xml.etree import ElementTree as ET
 
 
-@dataclass
+@dataclass(frozen=True)
 class VariableDescription:
     """
     Individual variables are described in the DDI. These are representations
@@ -71,7 +71,7 @@ class VariableDescription:
         )
 
 
-@dataclass
+@dataclass(frozen=True)
 class FileDescription:
     """
     In the IPUMS DDI, the file has its own particular description. Extract
@@ -103,7 +103,7 @@ class FileDescription:
         )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Codebook:
     """
     A class representing an XML codebook downloaded from IPUMS
@@ -143,3 +143,22 @@ class Codebook:
             ipums_citation=ipums_citation,
             ipums_conditions=ipums_conditions,
         )
+
+    def get_variable_info(self, name: str) -> VariableDescription:
+        """
+        Retrieve the VariableDescription for an IPUMS variable.
+
+        Args:
+            name: Name of a variable in your IPUMS extract
+
+        Returns:
+            A VariableDescription instance
+        """
+        try:
+            return [
+                vardesc
+                for vardesc in self.data_description
+                if vardesc.id == name.upper()
+            ][0]
+        except IndexError:
+            raise ValueError(f"No description found for {name}.")
