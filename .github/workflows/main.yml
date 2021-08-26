@@ -34,7 +34,7 @@ jobs:
 
     - name: Install dependencies
       shell: bash
-      run: python -m poetry install --no-root
+      run: python -m poetry install
 
 #     - name: Environment variables
 #       # repo secrets still need to be added
