@@ -42,7 +42,7 @@ jobs:
 #         IPUMS_API_KEY: ${{ secrets.DEV_ENV_FILE }}
     - name: Test with pytest
       run: |
-        python -m poetry run python -m pytest -v tests
+        python -m poetry run pytest -v
 
     - name: lint with pylint
       run: |
