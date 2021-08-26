@@ -7,44 +7,45 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  run_tests:
+    runs-on: ubuntu-20.04
+
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         python-version: [3.6, 3.9]
-        poetry-version: [1.1.5]
-
-    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install poetry ${{ matrix.poetry-version }}
-      run: |
-        python -m ensurepip
-        python -m pip install --upgrade pip
-        python -m pip install poetry==${{ matrix.poetry-version }}
-    - name: View poetry --help
-      run: poetry --help
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.6
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    - name: Install dependencies
-      shell: bash
-      run: python -m poetry install
+      - name: Load cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
-#     - name: Environment variables
-#       # repo secrets still need to be added
-#       env:
-#         IPUMS_API_KEY: ${{ secrets.DEV_ENV_FILE }}
-    - name: Test with pytest
-      run: |
-        python -m poetry run pytest -v
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction
 
-    - name: lint with pylint
-      run: |
-        cd src
-        python -m poetry run python -m pylint **/*
+      # - name: Run mypy
+      #   run: poetry run mypy src
+
+      # - name: Check styling
+      #   run: poetry run black . --check
+
+      - name: Run tests
+        run: poetry run py.test
