@@ -22,16 +22,16 @@ def tabulate(vardesc: ddi_definitions.VariableDescription, df: pd.DataFrame) -> 
 
     tab_df = pd.concat(
         [
-            df[vardesc.name].value_counts(),
-            df[vardesc.name].value_counts(normalize=True),
+            df[vardesc.name].value_counts().sort_index(),
+            df[vardesc.name].value_counts(normalize=True).sort_index(),
         ],
         axis=1,
         keys=["counts", "pct"],
-    ).reset_index(name="val")
-
-    col_order = ["val", "counts", "pct"]
+    )
+    col_order = ["counts", "pct"]
 
     if vardesc.codes:
+        tab_df["val"] = sorted(vardesc.codes.values())
         tab_df["lab"] = tab_df["val"].map({v: k for k, v in vardesc.codes.items()})
         col_order = ["val", "lab", "counts", "pct"]
 
