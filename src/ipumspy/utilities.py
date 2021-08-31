@@ -31,7 +31,7 @@ def tabulate(vardesc: ddi_definitions.VariableDescription, df: pd.DataFrame) -> 
     col_order = ["counts", "pct"]
 
     if vardesc.codes:
-        tab_df["val"] = sorted(vardesc.codes.values())
+        tab_df["val"] = tab_df.index
         tab_df["lab"] = tab_df["val"].map({v: k for k, v in vardesc.codes.items()})
         col_order = ["val", "lab", "counts", "pct"]
 
