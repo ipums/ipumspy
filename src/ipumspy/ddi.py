@@ -44,14 +44,15 @@ class VariableDescription:
         """
         namespaces = {"ddi": ddi_namespace}
 
+        vartype = elt.find("./ddi:varFormat", namespaces).attrib["type"]
         labels_dict = {}
         for cat in elt.findall("./ddi:catgry", namespaces):
             label = cat.find("./ddi:labl", namespaces).text
             value = cat.find("./ddi:catValu", namespaces).text
             # make values integers when possible
-            try:
+            if vartype == "numeric":
                 labels_dict[label] = int(value)
-            except (TypeError, ValueError):
+            else:
                 labels_dict[label] = value
 
         return cls(
@@ -66,7 +67,7 @@ class VariableDescription:
             label=elt.find("./ddi:labl", namespaces).text,
             description=elt.find("./ddi:txt", namespaces).text,
             concept=elt.find("./ddi:concept", namespaces).text,
-            vartype=elt.find("./ddi:varFormat", namespaces).attrib["type"],
+            vartype=vartype,
             shift=int(elt.attrib.get("dcml")) if "dcml" in elt.attrib else None,
         )
 
