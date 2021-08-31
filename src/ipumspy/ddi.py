@@ -9,11 +9,11 @@ Utilities for working with IPUMS DDI formats
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, List, Optional, Union
 from xml.etree import ElementTree as ET
 
 
-@dataclass
+@dataclass(frozen=True)
 class VariableDescription:
     """
     Individual variables are described in the DDI. These are representations
@@ -24,6 +24,7 @@ class VariableDescription:
 
     id: str  # pylint: disable=invalid-name
     name: str
+    codes: Dict[str, Union[int, str]]
 
     start: int
     end: int
@@ -42,9 +43,22 @@ class VariableDescription:
         says what the xmlns is for the file
         """
         namespaces = {"ddi": ddi_namespace}
+
+        vartype = elt.find("./ddi:varFormat", namespaces).attrib["type"]
+        labels_dict = {}
+        for cat in elt.findall("./ddi:catgry", namespaces):
+            label = cat.find("./ddi:labl", namespaces).text
+            value = cat.find("./ddi:catValu", namespaces).text
+            # make values integers when possible
+            if vartype == "numeric":
+                labels_dict[label] = int(value)
+            else:
+                labels_dict[label] = value
+
         return cls(
             id=elt.attrib["ID"],
             name=elt.attrib["name"],
+            codes=labels_dict,
             start=int(elt.find("./ddi:location", namespaces).attrib["StartPos"])
             - 1,  # 0 based in python
             end=int(
@@ -53,12 +67,12 @@ class VariableDescription:
             label=elt.find("./ddi:labl", namespaces).text,
             description=elt.find("./ddi:txt", namespaces).text,
             concept=elt.find("./ddi:concept", namespaces).text,
-            vartype=elt.find("./ddi:varFormat", namespaces).attrib["type"],
+            vartype=vartype,
             shift=int(elt.attrib.get("dcml")) if "dcml" in elt.attrib else None,
         )
 
 
-@dataclass
+@dataclass(frozen=True)
 class FileDescription:
     """
     In the IPUMS DDI, the file has its own particular description. Extract
@@ -90,7 +104,7 @@ class FileDescription:
         )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Codebook:
     """
     A class representing an XML codebook downloaded from IPUMS
@@ -98,6 +112,8 @@ class Codebook:
 
     file_description: FileDescription
     data_description: List[VariableDescription]
+    ipums_citation: str
+    ipums_conditions: str
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
@@ -105,11 +121,19 @@ class Codebook:
         Read a Codebook from the parsed XML
         """
         namespaces = {"ddi": ddi_namespace}
+
         file_txts = elt.findall("./ddi:fileDscr/ddi:fileTxt", namespaces)
         if len(file_txts) != 1:
             raise NotImplementedError(
                 "Codebooks with more than one file type are not supported"
             )
+
+        ipums_citation = elt.find(
+            "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", namespaces
+        ).text
+        ipums_conditions = elt.find(
+            "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", namespaces
+        ).text
 
         return cls(
             file_description=FileDescription.read(file_txts[0], ddi_namespace),
@@ -117,4 +141,25 @@ class Codebook:
                 VariableDescription.read(desc, ddi_namespace)
                 for desc in elt.findall("./ddi:dataDscr/ddi:var", namespaces)
             ],
+            ipums_citation=ipums_citation,
+            ipums_conditions=ipums_conditions,
         )
+
+    def get_variable_info(self, name: str) -> VariableDescription:
+        """
+        Retrieve the VariableDescription for an IPUMS variable.
+
+        Args:
+            name: Name of a variable in your IPUMS extract
+
+        Returns:
+            A VariableDescription instance
+        """
+        try:
+            return [
+                vardesc
+                for vardesc in self.data_description
+                if vardesc.id == name.upper()
+            ][0]
+        except IndexError:
+            raise ValueError(f"No description found for {name}.")

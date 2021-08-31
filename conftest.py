@@ -35,3 +35,9 @@ def environment_variables():
     """
     filename = Path(__file__).parent / ".env.test"
     load_dotenv(dotenv_path=filename)
+
+
+@pytest.fixture(scope="session")
+def fixtures_path() -> Path:
+    path = Path(__file__)
+    return path.absolute().parent / "tests" / "fixtures"

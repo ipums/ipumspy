@@ -8,6 +8,7 @@ Functions for reading and processing IPUMS data
 """
 import copy
 import re
+import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Iterator, List, Optional, Union
@@ -18,9 +19,13 @@ from . import ddi as ddi_definitions
 from . import fileutils
 
 
+class CitationWarning(Warning):
+    pass
+
+
 def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     """
-    Read a DDI from a IMPUS XML file
+    Read a DDI from a IPUMS XML file
 
     Args:
         ddi_file: The location of an IPUMS DDI XML
@@ -28,13 +33,21 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     Returns:
         The parsed codebook
     """
+
     with fileutils.xml_opener(ddi_file) as opened_file:
         root = ET.parse(opened_file).getroot()
 
     # Extract the namespace if there is one
     match = re.match(r"^\{(.*)\}", root.tag)
     namespace = match.groups()[0] if match else ""
-
+    warnings.warn(
+        "Use of data from IPUMS is subject to conditions including that users "
+        "should cite the data appropriately.\n"
+        "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
+        "See the `ipums_citation` attribute of this codebook for the appropriate "
+        "citation.",
+        CitationWarning
+    )
     return ddi_definitions.Codebook.read(root, namespace)
 
 
