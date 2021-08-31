@@ -8,7 +8,7 @@ Functions for reading and processing IPUMS data
 """
 import copy
 import re
-import logging
+import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Iterator, List, Optional, Union
@@ -17,6 +17,10 @@ import pandas as pd
 
 from . import ddi as ddi_definitions
 from . import fileutils
+
+
+class CitationWarning(Warning):
+    pass
 
 
 def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
@@ -29,15 +33,6 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     Returns:
         The parsed codebook
     """
-    logger = logging.getLogger('my_logger')
-    logger.setLevel(logging.INFO)
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.INFO)
-    # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(message)s')
-    ch.setFormatter(formatter)
-    # add the handlers to logger
-    logger.addHandler(ch)
 
     with fileutils.xml_opener(ddi_file) as opened_file:
         root = ET.parse(opened_file).getroot()
@@ -45,11 +40,14 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     # Extract the namespace if there is one
     match = re.match(r"^\{(.*)\}", root.tag)
     namespace = match.groups()[0] if match else ""
-    logger.info("Use of data from IPUMS is subject to conditions including that users "
-                "should cite the data appropriately.\n"
-                "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
-                "See the `ipums_citation` attribute of this codebook for the appropriate "
-                "citation.")
+    warnings.warn(
+        "Use of data from IPUMS is subject to conditions including that users "
+        "should cite the data appropriately.\n"
+        "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
+        "See the `ipums_citation` attribute of this codebook for the appropriate "
+        "citation.",
+        CitationWarning
+    )
     return ddi_definitions.Codebook.read(root, namespace)
 
 
