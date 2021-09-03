@@ -1,3 +1,5 @@
+[![Build Tests](https://github.com/ipums/ipumspy/actions/workflows/main.yml/badge.svg)](https://github.com/ipums/ipumspy/actions/workflows/main.yml)
+
 # IPUMS-py
 
 A collection of tools for working with data from [IPUMS](https://ipums.org).
