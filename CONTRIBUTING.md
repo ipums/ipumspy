@@ -21,6 +21,6 @@ We appreciate pull requests that follow these guidelines:
 
 2) Try to conform to the code style of the package.
 
-3) Please add you name and affiliation to the NOTICE.txt file.
+3) Please add your name and affiliation to the NOTICE.txt file.
 
 4) Summarize your changes in the change log [link here once we have a change log]. This package adheres to [semantic versioning](https://semver.org/)
