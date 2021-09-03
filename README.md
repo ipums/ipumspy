@@ -36,7 +36,7 @@ ddi_codebook = readers.read_ipums_ddi([ddi xml file path])
 ipums_df = readers.read_microdata(ddi_codebook, [data file path])
 
 # get VariableDescription for SEX
-sex_info = utilities.get_variable_info('sex', ddi_codebook)
+sex_info = ddi_codebook.get_variable_info('SEX')
 
 # see codes and labels for SEX
 print(sex_info.codes)
@@ -60,7 +60,7 @@ For example, the following code retains only the female respondents in `ipums_df
 
 ```python
 # retrieve the VaribleDescription for the variable SEX
-sex_info = utilities.get_variable_info('SEX', ddi_codebook)
+sex_info = ddi_codebook.get_variable_info('SEX')
 women = ipums_df[ipums_df['SEX'] == sex_info.codes['Female']]
 ```
 
