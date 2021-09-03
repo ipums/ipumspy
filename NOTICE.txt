@@ -12,6 +12,7 @@ Contributors:
   Vineela Pentyala, IPUMS, University of Minnesota
   Jason Goray, IPUMS, University of Minnesota
   Fran Fabrizio, IPUMS, University of Minnesota
+  Joe Grover, IPUMS, University of Minnesota
 
 This project is licensed under the Mozilla Public License, version 2.0 (the
 "License"). A copy of the License is in the project file "LICENSE.txt",
