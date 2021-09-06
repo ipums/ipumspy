@@ -122,8 +122,8 @@ pygments_style = "friendly"
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-html_logo = "_static/pandera-logo.png"
-html_favicon = "_static/pandera-favicon.png"
+html_logo = "_static/ipums-logo.png"
+html_favicon = "_static/ipums-favicon-152x152.png"
 html_theme_options = {
     "light_css_variables": {
         "color-brand-primary": "#26b079",

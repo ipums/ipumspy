@@ -15,5 +15,5 @@ dist
 
 # Docs
 docs/_build/
-docs/CONTRIBUTING.md
+docs/source/CONTRIBUTING.md
 docs/source/reference/generated/

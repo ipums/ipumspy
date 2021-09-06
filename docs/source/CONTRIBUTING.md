@@ -1,3 +1,0 @@
-# Contibuting
-
-Blank!

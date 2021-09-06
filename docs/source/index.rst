@@ -89,30 +89,30 @@ Submit issues, feature requests or bugfixes on
 `github <https://github.com/ipumspy/ipums/issues>`__.
 
 .. toctree::
-    :maxdepth: 6
-    :caption: Introduction
-    :hidden:
+   :maxdepth: 6
+   :caption: Introduction
+   :hidden:
 
-    self
-
-.. toctree::
-    :maxdepth: 6
-    :caption: User Guide
-    :hidden:
-
-    cli
+   self
 
 .. toctree::
-    :maxdepth: 6
-    :caption: Reference
-    :hidden:
+   :maxdepth: 6
+   :caption: User Guide
+   :hidden:
 
-    reference/index
+   cli
 
 .. toctree::
-    :maxdepth: 6
-    :caption: Community
-    :hidden:
+   :maxdepth: 6
+   :caption: Reference
+   :hidden:
+
+   reference/index
+
+.. toctree::
+   :maxdepth: 6
+   :caption: Community
+   :hidden:
 
    CONTRIBUTING
 
