@@ -12,3 +12,8 @@ dist
 
 # Secrets
 .env.test
+
+# Docs
+docs/_build/
+docs/source/CONTRIBUTING.md
+docs/source/reference/generated/
