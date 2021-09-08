@@ -13,6 +13,18 @@ simply be able to pip install it.
 pip install ipumspy
 ```
 
+## Development
+
+We greatly appreciate bug reports, suggestions or pull requests. They
+can be submitted via github, on our [user
+forum](https://forum.ipums.org) or by email to <ipums@umn.edu>
+
+Before contributing, please be sure to read the [Contributing
+Guidelines](https://github.com/ipums/ipumspy/blob/master/CONTRIBUTING.md)
+and the [Code of
+Conduct](https://github.com/ipums/ipumspy/blob/master/CONDUCT.md).
+
+<!-- everything below here should eventually go somewhere else -->
 ## Read an IPUMS extract
 
 The following code parses an IPUMS extract DDI xml codebook and data file and returns a pandas data frame.
@@ -38,7 +50,7 @@ ddi_codebook = readers.read_ipums_ddi([ddi xml file path])
 ipums_df = readers.read_microdata(ddi_codebook, [data file path])
 
 # get VariableDescription for SEX
-sex_info = utilities.get_variable_info('sex', ddi_codebook)
+sex_info = ddi_codebook.get_variable_info('SEX')
 
 # see codes and labels for SEX
 print(sex_info.codes)
@@ -62,7 +74,7 @@ For example, the following code retains only the female respondents in `ipums_df
 
 ```python
 # retrieve the VaribleDescription for the variable SEX
-sex_info = utilities.get_variable_info('SEX', ddi_codebook)
+sex_info = ddi_codebook.get_variable_info('SEX')
 women = ipums_df[ipums_df['SEX'] == sex_info.codes['Female']]
 ```
 
