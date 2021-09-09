@@ -82,6 +82,12 @@ A detailed overview on how to contribute can be found in the
 guide <https://github.com/ipums/ipumspy/blob/master/CONTRIBUTING.md>`__
 on GitHub.
 
+
+Releases
+--------
+
+This library's :doc:`change-log` details changes and fixes made with each release.
+
 Issues
 ------
 
