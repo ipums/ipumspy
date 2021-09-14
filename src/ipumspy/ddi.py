@@ -23,24 +23,37 @@ class VariableDescription:
     # pylint: disable=too-many-instance-attributes
 
     id: str  # pylint: disable=invalid-name
+    """variable id (this is the same as its name)"""
     name: str
+    """variable name"""
     codes: Dict[str, Union[int, str]]
+    """a dictionary of codes and value labels"""
 
     start: int
+    """variable's starting column in the extract data file"""
     end: int
+    """variable's final column in the extract data file"""
 
     label: str
+    """variable label"""
     description: str
+    """variable description"""
     concept: str
+    """IPUMS variable group"""
 
     vartype: str
+    """variable data type"""
     shift: Optional[int]
+    """number of implied decimal places"""
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> VariableDescription:
         """
-        Read an XML description of a variable. Must pass a `ddi_namespace` that
-        says what the xmlns is for the file
+        Read an XML description of a variable.
+
+        :param elt: xml element tree from parsed extract ddi
+        :param ddi_namespace: ddi namespace that says what the xmlns is for the file
+        :returns: VariableDescription object
         """
         namespaces = {"ddi": ddi_namespace}
 
@@ -80,16 +93,29 @@ class FileDescription:
     """
 
     filename: str
+    """IPUMS extract ddi file name"""
     description: str
+    """IPUMS ddi file description"""
     structure: str
+    """
+    IPUMS extract data file structure. 
+    Valid structures: rectangular, hierarchical
+    """
     encoding: str
+    """IPUMS file encoding scheme"""
     format: str
+    """IPUMS extract data file format"""
     place: str
+    """IPUMS physical address"""
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> FileDescription:
         """
         Read a FileDescription from the parsed XML
+
+        :param elt: xml element tree from parsed extract ddi
+        :param ddi_namespace: ddi namespace that says what the xmlns is for the file
+        :returns: FileDescription object
         """
         namespaces = {"ddi": ddi_namespace}
         return cls(
@@ -111,14 +137,22 @@ class Codebook:
     """
 
     file_description: FileDescription
+    """FileDescription object"""
     data_description: List[VariableDescription]
+    """list of VariableDescription objects"""
     ipums_citation: str
+    """The appropriate citation for the IPUMS extract. Please use it!"""
     ipums_conditions: str
+    """IPUMS terms of use"""
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
         """
         Read a Codebook from the parsed XML
+
+        :param elt: xml element tree from parsed extract ddi
+        :param ddi_namespace: ddi namespace that says what the xmlns is for the file
+        :returns: Codebook object
         """
         namespaces = {"ddi": ddi_namespace}
 
@@ -147,13 +181,10 @@ class Codebook:
 
     def get_variable_info(self, name: str) -> VariableDescription:
         """
-        Retrieve the VariableDescription for an IPUMS variable.
+        Retrieve the VariableDescription for an IPUMS variable
 
-        Args:
-            name: Name of a variable in your IPUMS extract
-
-        Returns:
-            A VariableDescription instance
+        :param name: Name of a variable in your IPUMS extract
+        :returns: A VariableDescription instance
         """
         try:
             return [
