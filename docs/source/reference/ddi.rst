@@ -1,4 +1,4 @@
-.. _api-ddi:
+.. _ddi:
 
 DDI
 ===

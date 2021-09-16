@@ -1,4 +1,4 @@
-.. _api-readers:
+.. _readers:
 
 readers
 =======
