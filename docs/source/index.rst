@@ -49,16 +49,8 @@ Quick Start
     ipums.submit_extract(extract)
     print(f"Extract submitted with id {extract.extract_id}")
 
-    # Wait for the extract to finish
-    for i in its.count():
-        print("...waiting....")
-        time.sleep(i * 15)
-
-        # check extract status
-        extract_status = ipums.extract_status(extract)
-        print(f"extract {extract.extract_id} is {extract_status}")
-        if extract_status == "completed":
-            break
+    # wait for the extract to finish
+    ipums.wait_for_extract(extract)
 
     # Download the extract
     ipums.download_extract(extract, download_dir=DOWNLOAD_DIR)
