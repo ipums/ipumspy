@@ -238,4 +238,4 @@ def linkcode_resolve(domain, info):
     if tag != "master":
         tag = f"v{ipumspy.__version__}"
 
-    return f"https://github.com/ipums/ipumspy/blob/{tag}/pandera/{fn}{linespec}"
+    return f"https://github.com/ipums/ipumspy/blob/{tag}/src/ipumspy/{fn}{linespec}"
