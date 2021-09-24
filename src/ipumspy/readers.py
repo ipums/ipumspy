@@ -27,9 +27,10 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     """
     Read a DDI from a IPUMS XML file
 
-    :param ddi_file: path to an IPUMS DDI XML
-
-    :returns: A parsed IPUMS ddi codebook
+    Args:
+        ddi_file: path to an IPUMS DDI XML
+    Returns:
+        A parsed IPUMS ddi codebook
     """
 
     with fileutils.xml_opener(ddi_file) as opened_file:
@@ -126,14 +127,16 @@ def read_microdata(
     """
     Read in microdata as specified by the Codebook.
 
-    :param ddi: The codebook representing the data
-    :param filename: The path to the data file. If not present, gets from
-                     ddi and assumes the file is relative to the current 
-                     working directory
-    :param encoding: The encoding of the data file. If not present, reads from ddi
-    :param subset: A list of variable names to keep. If None, will keep all
-    :param kwargs: keyword args to be passed to pd.read_fwf
-    :returns: pandas data frame
+    Args:
+        ddi: The codebook representing the data
+        filename (str): The path to the data file. If not present, gets from
+                        ddi and assumes the file is relative to the current 
+                        working directory
+        encoding (str): The encoding of the data file. If not present, reads from ddi
+        subset (list): A list of variable names to keep. If None, will keep all
+        kwargs: keyword args to be passed to pd.read_fwf
+    Returns:
+        pandas data frame and pandas text file reader
     """
     return next(
         _read_microdata(
@@ -159,15 +162,16 @@ def read_microdata_chunked(
         iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
         df = pd.concat([df[df['STATEFIP'] == 44]] for df in iter_microdata])
 
-    :param ddi: The codebook representing the data
-    :param filename: The path to the data file. If not present, gets from
+    Args:
+        ddi: The codebook representing the data
+        filename (str): The path to the data file. If not present, gets from
                      ddi and assumes the file is relative to the current working directory
-    :param encoding: The encoding of the data file. If not present, reads from ddi
-    :param subset: A list of variable names to keep. If None, will keep all
-    :param chunksize: The size of the chunk to return with iterator. See `pandas.read_csv`
-    :param kwargs: keyword args to be passed to pd.read_fwf
-
-    :yields: An iterator of data frames
+        encoding (str): The encoding of the data file. If not present, reads from ddi
+        subset (list): A list of variable names to keep. If None, will keep all
+        chunksize (int): The size of the chunk to return with iterator. See `pandas.read_csv`
+        kwargs: keyword args to be passed to pd.read_fwf
+    Yields:
+        An iterator of data frames
     """
     yield from _read_microdata(
         ddi,

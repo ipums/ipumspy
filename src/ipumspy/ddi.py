@@ -51,9 +51,11 @@ class VariableDescription:
         """
         Read an XML description of a variable.
 
-        :param elt: xml element tree from parsed extract ddi
-        :param ddi_namespace: ddi namespace that says what the xmlns is for the file
-        :returns: VariableDescription object
+        Args:
+            elt: xml element tree from parsed extract ddi
+            ddi_namespace: ddi namespace that says what the xmlns is for the file
+        Returns:
+            VariableDescription object
         """
         namespaces = {"ddi": ddi_namespace}
 
@@ -113,9 +115,11 @@ class FileDescription:
         """
         Read a FileDescription from the parsed XML
 
-        :param elt: xml element tree from parsed extract ddi
-        :param ddi_namespace: ddi namespace that says what the xmlns is for the file
-        :returns: FileDescription object
+        Args:
+            elt: xml element tree from parsed extract ddi
+            ddi_namespace: ddi namespace that says what the xmlns is for the file
+        Returns:
+            FileDescription object
         """
         namespaces = {"ddi": ddi_namespace}
         return cls(
@@ -150,9 +154,11 @@ class Codebook:
         """
         Read a Codebook from the parsed XML
 
-        :param elt: xml element tree from parsed extract ddi
-        :param ddi_namespace: ddi namespace that says what the xmlns is for the file
-        :returns: Codebook object
+        Args:
+            elt: xml element tree from parsed extract ddi
+            ddi_namespace: ddi namespace that says what the xmlns is for the file
+        Returns:
+            Codebook object
         """
         namespaces = {"ddi": ddi_namespace}
 
@@ -182,9 +188,11 @@ class Codebook:
     def get_variable_info(self, name: str) -> VariableDescription:
         """
         Retrieve the VariableDescription for an IPUMS variable
-
-        :param name: Name of a variable in your IPUMS extract
-        :returns: A VariableDescription instance
+        
+        Args:
+            name (str): Name of a variable in your IPUMS extract
+        Returns:    
+            A VariableDescription instance
         """
         try:
             return [
