@@ -30,13 +30,13 @@ Submit issues, feature requests or bugfixes on
    :hidden:
 
    intro
-   getting_started
 
 .. toctree::
    :maxdepth: 6
    :caption: User Guide
    :hidden:
 
+   getting_started
    cli
    variables
 
