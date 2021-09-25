@@ -10,11 +10,18 @@ API
 
    * - :ref:`REST API Interface <api-interface>`
      - Interfaces for interacting with the IPUMS API
-   * - :ref:`DDI <api-ddi>`
+   * - :ref:`DDI <ddi>`
      - Python objects representing the IPUMS XML DDI
+   * - :ref `Readers <readers>`
+     - Methods to read IPUMS extract XML DDI and Data files
+   * - :ref `Utilities <utilities>`
+     - Convenience methods for working with IPUMS extract XML DDI and Data files
+  
 
 .. toctree::
    :hidden:
 
    api
    ddi
+   readers
+   utilities

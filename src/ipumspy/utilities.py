@@ -13,11 +13,14 @@ from . import ddi as ddi_definitions
 
 def tabulate(vardesc: ddi_definitions.VariableDescription, df: pd.DataFrame) -> pd.DataFrame:
     """
-    Single-variable tab with labels.
+    Single-variable table with labels.
 
     Args:
         vardesc: from the ddi codebook
         df: pandas DataFrame containing data to display
+    Returns:
+        pandas Data frame containing values, value labels, frequencies,
+        and proportions for the specified variable
     """
 
     tab_df = pd.concat(

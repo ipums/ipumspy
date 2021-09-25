@@ -43,11 +43,11 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.doctest",
+    "sphinx.ext.napoleon",  # N.B. napoleon must be before autodocs_typehints
     "sphinx_autodoc_typehints",
     "sphinx.ext.linkcode",  # link to github, see linkcode_resolve() below
     "sphinx_copybutton",
     "recommonmark",
-    "sphinx.ext.napoleon",
 ]
 
 doctest_global_setup = """

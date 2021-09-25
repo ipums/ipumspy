@@ -173,8 +173,8 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
 
         Returns:
-            The status of the request. Valid statuses are:
-             'queued', 'started', 'completed', or 'failed'
+            str: The status of the request. Valid statuses are:
+                 'queued', 'started', 'completed', or 'failed'
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
@@ -261,7 +261,7 @@ class IpumsApiClient:
 
         Raises:
             IpumsTimemoutException: If ``timeout`` seconds pass before a "completed"
-                status is returned.
+                                    status is returned.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
         wait_time = inital_wait_time
