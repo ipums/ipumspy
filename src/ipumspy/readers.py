@@ -129,11 +129,11 @@ def read_microdata(
 
     Args:
         ddi: The codebook representing the data
-        filename (str): The path to the data file. If not present, gets from
-                        ddi and assumes the file is relative to the current 
+        filename: The path to the data file. If not present, gets from
+                        ddi and assumes the file is relative to the current
                         working directory
-        encoding (str): The encoding of the data file. If not present, reads from ddi
-        subset (list): A list of variable names to keep. If None, will keep all
+        encoding: The encoding of the data file. If not present, reads from ddi
+        subset: A list of variable names to keep. If None, will keep all
         kwargs: keyword args to be passed to pd.read_fwf
     Returns:
         pandas data frame and pandas text file reader
@@ -164,11 +164,11 @@ def read_microdata_chunked(
 
     Args:
         ddi: The codebook representing the data
-        filename (str): The path to the data file. If not present, gets from
+        filename: The path to the data file. If not present, gets from
                      ddi and assumes the file is relative to the current working directory
-        encoding (str): The encoding of the data file. If not present, reads from ddi
-        subset (list): A list of variable names to keep. If None, will keep all
-        chunksize (int): The size of the chunk to return with iterator. See `pandas.read_csv`
+        encoding: The encoding of the data file. If not present, reads from ddi
+        subset: A list of variable names to keep. If None, will keep all
+        chunksize: The size of the chunk to return with iterator. See `pandas.read_csv`
         kwargs: keyword args to be passed to pd.read_fwf
     Yields:
         An iterator of data frames

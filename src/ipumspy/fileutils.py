@@ -85,7 +85,7 @@ def xml_opener(ddi_file: FileType):
 
 
 @contextmanager
-def data_opener(data_file: FileType, encoding="iso-8859-1"):
+def data_opener(data_file: FileType, encoding: str = "iso-8859-1"):
     """
     Yield an opened data file with method 'rt'. Can be any of the following:
         * An already opened file (we just yield it back)

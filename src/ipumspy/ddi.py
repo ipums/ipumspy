@@ -100,7 +100,7 @@ class FileDescription:
     """IPUMS ddi file description"""
     structure: str
     """
-    IPUMS extract data file structure. 
+    IPUMS extract data file structure.
     Valid structures: rectangular, hierarchical
     """
     encoding: str
@@ -188,10 +188,10 @@ class Codebook:
     def get_variable_info(self, name: str) -> VariableDescription:
         """
         Retrieve the VariableDescription for an IPUMS variable
-        
+
         Args:
-            name (str): Name of a variable in your IPUMS extract
-        Returns:    
+            name: Name of a variable in your IPUMS extract
+        Returns:
             A VariableDescription instance
         """
         try:
