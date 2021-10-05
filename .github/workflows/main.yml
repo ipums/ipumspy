@@ -45,7 +45,7 @@ jobs:
       #   run: poetry run mypy src
 
       - name: Check styling
-         run: poetry run black . --check
+        run: poetry run black . --check
 
       - name: Run tests
         env:
