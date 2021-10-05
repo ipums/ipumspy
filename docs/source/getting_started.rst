@@ -65,6 +65,8 @@ IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/sample
 
 IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`_.
 
+Note that source variables can only be requested using their short form variable names. These can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
+
 .. code:: python
 
     # Submit an API extract request
