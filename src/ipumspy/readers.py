@@ -125,7 +125,8 @@ def read_microdata(
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
-    Read in microdata as specified by the Codebook.
+    Read in microdata as specified by the Codebook. Both .dat and .csv file types 
+    are supported.
 
     Args:
         ddi: The codebook representing the data
