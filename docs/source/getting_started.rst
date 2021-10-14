@@ -89,3 +89,16 @@ Note that source variables can only be requested using their short form variable
 
     # Get the data
     ipums_df = ipumspy.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
+
+If you lose track of the `extract` object for any reason, you may check the status
+and download the extract using only the name of the `collection` and the `extract_id`.
+
+.. code:: python
+
+    # check the extract status
+    extract_status = ipums.extract_status(extract=extract_id, collection="cps")
+    print(f"extract {extract_id} is {extract_status}")
+
+    # when the extract status is "completed", then download
+    ipums.download_extract(extract=extract_id, collection=collection_name)
+
