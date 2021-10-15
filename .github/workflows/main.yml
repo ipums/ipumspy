@@ -50,4 +50,4 @@ jobs:
       - name: Run tests
         env:
           IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
-        run: poetry run py.test  --runint
+        run: poetry run py.test --runint
