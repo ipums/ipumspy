@@ -17,6 +17,7 @@ from .exceptions import (
     IpumsAPIAuthenticationError,
     IpumsApiException,
     IpumsExtractNotReady,
+    IpumsNotFound,
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
@@ -107,6 +108,14 @@ class IpumsApiClient:
                 except KeyError:
                     error_details = _prettify_message(response.json()["detail"])
                 raise IpumsAPIAuthenticationError(error_details)
+            elif response.status_code == HTTPStatus.NOT_FOUND:
+                # No request with the passed error
+                raise IpumsNotFound(
+                    "Page not found. Perhaps you passed the wrong extract id?"
+                )
+            else:
+                error_details = _prettify_message(response.json()["detail"])
+                raise IpumsApiException(error_details)
         except Exception as err:
             raise IpumsApiException(f"other error occured: {err}")
 
@@ -163,7 +172,8 @@ class IpumsApiClient:
         self, extract: Union[BaseExtract, int], collection: Optional[str] = None
     ) -> str:
         """
-        Check on the status of an extract request
+        Check on the status of an extract request. If no such extract exists, return
+        'not found'.
 
         Args:
             extract: The extract to download. This extract must have been submitted.
@@ -174,15 +184,19 @@ class IpumsApiClient:
 
         Returns:
             str: The status of the request. Valid statuses are:
-                 'queued', 'started', 'completed', or 'failed'
+                 'queued', 'started', 'completed', 'failed', or 'not found'
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
-        response = self.get(
-            f"{self.base_url}/{extract_id}",
-            params={"collection": collection, "version": "v1"},
-        )
-        return response.json()["status"]
+        try:
+            response = self.get(
+                f"{self.base_url}/{extract_id}",
+                params={"collection": collection, "version": "v1"},
+            )
+        except IpumsNotFound:
+            return "not found"
+
+        return response.json()["status"].lower()
 
     def download_extract(
         self,
@@ -211,7 +225,12 @@ class IpumsApiClient:
             raise FileNotFoundError(f"{download_dir} does not exist")
 
         # check to see if extract complete
-        if self.extract_status(extract_id, collection=collection) != "completed":
+        extract_status = self.extract_status(extract_id, collection=collection)
+        if extract_status == "not found":
+            raise IpumsNotFound(
+                f"There is no IPUMS extract with extract number {extract_id} in collection {collection}"
+            )
+        if extract_status != "completed":
             raise IpumsExtractNotReady(
                 f"Your IPUMS extract number {extract_id} is not finished yet!"
             )
@@ -220,7 +239,6 @@ class IpumsApiClient:
             f"{self.base_url}/{extract_id}",
             params={"collection": collection, "version": "v1"},
         )
-        response.raise_for_status()
 
         download_links = response.json()["download_links"]
         data_url = download_links["data"]["url"]
@@ -280,6 +298,10 @@ class IpumsApiClient:
                 raise IpumsApiException(
                     f"Oops! Your {collection} extract number {extract_id} failed "
                     f"to complete."
+                )
+            elif status == "not found":
+                raise IpumsNotFound(
+                    f"There is no IPUMS extract with extract number {extract_id} in collection {collection}"
                 )
             elif status != "completed":
                 time.sleep(wait_time)

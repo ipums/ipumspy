@@ -5,7 +5,7 @@ import time
 import pytest
 
 from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract
-from ipumspy.api.exceptions import BadIpumsApiRequest
+from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsNotFound
 
 
 @pytest.fixture(scope="module")
@@ -98,3 +98,18 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_sample)
     assert exc_info.value.args[0] == "Invalid sample name: us2012x"
+
+
+@pytest.mark.integration
+def test_not_found_exception(live_api_client: IpumsApiClient):
+    """
+    Confirm that attempts to check on non-existant extracts raises
+    IpumsNotFound exception
+    """
+    status = live_api_client.extract_status(extract="0", collection="usa")
+    assert status == "not found"
+
+    with pytest.raises(IpumsNotFound) as exc_info:
+        live_api_client.download_extract(extract="0", collection="usa")
+    assert exc_info.value.args[0] == ("There is no IPUMS extract with extract number "
+                                      "0 in collection usa")
