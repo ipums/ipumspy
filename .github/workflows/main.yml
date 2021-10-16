@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: [3.7]
+        python-version: ["3.7", "3.8", "3.9"]
 
     steps:
       - uses: actions/checkout@v2
@@ -49,5 +49,6 @@ jobs:
 
       - name: Run tests
         env:
+          # now has creds to run integration tests
           IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
-        run: poetry run py.test
+        run: poetry run py.test --runint
