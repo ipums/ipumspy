@@ -65,6 +65,17 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
 
 
 class IpumsApiClient:
+    """
+    Class for creating and retrieving IPUMS extracts via API
+
+    Args:
+        api_key: User's IPUMs API key
+        base_url: IPUMS API url
+        num_retries: number of times a request will be retried before
+                     raising `TransientIpumsApiException`
+        session: requests session object
+
+    """
     def __init__(
         self,
         api_key: str,
