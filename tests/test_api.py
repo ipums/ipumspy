@@ -4,6 +4,7 @@ import time
 
 import pytest
 
+from ipumspy import api
 from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract
 from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsNotFound
 
@@ -56,7 +57,7 @@ def test_other_build_extract():
     assert extract.collection == "foo"
 
 
-def test_submit_extract(api_client: IpumsApiClient):
+def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
@@ -64,6 +65,9 @@ def test_submit_extract(api_client: IpumsApiClient):
 
     api_client.submit_extract(extract)
     assert extract.extract_id == 10
+
+    api_client.wait_for_extract(extract)
+    assert api_client.extract_status(extract) == "completed"
 
 
 def test_retrieve_previous_extracts(api_client: IpumsApiClient):
@@ -100,10 +104,25 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     assert exc_info.value.args[0] == "Invalid sample name: us2012x"
 
 
+def test_not_found_exception_mock(api_client: IpumsApiClient):
+    """
+    Confirm that attempts to check on non-existent extracts raises
+    IpumsNotFound exception (using mocks)
+    """
+    status = api_client.extract_status(extract=0, collection="usa")
+    assert status == "not found"
+
+    with pytest.raises(IpumsNotFound) as exc_info:
+        api_client.download_extract(extract=0, collection="usa")
+    assert exc_info.value.args[0] == (
+        "There is no IPUMS extract with extract number " "0 in collection usa"
+    )
+
+
 @pytest.mark.integration
 def test_not_found_exception(live_api_client: IpumsApiClient):
     """
-    Confirm that attempts to check on non-existant extracts raises
+    Confirm that attempts to check on non-existent extracts raises
     IpumsNotFound exception
     """
     status = live_api_client.extract_status(extract="0", collection="usa")
@@ -111,5 +130,6 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
 
     with pytest.raises(IpumsNotFound) as exc_info:
         live_api_client.download_extract(extract="0", collection="usa")
-    assert exc_info.value.args[0] == ("There is no IPUMS extract with extract number "
-                                      "0 in collection usa")
+    assert exc_info.value.args[0] == (
+        "There is no IPUMS extract with extract number " "0 in collection usa"
+    )
