@@ -306,7 +306,7 @@ class IpumsApiClient:
             elif status != "completed":
                 time.sleep(wait_time)
                 total_time += wait_time
-                wait_time = max(wait_time * 2, max_wait_time)
+                wait_time = min(wait_time * 2, max_wait_time)
             else:
                 break
 
