@@ -45,7 +45,7 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
         "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
         "See the `ipums_citation` attribute of this codebook for the appropriate "
         "citation.",
-        CitationWarning
+        CitationWarning,
     )
     return ddi_definitions.Codebook.read(root, namespace)
 
