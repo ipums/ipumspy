@@ -68,6 +68,12 @@ class OtherExtract(BaseExtract, collection="other"):
 class UsaExtract(BaseExtract, collection="usa"):
     """
     Defining an IPUMS USA extract.
+
+    Args:
+        samples: list of IPUMS USA sample IDs
+        variables: list of IPUMS USA variable names
+        description: short description of your extract
+        data_format: fixed_width and csv supported
     """
 
     def __init__(
