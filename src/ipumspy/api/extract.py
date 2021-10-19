@@ -35,13 +35,10 @@ class BaseExtract:
     @property
     def extract_id(self) -> int:
         """
-        Returns:
-            The extract id associated with this extract. Will be assigned by
-            the ``IpumsApiClient``
+        str:The extract id associated with this extract, assigned by the ``IpumsApiClient``
 
-        Raises:
-            ValueError: If the extract has no id number (probably because it has
-                not be submitted to IPUMS)
+        Raises ``ValueError`` if the extract has no id number (probably because it has
+        not be submitted to IPUMS)
         """
         if not self._id:
             raise ValueError("Extract has not been submitted so has no id number")
@@ -57,6 +54,7 @@ class OtherExtract(BaseExtract, collection="other"):
     def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
         super().__init__()
         self.collection = collection
+        """Name of an IPUMS data collection"""
         self.details = details
 
     def build(self) -> Dict[str, Any]:
