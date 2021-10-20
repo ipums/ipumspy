@@ -7,16 +7,16 @@ from typing import Any, Dict, List, Optional, Type
 
 
 class BaseExtract:
-    """
-    A wrapper around an IPUMS extract. In most cases, you
-    probably want to use a subclass, but if a particular collection
-    does not have an ``Extract`` currently built, you can use
-    this wrapper directly.
-    """
-
     _collection_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
 
     def __init__(self):
+        """
+        A wrapper around an IPUMS extract. In most cases, you
+        probably want to use a subclass, but if a particular collection
+        does not have an ``Extract`` currently built, you can use
+        this wrapper directly.
+        """
+
         self._id: Optional[int] = None
         self.api_version = "v1"
 
@@ -46,16 +46,17 @@ class BaseExtract:
 
 
 class OtherExtract(BaseExtract, collection="other"):
-    """
-    A generic extract object for working with collections that are not
-    yet officially supported by this API library
-    """
-
     def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
+        """
+        A generic extract object for working with collections that are not
+        yet officially supported by this API library
+        """
+
         super().__init__()
         self.collection = collection
         """Name of an IPUMS data collection"""
         self.details = details
+        """dictionary containing variable names and sample IDs"""
 
     def build(self) -> Dict[str, Any]:
         """
@@ -66,16 +67,6 @@ class OtherExtract(BaseExtract, collection="other"):
 
 
 class UsaExtract(BaseExtract, collection="usa"):
-    """
-    Defining an IPUMS USA extract.
-
-    Args:
-        samples: list of IPUMS USA sample IDs
-        variables: list of IPUMS USA variable names
-        description: short description of your extract
-        data_format: fixed_width and csv supported
-    """
-
     def __init__(
         self,
         samples: List[str],
@@ -84,6 +75,16 @@ class UsaExtract(BaseExtract, collection="usa"):
         data_format: str = "fixed_width",
         **kwargs
     ):
+        """
+        Defining an IPUMS USA extract.
+
+        Args:
+            samples: list of IPUMS USA sample IDs
+            variables: list of IPUMS USA variable names
+            description: short description of your extract
+            data_format: fixed_width and csv supported
+        """
+
         # Note the for now kwargs are ignored. Perhaps better error checking
         # would be good here?
 
