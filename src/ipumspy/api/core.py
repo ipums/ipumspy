@@ -83,7 +83,7 @@ class IpumsApiClient:
             session: requests session object
 
         """
-        
+
         self.api_key = api_key
         self.num_retries = num_retries
         self.base_url = base_url
