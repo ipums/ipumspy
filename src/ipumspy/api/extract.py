@@ -3,7 +3,7 @@ Wrappers for payloads to ship to the IPUMS API
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Collection, Dict, List, Optional, Type
 
 
 class BaseExtract:
@@ -93,6 +93,8 @@ class UsaExtract(BaseExtract, collection="usa"):
         self.variables = variables
         self.description = description
         self.data_format = data_format
+        self.collection = self.collection
+        """Name of an IPUMS data collection"""
 
     def build(self) -> Dict[str, Any]:
         """
