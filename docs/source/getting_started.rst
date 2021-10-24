@@ -59,9 +59,9 @@ Once you have created a user account for your data collection of interest (curre
 
 To submit an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
 
-IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`_.
+IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
 
-IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`_.
+IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`__.
 
 Note that source variables can only be requested using their short form variable names. These can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
 
