@@ -31,8 +31,11 @@ jobs:
       run: poetry install --no-interaction
 
     - name: Generate Report
-      run: |
-        poetry run py.test --cov=ipumspy --cov-report=xml
+        env:
+          # now has creds to run integration tests
+          IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
+        run: poetry run py.test --runint --cov=ipumspy --cov-report=xml
+        
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
