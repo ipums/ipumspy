@@ -11,7 +11,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@master
       with:
-        python-version: ${{ PYTHON }}
+        python-version: 3.9
     - name: Install poetry
       uses: snok/install-poetry@v1
       with:
@@ -24,7 +24,7 @@ jobs:
       id: cache
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ PYTHON }}-${{ hashFiles('**/poetry.lock') }}
+        key: venv-${{ runner.os }}-3.9-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
