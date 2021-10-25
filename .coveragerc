@@ -1,6 +1,6 @@
 [run]
 branch = True
-source = src/ipumspy
+source = ipumspy
 
 [report]
 exclude_lines =
