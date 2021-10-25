@@ -32,7 +32,7 @@ jobs:
 
     - name: Generate Report
       run: |
-        poetry run pytest --cov=ipumspy --cov-report=xml
+        poetry run py.test --cov=ipumspy --cov-report=xml
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
