@@ -1,43 +1,47 @@
 name: CodeCov
 on: [push, pull_request]
 jobs:
-  run:
-    runs-on: ubuntu-latest
-    env:
-      OS: ubuntu-latest
-      PYTHON: '3.9'
+  run_tests:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: true
+      python-version: "3.9"
+
     steps:
-    - uses: actions/checkout@master
-    - name: Setup Python
-      uses: actions/setup-python@master
-      with:
-        python-version: 3.9
-    - name: Install poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: 1.1.6
-        virtualenvs-create: true
-        virtualenvs-in-project: true
+      - uses: actions/checkout@v2
 
-    - name: Load cache
-      uses: actions/cache@v2
-      id: cache
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-3.9-${{ hashFiles('**/poetry.lock') }}
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ python-version }}
 
-    - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.6
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    - name: Generate Report
-      env:
-        # now has creds to run integration tests
-        IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
-      # this runs successfully at the command line and generates a report
-      run: poetry run py.test --runint --cov=ipumspy --cov-report=xml
+      - name: Load cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ python-version }}-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{secrets.CODECOV_TOKEN}}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction
+
+      - name: Generate Report
+        env:
+          # now has creds to run integration tests
+          IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
+        # this runs successfully at the command line and generates a report
+        run: poetry run py.test --runint --cov=ipumspy --cov-report=xml
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
