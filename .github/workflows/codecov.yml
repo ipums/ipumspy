@@ -6,7 +6,7 @@ jobs:
 
     strategy:
       fail-fast: true
-        python-version: 3.9
+      python-version: 3.9
 
     steps:
       - uses: actions/checkout@v2
