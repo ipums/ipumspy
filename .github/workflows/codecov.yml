@@ -38,7 +38,9 @@ jobs:
           # now has creds to run integration tests
           IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
         # this runs successfully at the command line and generates a report
-        run: poetry run py.test --runint --cov=ipumspy --cov-report=xml
+        run: |
+          pip install pytest-cov
+          poetry run py.test --runint --cov=ipumspy --cov-report=xml
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
