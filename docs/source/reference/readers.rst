@@ -5,6 +5,7 @@ readers
 
 .. autosummary::
    :toctree: generated
+   :template: module.rst
    :nosignatures:
 
    ipumspy.readers.read_ipums_ddi

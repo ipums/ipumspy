@@ -5,6 +5,7 @@ utilities
 
 .. autosummary::
    :toctree: generated
+   :template: module.rst
    :nosignatures:
 
-   ipumspy.utilities
+   ipumspy.utilities.tabulate

@@ -2,8 +2,9 @@
 name = "ipumspy"
 version = "0.1.0"
 description = "A collection of tools for working with IPUMS data"
-authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>"]
-license = "MIT"
+authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
+           "Renae Rodgers <rodge103@umn.edu>"]
+license = "Mozilla Public License 2.0 (MPL 2.0)"
 packages = [
     { include = "ipumspy", from = "src" }
 ]

@@ -64,6 +64,24 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
         return response_message
 
 
+def _extract_was_purged(extract_definition: Dict) -> bool:
+    try:
+        if not extract_definition["download_links"]:
+            return True
+        else:
+            return False
+    except KeyError:
+        raise IpumsNotFound("Page not found. Perhaps you passed the wrong extract id?")
+
+
+def _reconstitute_purged_extract(extract_definition: Dict) -> Dict[str, Any]:
+    args = {}
+    args["samples"] = list(extract_definition["samples"].keys())
+    args["variables"] = list(extract_definition["variables"].keys())
+    args["data_format"] = extract_definition["data_format"]
+    return args
+
+
 class IpumsApiClient:
     def __init__(
         self,
@@ -72,6 +90,18 @@ class IpumsApiClient:
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
+        """
+        Class for creating and retrieving IPUMS extracts via API
+
+        Args:
+            api_key: User's IPUMs API key
+            base_url: IPUMS API url
+            num_retries: number of times a request will be retried before
+                        raising `TransientIpumsApiException`
+            session: requests session object
+
+        """
+
         self.api_key = api_key
         self.num_retries = num_retries
         self.base_url = base_url
@@ -329,3 +359,44 @@ class IpumsApiClient:
             params={"collection": collection, "limit": limit, "version": "v1"},
         ).json()
         return output
+
+    def get_extract_info(self, collection: str, extract_id: str) -> List[Dict]:
+        """
+        Returns details about a past IPUMS extract 
+
+        Args:
+            collection: The collection for which to look up most a previous extract
+            extract_id: The number of the extracts to look up.
+
+        Returns:
+            An IPUMS extract definition
+        """
+        extract_info = self.get(
+                                f"{self.base_url}/{extract_id}",
+                                params={"collection": collection, "version": "v1"},
+                                ).json()
+        return extract_info
+
+    def resubmit_purged_extract(self, collection: str, extract: str):
+        """
+        Re-submits an IPUMS extract for which the data and ddi files have been purged 
+        from the IPUMS extract system cache.
+
+        Args:
+            collection: The collection of the purged extract to be re-submitted
+            extract_id: The extract id of the purged extract to be re-submitted
+
+        Returns:
+            An IPUMS extract object. NB: the re-submitted extract will have its own
+            extract id number, different from the extract_id of the purged extract!
+        """
+        extract_definition = self.get_extract_info(collection, extract)
+        if _extract_was_purged(extract_definition):
+           extract_args = _reconstitute_purged_extract(extract_definition)
+           extract_obj = self.submit_extract(extract_args, collection=collection)
+
+           return extract_obj
+        else:
+            raise IpumsApiException(f"IPUMS {collection} extract number {extract} "
+                                    f"has not been purged. You may download the data "
+                                    f"and ddi files directly using download_extract()")

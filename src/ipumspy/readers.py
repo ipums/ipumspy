@@ -45,7 +45,7 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
         "See the `ipums_conditions` attribute of this codebook for terms of use.\n"
         "See the `ipums_citation` attribute of this codebook for the appropriate "
         "citation.",
-        CitationWarning
+        CitationWarning,
     )
     return ddi_definitions.Codebook.read(root, namespace)
 
@@ -125,7 +125,8 @@ def read_microdata(
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
-    Read in microdata as specified by the Codebook.
+    Read in microdata as specified by the Codebook. Both .dat and .csv file types 
+    are supported.
 
     Args:
         ddi: The codebook representing the data
