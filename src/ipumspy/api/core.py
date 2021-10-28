@@ -360,7 +360,7 @@ class IpumsApiClient:
         ).json()
         return output
 
-    def get_extract_info(self, collection: str, extract_id: str) -> List[Dict]:
+    def get_extract_info(self, collection: str, extract: str) -> List[Dict]:
         """
         Returns details about a past IPUMS extract 
 
@@ -372,7 +372,7 @@ class IpumsApiClient:
             An IPUMS extract definition
         """
         extract_info = self.get(
-                                f"{self.base_url}/{extract_id}",
+                                f"{self.base_url}/{extract}",
                                 params={"collection": collection, "version": "v1"},
                                 ).json()
         return extract_info
