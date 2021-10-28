@@ -1,16 +1,23 @@
 .. ipumspy master documentation file
 
+What is IPUMS?
+--------------
 
-Contributing
-------------
+IPUMS provides census and survey data from around the world integrated across time and space. 
+IPUMS integration and documentation makes it easy to study change, conduct comparative research, merge information across data types, and analyze individuals within family and community contexts. 
+Data and services available free of charge. More information on IPUMS data collections can be found at `ipums.org <https://ipums.org>`_.
 
-All contributions, bug reports, bug fixes, documentation improvements,
-enhancements and ideas are welcome.
+What is ipumspy?
+----------------
 
-A detailed overview on how to contribute can be found in the
-`contributing
-guide <https://github.com/ipums/ipumspy/blob/master/CONTRIBUTING.md>`__
-on GitHub.
+``ipumspy`` is a collection of python tools for working with data from `IPUMS <https://ipums.org>`_) and for accessing that data via API.
+
+Only rectangular microdata extracts are currently supported. We hope to add support for more complex data structures and spatial data in the future.
+
+IPUMS USA is currently the only IPUMS microdata collection available via the IPUMS microdata extract API. Support for other IPUMS data collections will be added as they become available via API.
+For more information about the IPUMS API program, IPUMS account registration, and API keys, see `here <https://external-api-docs-microdata-documentation.dev.ipums.org/>`_.
+
+``ipumspy`` can also be used to analyze rectangular extracts made through the IPUMS website for collections unavailable via API.
 
 
 Releases
@@ -18,18 +25,27 @@ Releases
 
 This library's :doc:`change-log` details changes and fixes made with each release.
 
-Issues
-------
+How to Cite
+-----------
 
-Submit issues, feature requests or bugfixes on
-`github <https://github.com/ipumspy/ipums/issues>`__.
+If you use ``ipumspy`` in the context of academic or industry research, please
+cite IPUMS. For any given extract, the appropriate citation may be found in the
+accompanying DDI at:
 
-.. toctree::
-   :maxdepth: 6
-   :caption: Introduction
-   :hidden:
+.. code:: python
 
-   intro
+    print(ddi.ipums_citation)
+
+License and Credits
+-------------------
+
+``ipumspy`` is licensed under the `Mozilla Public License Version 2.0 <https://github.com/ipums/ipumspy/blob/master/LICENSE>`_.
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
 
 .. toctree::
    :maxdepth: 6
@@ -53,25 +69,3 @@ Submit issues, feature requests or bugfixes on
    :hidden:
 
    CONTRIBUTING
-
-How to Cite
------------
-
-If you use ``ipumspy`` in the context of academic or industry research, please
-cite IPUMS. For any given extract, the appropriate citation may be found in the
-accompanying DDI at:
-
-.. code:: python
-
-    print(ddi.ipums_citation)
-
-License and Credits
--------------------
-
-``ipumspy`` is licensed under the `Mozilla Public License Version 2.0 <https://github.com/ipums/ipumspy/blob/master/LICENSE>`_.
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`

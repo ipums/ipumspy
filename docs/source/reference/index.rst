@@ -12,9 +12,9 @@ API
      - Interfaces for interacting with the IPUMS API
    * - :ref:`DDI <ddi>`
      - Python objects representing the IPUMS XML DDI
-   * - :ref `Readers <readers>`
+   * - :ref:`readers <readers>`
      - Methods to read IPUMS extract XML DDI and Data files
-   * - :ref `Utilities <utilities>`
+   * - :ref:`utilities <utilities>`
      - Convenience methods for working with IPUMS extract XML DDI and Data files
   
 

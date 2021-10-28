@@ -48,8 +48,6 @@ Once you have created a user account for your data collection of interest (curre
 
 .. code:: python
 
-    import itertools as its
-    import time
     from pathlib import Path
 
     from ipumspy import IpumsApiClient, UsaExtract
@@ -59,11 +57,13 @@ Once you have created a user account for your data collection of interest (curre
 
     ipums = IpumsApiClient(IPUMS_API_KEY)
 
-To submit an IPUMS USA extract, a list of sample IDs and a list of IPUMS USA variable names.
+To submit an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
 
-IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`_.
+IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
 
-IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`_.
+IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`__.
+
+Note that source variables can only be requested using their short form variable names. These can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
 
 .. code:: python
 
@@ -87,3 +87,16 @@ IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/varia
 
     # Get the data
     ipums_df = ipumspy.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
+
+If you lose track of the `extract` object for any reason, you may check the status
+and download the extract using only the name of the `collection` and the `extract_id`.
+
+.. code:: python
+
+    # check the extract status
+    extract_status = ipums.extract_status(extract=extract_id, collection="cps")
+    print(f"extract {extract_id} is {extract_status}")
+
+    # when the extract status is "completed", then download
+    ipums.download_extract(extract=extract_id, collection=collection_name)
+
