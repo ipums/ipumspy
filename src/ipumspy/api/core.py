@@ -230,6 +230,14 @@ class IpumsApiClient:
             raise IpumsNotFound(
                 f"There is no IPUMS extract with extract number {extract_id} in collection {collection}"
             )
+        if extract_status == "purged":
+            raise IpumsExtractNotReady(
+                f"Your IPUMS extract number {extract_id} was purged from our cache. Please resubmit your extract."
+            )
+        if extract_status == "failed":
+            raise IpumsExtractNotReady(
+                f"Your IPUMS extract number {extract_id} failed to be produced. Please resubmit your extract. If the issue lingers, please reachout to ipums@umn.edu for assistance."
+            )
         if extract_status != "completed":
             raise IpumsExtractNotReady(
                 f"Your IPUMS extract number {extract_id} is not finished yet!"
