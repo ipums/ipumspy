@@ -372,9 +372,9 @@ class IpumsApiClient:
             An IPUMS extract definition
         """
         extract_info = self.get(
-                                f"{self.base_url}/{extract}",
-                                params={"collection": collection, "version": "v1"},
-                                ).json()
+            f"{self.base_url}/{extract}",
+            params={"collection": collection, "version": "v1"},
+        ).json()
         return extract_info
 
     def resubmit_purged_extract(self, collection: str, extract: str):
@@ -392,11 +392,13 @@ class IpumsApiClient:
         """
         extract_definition = self.get_extract_info(collection, extract)
         if _extract_was_purged(extract_definition):
-           extract_args = _reconstitute_purged_extract(extract_definition)
-           extract_obj = self.submit_extract(extract_args, collection=collection)
+            extract_args = _reconstitute_purged_extract(extract_definition)
+            extract_obj = self.submit_extract(extract_args, collection=collection)
 
-           return extract_obj
+            return extract_obj
         else:
-            raise IpumsApiException(f"IPUMS {collection} extract number {extract} "
-                                    f"has not been purged. You may download the data "
-                                    f"and ddi files directly using download_extract()")
+            raise IpumsApiException(
+                f"IPUMS {collection} extract number {extract} "
+                f"has not been purged. You may download the data "
+                f"and ddi files directly using download_extract()"
+            )
