@@ -136,7 +136,9 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
 
 
 @pytest.mark.integration
-def test_resubmit_purged_extract(live_api_client: IpumsApiClient, api_client: IpumsApiClient):
+def test_resubmit_purged_extract(
+    live_api_client: IpumsApiClient, api_client: IpumsApiClient
+):
     """
     Confirm that attempts to resubmit a purged extract raises the correct errors
     when download links exist or the extract was never submitted
@@ -150,8 +152,8 @@ def test_resubmit_purged_extract(live_api_client: IpumsApiClient, api_client: Ip
     # will only be run if the latest extract from the test account has not been purged
     # so maybe not the best test...
     ext = live_api_client.retrieve_previous_extracts(collection="usa")[-1]
-    latest_id = ext['number']
-    if ext['download_links']:
+    latest_id = ext["number"]
+    if ext["download_links"]:
         with pytest.raises(IpumsApiException) as exc_info:
             live_api_client.resubmit_purged_extract(collection="usa", extract=latest_id)
         assert exc_info.value.args[0] == (
