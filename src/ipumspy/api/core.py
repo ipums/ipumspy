@@ -231,10 +231,6 @@ class IpumsApiClient:
             raise IpumsNotFound(
                 f"There is no IPUMS extract with extract number {extract_id} in collection {collection}"
             )
-        if extract_status == "purged":
-            raise IpumsExtractNotReady(
-                f"Your IPUMS extract number {extract_id} was purged from our cache. Please resubmit your extract."
-            )
         if extract_status == "failed":
             raise IpumsExtractFailure(
                 f"Your IPUMS extract number {extract_id} failed to complete. "
@@ -252,8 +248,16 @@ class IpumsApiClient:
         )
 
         download_links = response.json()["download_links"]
-        data_url = download_links["data"]["url"]
-        ddi_url = download_links["ddi_codebook"]["url"]
+        try:
+            # if the extract has been purged, the download_links element will be
+            # an empty dict
+            data_url = download_links["data"]["url"]
+            ddi_url = download_links["ddi_codebook"]["url"]
+        except KeyError:
+            raise IpumsExtractNotReady(
+                f"Your IPUMS extract number {extract_id} was purged from our cache. "
+                f"Please resubmit your extract."
+            )
         for url in [data_url, ddi_url]:
             file_name = url.split("/")[-1]
             download_path = download_dir / file_name
