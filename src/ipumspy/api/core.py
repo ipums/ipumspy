@@ -229,17 +229,19 @@ class IpumsApiClient:
         extract_status = self.extract_status(extract_id, collection=collection)
         if extract_status == "not found":
             raise IpumsNotFound(
-                f"There is no IPUMS extract with extract number {extract_id} in collection {collection}"
+                f"There is no IPUMS extract with extract number "
+                f"{extract_id} in collection {collection}"
             )
         if extract_status == "failed":
             raise IpumsExtractFailure(
-                f"Your IPUMS extract number {extract_id} failed to complete. "
-                f"Please resubmit your extract. If the issue lingers, "
-                f"please reach out to ipums@umn.edu for assistance."
+                f"Your IPUMS {collection} extract number {extract_id} "
+                f"failed to complete. Please resubmit your extract. "
+                f"If the issue lingers, please reach out to ipums@umn.edu for assistance."
             )
         if extract_status != "completed":
             raise IpumsExtractNotReady(
-                f"Your IPUMS extract number {extract_id} is not finished yet!"
+                f"Your IPUMS {collection} extract number {extract_id} "
+                f"is not finished yet!"
             )
 
         response = self.get(
@@ -255,8 +257,8 @@ class IpumsApiClient:
             ddi_url = download_links["ddi_codebook"]["url"]
         except KeyError:
             raise IpumsExtractNotReady(
-                f"Your IPUMS extract number {extract_id} was purged from our cache. "
-                f"Please resubmit your extract."
+                f"Your IPUMS {collection} extract number {extract_id} was purged "
+                f"from our cache. Please resubmit your extract."
             )
         for url in [data_url, ddi_url]:
             file_name = url.split("/")[-1]
