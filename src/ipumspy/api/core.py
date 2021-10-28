@@ -18,6 +18,7 @@ from .exceptions import (
     IpumsApiException,
     IpumsExtractNotReady,
     IpumsNotFound,
+    IpumsExtractFailure,
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
@@ -235,8 +236,10 @@ class IpumsApiClient:
                 f"Your IPUMS extract number {extract_id} was purged from our cache. Please resubmit your extract."
             )
         if extract_status == "failed":
-            raise IpumsExtractNotReady(
-                f"Your IPUMS extract number {extract_id} failed to be produced. Please resubmit your extract. If the issue lingers, please reachout to ipums@umn.edu for assistance."
+            raise IpumsExtractFailure(
+                f"Your IPUMS extract number {extract_id} failed to complete. "
+                f"Please resubmit your extract. If the issue lingers, "
+                f"please reach out to ipums@umn.edu for assistance."
             )
         if extract_status != "completed":
             raise IpumsExtractNotReady(
