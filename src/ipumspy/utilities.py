@@ -11,7 +11,9 @@ import pandas as pd
 from . import ddi as ddi_definitions
 
 
-def tabulate(vardesc: ddi_definitions.VariableDescription, df: pd.DataFrame) -> pd.DataFrame:
+def tabulate(
+    vardesc: ddi_definitions.VariableDescription, df: pd.DataFrame
+) -> pd.DataFrame:
     """
     Single-variable table with labels.
 

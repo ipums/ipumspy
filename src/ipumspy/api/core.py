@@ -72,6 +72,18 @@ class IpumsApiClient:
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
+        """
+        Class for creating and retrieving IPUMS extracts via API
+
+        Args:
+            api_key: User's IPUMs API key
+            base_url: IPUMS API url
+            num_retries: number of times a request will be retried before
+                        raising `TransientIpumsApiException`
+            session: requests session object
+
+        """
+
         self.api_key = api_key
         self.num_retries = num_retries
         self.base_url = base_url

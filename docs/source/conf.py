@@ -160,9 +160,7 @@ rst_prolog = """
 """
 
 autosummary_generate = True
-autosummary_filename_map = {
-
-}
+autosummary_filename_map = {}
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
@@ -171,9 +169,7 @@ intersphinx_mapping = {
 }
 
 # strip prompts
-copybutton_prompt_text = (
-    r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
-)
+copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
 copybutton_prompt_is_regexp = True
 
 # this is a workaround to filter out forward reference issue in
