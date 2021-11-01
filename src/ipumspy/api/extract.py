@@ -103,7 +103,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             variables=list(api_response["variables"]),
             data_format=api_response["data_format"],
         )
-    
+
     def build(self) -> Dict[str, Any]:
         """
         Convert the object into a dictionary to be passed to the IPUMS API

@@ -75,8 +75,12 @@ def _extract_was_purged(extract_definition: Dict) -> bool:
         raise IpumsNotFound("Page not found. Perhaps you passed the wrong extract id?")
 
 
-def _reconstitute_purged_extract(collection: str, api_response: Dict[str, Any]) -> BaseExtract:
-    return BaseExtract._collection_to_extract[collection].from_api_response(api_response)
+def _reconstitute_purged_extract(
+    collection: str, api_response: Dict[str, Any]
+) -> BaseExtract:
+    return BaseExtract._collection_to_extract[collection].from_api_response(
+        api_response
+    )
 
 
 class IpumsApiClient:
