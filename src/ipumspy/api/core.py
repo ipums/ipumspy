@@ -360,7 +360,7 @@ class IpumsApiClient:
         ).json()
         return output
 
-    def get_extract_info(self, collection: str, extract: str) -> List[Dict]:
+    def extract_info(self, extract: str, collection: str) -> List[Dict]:
         """
         Returns details about a past IPUMS extract 
 
@@ -377,7 +377,7 @@ class IpumsApiClient:
         ).json()
         return extract_info
 
-    def resubmit_purged_extract(self, collection: str, extract: str):
+    def resubmit_purged_extract(self, extract: str, collection: str):
         """
         Re-submits an IPUMS extract for which the data and ddi files have been purged 
         from the IPUMS extract system cache.
@@ -390,7 +390,7 @@ class IpumsApiClient:
             An IPUMS extract object. NB: the re-submitted extract will have its own
             extract id number, different from the extract_id of the purged extract!
         """
-        extract_definition = self.get_extract_info(collection, extract)
+        extract_definition = self.extract_info(extract, collection)
         if _extract_was_purged(extract_definition):
             extract_args = _reconstitute_purged_extract(extract_definition)
             extract_obj = self.submit_extract(extract_args, collection=collection)
