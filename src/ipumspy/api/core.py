@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
+from requests.models import Response
 
 from ..__version__ import __version__
 from ..types import FilenameType
@@ -74,12 +75,8 @@ def _extract_was_purged(extract_definition: Dict) -> bool:
         raise IpumsNotFound("Page not found. Perhaps you passed the wrong extract id?")
 
 
-def _reconstitute_purged_extract(extract_definition: Dict) -> Dict[str, Any]:
-    args = {}
-    args["samples"] = list(extract_definition["samples"].keys())
-    args["variables"] = list(extract_definition["variables"].keys())
-    args["data_format"] = extract_definition["data_format"]
-    return args
+def _reconstitute_purged_extract(collection: str, api_response: Dict[str, Any]) -> BaseExtract:
+    return BaseExtract._collection_to_extract[collection].from_api_response(api_response)
 
 
 class IpumsApiClient:
@@ -392,8 +389,8 @@ class IpumsApiClient:
         """
         extract_definition = self.extract_info(extract, collection)
         if _extract_was_purged(extract_definition):
-            extract_args = _reconstitute_purged_extract(extract_definition)
-            extract_obj = self.submit_extract(extract_args, collection=collection)
+            base_obj = _reconstitute_purged_extract(collection, extract_definition)
+            extract_obj = self.submit_extract(base_obj, collection=collection)
 
             return extract_obj
         else:

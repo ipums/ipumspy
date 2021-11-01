@@ -96,6 +96,14 @@ class UsaExtract(BaseExtract, collection="usa"):
         self.collection = self.collection
         """Name of an IPUMS data collection"""
 
+    @classmethod
+    def from_api_response(cls, api_response: Dict[str, Any]) -> UsaExtract:
+        return cls(
+            samples=list(api_response["samples"]),
+            variables=list(api_response["variables"]),
+            data_format=api_response["data_format"],
+        )
+    
     def build(self) -> Dict[str, Any]:
         """
         Convert the object into a dictionary to be passed to the IPUMS API
