@@ -12,6 +12,10 @@ class TransientIpumsApiException(IpumsApiException):
     pass
 
 
+class IpumsExtractFailure(IpumsApiException):
+    """ Represents the case when an extract fails for unknown reasons """
+
+
 class IpumsNotFound(IpumsApiException):
     """ Represents the case that there is no extract with the provided id """
 
