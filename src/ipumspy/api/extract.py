@@ -102,7 +102,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             samples=list(api_response["samples"]),
             variables=list(api_response["variables"]),
             data_format=api_response["data_format"],
-            description=api_response["description"]
+            description=api_response["description"],
         )
 
     def build(self) -> Dict[str, Any]:
