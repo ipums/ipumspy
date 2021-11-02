@@ -134,33 +134,8 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
         "There is no IPUMS extract with extract number " "0 in collection usa"
     )
 
-
-@pytest.mark.integration
-def test_resubmit_purged_extract(
-    live_api_client: IpumsApiClient, api_client: IpumsApiClient
-):
-    """
-    Confirm that attempts to resubmit a purged extract raises the correct errors
-    when download links exist or the extract was never submitted
-    """
     with pytest.raises(IpumsNotFound) as exc_info:
-        live_api_client.resubmit_purged_extract(collection="usa", extract="0")
+        live_api_client.resubmit_purged_extract(extract="0", collection="usa")
     assert exc_info.value.args[0] == (
         "Page not found. Perhaps you passed the wrong extract id?"
     )
-
-    # will only be run if the latest extract from the test account has not been purged
-    # so maybe not the best test...
-    ext = live_api_client.retrieve_previous_extracts(collection="usa")[-1]
-    latest_id = ext["number"]
-    if ext["download_links"]:
-        with pytest.raises(IpumsApiException) as exc_info:
-            live_api_client.resubmit_purged_extract(collection="usa", extract=latest_id)
-        assert exc_info.value.args[0] == (
-            f"IPUMS usa extract number {latest_id}"
-            f"has not been purged. You may download the data "
-            f"and ddi files directly using download_extract()"
-        )
-    else:
-        # should figure out how to test the resubmit functionality using the mock api
-        pass
