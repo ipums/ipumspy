@@ -195,6 +195,9 @@ class IpumsApiClient:
 
         extract_id = int(response.json()["number"])
         extract._id = extract_id
+
+        extract_info = response.json()
+        extract._info = extract_info
         return extract
 
     def extract_status(
@@ -375,7 +378,9 @@ class IpumsApiClient:
         ).json()
         return output
 
-    def extract_info(self, extract: str, collection: str) -> List[Dict]:
+    def get_extract_info(
+        self, extract: Union[BaseExtract, int], collection: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
         Returns details about a past IPUMS extract 
 
@@ -386,11 +391,17 @@ class IpumsApiClient:
         Returns:
             An IPUMS extract definition
         """
-        extract_info = self.get(
-            f"{self.base_url}/{extract}",
-            params={"collection": collection, "version": "v1"},
-        ).json()
-        return extract_info
+        extract_id, collection = _extract_and_collection(extract, collection)
+
+        if isinstance(extract, BaseExtract):
+            return extract._info
+        else:
+            extract_info = self.get(
+                f"{self.base_url}/{extract_id}",
+                params={"collection": collection, "version": "v1"},
+            ).json()
+
+            return extract_info
 
     def resubmit_purged_extract(self, extract: str, collection: str):
         """

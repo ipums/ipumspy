@@ -18,6 +18,7 @@ class BaseExtract:
         """
 
         self._id: Optional[int] = None
+        self._info: Optional[Dict[str, Any]] = None
         self.api_version = "v1"
 
     def __init_subclass__(cls, collection: str, **kwargs):
@@ -43,6 +44,21 @@ class BaseExtract:
         if not self._id:
             raise ValueError("Extract has not been submitted so has no id number")
         return self._id
+
+    @property
+    def extract_info(self) -> Dict[str, Any]:
+        """
+        str: The API response recieved by the ``IpumsApiClient``
+
+        Raises ``ValueError`` if the extract has no json response (probably because it 
+        has not bee submitted to IPUMS)
+        """
+        if not self._info:
+            raise ValueError(
+                "Extract has not been submitted and so has no json response"
+            )
+        else:
+            return self._info
 
 
 class OtherExtract(BaseExtract, collection="other"):
