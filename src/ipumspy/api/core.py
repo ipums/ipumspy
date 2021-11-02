@@ -384,9 +384,11 @@ class IpumsApiClient:
         """
         Returns details about a past IPUMS extract 
 
-        Args:
-            collection: The collection for which to look up most a previous extract
-            extract_id: The number of the extracts to look up.
+        extract: The extract to download. This extract must have been submitted.
+                Alternatively, can be an extract id. If an extract id is provided, you
+                must supply the collection name
+        collection: The name of the collection to pull the extract from. If None,
+            then ``extract`` must be a ``BaseExtract``
 
         Returns:
             An IPUMS extract definition
@@ -416,7 +418,7 @@ class IpumsApiClient:
             An IPUMS extract object. NB: the re-submitted extract will have its own
             extract id number, different from the extract_id of the purged extract!
         """
-        extract_definition = self.extract_info(extract, collection)
+        extract_definition = self.get_extract_info(extract, collection)
         if _extract_was_purged(extract_definition):
             base_obj = _reconstitute_purged_extract(collection, extract_definition)
             base_obj.description = f"Revision of ({base_obj.description})"
