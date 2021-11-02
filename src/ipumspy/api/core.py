@@ -411,6 +411,7 @@ class IpumsApiClient:
         extract_definition = self.extract_info(extract, collection)
         if _extract_was_purged(extract_definition):
             base_obj = _reconstitute_purged_extract(collection, extract_definition)
+            base_obj.description = f"Revision of ({base_obj.description})"
             extract_obj = self.submit_extract(base_obj, collection=collection)
 
             return extract_obj
