@@ -67,13 +67,10 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
 
 
 def _extract_was_purged(extract_definition: Dict) -> bool:
-    try:
-        if not extract_definition["download_links"]:
-            return True
-        else:
-            return False
-    except KeyError:
-        raise IpumsNotFound("Page not found. Perhaps you passed the wrong extract id?")
+    if not extract_definition["download_links"]:
+        return True
+    else:
+        return False
 
 
 def _reconstitute_purged_extract(
