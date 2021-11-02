@@ -343,7 +343,7 @@ class IpumsApiClient:
             if status == "failed":
                 # TODO: follow up with IT and user support to see if we should
                 # instruct people to email us about extract failures.
-                raise IpumsApiException(
+                raise IpumsExtractFailure(
                     f"Oops! Your {collection} extract number {extract_id} failed "
                     f"to complete."
                 )
