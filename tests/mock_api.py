@@ -48,18 +48,6 @@ async def submit_extract(
     return {"number": number}
 
 
-@app.post("/extracts")
-async def resubmit_purged_extract(
-    collection: str, extract: ExtractSpec, request: Request, version: str = "v1",
-):
-    if request.headers["Authorization"] != os.environ.get("IPUMS_API_KEY"):
-        raise HTTPException(403, "Incorrect api key")
-
-    number = await counter.get_and_increment()
-    db[number] = datetime.utcnow()
-    return {"number": number}
-
-
 @app.get("/extracts/{extract_id}")
 async def download_extract(extract_id: int, request: Request):
     if request.headers["Authorization"] != os.environ.get("IPUMS_API_KEY"):
