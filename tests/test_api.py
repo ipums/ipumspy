@@ -115,7 +115,8 @@ def test_not_found_exception_mock(api_client: IpumsApiClient):
     with pytest.raises(IpumsNotFound) as exc_info:
         api_client.download_extract(extract=0, collection="usa")
     assert exc_info.value.args[0] == (
-        "There is no IPUMS extract with extract number " "0 in collection usa"
+        "There is no IPUMS extract with extract number " "0 in collection usa. "
+        "Be sure to submit your extract before trying to download it!"
     )
 
 
@@ -131,7 +132,8 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
     with pytest.raises(IpumsNotFound) as exc_info:
         live_api_client.download_extract(extract="0", collection="usa")
     assert exc_info.value.args[0] == (
-        "There is no IPUMS extract with extract number " "0 in collection usa"
+        "There is no IPUMS extract with extract number " "0 in collection usa. "
+        "Be sure to submit your extract before trying to download it!"
     )
 
     with pytest.raises(IpumsNotFound) as exc_info:

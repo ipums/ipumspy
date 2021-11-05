@@ -261,7 +261,7 @@ class IpumsApiClient:
         if extract_status == "not found":
             raise IpumsNotFound(
                 f"There is no IPUMS extract with extract number "
-                f"{extract_id} in collection {collection}. Be sure to submit your"
+                f"{extract_id} in collection {collection}. Be sure to submit your "
                 f"extract before trying to download it!"
             )
         if extract_status == "failed":
