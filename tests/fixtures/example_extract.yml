@@ -6,7 +6,6 @@ extracts:
     variables:
       - AGE
       - SEX
-      - AGE
       - RACE
       - UH_SEX_B1
     data_structure: rectangular

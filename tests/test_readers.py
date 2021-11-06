@@ -98,3 +98,37 @@ def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
             ).all()
             seen += len(df)
     assert total_length == 7668
+
+
+def test_read_extract_description(fixtures_path: Path):
+    """
+    Make sure that equivalent extracts can be read as either json or yaml and that
+    if a badly formatted extract is provided, we raise a ValueError
+    """
+    yaml_extract = readers.read_extract_description(
+        fixtures_path / "example_extract.yml"
+    )
+    json_extract = readers.read_extract_description(
+        fixtures_path / "example_extract.json"
+    )
+
+    # Make sure they are the same
+    assert yaml_extract == json_extract
+
+    # Make sure the contents are correct
+    assert yaml_extract == {
+        "extracts": [
+            {
+                "description": "Simple IPUMS extract",
+                "collection": "usa",
+                "samples": ["us2012b"],
+                "variables": ["AGE", "SEX", "RACE", "UH_SEX_B1"],
+                "data_structure": "rectangular",
+                "data_format": "fixed_width",
+            }
+        ]
+    }
+
+    # Check that something that is neither YAML nor JSON yields a ValueError
+    with pytest.raises(ValueError):
+        readers.read_extract_description(fixtures_path / "cps_00006.xml")

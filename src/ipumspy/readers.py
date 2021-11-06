@@ -7,6 +7,7 @@
 Functions for reading and processing IPUMS data
 """
 import copy
+import json
 import re
 import warnings
 import xml.etree.ElementTree as ET
@@ -14,9 +15,12 @@ from pathlib import Path
 from typing import Iterator, List, Optional, Union
 
 import pandas as pd
+import yaml
 
 from . import ddi as ddi_definitions
 from . import fileutils
+from .fileutils import open_or_yield
+from .types import FilenameType
 
 
 class CitationWarning(Warning):
@@ -125,7 +129,7 @@ def read_microdata(
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
-    Read in microdata as specified by the Codebook. Both .dat and .csv file types 
+    Read in microdata as specified by the Codebook. Both .dat and .csv file types
     are supported.
 
     Args:
@@ -183,3 +187,29 @@ def read_microdata_chunked(
         chunksize=chunksize,
         **kwargs
     )
+
+
+def read_extract_description(extract_filename: FilenameType) -> dict:
+    """
+    Open an extract description (either yaml or json are accepted) and return it
+    as a dictionary
+
+    Args:
+        extract_filename: The path to the extract description file
+
+    Returns:
+        The contents of the extract description
+    """
+    with open_or_yield(extract_filename) as infile:
+        data = infile.read()
+
+    try:
+        return json.loads(data)
+    except json.decoder.JSONDecodeError:
+        # Assume this is a yaml file and not a json file
+        pass
+
+    try:
+        return yaml.safe_load(data)
+    except yaml.error.YAMLError:
+        raise ValueError("Contents of extract file appear to be neither json nor yaml")

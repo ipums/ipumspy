@@ -16,12 +16,10 @@ from typing import Optional, Tuple
 import click
 import pandas as pd
 import pyarrow as pa
-import yaml
 from pyarrow.parquet import ParquetWriter
 
 from . import readers
 from .api import BaseExtract, IpumsApiClient, OtherExtract
-from .fileutils import open_or_yield
 
 
 @click.group("ipums")
@@ -63,8 +61,7 @@ def ipums_api_group():
 def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
     """ Submit an extract request to the IPUMS API """
     api_client = IpumsApiClient(api_key, num_retries=num_retries)
-    with open_or_yield(extract) as infile:
-        extract_description: dict = yaml.safe_load(infile)
+    extract_description = readers.read_extract_description(extract)
 
     # For now we only support a single extract
     extract_description = extract_description["extracts"][0]
@@ -233,8 +230,7 @@ def ipums_api_submit_and_download(
     be ready and download it
     """
     api_client = IpumsApiClient(api_key, num_retries=num_retries)
-    with open_or_yield(extract) as infile:
-        extract_description: dict = yaml.safe_load(infile)
+    extract_description = readers.read_extract_description(extract)
 
     # For now we only support a single extract
     extract_description = extract_description["extracts"][0]
