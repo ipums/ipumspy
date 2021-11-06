@@ -6,12 +6,14 @@
 import gzip
 import tempfile
 from functools import partial
+from os import read
 from pathlib import Path
 
 import numpy as np
 import pytest
 
 from ipumspy import readers
+from ipumspy.api.extract import BaseExtract, UsaExtract
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
@@ -111,12 +113,16 @@ def test_read_extract_description(fixtures_path: Path):
     json_extract = readers.read_extract_description(
         fixtures_path / "example_extract.json"
     )
+    from_api_extract = readers.read_extract_description(
+        fixtures_path / "example_extract_from_api.json"
+    )
 
     # Make sure they are the same
     assert yaml_extract == json_extract
 
     # Make sure the contents are correct
     assert yaml_extract == {
+        "api_version": "v1",
         "extracts": [
             {
                 "description": "Simple IPUMS extract",
@@ -126,8 +132,23 @@ def test_read_extract_description(fixtures_path: Path):
                 "data_structure": "rectangular",
                 "data_format": "fixed_width",
             }
-        ]
+        ],
     }
+
+    extract_description = yaml_extract["extracts"][0]
+    extract = BaseExtract._collection_to_extract[extract_description["collection"]](
+        **extract_description
+    )
+
+    extract_description = from_api_extract["extracts"][0]
+    api_extract = BaseExtract._collection_to_extract[extract_description["collection"]](
+        **extract_description
+    )
+
+    assert isinstance(extract, UsaExtract)
+    assert isinstance(api_extract, UsaExtract)
+
+    assert extract.build() == api_extract.build()
 
     # Check that something that is neither YAML nor JSON yields a ValueError
     with pytest.raises(ValueError):

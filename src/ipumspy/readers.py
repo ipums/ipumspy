@@ -192,7 +192,7 @@ def read_microdata_chunked(
 def read_extract_description(extract_filename: FilenameType) -> dict:
     """
     Open an extract description (either yaml or json are accepted) and return it
-    as a dictionary
+    as a dictionary.
 
     Args:
         extract_filename: The path to the extract description file
