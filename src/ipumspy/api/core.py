@@ -16,9 +16,9 @@ from .exceptions import (
     BadIpumsApiRequest,
     IpumsAPIAuthenticationError,
     IpumsApiException,
+    IpumsExtractFailure,
     IpumsExtractNotReady,
     IpumsNotFound,
-    IpumsExtractFailure,
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
