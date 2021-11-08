@@ -66,13 +66,6 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
         return response_message
 
 
-def _extract_was_purged(extract_definition: Dict) -> bool:
-    if not extract_definition["download_links"]:
-        return True
-    else:
-        return False
-
-
 def _reconstitute_purged_extract(
     collection: str, api_response: Dict[str, Any]
 ) -> BaseExtract:
@@ -406,6 +399,25 @@ class IpumsApiClient:
 
             return extract_info
 
+    def extract_was_purged(
+        self, extract: Union[BaseExtract, int], collection: Optional[str] = None,
+    ) -> bool:
+        """
+        Returns True if the IPUMS extract's files have been purged from the cache.
+
+        extract: An extract object. This extract must have been submitted.
+                 Alternatively, can be an extract id. If an extract id is provided, you
+                 must supply the collection name
+        collection: The name of the collection to pull the extract from. If None,
+            then ``extract`` must be a ``BaseExtract``
+        """
+        extract_id, collection = _extract_and_collection(extract, collection)
+        extract_definition = self.get_extract_info(extract_id, collection)
+        if not extract_definition["download_links"]:
+            return True
+        else:
+            return False
+
     def resubmit_purged_extract(self, extract: str, collection: str):
         """
         Re-submits an IPUMS extract for which the data and ddi files have been purged 
@@ -420,7 +432,7 @@ class IpumsApiClient:
             extract id number, different from the extract_id of the purged extract!
         """
         extract_definition = self.get_extract_info(extract, collection)
-        if _extract_was_purged(extract_definition):
+        if self.extract_was_purged(extract_definition):
             base_obj = _reconstitute_purged_extract(collection, extract_definition)
             base_obj.description = f"Revision of ({base_obj.description})"
             extract_obj = self.submit_extract(base_obj, collection=collection)

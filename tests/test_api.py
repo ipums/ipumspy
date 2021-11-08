@@ -143,3 +143,12 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
     assert exc_info.value.args[0] == (
         "Page not found. Perhaps you passed the wrong extract id?"
     )
+
+
+@pytest.mark.integration
+def test_extract_was_purged(live_api_client: IpumsApiClient):
+    """
+    test extract_was_purged() method
+    """
+    was_purged = live_api_client.extract_was_purged(extract="1", collection="usa")
+    assert was_purged == True
