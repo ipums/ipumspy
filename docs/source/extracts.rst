@@ -37,7 +37,7 @@ filled in as new IPUMS data collections become accessible via API.
 Extract Objects
 ---------------
 
-Each IPUMS data collection that is accessible via API (currently just IPUMs USA) has its own extract class(?).
+Each IPUMS data collection that is accessible via API (currently just IPUMS USA) has its own extract class.
 Using this class to create your extract object obviates the need to specify a data collection.
 
 For example:
@@ -49,7 +49,18 @@ For example:
         ["AGE", "SEX"],
     )
 
-creates an IPUMS USA extract object for the IPUMS USA data collection that includes the us2012b (2012 PRCS) sample, and the variables AGE and SEX.
+instantiates a UsaExtract object for the IPUMS USA data collection that includes the us2012b (2012 PRCS) sample, and the variables AGE and SEX.
+
+Users also have the option to specify a data format and an extract description when creating an extract object.
+
+.. code:: python
+
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+        data_format="csv",
+        description="My first IPUMS USA extract!"
+    )
 
 Once an extract oject has been created, the extract object must be submitted to the API.
 
@@ -72,6 +83,17 @@ Once an extract oject has been created, the extract object must be submitted to 
     ipums.submit_extract(extract)
 
 Once an extract has been submitted, an extract ID number will be assigned to your extract.
+
+.. code:: python
+
+    extract.extract_id
+
+returns the extract id number assigned by the IPUMS extract system. In the case of your first extract, this code wil return
+
+.. code:: python
+
+    1
+
 You can use this extract ID number along with the data collection name to check on or download 
 your extract later if you lose track of the original extract object.
 
