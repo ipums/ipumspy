@@ -50,7 +50,7 @@ class BaseExtract:
         """
         str: The API response recieved by the ``IpumsApiClient``
 
-        Raises ``ValueError`` if the extract has no json response (probably because it 
+        Raises ``ValueError`` if the extract has no json response (probably because it
         has not bee submitted to IPUMS)
         """
         if not self._info:

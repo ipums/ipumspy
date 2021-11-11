@@ -142,11 +142,11 @@ class IpumsApiClient:
             raise IpumsApiException(f"other error occured: {err}")
 
     def get(self, *args, **kwargs) -> requests.Response:
-        """ GET a request from the IPUMS API """
+        """GET a request from the IPUMS API"""
         return self.request("get", *args, **kwargs)
 
     def post(self, *args, **kwargs) -> requests.Response:
-        """ POST a request from the IPUMS API """
+        """POST a request from the IPUMS API"""
         return self.request("post", *args, **kwargs)
 
     def submit_extract(
@@ -373,10 +373,12 @@ class IpumsApiClient:
         return output
 
     def get_extract_info(
-        self, extract: Union[BaseExtract, int], collection: Optional[str] = None,
+        self,
+        extract: Union[BaseExtract, int],
+        collection: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Returns details about a past IPUMS extract 
+        Returns details about a past IPUMS extract
 
         extract: The extract to download. This extract must have been submitted.
                 Alternatively, can be an extract id. If an extract id is provided, you
@@ -400,7 +402,9 @@ class IpumsApiClient:
             return extract_info
 
     def extract_was_purged(
-        self, extract: Union[BaseExtract, int], collection: Optional[str] = None,
+        self,
+        extract: Union[BaseExtract, int],
+        collection: Optional[str] = None,
     ) -> bool:
         """
         Returns True if the IPUMS extract's files have been purged from the cache.
@@ -420,7 +424,7 @@ class IpumsApiClient:
 
     def resubmit_purged_extract(self, extract: str, collection: str):
         """
-        Re-submits an IPUMS extract for which the data and ddi files have been purged 
+        Re-submits an IPUMS extract for which the data and ddi files have been purged
         from the IPUMS extract system cache.
 
         Args:

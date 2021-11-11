@@ -11,10 +11,16 @@ from dotenv import load_dotenv
 
 def pytest_addoption(parser):
     parser.addoption(
-        "--runslow", action="store_true", default=False, help="run slow tests",
+        "--runslow",
+        action="store_true",
+        default=False,
+        help="run slow tests",
     )
     parser.addoption(
-        "--runint", action="store_true", default=False, help="run integration tests",
+        "--runint",
+        action="store_true",
+        default=False,
+        help="run integration tests",
     )
 
 
