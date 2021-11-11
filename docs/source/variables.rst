@@ -3,7 +3,7 @@
 .. currentmodule:: ipumspy
 
 IPUMS Variable Metadata
-==========================
+=======================
 
 Currently, IPUMS metadata is not accessible via API and all variable information is pulled from an extract's DDI codebook.
 
