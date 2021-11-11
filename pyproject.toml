@@ -19,7 +19,7 @@ importlib-metadata = {version = "^4.0.1", python = "<3.8"}
 PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
-black = "^19.10b0"
+black = "^21.10b0"
 pylint = "^2.7.4"
 isort = "^5.8.0"
 mypy = "^0.812"
