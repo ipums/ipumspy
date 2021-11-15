@@ -31,7 +31,7 @@ def ipums_group():
 
 @ipums_group.group("api")
 def ipums_api_group():
-    """ Interact with the IPUMS API """
+    """Interact with the IPUMS API"""
 
 
 @ipums_api_group.command("submit")
@@ -59,7 +59,7 @@ def ipums_api_group():
     help="The number of retries on transient errors",
 )
 def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
-    """ Submit an extract request to the IPUMS API """
+    """Submit an extract request to the IPUMS API"""
     api_client = IpumsApiClient(api_key, num_retries=num_retries)
     extract_description = readers.read_extract_description(extract)
 
@@ -105,7 +105,7 @@ def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
 def ipums_api_check_command(
     collection: str, extract_id: int, api_key: str, num_retries: int
 ):
-    """ Check the status of an extract """
+    """Check the status of an extract"""
     api_client = IpumsApiClient(api_key, num_retries=num_retries)
     status = api_client.extract_status(extract_id, collection=collection)
 
@@ -151,7 +151,7 @@ def ipums_api_download_command(
     api_key: str,
     num_retries: int,
 ):
-    """ Download an IPUMS extract """
+    """Download an IPUMS extract"""
     api_client = IpumsApiClient(api_key, num_retries=num_retries)
     api_client.download_extract(
         extract_number, collection=collection, download_dir=output_dir

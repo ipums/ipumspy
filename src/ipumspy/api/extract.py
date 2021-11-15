@@ -39,10 +39,11 @@ class BaseExtract:
             # collection kwarg is same as default, nothing to do
             pass
         elif kwargs_dict["collection"] != self.collection:
-            warnings.warn(f"This extract object already has a default collection "
-                        f"{self.collection}. Collection Key Word Arguments "
-                        f"are ignored.",
-                        DefaultCollectionWarning,
+            warnings.warn(
+                f"This extract object already has a default collection "
+                f"{self.collection}. Collection Key Word Arguments "
+                f"are ignored.",
+                DefaultCollectionWarning,
             )
 
     def build(self) -> Dict[str, Any]:
@@ -93,7 +94,7 @@ class UsaExtract(BaseExtract, collection="usa"):
         variables: List[str],
         description: str = "My IPUMS extract",
         data_format: str = "fixed_width",
-        **kwargs
+        **kwargs,
     ):
         """
         Defining an IPUMS USA extract.

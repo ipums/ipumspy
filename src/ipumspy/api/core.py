@@ -133,11 +133,11 @@ class IpumsApiClient:
             raise IpumsApiException(f"other error occured: {err}")
 
     def get(self, *args, **kwargs) -> requests.Response:
-        """ GET a request from the IPUMS API """
+        """GET a request from the IPUMS API"""
         return self.request("get", *args, **kwargs)
 
     def post(self, *args, **kwargs) -> requests.Response:
-        """ POST a request from the IPUMS API """
+        """POST a request from the IPUMS API"""
         return self.request("post", *args, **kwargs)
 
     def submit_extract(
