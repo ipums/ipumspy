@@ -3,7 +3,13 @@ Wrappers for payloads to ship to the IPUMS API
 """
 from __future__ import annotations
 
+import warnings
+
 from typing import Any, Collection, Dict, List, Optional, Type
+
+
+class DefaultCollectionWarning(Warning):
+    pass
 
 
 class BaseExtract:
@@ -24,6 +30,20 @@ class BaseExtract:
         super().__init_subclass__(**kwargs)
         cls.collection = collection
         BaseExtract._collection_to_extract[collection] = cls
+
+    def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
+        if not kwargs_dict:
+            # no kwargs specified, nothing to do
+            pass
+        elif kwargs_dict["collection"] == self.collection:
+            # collection kwarg is same as default, nothing to do
+            pass
+        elif kwargs_dict["collection"] != self.collection:
+            warnings.warn(f"This extract object already has a default collection "
+                        f"{self.collection}. Collection Key Word Arguments "
+                        f"are ignored.",
+                        DefaultCollectionWarning,
+            )
 
     def build(self) -> Dict[str, Any]:
         """
@@ -85,9 +105,6 @@ class UsaExtract(BaseExtract, collection="usa"):
             data_format: fixed_width and csv supported
         """
 
-        # Note the for now kwargs are ignored. Perhaps better error checking
-        # would be good here?
-
         super().__init__()
         self.samples = samples
         self.variables = variables
@@ -95,6 +112,9 @@ class UsaExtract(BaseExtract, collection="usa"):
         self.data_format = data_format
         self.collection = self.collection
         """Name of an IPUMS data collection"""
+
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
 
     def build(self) -> Dict[str, Any]:
         """
