@@ -1,3 +1,4 @@
+api_version: "v1"
 extracts:
   - description: Simple IPUMS extract
     collection: usa
@@ -6,7 +7,6 @@ extracts:
     variables:
       - AGE
       - SEX
-      - AGE
       - RACE
       - UH_SEX_B1
     data_structure: rectangular

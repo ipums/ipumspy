@@ -53,8 +53,9 @@ Indices and tables
    :hidden:
 
    getting_started
-   cli
+   extracts
    variables
+   cli
 
 .. toctree::
    :maxdepth: 6

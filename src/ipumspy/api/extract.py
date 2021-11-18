@@ -3,7 +3,13 @@ Wrappers for payloads to ship to the IPUMS API
 """
 from __future__ import annotations
 
+import warnings
+
 from typing import Any, Collection, Dict, List, Optional, Type
+
+
+class DefaultCollectionWarning(Warning):
+    pass
 
 
 class BaseExtract:
@@ -18,12 +24,28 @@ class BaseExtract:
         """
 
         self._id: Optional[int] = None
+        self._info: Optional[Dict[str, Any]] = None
         self.api_version = "v1"
 
     def __init_subclass__(cls, collection: str, **kwargs):
         super().__init_subclass__(**kwargs)
         cls.collection = collection
         BaseExtract._collection_to_extract[collection] = cls
+
+    def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
+        if not kwargs_dict:
+            # no kwargs specified, nothing to do
+            pass
+        elif kwargs_dict["collection"] == self.collection:
+            # collection kwarg is same as default, nothing to do
+            pass
+        elif kwargs_dict["collection"] != self.collection:
+            warnings.warn(
+                f"This extract object already has a default collection "
+                f"{self.collection}. Collection Key Word Arguments "
+                f"are ignored.",
+                DefaultCollectionWarning,
+            )
 
     def build(self) -> Dict[str, Any]:
         """
@@ -43,6 +65,21 @@ class BaseExtract:
         if not self._id:
             raise ValueError("Extract has not been submitted so has no id number")
         return self._id
+
+    @property
+    def extract_info(self) -> Dict[str, Any]:
+        """
+        str: The API response recieved by the ``IpumsApiClient``
+
+        Raises ``ValueError`` if the extract has no json response (probably because it
+        has not bee submitted to IPUMS)
+        """
+        if not self._info:
+            raise ValueError(
+                "Extract has not been submitted and so has no json response"
+            )
+        else:
+            return self._info
 
 
 class OtherExtract(BaseExtract, collection="other"):
@@ -73,7 +110,7 @@ class UsaExtract(BaseExtract, collection="usa"):
         variables: List[str],
         description: str = "My IPUMS extract",
         data_format: str = "fixed_width",
-        **kwargs
+        **kwargs,
     ):
         """
         Defining an IPUMS USA extract.
@@ -85,9 +122,6 @@ class UsaExtract(BaseExtract, collection="usa"):
             data_format: fixed_width and csv supported
         """
 
-        # Note the for now kwargs are ignored. Perhaps better error checking
-        # would be good here?
-
         super().__init__()
         self.samples = samples
         self.variables = variables
@@ -95,6 +129,18 @@ class UsaExtract(BaseExtract, collection="usa"):
         self.data_format = data_format
         self.collection = self.collection
         """Name of an IPUMS data collection"""
+
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
+
+    @classmethod
+    def from_api_response(cls, api_response: Dict[str, Any]) -> UsaExtract:
+        return cls(
+            samples=list(api_response["samples"]),
+            variables=list(api_response["variables"]),
+            data_format=api_response["data_format"],
+            description=api_response["description"],
+        )
 
     def build(self) -> Dict[str, Any]:
         """
