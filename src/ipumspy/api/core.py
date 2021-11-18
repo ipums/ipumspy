@@ -79,7 +79,7 @@ class IpumsApiClient:
         self,
         api_key: str,
         base_url: str = "https://api.ipums.org/extracts",
-        api_version: str = "v1",
+        api_version: str = "beta",
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
@@ -437,7 +437,7 @@ class IpumsApiClient:
             An IPUMS extract object. NB: the re-submitted extract will have its own
             extract id number, different from the extract_id of the purged extract!
         """
-        
+
         if self.extract_was_purged(collection=collection, extract=extract):
             extract_definition = self.get_extract_info(extract, collection)
             base_obj = _reconstitute_purged_extract(collection, extract_definition)
