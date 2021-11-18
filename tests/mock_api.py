@@ -38,10 +38,7 @@ class ExtractSpec(BaseModel):
 
 @app.post("/extracts")
 async def submit_extract(
-    collection: str,
-    extract: ExtractSpec,
-    request: Request,
-    version: str = "v1",
+    collection: str, extract: ExtractSpec, request: Request, version: str = "v1",
 ):
     if request.headers["Authorization"] != os.environ.get("IPUMS_API_KEY"):
         raise HTTPException(403, "Incorrect api key")
@@ -68,10 +65,7 @@ async def download_extract(extract_id: int, request: Request):
 
 @app.get("/extracts")
 async def retrieve_previous_extracts(
-    collection: str,
-    request: Request,
-    limit: int = 10,
-    version: str = "v1",
+    collection: str, request: Request, limit: int = 10, version: str = "v1",
 ):
     if request.headers["Authorization"] != os.environ.get("IPUMS_API_KEY"):
         raise HTTPException(403, "Incorrect api key")

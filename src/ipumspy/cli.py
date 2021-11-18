@@ -6,35 +6,27 @@
 """
 A CLI for accessing IPUMS utilities
 """
-import copy
-import dataclasses
-import json
-import sys
-import time
 from typing import Optional, Tuple
 
 import click
-import pandas as pd
 import pyarrow as pa
 from pyarrow.parquet import ParquetWriter
 
+from ipumspy.api.exceptions import IpumsApiException
+from ipumspy.api.extract import extract_from_dict
+
 from . import readers
-from .api import BaseExtract, IpumsApiClient, OtherExtract
+from .api import IpumsApiClient
 
 
-@click.group("ipums")
-def ipums_group():
+@click.group()
+def cli():
     """
     Tools for working with IPUMS files via the command line
     """
 
 
-@ipums_group.group("api")
-def ipums_api_group():
-    """Interact with the IPUMS API"""
-
-
-@ipums_api_group.command("submit")
+@cli.command("submit")
 @click.argument(
     "extract",
     type=click.Path(exists=True, file_okay=True, dir_okay=False, allow_dash=True),
@@ -58,31 +50,26 @@ def ipums_api_group():
     type=int,
     help="The number of retries on transient errors",
 )
-def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
+def submit_command(extract: str, api_key: str, num_retries: int):
     """Submit an extract request to the IPUMS API"""
-    api_client = IpumsApiClient(api_key, num_retries=num_retries)
+    api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
     extract_description = readers.read_extract_description(extract)
+    extract = extract_from_dict(extract_description)
+    if not isinstance(extract, list):
+        extract = [extract]
 
-    # For now we only support a single extract
-    extract_description = extract_description["extracts"][0]
-    if extract_description["collection"] in BaseExtract._collection_to_extract:
-        extract = BaseExtract._collection_to_extract[extract_description["collection"]](
-            **extract_description
+    for ext in extract:
+        api_client.submit_extract(ext)
+
+        click.echo(
+            f"Your extract for collection {ext.collection} has been successfully "
+            f"submitted with number {ext.extract_id}"
         )
-    else:
-        extract = OtherExtract(extract_description["collection"], extract_description)
-
-    api_client.submit_extract(extract)
-
-    click.echo(
-        f"Your extract for collection {extract.collection} has been successfully "
-        f"submitted with number {extract.extract_id}"
-    )
 
 
-@ipums_api_group.command("check")
+@cli.command("check")
 @click.argument("collection", type=str)
-@click.argument("extract_id", type=int)
+@click.argument("extract_id", type=int, nargs=-1)
 @click.option(
     "--api-key",
     "-k",
@@ -102,19 +89,17 @@ def ipums_api_submit_command(extract: str, api_key: str, num_retries: int):
     type=int,
     help="The number of retries on transient errors",
 )
-def ipums_api_check_command(
-    collection: str, extract_id: int, api_key: str, num_retries: int
-):
+def check_command(collection: str, extract_id: Tuple[int], api_key: str, num_retries: int):
     """Check the status of an extract"""
-    api_client = IpumsApiClient(api_key, num_retries=num_retries)
-    status = api_client.extract_status(extract_id, collection=collection)
+    api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
+    for extract in extract_id:
+        status = api_client.extract_status(extract, collection=collection)
+        click.echo(f"Extract {extract_id} in collection {collection} has status {status}")
 
-    click.echo(f"Extract {extract_id} in collection {collection} has status {status}")
 
-
-@ipums_api_group.command("download")
+@cli.command("download")
 @click.argument("collection", type=str)
-@click.argument("extract_number", type=int)
+@click.argument("extract_id", type=int, nargs=-1)
 @click.option(
     "--output-dir",
     "-o",
@@ -144,21 +129,22 @@ def ipums_api_check_command(
     type=int,
     help="The number of retries on transient errors",
 )
-def ipums_api_download_command(
+def download_command(
     collection: str,
-    extract_number: int,
+    extract_id: Tuple[int],
     output_dir: Optional[str],
     api_key: str,
     num_retries: int,
 ):
     """Download an IPUMS extract"""
-    api_client = IpumsApiClient(api_key, num_retries=num_retries)
-    api_client.download_extract(
-        extract_number, collection=collection, download_dir=output_dir
-    )
+    api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
+    for extract in extract_id:
+        api_client.download_extract(
+            extract, collection=collection, download_dir=output_dir
+        )
 
 
-@ipums_api_group.command("submit-and-download")
+@cli.command("submit-and-download")
 @click.argument(
     "extract",
     type=click.Path(exists=True, file_okay=True, dir_okay=False, allow_dash=True),
@@ -216,7 +202,7 @@ def ipums_api_download_command(
     type=float,
     help="Maximum time (in seconds) to wait for an extract before giving up",
 )
-def ipums_api_submit_and_download(
+def submit_and_download_command(
     extract: str,
     api_key: str,
     output_dir: Optional[str],
@@ -229,65 +215,45 @@ def ipums_api_submit_and_download(
     Submit an extract request to the IPUMS API, then wait for it to
     be ready and download it
     """
-    api_client = IpumsApiClient(api_key, num_retries=num_retries)
+    api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
     extract_description = readers.read_extract_description(extract)
+    extract = extract_from_dict(extract_description)
+    if not isinstance(extract, list):
+        extract = [extract]
 
-    # For now we only support a single extract
-    extract_description = extract_description["extracts"][0]
-    if extract_description["collection"] in BaseExtract._collection_to_extract:
-        extract = BaseExtract._collection_to_extract[extract_description["collection"]](
-            **extract_description
+    for ext in extract:
+        api_client.submit_extract(ext)
+
+        click.echo(
+            f"Your extract for collection {ext.collection} has been successfully "
+            f"submitted with number {ext.extract_id}"
         )
-    else:
-        extract = OtherExtract(extract_description["collection"], extract_description)
 
-    api_client.submit_extract(extract)
-
-    click.echo(
-        f"Your extract for collection {extract.collection} has been successfully "
-        f"submitted with number {extract.extract_id}"
-    )
-
-    click.echo("Waiting for it to be ready...")
-
-    wait_time = inital_wait_time
-    total_time = 0
-    while True:
-        if timeout and (total_time >= timeout):
-            click.echo("Too much time has passed. Stopping waiting")
-            sys.exit(1)
-
-        status = api_client.extract_status(extract)
-        if status != "completed":
-            click.echo(
-                f"Extract in collection {extract.collection} with id "
-                f"{extract.extract_id} is not yet ready. Sleeping for "
-                f"{wait_time:0.2f} seconds..."
+    click.echo("Waiting for extract(s) to be ready...")
+    for ext in extract:
+        try:
+            api_client.wait_for_extract(
+                ext,
+                inital_wait_time=float(inital_wait_time),
+                max_wait_time=float(max_wait_time),
+                timeout=timeout if timeout is not None else float(timeout),
             )
-            time.sleep(wait_time)
-            total_time += wait_time
-            wait_time = max(wait_time * 2, max_wait_time)
-        else:
             click.echo(
-                f"Extract in collection {extract.collection} with id "
-                f"{extract.extract_id} is ready. Downloading..."
+                f"Downloading extract '{ext.description}' in collection {ext.collection}..."
             )
-            break
+            api_client.download_extract(extract, download_dir=output_dir)
+            click.echo(
+                f"Done downloading '{ext.description}' in collection {ext.collection}"
+            )
+        except IpumsApiException as exc:
+            click.echo(
+                f"Something went wrong for extract '{ext.description}' in collection {ext.collection}: {exc}"
+            )
 
-    api_client.download_extract(extract, download_dir=output_dir)
-    click.echo("Download completed.")
-
-
-def _append_ipums_schema(df: pd.DataFrame, ddi):
-    # Append ipums data to schema
-    schema = pa.Schema.from_pandas(df)
-    metadata = copy.deepcopy(schema.metadata)
-    metadata[b"ipums"] = json.dumps(dataclasses.asdict(ddi)).encode("utf8")
-    schema = schema.with_metadata(metadata)
-    return schema
+    click.echo("All download(s) complete.")
 
 
-@ipums_group.command("convert")
+@cli.command("convert")
 @click.argument("ddifile", type=click.Path(exists=True))
 @click.argument("datafile", type=click.Path(exists=True))
 @click.argument("outfile", type=click.Path())
@@ -330,7 +296,7 @@ def convert_command(
         outfile, pa.Schema.from_pandas(tmp_df), compression="snappy"
     ) as writer:
         reader = readers.read_microdata_chunked(
-            ddi, filename=datafile, chunksize=100000
+            ddi, filename=datafile, chunksize=100_000
         )
         # TODO(khw): Figure out how to get a progressbar of the appropriate length here
         for df in reader:
@@ -348,4 +314,4 @@ def convert_command(
 
 
 if __name__ == "__main__":
-    ipums_group()
+    cli()
