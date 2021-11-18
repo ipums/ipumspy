@@ -79,6 +79,7 @@ class IpumsApiClient:
         self,
         api_key: str,
         base_url: str = "https://api.ipums.org/extracts",
+        api_version: str = "v1",
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
@@ -97,6 +98,7 @@ class IpumsApiClient:
         self.api_key = api_key
         self.num_retries = num_retries
         self.base_url = base_url
+        self.api_version = api_version
 
         self.session = session or requests.session()
         self.session.headers.update(
@@ -182,7 +184,7 @@ class IpumsApiClient:
 
         response = self.post(
             self.base_url,
-            params={"collection": extract.collection, "version": "v1"},
+            params={"collection": extract.collection, "version": self.api_version},
             json=extract.build(),
         )
 
@@ -216,7 +218,7 @@ class IpumsApiClient:
         try:
             response = self.get(
                 f"{self.base_url}/{extract_id}",
-                params={"collection": collection, "version": "v1"},
+                params={"collection": collection, "version": self.api_version},
             )
         except IpumsNotFound:
             return "not found"
@@ -271,7 +273,7 @@ class IpumsApiClient:
 
         response = self.get(
             f"{self.base_url}/{extract_id}",
-            params={"collection": collection, "version": "v1"},
+            params={"collection": collection, "version": self.api_version},
         )
 
         download_links = response.json()["download_links"]
@@ -368,7 +370,7 @@ class IpumsApiClient:
         # TODO: Wrap results in Extract objects.
         output = self.get(
             self.base_url,
-            params={"collection": collection, "limit": limit, "version": "v1"},
+            params={"collection": collection, "limit": limit, "version": self.api_version},
         ).json()
         return output
 
@@ -396,7 +398,7 @@ class IpumsApiClient:
         else:
             extract_info = self.get(
                 f"{self.base_url}/{extract_id}",
-                params={"collection": collection, "version": "v1"},
+                params={"collection": collection, "version": self.api_version},
             ).json()
 
             return extract_info
