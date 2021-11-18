@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import requests
+from requests.models import Response
 
 from ..__version__ import __version__
 from ..types import FilenameType
@@ -63,6 +64,14 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
         return "\n".join(response_message)
     else:
         return response_message
+
+
+def _reconstitute_purged_extract(
+    collection: str, api_response: Dict[str, Any]
+) -> BaseExtract:
+    return BaseExtract._collection_to_extract[collection].from_api_response(
+        api_response
+    )
 
 
 class IpumsApiClient:
@@ -133,11 +142,11 @@ class IpumsApiClient:
             raise IpumsApiException(f"other error occured: {err}")
 
     def get(self, *args, **kwargs) -> requests.Response:
-        """ GET a request from the IPUMS API """
+        """GET a request from the IPUMS API"""
         return self.request("get", *args, **kwargs)
 
     def post(self, *args, **kwargs) -> requests.Response:
-        """ POST a request from the IPUMS API """
+        """POST a request from the IPUMS API"""
         return self.request("post", *args, **kwargs)
 
     def submit_extract(
@@ -179,6 +188,9 @@ class IpumsApiClient:
 
         extract_id = int(response.json()["number"])
         extract._id = extract_id
+
+        extract_info = response.json()
+        extract._info = extract_info
         return extract
 
     def extract_status(
@@ -242,7 +254,8 @@ class IpumsApiClient:
         if extract_status == "not found":
             raise IpumsNotFound(
                 f"There is no IPUMS extract with extract number "
-                f"{extract_id} in collection {collection}"
+                f"{extract_id} in collection {collection}. Be sure to submit your "
+                f"extract before trying to download it!"
             )
         if extract_status == "failed":
             raise IpumsExtractFailure(
@@ -324,7 +337,7 @@ class IpumsApiClient:
             if status == "failed":
                 # TODO: follow up with IT and user support to see if we should
                 # instruct people to email us about extract failures.
-                raise IpumsApiException(
+                raise IpumsExtractFailure(
                     f"Oops! Your {collection} extract number {extract_id} failed "
                     f"to complete."
                 )
@@ -358,3 +371,80 @@ class IpumsApiClient:
             params={"collection": collection, "limit": limit, "version": "v1"},
         ).json()
         return output
+
+    def get_extract_info(
+        self,
+        extract: Union[BaseExtract, int],
+        collection: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Returns details about a past IPUMS extract
+
+        extract: The extract to download. This extract must have been submitted.
+                Alternatively, can be an extract id. If an extract id is provided, you
+                must supply the collection name
+        collection: The name of the collection to pull the extract from. If None,
+            then ``extract`` must be a ``BaseExtract``
+
+        Returns:
+            An IPUMS extract definition
+        """
+        extract_id, collection = _extract_and_collection(extract, collection)
+
+        if isinstance(extract, BaseExtract):
+            return extract._info
+        else:
+            extract_info = self.get(
+                f"{self.base_url}/{extract_id}",
+                params={"collection": collection, "version": "v1"},
+            ).json()
+
+            return extract_info
+
+    def extract_was_purged(
+        self,
+        extract: Union[BaseExtract, int],
+        collection: Optional[str] = None,
+    ) -> bool:
+        """
+        Returns True if the IPUMS extract's files have been purged from the cache.
+
+        extract: An extract object. This extract must have been submitted.
+                 Alternatively, can be an extract id. If an extract id is provided, you
+                 must supply the collection name
+        collection: The name of the collection to pull the extract from. If None,
+            then ``extract`` must be a ``BaseExtract``
+        """
+        extract_id, collection = _extract_and_collection(extract, collection)
+        extract_definition = self.get_extract_info(extract_id, collection)
+        if not extract_definition["download_links"]:
+            return True
+        else:
+            return False
+
+    def resubmit_purged_extract(self, extract: str, collection: str):
+        """
+        Re-submits an IPUMS extract for which the data and ddi files have been purged
+        from the IPUMS extract system cache.
+
+        Args:
+            collection: The collection of the purged extract to be re-submitted
+            extract_id: The extract id of the purged extract to be re-submitted
+
+        Returns:
+            An IPUMS extract object. NB: the re-submitted extract will have its own
+            extract id number, different from the extract_id of the purged extract!
+        """
+        extract_definition = self.get_extract_info(extract, collection)
+        if self.extract_was_purged(extract_definition):
+            base_obj = _reconstitute_purged_extract(collection, extract_definition)
+            base_obj.description = f"Revision of ({base_obj.description})"
+            extract_obj = self.submit_extract(base_obj, collection=collection)
+
+            return extract_obj
+        else:
+            raise IpumsApiException(
+                f"IPUMS {collection} extract number {extract} "
+                f"has not been purged. You may download the data "
+                f"and ddi files directly using download_extract()"
+            )

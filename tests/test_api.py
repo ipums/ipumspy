@@ -6,7 +6,7 @@ import pytest
 
 from ipumspy import api
 from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract
-from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsNotFound
+from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsNotFound, IpumsApiException
 
 
 @pytest.fixture(scope="module")
@@ -39,7 +39,10 @@ def test_usa_build_extract():
     """
     Confirm that test extract formatted correctly
     """
-    extract = UsaExtract(["us2012b"], ["AGE", "SEX"],)
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
     assert extract.collection == "usa"
     assert extract.build() == {
         "data_structure": {"rectangular": {"on": "P"}},
@@ -61,7 +64,10 @@ def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
-    extract = UsaExtract(["us2012b"], ["AGE", "SEX"],)
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
 
     api_client.submit_extract(extract)
     assert extract.extract_id == 10
@@ -115,7 +121,9 @@ def test_not_found_exception_mock(api_client: IpumsApiClient):
     with pytest.raises(IpumsNotFound) as exc_info:
         api_client.download_extract(extract=0, collection="usa")
     assert exc_info.value.args[0] == (
-        "There is no IPUMS extract with extract number " "0 in collection usa"
+        "There is no IPUMS extract with extract number "
+        "0 in collection usa. "
+        "Be sure to submit your extract before trying to download it!"
     )
 
 
@@ -131,5 +139,22 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
     with pytest.raises(IpumsNotFound) as exc_info:
         live_api_client.download_extract(extract="0", collection="usa")
     assert exc_info.value.args[0] == (
-        "There is no IPUMS extract with extract number " "0 in collection usa"
+        "There is no IPUMS extract with extract number "
+        "0 in collection usa. "
+        "Be sure to submit your extract before trying to download it!"
     )
+
+    with pytest.raises(IpumsNotFound) as exc_info:
+        live_api_client.resubmit_purged_extract(extract="0", collection="usa")
+    assert exc_info.value.args[0] == (
+        "Page not found. Perhaps you passed the wrong extract id?"
+    )
+
+
+@pytest.mark.integration
+def test_extract_was_purged(live_api_client: IpumsApiClient):
+    """
+    test extract_was_purged() method
+    """
+    was_purged = live_api_client.extract_was_purged(extract="1", collection="usa")
+    assert was_purged == True
