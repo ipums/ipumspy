@@ -6,7 +6,7 @@ import pytest
 
 from ipumspy import api
 from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract
-from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsNotFound, IpumsApiException
+from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsApiException, IpumsNotFound
 
 
 @pytest.fixture(scope="module")
@@ -39,7 +39,10 @@ def test_usa_build_extract():
     """
     Confirm that test extract formatted correctly
     """
-    extract = UsaExtract(["us2012b"], ["AGE", "SEX"],)
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
     assert extract.collection == "usa"
     assert extract.build() == {
         "data_structure": {"rectangular": {"on": "P"}},
@@ -61,7 +64,10 @@ def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
-    extract = UsaExtract(["us2012b"], ["AGE", "SEX"],)
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
 
     api_client.submit_extract(extract)
     assert extract.extract_id == 10

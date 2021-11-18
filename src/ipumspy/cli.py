@@ -89,12 +89,16 @@ def submit_command(extract: str, api_key: str, num_retries: int):
     type=int,
     help="The number of retries on transient errors",
 )
-def check_command(collection: str, extract_id: Tuple[int], api_key: str, num_retries: int):
+def check_command(
+    collection: str, extract_id: Tuple[int], api_key: str, num_retries: int
+):
     """Check the status of an extract"""
     api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
     for extract in extract_id:
         status = api_client.extract_status(extract, collection=collection)
-        click.echo(f"Extract {extract_id} in collection {collection} has status {status}")
+        click.echo(
+            f"Extract {extract_id} in collection {collection} has status {status}"
+        )
 
 
 @cli.command("download")

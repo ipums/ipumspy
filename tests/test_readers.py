@@ -17,7 +17,7 @@ from ipumspy.api.extract import BaseExtract, UsaExtract
 
 
 def _assert_cps_000006(data: pd.DataFrame):
-    """ Run all the checks for the data frame returned by our readers """
+    """Run all the checks for the data frame returned by our readers"""
     assert len(data) == 7668
     assert len(data.columns) == 8
     assert (data["YEAR"].iloc[:5] == 1962).all()
