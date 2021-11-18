@@ -437,8 +437,9 @@ class IpumsApiClient:
             An IPUMS extract object. NB: the re-submitted extract will have its own
             extract id number, different from the extract_id of the purged extract!
         """
-        extract_definition = self.get_extract_info(extract, collection)
-        if self.extract_was_purged(extract_definition):
+        
+        if self.extract_was_purged(collection=collection, extract=extract):
+            extract_definition = self.get_extract_info(extract, collection)
             base_obj = _reconstitute_purged_extract(collection, extract_definition)
             base_obj.description = f"Revision of ({base_obj.description})"
             extract_obj = self.submit_extract(base_obj, collection=collection)
