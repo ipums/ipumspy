@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Union
 from xml.etree import ElementTree as ET
+from xml.etree.ElementTree import Element
 
 
 @dataclass(frozen=True)
@@ -47,7 +48,7 @@ class VariableDescription:
     """number of implied decimal places"""
 
     @classmethod
-    def read(cls, elt: ET, ddi_namespace: str) -> VariableDescription:
+    def read(cls, elt: Element, ddi_namespace: str) -> VariableDescription:
         """
         Read an XML description of a variable.
 
@@ -111,7 +112,7 @@ class FileDescription:
     """IPUMS physical address"""
 
     @classmethod
-    def read(cls, elt: ET, ddi_namespace: str) -> FileDescription:
+    def read(cls, elt: Element, ddi_namespace: str) -> FileDescription:
         """
         Read a FileDescription from the parsed XML
 

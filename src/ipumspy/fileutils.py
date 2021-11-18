@@ -85,15 +85,16 @@ def xml_opener(ddi_file: FileType):
 
 
 @contextmanager
-def data_opener(data_file: FileType, encoding: str = "iso-8859-1"):
+def data_opener(data_file: FileType, encoding: str = "iso-8859-1", mode: str = "rt"):
     """
-    Yield an opened data file with method 'rt'. Can be any of the following:
+    Yield an opened data file. Can be any of the following:
         * An already opened file (we just yield it back)
         * A path to a dat file or a gzipped dat file (we open and yield)
 
     Args:
         data_file: The path as described above
-        encoding: The encoding of the data file. ISO-8859-1 seems to be IPUMS default
+        encoding: The encoding of the data file. ISO-8859-1 is the IPUMS default
+        mode: The mode to open the file in
 
     Raises:
         OSError: If the passed path does not exist
@@ -126,8 +127,13 @@ def data_opener(data_file: FileType, encoding: str = "iso-8859-1"):
         with gzip.open(data_file, "rt", encoding=encoding) as infile:
             yield infile
     else:
-        with open(data_file, "rt", encoding=encoding) as infile:
-            yield infile
+        if "b" in mode:
+            # Binary mode. Does not take encoding argument
+            with open(data_file, mode=mode) as infile:
+                yield infile
+        else:
+            with open(data_file, mode=mode, encoding=encoding) as infile:
+                yield infile
 
 
 @contextmanager

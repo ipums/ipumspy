@@ -6,7 +6,7 @@ import pytest
 
 from ipumspy import api
 from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract
-from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsNotFound, IpumsApiException
+from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsApiException, IpumsNotFound
 
 
 @pytest.fixture(scope="module")

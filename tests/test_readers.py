@@ -6,14 +6,25 @@
 import gzip
 import tempfile
 from functools import partial
-from os import read
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import pytest
 
 from ipumspy import readers
 from ipumspy.api.extract import BaseExtract, UsaExtract
+
+
+def _assert_cps_000006(data: pd.DataFrame):
+    """Run all the checks for the data frame returned by our readers"""
+    assert len(data) == 7668
+    assert len(data.columns) == 8
+    assert (data["YEAR"].iloc[:5] == 1962).all()
+    assert (
+        data["HWTSUPP"].iloc[:5]
+        == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])
+    ).all()
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
@@ -24,13 +35,7 @@ def test_can_read_rectangular_dat_gz(fixtures_path: Path):
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00006.xml")
     data = readers.read_microdata(ddi, fixtures_path / "cps_00006.dat.gz")
 
-    assert len(data) == 7668
-    assert len(data.columns) == 8
-    assert (data["YEAR"].iloc[:5] == 1962).all()
-    assert (
-        data["HWTSUPP"].iloc[:5]
-        == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])
-    ).all()
+    _assert_cps_000006(data)
 
 
 def test_can_read_rectangular_csv_gz(fixtures_path: Path):
@@ -41,13 +46,7 @@ def test_can_read_rectangular_csv_gz(fixtures_path: Path):
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00006.xml")
     data = readers.read_microdata(ddi, fixtures_path / "cps_00006.csv.gz")
 
-    assert len(data) == 7668
-    assert len(data.columns) == 8
-    assert (data["YEAR"].iloc[:5] == 1962).all()
-    assert (
-        data["HWTSUPP"].iloc[:5]
-        == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])
-    ).all()
+    _assert_cps_000006(data)
 
 
 def test_can_read_rectangular_dat(fixtures_path: Path):
@@ -67,13 +66,17 @@ def test_can_read_rectangular_dat(fixtures_path: Path):
 
         data = readers.read_microdata(ddi, tmpdir / "cps_00006.dat")
 
-    assert len(data) == 7668
-    assert len(data.columns) == 8
-    assert (data["YEAR"].iloc[:5] == 1962).all()
-    assert (
-        data["HWTSUPP"].iloc[:5]
-        == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])
-    ).all()
+    _assert_cps_000006(data)
+
+
+def test_can_read_rectangular_parquet(fixtures_path: Path):
+    """
+    Confirm that we can read rectangular microdata in .parquet format
+    """
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00006.xml")
+    data = readers.read_microdata(ddi, fixtures_path / "cps_00006.parquet")
+
+    _assert_cps_000006(data)
 
 
 @pytest.mark.slow
@@ -122,11 +125,11 @@ def test_read_extract_description(fixtures_path: Path):
 
     # Make sure the contents are correct
     assert yaml_extract == {
-        "api_version": "v1",
         "extracts": [
             {
                 "description": "Simple IPUMS extract",
                 "collection": "usa",
+                "api_version": "beta",
                 "samples": ["us2012b"],
                 "variables": ["AGE", "SEX", "RACE", "UH_SEX_B1"],
                 "data_structure": "rectangular",

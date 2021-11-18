@@ -4,8 +4,7 @@ Wrappers for payloads to ship to the IPUMS API
 from __future__ import annotations
 
 import warnings
-
-from typing import Any, Collection, Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Type, Union
 
 
 class DefaultCollectionWarning(Warning):
@@ -154,3 +153,25 @@ class UsaExtract(BaseExtract, collection="usa"):
             "samples": {sample: {} for sample in self.samples},
             "variables": {variable.upper(): {} for variable in self.variables},
         }
+
+
+def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
+    """
+    Convert an extract that is currently specified as a dictionary (usually from a file)
+    into a BaseExtract object. If multiple extracts are specified, return a
+    List[BaseExtract] objects.
+
+    Args:
+        dct: The dictionary specifying the extract(s)
+
+    Returns:
+        The extract(s) specified by dct
+    """
+    if "extracts" in dct:
+        # We are returning several extracts
+        return [extract_from_dict(extract) for extract in dct["extracts"]]
+
+    if dct["collection"] in BaseExtract._collection_to_extract:
+        return BaseExtract._collection_to_extract[dct["collection"]](**dct)
+
+    return OtherExtract(dct["collection"], dct)

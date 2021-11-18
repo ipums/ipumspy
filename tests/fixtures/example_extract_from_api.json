@@ -1,9 +1,9 @@
 {
-  "api_version": "v1",
   "extracts": [
     {
       "description": "Simple IPUMS extract",
       "collection": "usa",
+      "api_version": "beta",
       "samples": {
         "us2012b": {}
       },

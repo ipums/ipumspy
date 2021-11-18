@@ -33,10 +33,10 @@ def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
 
     Args:
         ddi_file: path to an IPUMS DDI XML
+
     Returns:
         A parsed IPUMS ddi codebook
     """
-
     with fileutils.xml_opener(ddi_file) as opened_file:
         root = ET.parse(opened_file).getroot()
 
@@ -89,6 +89,7 @@ def _read_microdata(
             }
         )
         reader = pd.read_fwf
+        mode = "rt"
 
         # Fixed width files also require fixing decimal expansions
         def _fix_decimal_expansion(df):
@@ -102,8 +103,20 @@ def _read_microdata(
         # A csv!
         reader = pd.read_csv
         kwargs.update({"usecols": [desc.name for desc in data_description]})
+        mode = "rt"
 
         # CSVs have correct decimal expansions already; so we just make
+        # this the identity function
+        def _fix_decimal_expansion(df):
+            return df
+
+    elif ".parquet" in filename.suffixes:
+        # A parquet file
+        reader = pd.read_parquet
+        kwargs.update({"columns": [desc.name for desc in data_description]})
+        mode = "rb"
+
+        # Parquets have correct decimal expansions already; so we just make
         # this the identity function
         def _fix_decimal_expansion(df):
             return df
@@ -111,7 +124,7 @@ def _read_microdata(
     else:
         raise ValueError("Only CSV and .dat files are supported")
 
-    with fileutils.data_opener(filename, encoding=encoding) as infile:
+    with fileutils.data_opener(filename, encoding=encoding, mode=mode) as infile:
         if not iterator:
             data = [reader(infile, **kwargs)]
         else:
@@ -139,7 +152,9 @@ def read_microdata(
                         working directory
         encoding: The encoding of the data file. If not present, reads from ddi
         subset: A list of variable names to keep. If None, will keep all
-        kwargs: keyword args to be passed to pd.read_fwf
+        kwargs: keyword args to be passed to the engine (pd.read_fwf, pd.read_csv, or
+            pd.read_parquet depending on the file type)
+
     Returns:
         pandas data frame and pandas text file reader
     """

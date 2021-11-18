@@ -44,7 +44,7 @@ IPUMS API Wrappers for Python
 Quick Start
 ***********
 
-Once you have created a user account for your data collection of interest (currently only IPUMS USA is available via API) and generated an API key...
+Once you have created a user account for your data collection of interest (currently only IPUMS USA is available via API) and generated an API key.
 
 .. code:: python
 
@@ -100,3 +100,36 @@ and download the extract using only the name of the `collection` and the `extrac
     # when the extract status is "completed", then download
     ipums.download_extract(extract=extract_id, collection=collection_name)
 
+Specifying an Extract as a File
+*******************************
+
+A goal of IPUMS-py is to make it easier to share IPUMS extracts with other researchers.
+For instance, we envision being able to include an ``ipums.yml`` file to your analysis
+code which would allow other researchers to download *exactly* the extract that you
+utilize in your own analysis.
+
+To pull the extract we specified made above, create a file called ``ipums.yml`` that
+contains the following:
+
+.. code:: yaml
+
+    description: Simple IPUMS extract
+    collection: usa
+    api_version: beta
+    samples:
+      - us2012b
+    variables:
+      - AGE
+      - SEX
+
+Then you can run the following code:
+
+.. code:: python
+
+    import yaml
+    from ipumspy import extract_from_dict
+
+    with open("ipums.yml") as infile:
+        extract = extract_from_dict(yaml.safe_load(infile))
+
+Alternatively, you can utilize the :doc:`CLI <cli>`.
