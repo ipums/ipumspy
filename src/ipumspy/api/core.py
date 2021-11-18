@@ -370,7 +370,11 @@ class IpumsApiClient:
         # TODO: Wrap results in Extract objects.
         output = self.get(
             self.base_url,
-            params={"collection": collection, "limit": limit, "version": self.api_version},
+            params={
+                "collection": collection,
+                "limit": limit,
+                "version": self.api_version,
+            },
         ).json()
         return output
 
