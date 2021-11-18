@@ -23,6 +23,12 @@ def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
     # Even if the name is not UPPERCASE?
     assert cps_ddi.get_variable_info("year").id == "YEAR"
 
+    # does it give the right codes
+    assert cps_ddi.get_variable_info("year").codes == {'1962': 1962}
+
+    # does it give the right description
+    assert cps_ddi.get_variable_info("year").description == "Survey year"
+
     # And does it raise a ValueError if the variable does not exist?
     with pytest.raises(ValueError):
         cps_ddi.get_variable_info("foo")
