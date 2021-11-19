@@ -1,0 +1,6 @@
+[run]
+omit =
+    # omit tests
+    */tests/*
+    # omit this single file
+    src/ipumspy/cli.py
