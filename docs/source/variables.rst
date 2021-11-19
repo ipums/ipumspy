@@ -15,7 +15,7 @@ These can ge returned using the :meth:`ipumspy.ddi.VariableDescription.get_varia
 
 .. code:: python
 
-    from ipumspy import readers, ddi, utilities
+    from ipumspy import readers
 
     # read ddi and data
     ddi_codebook = readers.read_ipums_ddi([ddi xml file path])
@@ -55,5 +55,5 @@ The following retains only women over the age of 16 in ``ipums_df``
 
 .. code:: python
 
-    adult_women = ipums_df[(ipums_df['SEX'] == sex_info.codes['Female']) & 
+    adult_women = ipums_df[(ipums_df['SEX'] == sex_info.codes['Female']) &
                            (ipums_df['AGE'] > 16)]
