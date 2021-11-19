@@ -24,24 +24,29 @@ def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
     assert cps_ddi.get_variable_info("year").id == "YEAR"
 
     # does it give the right description
-    assert cps_ddi.get_variable_info("year").description == "YEAR reports the year in which the survey was conducted.  YEARP is repeated on person records."
+    assert (
+        cps_ddi.get_variable_info("year").description
+        == "YEAR reports the year in which the survey was conducted.  YEARP is repeated on person records."
+    )
 
     # does it return the name
     assert cps_ddi.get_variable_info("year").name == "YEAR"
 
     # codes
-    assert cps_ddi.get_variable_info("month").codes == {"January": 1,
-                                                        "February": 2,
-                                                        "March": 3,
-                                                        "April": 4,
-                                                        "May": 5,
-                                                        "June": 6,
-                                                        "July": 7,
-                                                        "August": 8,
-                                                        "September": 9,
-                                                        "October": 10,
-                                                        "November": 11,
-                                                        "December": 12}
+    assert cps_ddi.get_variable_info("month").codes == {
+        "January": 1,
+        "February": 2,
+        "March": 3,
+        "April": 4,
+        "May": 5,
+        "June": 6,
+        "July": 7,
+        "August": 8,
+        "September": 9,
+        "October": 10,
+        "November": 11,
+        "December": 12,
+    }
 
     # And does it raise a ValueError if the variable does not exist?
     with pytest.raises(ValueError):
