@@ -60,7 +60,7 @@ class VariableDescription:
 
     @property
     def numpy_type(self) -> type:
-        """The Python type of this variable"""
+        """The Numpy type of this variable"""
         if self.vartype == "numeric":
             if (self.shift is None) or (self.shift == 0):
                 return np.int64
