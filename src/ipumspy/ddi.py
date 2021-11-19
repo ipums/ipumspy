@@ -14,6 +14,7 @@ from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element
 
 import numpy as np
+import pandas as pd
 
 
 @dataclass(frozen=True)
@@ -51,7 +52,9 @@ class VariableDescription:
 
     @property
     def python_type(self) -> type:
-        """The Python type of this variable"""
+        """
+        The Python type of this variable.
+        """
         if self.vartype == "numeric":
             if (self.shift is None) or (self.shift == 0):
                 return int
@@ -60,12 +63,28 @@ class VariableDescription:
 
     @property
     def numpy_type(self) -> type:
-        """The Numpy type of this variable"""
+        """
+        The Numpy type of this variable. Note that this type must support nullability,
+        and hence even for integers it is "float64".
+        """
         if self.vartype == "numeric":
             if (self.shift is None) or (self.shift == 0):
-                return np.int64
+                return np.float64
             return np.float64
         return str
+
+    @property
+    def pandas_type(self) -> type:
+        """
+        The Pandas type of this variable. This supports the recently added nullable
+        pandas dtypes, and so the integer type is "Int64" and the string type is
+        "string" (instead of "object")
+        """
+        if self.vartype == "numeric":
+            if (self.shift is None) or (self.shift == 0):
+                return pd.Int64Dtype()
+            return np.float64
+        return pd.StringDtype()
 
     @classmethod
     def read(cls, elt: Element, ddi_namespace: str) -> VariableDescription:

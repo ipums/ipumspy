@@ -137,7 +137,12 @@ def _read_microdata(
             kwargs.update({"iterator": True, "chunksize": chunksize})
             data = reader(infile, **kwargs)
 
-        yield from (_fix_decimal_expansion(df) for df in data)
+        yield from (
+            _fix_decimal_expansion(df).astype(
+                {desc.name: desc.pandas_type for desc in ddi.data_description}
+            )
+            for df in data
+        )
 
 
 def read_microdata(
