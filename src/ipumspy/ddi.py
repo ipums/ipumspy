@@ -13,6 +13,8 @@ from typing import Dict, List, Optional, Union
 from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element
 
+import numpy as np
+
 
 @dataclass(frozen=True)
 class VariableDescription:
@@ -46,6 +48,24 @@ class VariableDescription:
     """variable data type"""
     shift: Optional[int]
     """number of implied decimal places"""
+
+    @property
+    def python_type(self) -> type:
+        """The Python type of this variable"""
+        if self.vartype == "numeric":
+            if (self.shift is None) or (self.shift == 0):
+                return int
+            return float
+        return str
+
+    @property
+    def numpy_type(self) -> type:
+        """The Python type of this variable"""
+        if self.vartype == "numeric":
+            if (self.shift is None) or (self.shift == 0):
+                return np.int64
+            return np.float64
+        return str
 
     @classmethod
     def read(cls, elt: Element, ddi_namespace: str) -> VariableDescription:
