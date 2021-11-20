@@ -86,6 +86,7 @@ def _read_microdata(
             {
                 "colspecs": [(desc.start, desc.end) for desc in data_description],
                 "names": [desc.name for desc in data_description],
+                "dtype": {desc.name: desc.numpy_type for desc in data_description},
             }
         )
         reader = pd.read_fwf
@@ -102,7 +103,12 @@ def _read_microdata(
     elif ".csv" in filename.suffixes:
         # A csv!
         reader = pd.read_csv
-        kwargs.update({"usecols": [desc.name for desc in data_description]})
+        kwargs.update(
+            {
+                "usecols": [desc.name for desc in data_description],
+                "dtype": {desc.name: desc.numpy_type for desc in data_description},
+            }
+        )
         mode = "rt"
 
         # CSVs have correct decimal expansions already; so we just make

@@ -9,6 +9,8 @@ A CLI for accessing IPUMS utilities
 from typing import Optional, Tuple
 
 import click
+import numpy as np
+import pandas as pd
 import pyarrow as pa
 from pyarrow.parquet import ParquetWriter
 
@@ -261,16 +263,7 @@ def submit_and_download_command(
 @click.argument("ddifile", type=click.Path(exists=True))
 @click.argument("datafile", type=click.Path(exists=True))
 @click.argument("outfile", type=click.Path())
-@click.option(
-    "--string-column",
-    "-s",
-    "string_columns",
-    multiple=True,
-    help="Columns which we will always cast as a sting type",
-)
-def convert_command(
-    ddifile: str, datafile: str, outfile: str, string_columns: Tuple[str]
-):
+def convert_command(ddifile: str, datafile: str, outfile: str):
     """
     Perform one-off conversions for faster loading times in the future
 
@@ -279,22 +272,17 @@ def convert_command(
     OUTFILE is the path that you'd like the file to be saved to. For now, the
     output format will be parquet.
     """
+
     ddi = readers.read_ipums_ddi(ddifile)
-    string_columns = string_columns or []
-
-    # Just read a few lines for getting the schema
-    # This is because I'm lazy. Should be able to construct from ddi
-    tmp_df = next(
-        readers.read_microdata_chunked(ddi, filename=datafile, chunksize=1024)
-    ).convert_dtypes(
-        infer_objects=False,
-        convert_boolean=False,
-        convert_integer=True,
-        convert_string=False,
+    # A bit of a hack because pyarrow Schema creation is difficult
+    tmp_df = pd.DataFrame(
+        np.empty(
+            0,
+            dtype=np.dtype(
+                [(desc.name, desc.numpy_type) for desc in ddi.data_description]
+            ),
+        )
     )
-
-    for string_column in string_columns:
-        tmp_df[string_column] = tmp_df[string_column].astype("string")
 
     with ParquetWriter(
         outfile, pa.Schema.from_pandas(tmp_df), compression="snappy"
@@ -304,15 +292,6 @@ def convert_command(
         )
         # TODO(khw): Figure out how to get a progressbar of the appropriate length here
         for df in reader:
-            # Convert some missing data types
-            df = df.convert_dtypes(
-                infer_objects=False,
-                convert_boolean=False,
-                convert_integer=True,
-                convert_string=False,
-            )
-            for string_column in string_columns:
-                tmp_df[string_column] = tmp_df[string_column].astype("string")
             batch = pa.Table.from_pandas(df)
             writer.write_table(batch)
 
