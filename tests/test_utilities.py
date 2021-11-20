@@ -3,14 +3,13 @@
 # in this project's top-level directory, and also on-line at:
 #   https://github.com/ipums/ipumspy
 
-from os import read
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from ipumspy import ddi, readers, utilities
+from ipumspy import readers, utilities
 
 
 def test_tabulate(fixtures_path: Path):
