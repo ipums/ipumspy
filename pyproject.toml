@@ -59,6 +59,12 @@ max-line-length = "88"
 markers = [ "slow: Run with --runslow",
             "integration: Run with --runint" ]
 
+[tool.coverage.run]
+omit = [
+    "*/tests/*",
+    "src/ipumspy/cli.py"
+]
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"

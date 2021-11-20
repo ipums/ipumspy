@@ -1,6 +1,0 @@
-[run]
-omit =
-    # omit tests
-    */tests/*
-    # omit cli.py and fileutils.py
-    src/ipumspy/cli.py
