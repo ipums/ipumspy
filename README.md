@@ -1,4 +1,5 @@
 [![Build Tests](https://github.com/ipums/ipumspy/actions/workflows/main.yml/badge.svg)](https://github.com/ipums/ipumspy/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/ipums/ipumspy/branch/master/graph/badge.svg?token=1ZVXK920EB)](https://codecov.io/gh/ipums/ipumspy)
 
 # IPUMS-py
 

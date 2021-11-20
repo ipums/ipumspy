@@ -1,0 +1,46 @@
+name: CodeCov
+on: [push, pull_request]
+jobs:
+  run_tests:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.6
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-3.9-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction
+
+      - name: Generate Report
+        env:
+          # now has creds to run integration tests
+          IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
+        # this runs successfully at the command line and generates a report
+        run: poetry run py.test --runint --cov=ipumspy --cov-report=xml --cov-config=.coveragerc
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}

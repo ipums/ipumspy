@@ -17,3 +17,8 @@ dist
 docs/_build/
 docs/source/CONTRIBUTING.md
 docs/source/reference/generated/
+
+# codecov
+.coverage
+codecov
+coverage.xml
