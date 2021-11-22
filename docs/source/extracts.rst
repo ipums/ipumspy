@@ -126,7 +126,7 @@ returns:
 
 .. code:: python
 
-    'complete'
+    'completed'
 
 To check to see if an extract has been purged: 
 
