@@ -44,7 +44,7 @@ IPUMS API Wrappers for Python
 Quick Start
 ***********
 
-Once you have created a user account for your data collection of interest (currently only IPUMS USA is available via API) and generated an API key.
+Once you have created a user account for your data collection of interest (currently only IPUMS USA is available via API) and generated an API key:
 
 .. code:: python
 
@@ -63,7 +63,7 @@ IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/sample
 
 IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`__.
 
-Note that source variables can only be requested using their short form variable names. These can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
+Source variables can be requested using their short or long form variable names. Short form source variable names can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
 
 .. code:: python
 
