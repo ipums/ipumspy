@@ -44,7 +44,7 @@ IPUMS API Wrappers for Python
 Quick Start
 ***********
 
-Once you have created a user account for your data collection of interest (currently only IPUMS USA is available via API) and generated an API key:
+Once you have created a user account for your data collection of interest (currently only `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__ is available via API) and generated an API key:
 
 .. code:: python
 
