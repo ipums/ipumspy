@@ -57,7 +57,9 @@ Once you have created a user account for your data collection of interest (curre
 
     ipums = IpumsApiClient(IPUMS_API_KEY)
 
-To submit an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
+Note that for security reasons it is recommended that you store your IPUMS API key in an environment variable rather than including it in your code.
+
+To define an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
 
 IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
 
