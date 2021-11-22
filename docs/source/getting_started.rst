@@ -39,7 +39,7 @@ Both fixed-width and csv files are supported.
 IPUMS API Wrappers for Python
 -----------------------------
 
-``ipumspy`` provides an easy-to-use Python wrapper for IPUMS API endpoints.
+``ipumspy`` provides an easy-to-use Python wrapper for IPUMS Microdata Extract API endpoints. Note that the IPUMS Microdata Extract API is still in beta!
 
 Quick Start
 ***********
