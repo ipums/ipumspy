@@ -11,7 +11,7 @@ Variable Descriptions
 ---------------------
 
 The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook provide easy access to variable metadata.
-These can ge returned using the :meth:`ipumspy.ddi.VariableDescription.get_variable_info()` method.
+These can ge returned using the :meth:`.get_variable_info()` method.
 
 .. code:: python
 
