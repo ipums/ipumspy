@@ -5,6 +5,8 @@
 IPUMS Extracts
 ==============
 
+IPUMS-py can be used to read extracts made via the IPUMS web interface into python. This page discusses how to request an IPUMS extract via API using IPUMS-py. 
+
 Extract Definition
 ------------------
 
