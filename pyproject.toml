@@ -62,7 +62,6 @@ markers = [ "slow: Run with --runslow",
 [tool.coverage.run]
 omit = [
     "*/tests/*",
-    "src/ipumspy/cli.py"
 ]
 
 [build-system]
