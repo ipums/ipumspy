@@ -22,7 +22,7 @@ See the table below for data collection abreviations and links to sample IDs and
 Note that not all IPUMS data collections are currently available via API. The table below will be
 filled in as new IPUMS data collections become accessible via API.
 
-.. list-table:: IPUMS data collections metadata
+.. list-table:: IPUMS data collections metadata resources
     :widths: 25 25 25 25
     :header-rows: 1
     :align: center
