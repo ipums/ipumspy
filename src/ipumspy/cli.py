@@ -46,15 +46,28 @@ def cli():
     required=True,
 )
 @click.option(
+    "--base-url",
+    default=None,
+    type=str,
+    help="The URL of the IPUMS endpoint. Primarly for testing purposes.",
+)
+@click.option(
     "--num-retries",
     "-n",
     default=3,
     type=int,
     help="The number of retries on transient errors",
 )
-def submit_command(extract: str, api_key: str, num_retries: int):
+def submit_command(
+    extract: str, api_key: str, num_retries: int, base_url: Optional[str]
+):
     """Submit an extract request to the IPUMS API"""
-    api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
+    if base_url:
+        api_client = IpumsApiClient(
+            api_key, num_retries=int(num_retries), base_url=base_url
+        )
+    else:
+        api_client = IpumsApiClient(api_key, num_retries=int(num_retries))
     extract_description = readers.read_extract_description(extract)
     extract = extract_from_dict(extract_description)
     if not isinstance(extract, list):
@@ -282,7 +295,7 @@ def convert_command(ddifile: str, datafile: str, outfile: str):
                 [(desc.name, desc.numpy_type) for desc in ddi.data_description]
             ),
         )
-    )
+    ).astype({desc.name: desc.pandas_type for desc in ddi.data_description})
 
     with ParquetWriter(
         outfile, pa.Schema.from_pandas(tmp_df), compression="snappy"
