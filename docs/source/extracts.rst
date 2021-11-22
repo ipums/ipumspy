@@ -157,7 +157,12 @@ returns:
 
     2
 
+Unsupported Features
+--------------------
 
+Not IPUMS extract features are currently supported for extracts made via API. 
+For a list of currently unsupported features, see the developer documentation `here <https://beta.developer.ipums.org/docs/apiprogram/apis/usa/>`__.
+This list will be updated as more features become available.
 
 
 
