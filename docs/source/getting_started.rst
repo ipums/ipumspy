@@ -10,7 +10,7 @@ Installation
 
 This package requires that you have at least Python 3.6.1 installed.
 
-Install with `pip`:
+Install with ``pip``:
 
 .. code:: bash
 
@@ -90,8 +90,8 @@ Source variables can be requested using their short or long form variable names.
     # Get the data
     ipums_df = ipumspy.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
 
-If you lose track of the `extract` object for any reason, you may check the status
-and download the extract using only the name of the `collection` and the `extract_id`.
+If you lose track of the ``extract`` object for any reason, you may check the status
+and download the extract using only the name of the ``collection`` and the ``extract_id``.
 
 .. code:: python
 

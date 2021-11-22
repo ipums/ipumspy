@@ -114,7 +114,7 @@ returns:
 
     'started'
 
-While IPUMS retains all of a user's extract definitions, after a certain period, the extract data and syntax files are purged from the IPUMS cache. Importantly, if an extract's data and syntax files have been purged, the extract is still considered to have been completed, and `extract_status()` will return "completed."
+While IPUMS retains all of a user's extract definitions, after a certain period, the extract data and syntax files are purged from the IPUMS cache. Importantly, if an extract's data and syntax files have been purged, the extract is still considered to have been completed, and :meth:`.extract_status()` will return "completed."
 
 .. code:: python
 
