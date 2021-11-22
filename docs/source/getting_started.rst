@@ -96,11 +96,11 @@ and download the extract using only the name of the `collection` and the `extrac
 .. code:: python
 
     # check the extract status
-    extract_status = ipums.extract_status(extract=extract_id, collection="cps")
+    extract_status = ipums.extract_status(extract=[extract_id], collection=[collection_name])
     print(f"extract {extract_id} is {extract_status}")
 
     # when the extract status is "completed", then download
-    ipums.download_extract(extract=extract_id, collection=collection_name)
+    ipums.download_extract(extract=[extract_id], collection=[collection_name])
 
 Specifying an Extract as a File
 *******************************
