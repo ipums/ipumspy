@@ -50,7 +50,7 @@ Once you have created a user account for your data collection of interest (curre
 
     from pathlib import Path
 
-    from ipumspy import IpumsApiClient, UsaExtract
+    from ipumspy import IpumsApiClient, UsaExtract, readers, ddi
 
     IPUMS_API_KEY = your_api_key
     DOWNLOAD_DIR = Path(your_download_dir)
