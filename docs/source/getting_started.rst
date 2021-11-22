@@ -135,3 +135,5 @@ Then you can run the following code:
         extract = extract_from_dict(yaml.safe_load(infile))
 
 Alternatively, you can utilize the :doc:`CLI <cli>`.
+
+For more information on the IPUMS Microdata Extract API, visit the `IPUMS developer portal <https://beta.developer.ipums.org/>`__.
