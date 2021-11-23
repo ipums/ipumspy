@@ -3,9 +3,7 @@
 What is IPUMS?
 --------------
 
-IPUMS provides census and survey data from around the world integrated across time and space. 
-IPUMS integration and documentation makes it easy to study change, conduct comparative research, merge information across data types, and analyze individuals within family and community contexts. 
-Data and services available free of charge. More information on IPUMS data collections can be found at `ipums.org <https://ipums.org>`_.
+IPUMS provides census and survey data from around the world integrated across time and space. IPUMS integration and documentation makes it easy to study change, conduct comparative research, merge information across data types, and analyze individuals within family and community contexts. Data and services available free of charge. More information on IPUMS data collections can be found at `ipums.org <https://ipums.org>`_.
 
 What is ipumspy?
 ----------------
