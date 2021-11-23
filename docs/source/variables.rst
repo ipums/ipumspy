@@ -10,8 +10,7 @@ Currently, IPUMS metadata is not accessible via API and all variable information
 Variable Descriptions
 ---------------------
 
-The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook provide easy access to variable metadata.
-These can ge returned using the :meth:`ipumspy.ddi.VariableDescription.get_variable_info()` method.
+The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook provide easy access to variable metadata. These can be returned using the :meth:`.get_variable_info()` method.
 
 .. code:: python
 
@@ -42,7 +41,7 @@ More on Value labels
 --------------------
 
 Users can filter on categorical variables using labels instead of numerical values
-For example, the following code retains only the female respondents in `ipums_df`.
+For example, the following code retains only the female respondents in ``ipums_df``.
 
 .. code:: python
 

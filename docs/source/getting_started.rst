@@ -10,7 +10,7 @@ Installation
 
 This package requires that you have at least Python 3.6.1 installed.
 
-Install with `pip`:
+Install with ``pip``:
 
 .. code:: bash
 
@@ -39,31 +39,33 @@ Both fixed-width and csv files are supported.
 IPUMS API Wrappers for Python
 -----------------------------
 
-``ipumspy`` provides an easy-to-use Python wrapper for IPUMS API endpoints.
+``ipumspy`` provides an easy-to-use Python wrapper for IPUMS Microdata Extract API endpoints. Note that the IPUMS Microdata Extract API is still in beta!
 
 Quick Start
 ***********
 
-Once you have created a user account for your data collection of interest (currently only IPUMS USA is available via API) and generated an API key.
+Once you have created a user account for your data collection of interest (currently only `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__ is available via API) and generated an API key:
 
 .. code:: python
 
     from pathlib import Path
 
-    from ipumspy import IpumsApiClient, UsaExtract
+    from ipumspy import IpumsApiClient, UsaExtract, readers, ddi
 
     IPUMS_API_KEY = your_api_key
     DOWNLOAD_DIR = Path(your_download_dir)
 
     ipums = IpumsApiClient(IPUMS_API_KEY)
 
-To submit an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
+Note that for security reasons it is recommended that you store your IPUMS API key in an environment variable rather than including it in your code.
+
+To define an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
 
 IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
 
 IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`__.
 
-Note that source variables can only be requested using their short form variable names. These can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
+Source variables can be requested using their short or long form variable names. Short form source variable names can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
 
 .. code:: python
 
@@ -88,17 +90,17 @@ Note that source variables can only be requested using their short form variable
     # Get the data
     ipums_df = ipumspy.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
 
-If you lose track of the `extract` object for any reason, you may check the status
-and download the extract using only the name of the `collection` and the `extract_id`.
+If you lose track of the ``extract`` object for any reason, you may check the status
+and download the extract using only the name of the ``collection`` and the ``extract_id``.
 
 .. code:: python
 
     # check the extract status
-    extract_status = ipums.extract_status(extract=extract_id, collection="cps")
+    extract_status = ipums.extract_status(extract=[extract_id], collection=[collection_name])
     print(f"extract {extract_id} is {extract_status}")
 
     # when the extract status is "completed", then download
-    ipums.download_extract(extract=extract_id, collection=collection_name)
+    ipums.download_extract(extract=[extract_id], collection=[collection_name])
 
 Specifying an Extract as a File
 *******************************
@@ -133,3 +135,5 @@ Then you can run the following code:
         extract = extract_from_dict(yaml.safe_load(infile))
 
 Alternatively, you can utilize the :doc:`CLI <cli>`.
+
+For more information on the IPUMS Microdata Extract API, visit the `IPUMS developer portal <https://beta.developer.ipums.org/>`__.

@@ -5,6 +5,8 @@
 IPUMS Extracts
 ==============
 
+IPUMS-py can be used to read extracts made via the IPUMS web interface into python. This page discusses how to request an IPUMS extract via API using IPUMS-py. 
+
 Extract Definition
 ------------------
 
@@ -14,13 +16,13 @@ An extract is defined by:
 2. A list of IPUMS sample IDs from that collection
 3. A list of IPUMS variable names from that collection
 
-IPUMS metadata is not currently available via API. 
+IPUMS metadata is not currently accessible via API. 
 Sample IDs and IPUMS variable names can be browsed via the data collection's website. 
 See the table below for data collection abreviations and links to sample IDs and variable browsing.
 Note that not all IPUMS data collections are currently available via API. The table below will be
 filled in as new IPUMS data collections become accessible via API.
 
-.. list-table:: IPUMS data collections metadata
+.. list-table:: IPUMS data collections metadata resources
     :widths: 25 25 25 25
     :header-rows: 1
     :align: center
@@ -62,7 +64,7 @@ Users also have the option to specify a data format and an extract description w
         description="My first IPUMS USA extract!"
     )
 
-Once an extract oject has been created, the extract object must be submitted to the API.
+Once an extract object has been created, the extract must be submitted to the API.
 
 .. code:: python
 
@@ -82,13 +84,13 @@ Once an extract oject has been created, the extract object must be submitted to 
     # submit your extract
     ipums.submit_extract(extract)
 
-Once an extract has been submitted, an extract ID number will be assigned to your extract.
+Once an extract has been submitted, an extract ID number will be assigned to it.
 
 .. code:: python
 
     extract.extract_id
 
-returns the extract id number assigned by the IPUMS extract system. In the case of your first extract, this code wil return
+returns the extract id number assigned by the IPUMS extract system. In the case of your first extract, this code will return
 
 .. code:: python
 
@@ -100,7 +102,7 @@ your extract later if you lose track of the original extract object.
 Extract status
 --------------
 
-After your extract has been submitted, you can check it's status using 
+After your extract has been submitted, you can check its status using 
 
 .. code:: python
 
@@ -112,10 +114,7 @@ returns:
 
     'started'
 
-While IPUMS retains all of a user's extract definitions, after a certain period, 
-the extract data and syntax files are purged from the IPUMS cache.
-Importantly, if an extract's data and syntax files have been purged, the extract is still 
-considered to have been completed, and `extract_status()` will return "complete."
+While IPUMS retains all of a user's extract definitions, after a certain period, the extract data and syntax files are purged from the IPUMS cache. Importantly, if an extract's data and syntax files have been purged, the extract is still considered to have been completed, and :meth:`.extract_status()` will return "completed."
 
 .. code:: python
 
@@ -126,9 +125,9 @@ returns:
 
 .. code:: python
 
-    'complete'
+    'completed'
 
-To check to see if an extract has been purged: 
+If an extract has been purged: 
 
 .. code:: python
 
@@ -141,9 +140,7 @@ returns:
 
     True
 
-For extracts that have had their files purged, the data collection name and extract ID 
-number can be used to resubmit your old extract. Note that resubmitting a purged extract
-results in a new extract with its own unique ID number!
+For extracts that have had their files purged, the data collection name and extract ID number can be used to resubmit the old extract. Note that resubmitting a purged extract results in a new extract with its own unique ID number!
 
 .. code:: python
 
@@ -157,7 +154,12 @@ returns:
 
     2
 
+Unsupported Features
+--------------------
 
+Not IPUMS extract features are currently supported for extracts made via API. 
+For a list of currently unsupported features, see the developer documentation `here <https://beta.developer.ipums.org/docs/apiprogram/apis/usa/>`__.
+This list will be updated as more features become available.
 
 
 
