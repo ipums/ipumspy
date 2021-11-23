@@ -1,0 +1,7 @@
+requests
+click
+numpy
+pandas
+pyarrow
+pyarrow.parquet
+yaml
