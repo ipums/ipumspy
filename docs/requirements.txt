@@ -4,4 +4,3 @@ numpy
 pandas
 pyarrow
 PyYAML
-importlib-metadata
