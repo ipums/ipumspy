@@ -10,7 +10,7 @@ Currently, IPUMS metadata is not accessible via API and all variable information
 Variable Descriptions
 ---------------------
 
-The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook provide easy access to variable metadata. These can ge returned using the :meth:`.get_variable_info()` method.
+The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook provide easy access to variable metadata. These can be returned using the :meth:`.get_variable_info()` method.
 
 .. code:: python
 
