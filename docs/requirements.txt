@@ -1,6 +1,5 @@
-requests
 click
 numpy
 pandas
 pyarrow
-yaml
+PyYAML
