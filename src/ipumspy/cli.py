@@ -14,8 +14,8 @@ import pandas as pd
 import pyarrow as pa
 from pyarrow.parquet import ParquetWriter
 
-from ipumspy.api.exceptions import IpumsApiException
-from ipumspy.api.extract import extract_from_dict
+from .ipumspy.api.exceptions import IpumsApiException
+from .ipumspy.api.extract import extract_from_dict
 
 from . import readers
 from .api import IpumsApiClient
