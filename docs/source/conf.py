@@ -23,7 +23,7 @@ from sphinx.util import logging
 
 import ipumspy
 
-sys.path.insert(0, os.path.abspath("../../ipumspy"))
+sys.path.insert(0, os.path.abspath("../../"))
 
 
 # -- Project information -----------------------------------------------------
