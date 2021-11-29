@@ -231,6 +231,6 @@ def linkcode_resolve(domain, info):
         tag = None
 
     if tag != "master":
-       tag = f"v{ipumspy.__version__}"
+        tag = f"v{ipumspy.__version__}"
 
     return f"https://github.com/ipums/ipumspy/blob/{tag}/src/ipumspy/{fn}{linespec}"
