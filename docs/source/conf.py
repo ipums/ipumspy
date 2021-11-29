@@ -21,9 +21,11 @@ import sys
 
 from sphinx.util import logging
 
-import ipumspy
+sys.path.append(os.path.abspath("../../src"))
+from ipumspy import *
 
-sys.path.insert(0, os.path.abspath("../../src"))
+sys.path.insert(0, os.path.abspath("../../src/ipumspy"))
+
 
 # -- Project information -----------------------------------------------------
 
