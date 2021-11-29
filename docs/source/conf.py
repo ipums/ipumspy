@@ -21,7 +21,7 @@ import sys
 
 from sphinx.util import logging
 
-# import ipumspy
+import ipumspy
 
 sys.path.insert(0, os.path.abspath("../../src/ipumspy"))
 
@@ -217,7 +217,7 @@ def linkcode_resolve(domain, info):
     except OSError:
         lineno = None
 
-    fn = os.path.relpath(fn, start="ipumspy")
+    fn = os.path.relpath(fn, start=os.path.dirname(ipumspy.__file__))
 
     linespec = f"#L{lineno}-L{lineno + len(source) - 1}" if lineno else ""
 
@@ -230,8 +230,7 @@ def linkcode_resolve(domain, info):
     except subprocess.CalledProcessError:
         tag = None
 
-    # if tag != "master":
-    #    tag = f"v{ipumspy.__version__}"
-    tag = "master"
+    if tag != "master":
+        tag = f"v{ipumspy.__version__}"
 
     return f"https://github.com/ipums/ipumspy/blob/{tag}/src/ipumspy/{fn}{linespec}"
