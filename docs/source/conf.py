@@ -21,7 +21,7 @@ import sys
 
 from sphinx.util import logging
 
-#import ipumspy
+# import ipumspy
 
 sys.path.insert(0, os.path.abspath("../../src"))
 
@@ -230,7 +230,7 @@ def linkcode_resolve(domain, info):
     except subprocess.CalledProcessError:
         tag = None
 
-    #if tag != "master":
+    # if tag != "master":
     #    tag = f"v{ipumspy.__version__}"
     tag = "master"
 
