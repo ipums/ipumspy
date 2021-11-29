@@ -4,3 +4,4 @@ pyarrow>=3.0.0
 requests>=2.25.1
 PyYAML>=5.4.1
 numpy
+importlib.metadata
