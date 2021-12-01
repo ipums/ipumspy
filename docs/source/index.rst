@@ -8,7 +8,7 @@ IPUMS provides census and survey data from around the world integrated across ti
 What is ipumspy?
 ----------------
 
-``ipumspy`` is a collection of python tools for working with data from `IPUMS <https://ipums.org>`_) and for accessing that data via API.
+``ipumspy`` is a collection of python tools for working with data from `IPUMS <https://ipums.org>`_ and for accessing that data via API.
 
 Only rectangular microdata extracts are currently supported. We hope to add support for more complex data structures and spatial data in the future.
 
