@@ -50,6 +50,7 @@ def test_usa_build_extract():
         "variables": {"AGE": {}, "SEX": {}},
         "description": "My IPUMS extract",
         "data_format": "fixed_width",
+        "collection": "usa",
     }
 
 

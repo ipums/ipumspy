@@ -152,6 +152,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             "data_structure": {"rectangular": {"on": "P"}},
             "samples": {sample: {} for sample in self.samples},
             "variables": {variable.upper(): {} for variable in self.variables},
+            "collection": self.collection
         }
 
 
