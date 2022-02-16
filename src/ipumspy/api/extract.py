@@ -176,3 +176,31 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
         return BaseExtract._collection_to_extract[dct["collection"]](**dct)
 
     return OtherExtract(dct["collection"], dct)
+
+
+def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:
+    """
+    Convert an extract object to a dictionary (usually to write to a file).
+    If multiple extracts are specified, return a dict object.
+
+    Args:
+        extract: IPUMS extract object or list of IPUMS extract objects
+
+    Returns:
+        The extract(s) specified as a dictionary
+    """
+    dct = {}
+    if type(extract) is list:
+        dct["extracts"] = [extract_to_dict(ext) for ext in extract]
+        return dct
+    try:
+        ext = extract.extract_info
+        ext["collection"] = extract.collection
+        ext["api_version"] = extract.api_version
+        # pop keys created after submission
+        [ext.pop(key) for key in ["download_links", "number", "status"]]
+        return ext
+
+    except ValueError:
+        # this should probably be a custom error/warning at this point
+        raise("Extract has not been submitted and so has no json response")
