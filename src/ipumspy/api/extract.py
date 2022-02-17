@@ -173,7 +173,14 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
         return [extract_from_dict(extract) for extract in dct["extracts"]]
 
     if dct["collection"] in BaseExtract._collection_to_extract:
+        # cosmetic procedure for when dct comes from json file
+        for key in ["samples", "variables"]:
+            if type(dct[key]) is dict:
+                dct[key] = list(dct[key].keys())
+
         return BaseExtract._collection_to_extract[dct["collection"]](**dct)
+
+        
 
     return OtherExtract(dct["collection"], dct)
 
