@@ -6,6 +6,10 @@ from __future__ import annotations
 import warnings
 from typing import Any, Dict, List, Optional, Type, Union
 
+from .exceptions import (
+    IpumsExtractNotSubmitted,
+)
+
 
 class DefaultCollectionWarning(Warning):
     pass
@@ -74,7 +78,7 @@ class BaseExtract:
         has not bee submitted to IPUMS)
         """
         if not self._info:
-            raise ValueError(
+            raise IpumsExtractNotSubmitted(
                 "Extract has not been submitted and so has no json response"
             )
         else:
@@ -209,5 +213,8 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         return ext
 
     except ValueError:
+        # TODO 
         # this should probably be a custom error/warning at this point
-        raise("Extract has not been submitted and so has no json response")
+        raise IpumsExtractNotSubmitted(
+            "Extract has not been submitted and so has no json response"
+            )

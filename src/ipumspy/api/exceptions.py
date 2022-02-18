@@ -34,3 +34,6 @@ class IpumsAPIAuthenticationError(IpumsApiException):
 
 class BadIpumsApiRequest(IpumsApiException):
     """Represents an error in the api request json, such as invalid sample id or var name"""
+
+class IpumsExtractNotSubmitted(IpumsApiException):
+    """Represents the case when an extract needs to be submitted before the operation can be performed"""
