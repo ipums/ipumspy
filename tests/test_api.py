@@ -10,18 +10,18 @@ import pytest
 
 from ipumspy import api
 from ipumspy.api import (
-    IpumsApiClient, 
-    OtherExtract, 
-    UsaExtract, 
-    extract_from_dict, 
-    extract_to_dict
-    )
+    IpumsApiClient,
+    OtherExtract,
+    UsaExtract,
+    extract_from_dict,
+    extract_to_dict,
+)
 from ipumspy.api.exceptions import (
-    BadIpumsApiRequest, 
-    IpumsApiException, 
+    BadIpumsApiRequest,
+    IpumsApiException,
     IpumsNotFound,
-    IpumsExtractNotSubmitted
-    )
+    IpumsExtractNotSubmitted,
+)
 
 
 @pytest.fixture(scope="module")
@@ -203,7 +203,7 @@ def test_extract_from_dict(fixtures_path: Path):
         for item in extract:
             assert item.collection == "usa"
             assert item.samples == ["us2012b"]
-            assert item.variables == ["AGE", "SEX", "RACE"] 
+            assert item.variables == ["AGE", "SEX", "RACE"]
 
 
 def test_extract_to_dict(fixtures_path: Path):
@@ -216,14 +216,16 @@ def test_extract_to_dict(fixtures_path: Path):
     dct = extract_to_dict(extract)
     assert dct["collection"] == "usa"
     assert dct["samples"] == {"us2012b": {}}
-    assert dct["variables"] == {'YEAR': {'preselected': True},
-                                'SAMPLE': {'preselected': True},
-                                'SERIAL': {'preselected': True},
-                                'CBSERIAL': {'preselected': True},
-                                'GQ': {'preselected': True},
-                                'HHWT': {'preselected': True},
-                                'PERNUM': {'preselected': True},
-                                'PERWT': {'preselected': True},
-                                "AGE": {}, 
-                                "SEX": {}, 
-                                "RACE": {}}
+    assert dct["variables"] == {
+        "YEAR": {"preselected": True},
+        "SAMPLE": {"preselected": True},
+        "SERIAL": {"preselected": True},
+        "CBSERIAL": {"preselected": True},
+        "GQ": {"preselected": True},
+        "HHWT": {"preselected": True},
+        "PERNUM": {"preselected": True},
+        "PERWT": {"preselected": True},
+        "AGE": {},
+        "SEX": {},
+        "RACE": {},
+    }

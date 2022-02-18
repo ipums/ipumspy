@@ -156,7 +156,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             "data_structure": {"rectangular": {"on": "P"}},
             "samples": {sample: {} for sample in self.samples},
             "variables": {variable.upper(): {} for variable in self.variables},
-            "collection": self.collection
+            "collection": self.collection,
         }
 
 
@@ -183,8 +183,6 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
                 dct[key] = list(dct[key].keys())
 
         return BaseExtract._collection_to_extract[dct["collection"]](**dct)
-
-        
 
     return OtherExtract(dct["collection"], dct)
 
@@ -213,8 +211,8 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         return ext
 
     except ValueError:
-        # TODO 
+        # TODO
         # this should probably be a custom error/warning at this point
         raise IpumsExtractNotSubmitted(
             "Extract has not been submitted and so has no json response"
-            )
+        )
