@@ -30,8 +30,19 @@ extract class.
    ipumspy.api.BaseExtract
    ipumspy.api.OtherExtract
    ipumspy.api.UsaExtract
-   ipumspy.api.extract_to_dict
+
+Importing or Exporting Extract Definitions
+------------------------------------------
+There are two convenience methods to transform ipumspy extract objects to dictionary 
+objects and from dictonary objects to ipumspy extract objects.
+
+.. autosummary::
+   :toctree: generated
+   :template: class.rst
+   :nosignatures:
+
    ipumspy.api.extract_from_dict
+   ipumspy.api.extract_to_dict
 
 Exceptions
 ----------
