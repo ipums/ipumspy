@@ -28,7 +28,7 @@ class BaseExtract:
 
         self._id: Optional[int] = None
         self._info: Optional[Dict[str, Any]] = None
-        self.api_version = "v1"
+        self.api_version: Optional[str] = None
 
     def __init_subclass__(cls, collection: str, **kwargs):
         super().__init_subclass__(**kwargs)
