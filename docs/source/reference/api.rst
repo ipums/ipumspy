@@ -30,6 +30,8 @@ extract class.
    ipumspy.api.BaseExtract
    ipumspy.api.OtherExtract
    ipumspy.api.UsaExtract
+   ipumspy.api.extract_to_dict
+   ipumspy.api.extract_from_dict
 
 Exceptions
 ----------
@@ -47,3 +49,4 @@ Several different exceptions may be raised when interacting with the IPUMS API.
    ipumspy.api.exceptions.IpumsTimeoutException
    ipumspy.api.exceptions.IpumsAPIAuthenticationError
    ipumspy.api.exceptions.BadIpumsApiRequest
+   ipumspy.api.exceptions.IpumsExtractNotSubmitted
