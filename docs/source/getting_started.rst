@@ -55,9 +55,9 @@ Note that for security reasons it is recommended that you store your IPUMS API k
 
 To define an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
 
-IPUMS USA sample IDs can be found `here <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
+IPUMS USA sample IDs can be found on the `IPUMS USA website <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
 
-IPUMS USA variables can be browsed `here <https://usa.ipums.org/usa-action/variables/group>`__.
+IPUMS USA variables can be browsed via the `IPUMS USA extract web UI <https://usa.ipums.org/usa-action/variables/group>`__.
 
 Source variables can be requested using their short or long form variable names. Short form source variable names can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
 
