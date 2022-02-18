@@ -191,26 +191,25 @@ def test_extract_was_purged(live_api_client: IpumsApiClient):
 def test_extract_from_dict(fixtures_path: Path):
     with open(str(fixtures_path / "example_extract.yml")) as infile:
         extract = extract_from_dict(yaml.safe_load(infile))
-        infile.close()
-        for item in extract:
-            assert item.collection == "usa"
-            assert item.samples == ["us2012b"]
-            assert item.variables == ["AGE", "SEX", "RACE"]
+
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == ["us2012b"]
+        assert item.variables == ["AGE", "SEX", "RACE"]
 
     with open(str(fixtures_path / "example_extract.json")) as infile:
         extract = extract_from_dict(json.load(infile))
-        infile.close()
-        for item in extract:
-            assert item.collection == "usa"
-            assert item.samples == ["us2012b"]
-            assert item.variables == ["AGE", "SEX", "RACE"]
+
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == ["us2012b"]
+        assert item.variables == ["AGE", "SEX", "RACE"]
 
 
 def test_extract_to_dict(fixtures_path: Path):
     # reconstitute the extract object from pickle
     with open(str(fixtures_path / "usa_extract_obj.pkl"), "rb") as infile:
         extract = pickle.load(infile)
-        infile.close()
 
     # export extract to dict
     dct = extract_to_dict(extract)
