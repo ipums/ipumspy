@@ -9,8 +9,19 @@ from pathlib import Path
 import pytest
 
 from ipumspy import api
-from ipumspy.api import IpumsApiClient, OtherExtract, UsaExtract, extract_from_dict, extract_to_dict
-from ipumspy.api.exceptions import BadIpumsApiRequest, IpumsApiException, IpumsNotFound
+from ipumspy.api import (
+    IpumsApiClient, 
+    OtherExtract, 
+    UsaExtract, 
+    extract_from_dict, 
+    extract_to_dict
+    )
+from ipumspy.api.exceptions import (
+    BadIpumsApiRequest, 
+    IpumsApiException, 
+    IpumsNotFound,
+    IpumsExtractNotSubmitted
+    )
 
 
 @pytest.fixture(scope="module")
@@ -153,6 +164,18 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
         live_api_client.resubmit_purged_extract(extract="0", collection="usa")
     assert exc_info.value.args[0] == (
         "Page not found. Perhaps you passed the wrong extract id?"
+    )
+
+
+def test_not_submitted_exception():
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
+    with pytest.raises(IpumsExtractNotSubmitted) as exc_info:
+        dct = extract_to_dict(extract)
+    assert exc_info.value.args[0] == (
+        "Extract has not been submitted and so has no json response"
     )
 
 
