@@ -6,6 +6,10 @@ from __future__ import annotations
 import warnings
 from typing import Any, Dict, List, Optional, Type, Union
 
+from .exceptions import (
+    IpumsExtractNotSubmitted,
+)
+
 
 class DefaultCollectionWarning(Warning):
     pass
@@ -24,7 +28,7 @@ class BaseExtract:
 
         self._id: Optional[int] = None
         self._info: Optional[Dict[str, Any]] = None
-        self.api_version = "v1"
+        self.api_version: Optional[str] = None
 
     def __init_subclass__(cls, collection: str, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -74,7 +78,7 @@ class BaseExtract:
         has not bee submitted to IPUMS)
         """
         if not self._info:
-            raise ValueError(
+            raise IpumsExtractNotSubmitted(
                 "Extract has not been submitted and so has no json response"
             )
         else:
@@ -152,6 +156,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             "data_structure": {"rectangular": {"on": "P"}},
             "samples": {sample: {} for sample in self.samples},
             "variables": {variable.upper(): {} for variable in self.variables},
+            "collection": self.collection,
         }
 
 
@@ -172,6 +177,42 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
         return [extract_from_dict(extract) for extract in dct["extracts"]]
 
     if dct["collection"] in BaseExtract._collection_to_extract:
+        # cosmetic procedure for when dct comes from json file
+        for key in ["samples", "variables"]:
+            if isinstance(dct[key], dict):
+                dct[key] = list(dct[key].keys())
+
         return BaseExtract._collection_to_extract[dct["collection"]](**dct)
 
     return OtherExtract(dct["collection"], dct)
+
+
+def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:
+    """
+    Convert an extract object to a dictionary (usually to write to a file).
+    If multiple extracts are specified, return a dict object.
+
+    Args:
+        extract: IPUMS extract object or list of IPUMS extract objects
+
+    Returns:
+        The extract(s) specified as a dictionary
+    """
+    dct = {}
+    if isinstance(extract, list):
+        dct["extracts"] = [extract_to_dict(ext) for ext in extract]
+        return dct
+    try:
+        ext = extract.extract_info
+        ext["collection"] = extract.collection
+        ext["api_version"] = extract.api_version
+        # pop keys created after submission
+        [ext.pop(key) for key in ["download_links", "number", "status"]]
+        return ext
+
+    except ValueError:
+        # TODO
+        # this should probably be a custom error/warning at this point
+        raise IpumsExtractNotSubmitted(
+            "Extract has not been submitted and so has no json response"
+        )

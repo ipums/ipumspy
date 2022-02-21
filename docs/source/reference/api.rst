@@ -31,6 +31,19 @@ extract class.
    ipumspy.api.OtherExtract
    ipumspy.api.UsaExtract
 
+Importing or Exporting Extract Definitions
+------------------------------------------
+There are two convenience methods to transform ipumspy extract objects to dictionary 
+objects and from dictonary objects to ipumspy extract objects.
+
+.. autosummary::
+   :toctree: generated
+   :template: class.rst
+   :nosignatures:
+
+   ipumspy.api.extract_from_dict
+   ipumspy.api.extract_to_dict
+
 Exceptions
 ----------
 
@@ -47,3 +60,4 @@ Several different exceptions may be raised when interacting with the IPUMS API.
    ipumspy.api.exceptions.IpumsTimeoutException
    ipumspy.api.exceptions.IpumsAPIAuthenticationError
    ipumspy.api.exceptions.BadIpumsApiRequest
+   ipumspy.api.exceptions.IpumsExtractNotSubmitted
