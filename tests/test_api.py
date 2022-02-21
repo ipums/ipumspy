@@ -20,7 +20,7 @@ from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
     IpumsApiException,
     IpumsNotFound,
-    IpumsExtractNotSubmitted
+    IpumsExtractNotSubmitted,
 )
 
 
