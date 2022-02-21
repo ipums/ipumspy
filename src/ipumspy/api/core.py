@@ -248,6 +248,14 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
             download_dir: The location to download the data to.
                 MUST be a directory that currently exists
+            stata_command_file: Set to True to download the stata command file with
+                the extract data file.
+            spss_command_file: Set to True to download the SPSS command file with the
+                extract data file.
+            sas_command_file: Set to True to download the SAS command file with the
+                extract data file.
+            R_command_file: Set to True to download the R command file with the
+                extract data file.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
