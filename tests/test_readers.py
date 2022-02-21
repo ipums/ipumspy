@@ -131,7 +131,7 @@ def test_read_extract_description(fixtures_path: Path):
                 "collection": "usa",
                 "api_version": "beta",
                 "samples": ["us2012b"],
-                "variables": ["AGE", "SEX", "RACE", "UH_SEX_B1"],
+                "variables": ["AGE", "SEX", "RACE"],
                 "data_structure": "rectangular",
                 "data_format": "fixed_width",
             }

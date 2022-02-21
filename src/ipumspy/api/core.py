@@ -193,6 +193,7 @@ class IpumsApiClient:
 
         extract_info = response.json()
         extract._info = extract_info
+        extract.api_version = self.api_version
         return extract
 
     def extract_status(

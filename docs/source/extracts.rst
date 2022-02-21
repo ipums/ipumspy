@@ -33,8 +33,8 @@ filled in as new IPUMS data collections become accessible via API.
       - variable names
     * - IPUMS USA
       - usa
-      - `here <https://usa.ipums.org/usa-action/samples/sample_ids>`__
-      - `here <https://usa.ipums.org/usa-action/variables/group>`__
+      - `usa samples <https://usa.ipums.org/usa-action/samples/sample_ids>`__
+      - `usa variables <https://usa.ipums.org/usa-action/variables/group>`__
 
 Extract Objects
 ---------------
@@ -157,8 +157,8 @@ returns:
 Unsupported Features
 --------------------
 
-Not IPUMS extract features are currently supported for extracts made via API. 
-For a list of currently unsupported features, see the developer documentation `here <https://beta.developer.ipums.org/docs/apiprogram/apis/usa/>`__.
+Not all reatures available through the IPUMS extract web UI are currently supported for extracts made via API. 
+For a list of currently unsupported features, see `the developer documentation <https://beta.developer.ipums.org/docs/apiprogram/apis/usa/>`__.
 This list will be updated as more features become available.
 
 

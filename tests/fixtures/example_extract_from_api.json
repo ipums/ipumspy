@@ -10,8 +10,7 @@
       "variables": {
         "AGE": {},
         "SEX": {},
-        "RACE": {},
-        "UH_SEX_B1": {}
+        "RACE": {}
       },
       "data_structure": "rectangular",
       "data_format": "fixed_width"
