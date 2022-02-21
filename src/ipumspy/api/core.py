@@ -296,7 +296,7 @@ class IpumsApiClient:
             data_url = download_links["data"]["url"]
             ddi_url = download_links["ddi_codebook"]["url"]
             download_urls = [data_url, ddi_url]
-            
+
             if stata_command_file:
                 _url = download_links["stata_command_file"]["url"]
                 download_urls.append(_url)
