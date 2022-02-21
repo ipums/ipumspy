@@ -11,7 +11,7 @@ load_dotenv(".env.test")
 
 app = FastAPI()
 
-# a test comment
+
 class Counter:
     def __init__(self):
         self.val = 10
