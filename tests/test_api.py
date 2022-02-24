@@ -7,6 +7,7 @@ import pickle
 from pathlib import Path
 
 import pytest
+import vcr
 
 from ipumspy import api
 from ipumspy.api import (
@@ -228,3 +229,65 @@ def test_extract_to_dict(fixtures_path: Path):
         "SEX": {},
         "RACE": {},
     }
+
+
+@pytest.mark.vcr
+def test_submit_extract_live(live_api_client: IpumsApiClient):
+    """
+    Confirm that test extract submits properly
+    """
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
+
+    live_api_client.submit_extract(extract)
+    assert live_api_client.extract_status(extract) == "queued"
+
+
+@pytest.mark.vcr
+def test_download_extract(live_api_client: IpumsApiClient):
+    """
+    Confirm that extract data and attendant files can be downloaded
+    """
+    live_api_client.download_extract(collection="usa", extract="136")
+
+
+@pytest.mark.vcr
+def test_download_extract_stata(live_api_client: IpumsApiClient):
+    """
+    Confirm that extract data and attendant files (Stata) can be downloaded
+    """
+    live_api_client.download_extract(collection="usa", 
+                                     extract="136",
+                                     stata_command_file=True)
+
+
+@pytest.mark.vcr
+def test_download_extract_spss(live_api_client: IpumsApiClient):
+    """
+    Confirm that extract data and attendant files (SPSS) can be downloaded
+    """
+    live_api_client.download_extract(collection="usa", 
+                                     extract="136",
+                                     spss_command_file=True)
+
+
+@pytest.mark.vcr
+def test_download_extract_sas(live_api_client: IpumsApiClient):
+    """
+    Confirm that extract data and attendant files (SAS) can be downloaded
+    """
+    live_api_client.download_extract(collection="usa", 
+                                     extract="136",
+                                     sas_command_file=True)
+
+
+@pytest.mark.vcr
+def test_download_extract_r(live_api_client: IpumsApiClient):
+    """
+    Confirm that extract data and attendant files (R) can be downloaded
+    """
+    live_api_client.download_extract(collection="usa", 
+                                     extract="136",
+                                     R_command_file=True)

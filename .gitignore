@@ -22,3 +22,11 @@ docs/source/reference/generated/
 .coverage
 codecov
 coverage.xml
+
+# vcrpy
+usa_00136.dat.gz
+usa_00136.xml
+usa_00136.do
+usa_00136.R
+usa_00136.sas
+usa_00136.sps

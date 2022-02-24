@@ -1,0 +1,130 @@
+interactions:
+- request:
+    body: '{"description": "My IPUMS extract", "data_format": "fixed_width", "data_structure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AGE":
+      {}, "SEX": {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '199'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=beta
+  response:
+    body:
+      string: '{"data_structure":{"rectangular":{"on":"P"}},"data_format":"fixed_width","description":"My
+        IPUMS extract","samples":{"us2012b":{}},"variables":{"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{}},"download_links":{},"number":137,"status":"queued"}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '447'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 24 Feb 2022 03:51:39 GMT
+      Etag:
+      - W/"2e7d5ca95bd0a6c514891592ee83a5ff"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0 + Phusion Passenger(R) 6.0.11
+      Status:
+      - 200 OK
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.11
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 25305cb2-272f-4dda-9131-5267e1975d6d
+      X-Runtime:
+      - '0.602959'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/137?collection=usa&version=beta
+  response:
+    body:
+      string: '{"data_structure":{"rectangular":{"on":"P"}},"data_format":"fixed_width","description":"My
+        IPUMS extract","samples":{"us2012b":{}},"variables":{"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{}},"download_links":{},"number":137,"status":"queued"}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '447'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 24 Feb 2022 03:51:39 GMT
+      Etag:
+      - W/"2e7d5ca95bd0a6c514891592ee83a5ff"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0 + Phusion Passenger(R) 6.0.11
+      Status:
+      - 200 OK
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.11
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - ce0e8a38-3b92-474a-bbff-054df85d39b9
+      X-Runtime:
+      - '0.446198'
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
