@@ -258,9 +258,9 @@ def test_download_extract_stata(live_api_client: IpumsApiClient):
     """
     Confirm that extract data and attendant files (Stata) can be downloaded
     """
-    live_api_client.download_extract(collection="usa", 
-                                     extract="136",
-                                     stata_command_file=True)
+    live_api_client.download_extract(
+        collection="usa", extract="136", stata_command_file=True
+    )
 
 
 @pytest.mark.vcr
@@ -268,9 +268,9 @@ def test_download_extract_spss(live_api_client: IpumsApiClient):
     """
     Confirm that extract data and attendant files (SPSS) can be downloaded
     """
-    live_api_client.download_extract(collection="usa", 
-                                     extract="136",
-                                     spss_command_file=True)
+    live_api_client.download_extract(
+        collection="usa", extract="136", spss_command_file=True
+    )
 
 
 @pytest.mark.vcr
@@ -278,9 +278,9 @@ def test_download_extract_sas(live_api_client: IpumsApiClient):
     """
     Confirm that extract data and attendant files (SAS) can be downloaded
     """
-    live_api_client.download_extract(collection="usa", 
-                                     extract="136",
-                                     sas_command_file=True)
+    live_api_client.download_extract(
+        collection="usa", extract="136", sas_command_file=True
+    )
 
 
 @pytest.mark.vcr
@@ -288,6 +288,6 @@ def test_download_extract_r(live_api_client: IpumsApiClient):
     """
     Confirm that extract data and attendant files (R) can be downloaded
     """
-    live_api_client.download_extract(collection="usa", 
-                                     extract="136",
-                                     R_command_file=True)
+    live_api_client.download_extract(
+        collection="usa", extract="136", R_command_file=True
+    )
