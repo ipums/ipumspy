@@ -54,6 +54,6 @@ def vcr_config():
     return {
         "filter_headers": ["authorization"],
         "ignore_localhost": True,
-        "record_mode": "once",
+        "record_mode": "none",
         "match_on": ["uri", "method"]
     }
