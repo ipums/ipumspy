@@ -234,7 +234,7 @@ class IpumsApiClient:
         stata_command_file: Optional[bool] = False,
         spss_command_file: Optional[bool] = False,
         sas_command_file: Optional[bool] = False,
-        R_command_file: Optional[bool] = False,
+        r_command_file: Optional[bool] = False,
     ):
         """
         Download the extract with id ``extract_number`` to ``download_dir``
@@ -306,7 +306,7 @@ class IpumsApiClient:
             if sas_command_file:
                 _url = download_links["sas_command_file"]["url"]
                 download_urls.append(_url)
-            if R_command_file:
+            if r_command_file:
                 _url = download_links["R_command_file"]["url"]
                 download_urls.append(_url)
 

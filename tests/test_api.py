@@ -289,5 +289,5 @@ def test_download_extract_r(live_api_client: IpumsApiClient):
     Confirm that extract data and attendant files (R) can be downloaded
     """
     live_api_client.download_extract(
-        collection="usa", extract="136", R_command_file=True
+        collection="usa", extract="136", r_command_file=True
     )
