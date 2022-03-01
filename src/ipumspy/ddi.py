@@ -184,6 +184,8 @@ class Codebook:
     """FileDescription object"""
     data_description: List[VariableDescription]
     """list of VariableDescription objects"""
+    samples_description: List[str]
+    """list of IPUMS sample descriptions"""
     ipums_citation: str
     """The appropriate citation for the IPUMS extract. Please use it!"""
     ipums_conditions: str
@@ -208,6 +210,12 @@ class Codebook:
                 "Codebooks with more than one file type are not supported"
             )
 
+        _sample_descriptions = elt.find(
+            "./ddi:stdyDscr/ddi:stdyInfo/ddi:notes", namespaces
+        ).text
+        sample_descriptions = _sample_descriptions.strip().split("\n")
+        ipums_samples = [desc.split(":")[-1].strip() for desc in sample_descriptions]
+
         ipums_citation = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", namespaces
         ).text
@@ -221,6 +229,7 @@ class Codebook:
                 VariableDescription.read(desc, ddi_namespace)
                 for desc in elt.findall("./ddi:dataDscr/ddi:var", namespaces)
             ],
+            samples_description=ipums_samples,
             ipums_citation=ipums_citation,
             ipums_conditions=ipums_conditions,
         )
