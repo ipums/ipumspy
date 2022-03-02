@@ -6,9 +6,13 @@ from __future__ import annotations
 import warnings
 from typing import Any, Dict, List, Optional, Type, Union
 
-from .exceptions import (
-    IpumsExtractNotSubmitted,
-)
+import bs4
+import requests
+
+from ipumspy.ddi import Codebook
+from ipumspy.utilities import get_sample_ids
+
+from .exceptions import IpumsExtractNotSubmitted
 
 
 class DefaultCollectionWarning(Warning):
@@ -216,3 +220,44 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         raise IpumsExtractNotSubmitted(
             "Extract has not been submitted and so has no json response"
         )
+
+
+def extract_from_ddi(
+    ddi_codebook: Union[Codebook, List[Codebook]]
+) -> Union[BaseExtract, List[BaseExtract]]:
+    """
+    Create a BaseExtract object from a parsed DDI codebook.
+
+    Args:
+        ddi_codebook: A parsed IPUMS DDI Codebook object or list of such objects
+
+    Returns:
+        A BaseExtract object with the data collection, samples, variables,
+        and data format specified by the DDI Codebook
+    """
+    if isinstance(ddi_codebook, list):
+        return [extract_from_ddi(ddi) for ddi in ddi_codebook]
+    collection = ddi_codebook.ipums_collection
+    # this isn't ideal, as if a list of DDI are supplied for the same collectin,
+    # it will grab that web page for each DDI, which is unnecessary.
+    sample_ids_dict = get_sample_ids(collection)
+
+    # put extract info in a dict
+    extract_info = {}
+    extract_info["collection"] = collection
+    extract_descs = ddi_codebook.samples_description
+    extract_info["samples"] = [sample_ids_dict[desc] for desc in extract_descs]
+    extract_info["variables"] = [vd.name for vd in ddi_codebook.data_description]
+    ddi_data_format = ddi_codebook.file_description.format
+    # extra kluge
+    if ddi_data_format == "fixed length fields":
+        extract_info["data_format"] = "fixed_width"
+    else:
+        extract_info["data_format"] = "hierarchical"
+
+    # because the DDI doesn't have API version info, the extract will be submitted
+    # with the default version of the API or one that the user specifies when
+    # instantiating IpumsAPIClient
+    return BaseExtract._collection_to_extract[extract_info["collection"]](
+        **extract_info
+    )

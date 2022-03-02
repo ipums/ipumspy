@@ -6,10 +6,11 @@
 """
 Functions for accessing IPUMS data and metadata
 """
-import requests
+from typing import Dict
+
 import bs4
 import pandas as pd
-from typing import Dict
+import requests
 
 from . import ddi as ddi_definitions
 

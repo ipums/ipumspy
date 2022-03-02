@@ -14,11 +14,10 @@ import pandas as pd
 import pyarrow as pa
 from pyarrow.parquet import ParquetWriter
 
-from .api.exceptions import IpumsApiException
-from .api.extract import extract_from_dict
-
 from . import readers
 from .api import IpumsApiClient
+from .api.exceptions import IpumsApiException
+from .api.extract import extract_from_dict
 
 
 @click.group()

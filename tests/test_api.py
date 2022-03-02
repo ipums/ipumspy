@@ -1,12 +1,12 @@
+import json
 import os
+import pickle
 import subprocess
 import time
-import yaml
-import json
-import pickle
 from pathlib import Path
 
 import pytest
+import yaml
 
 from ipumspy import api
 from ipumspy.api import (
@@ -19,8 +19,8 @@ from ipumspy.api import (
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
     IpumsApiException,
-    IpumsNotFound,
     IpumsExtractNotSubmitted,
+    IpumsNotFound,
 )
 
 
