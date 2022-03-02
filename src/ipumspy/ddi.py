@@ -190,6 +190,10 @@ class Codebook:
     """The appropriate citation for the IPUMS extract. Please use it!"""
     ipums_conditions: str
     """IPUMS terms of use"""
+    ipums_collection: str
+    """IPUMS collection name"""
+    ipums_doi: str
+    """"DOI of IPUMS data set"""
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
@@ -222,6 +226,12 @@ class Codebook:
         ipums_conditions = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", namespaces
         ).text
+        ipums_collection = elt.find(
+            "./ddi:stdyDscr/ddi:citation/ddi:serStmt/ddi:serName", namespaces
+        ).attrib["abbr"]
+        ipums_doi = elt.find(
+            "./ddi:stdyDscr/ddi:citation/ddi:serStmt/ddi:serInfo", namespaces
+        ).text
 
         return cls(
             file_description=FileDescription.read(file_txts[0], ddi_namespace),
@@ -232,6 +242,8 @@ class Codebook:
             samples_description=ipums_samples,
             ipums_citation=ipums_citation,
             ipums_conditions=ipums_conditions,
+            ipums_collection=ipums_collection,
+            ipums_doi=ipums_doi,
         )
 
     def get_variable_info(self, name: str) -> VariableDescription:
