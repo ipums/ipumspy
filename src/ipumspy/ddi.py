@@ -214,11 +214,12 @@ class Codebook:
                 "Codebooks with more than one file type are not supported"
             )
 
-        _sample_descriptions = elt.find(
-            "./ddi:stdyDscr/ddi:stdyInfo/ddi:notes", namespaces
-        ).text
-        sample_descriptions = _sample_descriptions.strip().split("\n")
-        ipums_samples = [desc.split(":")[-1].strip() for desc in sample_descriptions]
+        # compensation for lack of metadata api
+        _sample_descriptions = []
+        for item in elt.findall("./ddi:stdyDscr/ddi:stdyInfo/ddi:notes", namespaces):
+            sample_name_row = item.text.strip().split("\n")[0]
+            _sample_descriptions.append(sample_name_row)
+        ipums_samples = [desc.split(":")[-1].strip() for desc in _sample_descriptions]
 
         ipums_citation = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", namespaces
