@@ -248,12 +248,10 @@ def extract_from_ddi(
     extract_descs = ddi_codebook.samples_description
     extract_info["samples"] = [sample_ids_dict[desc] for desc in extract_descs]
     extract_info["variables"] = [vd.name for vd in ddi_codebook.data_description]
-    ddi_data_format = ddi_codebook.file_description.format
-    # extra kluge
-    if ddi_data_format == "fixed length fields":
-        extract_info["data_format"] = "fixed_width"
-    else:
-        extract_info["data_format"] = "hierarchical"
+    extract_info["data_structure"] = ddi_codebook.file_description.structure
+    # DDI does not reflect when extract is requested in CSV or other format
+    # so this method will default to specifying fixed_width (.dat)
+    extract_info["data_format"] = "fixed_width"
 
     # because the DDI doesn't have API version info, the extract will be submitted
     # with the default version of the API or one that the user specifies when
