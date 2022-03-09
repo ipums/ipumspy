@@ -8,13 +8,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from ipumspy import api
+from ipumspy import api, readers
 from ipumspy.api import (
     IpumsApiClient,
     OtherExtract,
     UsaExtract,
     extract_from_dict,
     extract_to_dict,
+    extract_from_ddi,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
@@ -228,3 +229,24 @@ def test_extract_to_dict(fixtures_path: Path):
         "SEX": {},
         "RACE": {},
     }
+
+
+def test_extract_from_ddi(fixtures_path: Path):
+    ddi_codebook = readers.read_ipums_ddi(fixtures_path / "usa_00136.xml")
+    extract = extract_from_ddi(ddi_codebook)
+
+    assert extract.collection == "usa"
+    assert extract.samples == ["us2012b"]
+    assert extract.variables == [
+        "YEAR",
+        "SAMPLE",
+        "SERIAL",
+        "CBSERIAL",
+        "HHWT",
+        "GQ",
+        "PERNUM",
+        "PERWT",
+        "SEX",
+        "AGE",
+    ]
+    assert extract.data_format == "fixed_width"
