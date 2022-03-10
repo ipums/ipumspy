@@ -47,3 +47,13 @@ def environment_variables():
 def fixtures_path() -> Path:
     path = Path(__file__)
     return path.absolute().parent / "tests" / "fixtures"
+
+
+@pytest.fixture(scope="session")
+def vcr_config():
+    return {
+        "filter_headers": ["authorization"],
+        "ignore_localhost": True,
+        "record_mode": "none",
+        "match_on": ["uri", "method"],
+    }

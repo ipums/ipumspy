@@ -231,6 +231,10 @@ class IpumsApiClient:
         extract: Union[BaseExtract, int],
         collection: Optional[str] = None,
         download_dir: Optional[FilenameType] = None,
+        stata_command_file: Optional[bool] = False,
+        spss_command_file: Optional[bool] = False,
+        sas_command_file: Optional[bool] = False,
+        r_command_file: Optional[bool] = False,
     ):
         """
         Download the extract with id ``extract_number`` to ``download_dir``
@@ -244,6 +248,14 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
             download_dir: The location to download the data to.
                 MUST be a directory that currently exists
+            stata_command_file: Set to True to download the stata command file with
+                the extract data file.
+            spss_command_file: Set to True to download the SPSS command file with the
+                extract data file.
+            sas_command_file: Set to True to download the SAS command file with the
+                extract data file.
+            R_command_file: Set to True to download the R command file with the
+                extract data file.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
@@ -283,12 +295,27 @@ class IpumsApiClient:
             # an empty dict
             data_url = download_links["data"]["url"]
             ddi_url = download_links["ddi_codebook"]["url"]
+            download_urls = [data_url, ddi_url]
+
+            if stata_command_file:
+                _url = download_links["stata_command_file"]["url"]
+                download_urls.append(_url)
+            if spss_command_file:
+                _url = download_links["spss_command_file"]["url"]
+                download_urls.append(_url)
+            if sas_command_file:
+                _url = download_links["sas_command_file"]["url"]
+                download_urls.append(_url)
+            if r_command_file:
+                _url = download_links["R_command_file"]["url"]
+                download_urls.append(_url)
+
         except KeyError:
             raise IpumsExtractNotReady(
                 f"Your IPUMS {collection} extract number {extract_id} was purged "
                 f"from our cache. Please resubmit your extract."
             )
-        for url in [data_url, ddi_url]:
+        for url in download_urls:
             file_name = url.split("/")[-1]
             download_path = download_dir / file_name
             with self.get(url, stream=True) as response:
