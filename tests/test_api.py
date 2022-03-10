@@ -4,9 +4,11 @@ import time
 import yaml
 import json
 import pickle
+import tempfile
 from pathlib import Path
 
 import pytest
+import vcr
 
 from ipumspy import api
 from ipumspy.api import (
@@ -22,6 +24,12 @@ from ipumspy.api.exceptions import (
     IpumsNotFound,
     IpumsExtractNotSubmitted,
 )
+
+
+@pytest.fixture(scope="function")
+def tmpdir() -> Path:
+    with tempfile.TemporaryDirectory() as tmp:
+        yield Path(tmp)
 
 
 @pytest.fixture(scope="module")
@@ -228,3 +236,73 @@ def test_extract_to_dict(fixtures_path: Path):
         "SEX": {},
         "RACE": {},
     }
+
+
+@pytest.mark.vcr
+def test_submit_extract_live(live_api_client: IpumsApiClient):
+    """
+    Confirm that test extract submits properly
+    """
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
+
+    live_api_client.submit_extract(extract)
+    assert live_api_client.extract_status(extract) == "queued"
+
+
+@pytest.mark.vcr
+def test_download_extract(live_api_client: IpumsApiClient, tmpdir: Path):
+    """
+    Confirm that extract data and attendant files can be downloaded
+    """
+    live_api_client.download_extract(
+        collection="usa", extract="136", download_dir=tmpdir
+    )
+    assert (tmpdir / "usa_00136.dat.gz").exists()
+    assert (tmpdir / "usa_00136.xml").exists()
+
+
+@pytest.mark.vcr
+def test_download_extract_stata(live_api_client: IpumsApiClient, tmpdir: Path):
+    """
+    Confirm that extract data and attendant files (Stata) can be downloaded
+    """
+    live_api_client.download_extract(
+        collection="usa", extract="136", stata_command_file=True, download_dir=tmpdir
+    )
+    assert (tmpdir / "usa_00136.do").exists()
+
+
+@pytest.mark.vcr
+def test_download_extract_spss(live_api_client: IpumsApiClient, tmpdir: Path):
+    """
+    Confirm that extract data and attendant files (SPSS) can be downloaded
+    """
+    live_api_client.download_extract(
+        collection="usa", extract="136", spss_command_file=True, download_dir=tmpdir
+    )
+    assert (tmpdir / "usa_00136.sps").exists()
+
+
+@pytest.mark.vcr
+def test_download_extract_sas(live_api_client: IpumsApiClient, tmpdir: Path):
+    """
+    Confirm that extract data and attendant files (SAS) can be downloaded
+    """
+    live_api_client.download_extract(
+        collection="usa", extract="136", sas_command_file=True, download_dir=tmpdir
+    )
+    assert (tmpdir / "usa_00136.sas").exists()
+
+
+@pytest.mark.vcr
+def test_download_extract_r(live_api_client: IpumsApiClient, tmpdir: Path):
+    """
+    Confirm that extract data and attendant files (R) can be downloaded
+    """
+    live_api_client.download_extract(
+        collection="usa", extract="136", r_command_file=True, download_dir=tmpdir
+    )
+    assert (tmpdir / "usa_00136.R").exists()
