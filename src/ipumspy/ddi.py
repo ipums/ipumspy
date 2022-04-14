@@ -242,3 +242,24 @@ class Codebook:
             ][0]
         except IndexError:
             raise ValueError(f"No description found for {name}.")
+
+    def get_all_types(self, type_format: str) -> dict:
+        """
+        Retrieve all column types
+
+        Args:
+            type_format: type format. Should be one of ["numpy_type", "pandas_type", "python_type", "vartype"]
+        Returns:
+            A dict
+        """
+        try:
+            # traversing the doc.
+            all_types = {}
+            for variable_descr in self.data_description:
+                all_types.update(
+                    {variable_descr.name: getattr(variable_descr, type_format)}
+                )
+            return all_types
+        except AttributeError:
+            acceptable_values = ["numpy_type", "pandas_type", "python_type", "vartype"]
+            raise ValueError(f"{type_format} not in {acceptable_values}")

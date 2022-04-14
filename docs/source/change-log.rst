@@ -25,3 +25,10 @@ year-month-day
 2021-11-30
 
 * This is the initial version of ipumspy.
+
+
+0.1.1-alpha
+----
+2022-04-14
+
+* Added :py:meth:`~ipumspy.ddi.Codebook.get_all_types()` method to access all types of ddi codebook variables in an easy way.

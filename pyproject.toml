@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ipumspy"
-version = "0.1.0"
+version = "0.1.1-alpha"
 description = "A collection of tools for working with IPUMS data"
 authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
            "Renae Rodgers <rodge103@umn.edu>"]
@@ -10,13 +10,13 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
-pandas = "^1.0.4"
-click = "^7.0.0"
-pyarrow = "^3.0.0"
-requests = "^2.25.1"
-importlib-metadata = {version = "^4.0.1", python = "<3.8"}
-PyYAML = "^5.4.1"
+python = "^3.9.12"
+pandas = ">=1.4.1"
+click = ">=7.0.0"
+pyarrow = ">=3.0.0"
+requests = ">=2.25.1"
+importlib-metadata = {version = ">=4.0.1", python = "^3.9"}
+PyYAML = ">=5.4.1"
 
 # Documentation dependencies
 # Note that these are currently required to be specified in this section
@@ -28,7 +28,7 @@ myst-parser = { version = "^0.15.2", optional = true }
 furo = { version = "^2021.8.31", optional = true }
 
 [tool.poetry.dev-dependencies]
-black = "^21.10b0"
+black = "^22.1.0"
 pylint = "^2.7.4"
 isort = "^5.8.0"
 mypy = "^0.812"

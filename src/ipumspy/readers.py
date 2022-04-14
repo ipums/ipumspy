@@ -96,7 +96,7 @@ def _read_microdata(
         def _fix_decimal_expansion(df):
             for desc in data_description:
                 if desc.shift:
-                    shift = 10 ** desc.shift
+                    shift = 10**desc.shift
                     df[desc.name] /= shift
             return df
 

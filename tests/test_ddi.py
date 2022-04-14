@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+import numpy as np
 import pytest
 
 from ipumspy import ddi, readers
@@ -51,3 +52,63 @@ def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
     # And does it raise a ValueError if the variable does not exist?
     with pytest.raises(ValueError):
         cps_ddi.get_variable_info("foo")
+
+
+def test_get_all_types(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
+
+    var_types = {
+        "YEAR": "numeric",
+        "SERIAL": "numeric",
+        "HWTSUPP": "numeric",
+        "STATEFIP": "numeric",
+        "MONTH": "numeric",
+        "PERNUM": "numeric",
+        "WTSUPP": "numeric",
+        "INCTOT": "numeric",
+    }
+
+    assert cps_ddi.get_all_types(type_format="vartype") == var_types
+
+    python_types = {
+        "YEAR": int,
+        "SERIAL": int,
+        "HWTSUPP": float,
+        "STATEFIP": int,
+        "MONTH": int,
+        "PERNUM": int,
+        "WTSUPP": float,
+        "INCTOT": int,
+    }
+
+    assert cps_ddi.get_all_types(type_format="python_type") == python_types
+    # always np.float64 due to eventual NaNs.
+    numpy_types = {
+        "YEAR": np.float64,
+        "SERIAL": np.float64,
+        "HWTSUPP": np.float64,
+        "STATEFIP": np.float64,
+        "MONTH": np.float64,
+        "PERNUM": np.float64,
+        "WTSUPP": np.float64,
+        "INCTOT": np.float64,
+    }
+
+    assert cps_ddi.get_all_types(type_format="numpy_type") == numpy_types
+
+    pandas_types = {
+        "YEAR": pd.Int64Dtype(),
+        "SERIAL": pd.Int64Dtype(),
+        "HWTSUPP": np.float64,
+        "STATEFIP": pd.Int64Dtype(),
+        "MONTH": pd.Int64Dtype(),
+        "PERNUM": pd.Int64Dtype(),
+        "WTSUPP": np.float64,
+        "INCTOT": pd.Int64Dtype(),
+    }
+
+    acceptable_values = ["numpy_type", "pandas_type", "python_type", "vartype"]
+    assert cps_ddi.get_all_types(type_format="pandas_type") == pandas_types
+
+    # Does it raise a ValueError if the specified type of format, doesn't match existing attribute?
+    with pytest.raises(ValueError):
+        cps_ddi.get_all_types(type_format="foo")
