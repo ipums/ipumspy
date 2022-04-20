@@ -22,3 +22,9 @@ docs/source/reference/generated/
 .coverage
 codecov
 coverage.xml
+
+# pycharm ide settings
+.idea/
+
+# Fixtures temp files. Files that must not be committed to git (in order to respect IPUMS terms of use for example.)
+tests/fixtures/tmp/

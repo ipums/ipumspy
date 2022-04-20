@@ -243,22 +243,52 @@ class Codebook:
         except IndexError:
             raise ValueError(f"No description found for {name}.")
 
-    def get_all_types(self, type_format: str) -> dict:
+    def get_all_types(self, type_format: str, string_pyarrow: bool = False) -> dict:
         """
         Retrieve all column types
 
         Args:
             type_format: type format. Should be one of ["numpy_type", "pandas_type", "python_type", "vartype"]
+            string_pyarrow: has an effect when True and used with type_format=="pandas_type". In this case,
+                            string types==pd.StringDtype() is replaced with pd.StringDtype(storage='pyarrow').
+
         Returns:
-            A dict
+            A dict with column names column dtype mapping.
+
+        Examples:
+            Let's see an example of usage with pandas.read_csv:
+
+            >>> from ipumspy import readers
+            >>> reader = readers.read_ipums_ddi('extract_ddi.xml')
+            >>> dataframe_dtypes = reader.get_all_types(type_format='pandas_type', string_pyarrow=False)
+            >>> df = pd.read_csv("extract.csv", dtype=dataframe_dtypes)
+
+            And an example of usecase of string_pyarrow set to True:
+
+            >>> from ipumpspy import readers
+            >>> reader = readers.read_ipums_ddi('extract_ddi.xml')
+            >>> dataframe_dtypes = reader.get_all_types(type_format='pandas_type', string_pyarrow=True)
+            >>> # No particular impact for reading from csv.
+            >>> df = pd.read_csv("extract.csv", dtype=dataframe_dtypes)
+            >>> # The benefit of using string_pyarrow: converting to parquet. The writing time is reduced.
+            >>> df.to_parquet("extract.parquet")
+            >>> # Also, the data loaded from the derived extract.parquet will be faster than if the csv file was converted
+            >>> # using string_pyarrow=False
+
+
         """
+        if type_format != "pandas_type" and string_pyarrow is True:
+            raise ValueError(
+                'string_pyarrow can be set to True only if type_format == "pandas_type".'
+            )
         try:
             # traversing the doc.
             all_types = {}
             for variable_descr in self.data_description:
-                all_types.update(
-                    {variable_descr.name: getattr(variable_descr, type_format)}
-                )
+                type_value = getattr(variable_descr, type_format)
+                if type_value == pd.StringDtype() and string_pyarrow is True:
+                    type_value = pd.StringDtype(storage="pyarrow")
+                all_types.update({variable_descr.name: type_value})
             return all_types
         except AttributeError:
             acceptable_values = ["numpy_type", "pandas_type", "python_type", "vartype"]

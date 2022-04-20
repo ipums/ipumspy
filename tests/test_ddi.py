@@ -17,6 +17,16 @@ def cps_df(fixtures_path: Path, cps_ddi: ddi.Codebook) -> pd.DataFrame:
     return readers.read_microdata(cps_ddi, fixtures_path / "cps_00006.csv.gz")
 
 
+@pytest.fixture(scope="function")
+def cps_ddi2(fixtures_path: Path) -> ddi.Codebook:
+    return readers.read_ipums_ddi(fixtures_path / "tmp/acs_00001.xml")
+
+
+@pytest.fixture(scope="function")
+def cps_df2(fixtures_path: Path, cps_ddi2: ddi.Codebook) -> pd.DataFrame:
+    return readers.read_microdata(cps_ddi2, fixtures_path / "tmp/acs_00001.csv.gz")
+
+
 def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
     # Does it retrieve the appropriate variable?
     assert cps_ddi.get_variable_info("YEAR").id == "YEAR"
@@ -112,3 +122,38 @@ def test_get_all_types(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
     # Does it raise a ValueError if the specified type of format, doesn't match existing attribute?
     with pytest.raises(ValueError):
         cps_ddi.get_all_types(type_format="foo")
+
+
+def test_get_all_types_with_pyarrow(cps_ddi2: ddi.Codebook, cps_df2: pd.DataFrame):
+    # this test can be run with variable INDNAICS from IPUMS USA sample ACS 2020 5% for example. I didn't find
+    # character variable for CPS therefore I propose one with ACS data. Since IPUMS terms of use
+    # https://www.ipums.org/about/terms requires explicit permission for redistribution of the data, I can't share
+    # the data. To run the test just need to create an extract with the variables below and select sample ACS 2020.
+    # Place the ddi and csv in tests/fixtures/tmp/ and name them acs_00001.xml, acs_00001.csv.gz respectively.
+
+    pandas_types = {
+        "YEAR": pd.Int64Dtype(),
+        "SAMPLE": pd.Int64Dtype(),
+        "SERIAL": pd.Int64Dtype(),
+        "CBSERIAL": pd.Int64Dtype(),
+        "HHWT": np.float64,
+        "CLUSTER": pd.Int64Dtype(),
+        "STRATA": pd.Int64Dtype(),
+        "GQ": pd.Int64Dtype(),
+        "PERNUM": pd.Int64Dtype(),
+        "PERWT": np.float64,
+        "INDNAICS": pd.StringDtype(storage="pyarrow"),
+    }
+    assert (
+        cps_ddi2.get_all_types(type_format="pandas_type", string_pyarrow=True)
+        == pandas_types
+    )
+
+    with pytest.raises(ValueError):
+        cps_ddi2.get_all_types(type_format="numpy_type", string_pyarrow=True)
+
+    with pytest.raises(ValueError):
+        cps_ddi2.get_all_types(type_format="vartype", string_pyarrow=True)
+
+    with pytest.raises(ValueError):
+        cps_ddi2.get_all_types(type_format="python_type", string_pyarrow=True)
