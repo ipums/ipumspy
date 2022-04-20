@@ -1022,7 +1022,7 @@ docs = ["Sphinx", "sphinx-autodoc-typehints", "sphinx-copybutton", "myst-parser"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "29984b82c52b3ccc20353af3bf6c42906da0912f7ccbe563412720bfec93dd65"
+content-hash = "2dc601dbca8cb25ae662c8f744cf8883ef49fbe92afb19b6ec4bacbf01516de2"
 
 [metadata.files]
 alabaster = [
