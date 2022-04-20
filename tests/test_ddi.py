@@ -116,8 +116,31 @@ def test_get_all_types(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
         "INCTOT": pd.Int64Dtype(),
     }
 
-    acceptable_values = ["numpy_type", "pandas_type", "python_type", "vartype"]
     assert cps_ddi.get_all_types(type_format="pandas_type") == pandas_types
+
+    pandas_types_efficient = {
+        "YEAR": np.float64,
+        "SERIAL": np.float64,
+        "HWTSUPP": np.float64,
+        "STATEFIP": np.float64,
+        "MONTH": np.float64,
+        "PERNUM": np.float64,
+        "WTSUPP": np.float64,
+        "INCTOT": np.float64,
+    }
+
+    assert (
+        cps_ddi.get_all_types(type_format="pandas_type_efficient")
+        == pandas_types_efficient
+    )
+
+    acceptable_values = [
+        "numpy_type",
+        "pandas_type",
+        "pandas_type_efficient",
+        "python_type",
+        "vartype",
+    ]
 
     # Does it raise a ValueError if the specified type of format, doesn't match existing attribute?
     with pytest.raises(ValueError):
@@ -147,6 +170,25 @@ def test_get_all_types_with_pyarrow(cps_ddi2: ddi.Codebook, cps_df2: pd.DataFram
     assert (
         cps_ddi2.get_all_types(type_format="pandas_type", string_pyarrow=True)
         == pandas_types
+    )
+
+    pandas_types_efficient = {
+        "YEAR": np.float64,
+        "SAMPLE": np.float64,
+        "SERIAL": np.float64,
+        "CBSERIAL": np.float64,
+        "HHWT": np.float64,
+        "CLUSTER": np.float64,
+        "STRATA": np.float64,
+        "GQ": np.float64,
+        "PERNUM": np.float64,
+        "PERWT": np.float64,
+        "INDNAICS": pd.StringDtype(storage="pyarrow"),
+    }
+
+    assert (
+        cps_ddi2.get_all_types(type_format="pandas_type_efficient", string_pyarrow=True)
+        == pandas_types_efficient
     )
 
     with pytest.raises(ValueError):

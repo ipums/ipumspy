@@ -86,6 +86,20 @@ class VariableDescription:
             return np.float64
         return pd.StringDtype()
 
+    @property
+    def pandas_type_efficient(self) -> type:
+        """
+        In contrary to `self.pandas_type`, `self.pandas_type_efficient` doesn't implement "Int64" type but "numpy.float64" for
+        integer type. It's more efficient and pandas uses this approach for type inference:
+        https://pandas-docs.github.io/pandas-docs-travis/user_guide/integer_na.html
+        It can be considered as a mix between `self.pandas_type` and `self.numpy_type`
+        """
+        if self.vartype == "numeric":
+            if (self.shift is None) or (self.shift == 0):
+                return np.float64
+            return np.float64
+        return pd.StringDtype()
+
     @classmethod
     def read(cls, elt: Element, ddi_namespace: str) -> VariableDescription:
         """
@@ -248,7 +262,8 @@ class Codebook:
         Retrieve all column types
 
         Args:
-            type_format: type format. Should be one of ["numpy_type", "pandas_type", "python_type", "vartype"]
+            type_format: type format. Should be one of ["numpy_type", "pandas_type", "pandas_type_efficient",
+                         "python_type", "vartype"]
             string_pyarrow: has an effect when True and used with type_format=="pandas_type". In this case,
                             string types==pd.StringDtype() is replaced with pd.StringDtype(storage='pyarrow').
 
@@ -265,7 +280,7 @@ class Codebook:
 
             And an example of usecase of string_pyarrow set to True:
 
-            >>> from ipumpspy import readers
+            >>> from ipumspy import readers
             >>> reader = readers.read_ipums_ddi('extract_ddi.xml')
             >>> dataframe_dtypes = reader.get_all_types(type_format='pandas_type', string_pyarrow=True)
             >>> # No particular impact for reading from csv.
@@ -277,7 +292,10 @@ class Codebook:
 
 
         """
-        if type_format != "pandas_type" and string_pyarrow is True:
+        if (
+            type_format not in ["pandas_type", "pandas_type_efficient"]
+            and string_pyarrow is True
+        ):
             raise ValueError(
                 'string_pyarrow can be set to True only if type_format == "pandas_type".'
             )
@@ -291,5 +309,11 @@ class Codebook:
                 all_types.update({variable_descr.name: type_value})
             return all_types
         except AttributeError:
-            acceptable_values = ["numpy_type", "pandas_type", "python_type", "vartype"]
+            acceptable_values = [
+                "numpy_type",
+                "pandas_type",
+                "pandas_type_efficient",
+                "python_type",
+                "vartype",
+            ]
             raise ValueError(f"{type_format} not in {acceptable_values}")
