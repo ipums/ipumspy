@@ -36,5 +36,7 @@ year-month-day
 2022-04-20
 
 * Added parameter `string_pyarrow` to :py:meth:`~ipumspy.ddi.Codebook.get_all_types()` method. If this parameter is set to True is used in conjunction
-  with parameter `type_format`="pandas_type", then the string column dtype (pd.StringDtype()) is overriden with pd.StringDtype(storage="pyarrow"). Useful for
+  with parameter `type_format="pandas_type"` or `type_format`="pandas_type_efficient"`, then the string column dtype (pandas.StringDtype()) is overriden with pandas.StringDtype(storage="pyarrow"). Useful for
   users who want to convert an IPUMS extract in csv format to parquet format.
+* Added :py:meth:`~ipumspy.ddi.VariableDescription.pandas_type_efficient`. This type format is more efficient than `pandas_type`
+  and is a sort of mix between `pandas_type` and `numpy_type`. Integer and float variables are coded as `numpy.float64`, string as `pandas.StringDtype()`.

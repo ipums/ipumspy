@@ -264,8 +264,8 @@ class Codebook:
         Args:
             type_format: type format. Should be one of ["numpy_type", "pandas_type", "pandas_type_efficient",
                          "python_type", "vartype"]
-            string_pyarrow: has an effect when True and used with type_format=="pandas_type". In this case,
-                            string types==pd.StringDtype() is replaced with pd.StringDtype(storage='pyarrow').
+            string_pyarrow: has an effect when True and used with type_format in ["pandas_type", "pandas_type_efficient"].
+             In this case, string types==pd.StringDtype() is replaced with pd.StringDtype(storage='pyarrow').
 
         Returns:
             A dict with column names column dtype mapping.
@@ -297,7 +297,7 @@ class Codebook:
             and string_pyarrow is True
         ):
             raise ValueError(
-                'string_pyarrow can be set to True only if type_format == "pandas_type".'
+                'string_pyarrow can be set to True only if type_format in ["pandas_type", "pandas_type_efficient"].'
             )
         try:
             # traversing the doc.
