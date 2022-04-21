@@ -147,6 +147,7 @@ def test_get_all_types(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
         cps_ddi.get_all_types(type_format="foo")
 
 
+@pytest.mark.character_data
 def test_get_all_types_with_pyarrow(cps_ddi2: ddi.Codebook, cps_df2: pd.DataFrame):
     # this test can be run with variable INDNAICS from IPUMS USA sample ACS 2020 5% for example. I didn't find
     # character variable for CPS therefore I propose one with ACS data. Since IPUMS terms of use
