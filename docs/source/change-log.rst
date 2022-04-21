@@ -40,3 +40,8 @@ year-month-day
   users who want to convert an IPUMS extract in csv format to parquet format.
 * Added :py:meth:`~ipumspy.ddi.VariableDescription.pandas_type_efficient`. This type format is more efficient than `pandas_type`
   and is a sort of mix between `pandas_type` and `numpy_type`. Integer and float variables are coded as `numpy.float64`, string as `pandas.StringDtype()`.
+
+2022-04-21
+
+* Updated `pyproject.toml` dependencies. Python 3.7 is required, it solves incompatibility of `from __future__ import annotations`
+  with Python<3.7. __future__ was implemented in Python 3.7
