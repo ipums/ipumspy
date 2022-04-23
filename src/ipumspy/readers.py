@@ -61,6 +61,7 @@ def _read_microdata(
     subset: Optional[List[str]] = None,
     iterator: bool = False,
     chunksize: Optional[int] = None,
+    dtype: Optional[dict] = None,
     **kwargs
 ):
     if ddi.file_description.structure != "rectangular":
@@ -82,13 +83,16 @@ def _read_microdata(
     kwargs = copy.deepcopy(kwargs)
     if ".dat" in filename.suffixes:
         # This is a fixed width file
+
         kwargs.update(
             {
                 "colspecs": [(desc.start, desc.end) for desc in data_description],
                 "names": [desc.name for desc in data_description],
+                # numpy_type since _fix_decimal_expansion call will convert any shiftable integer columns to float anyway.
                 "dtype": {desc.name: desc.numpy_type for desc in data_description},
             }
         )
+
         reader = pd.read_fwf
         mode = "rt"
 
@@ -96,7 +100,7 @@ def _read_microdata(
         def _fix_decimal_expansion(df):
             for desc in data_description:
                 if desc.shift:
-                    shift = 10**desc.shift
+                    shift = 10 ** desc.shift
                     df[desc.name] /= shift
             return df
 
@@ -106,9 +110,16 @@ def _read_microdata(
         kwargs.update(
             {
                 "usecols": [desc.name for desc in data_description],
-                "dtype": {desc.name: desc.numpy_type for desc in data_description},
             }
         )
+
+        if dtype is None:
+            kwargs.update(
+                {"dtype": {desc.name: desc.numpy_type for desc in data_description}}
+            )
+        else:
+            kwargs.update({"dtype": dtype})
+
         mode = "rt"
 
         # CSVs have correct decimal expansions already; so we just make
@@ -118,6 +129,8 @@ def _read_microdata(
 
     elif ".parquet" in filename.suffixes:
         # A parquet file
+        if dtype is not None:
+            raise ValueError("dtype argument can't be used with parquet files.")
         reader = pd.read_parquet
         kwargs.update({"columns": [desc.name for desc in data_description]})
         mode = "rb"
@@ -137,12 +150,21 @@ def _read_microdata(
             kwargs.update({"iterator": True, "chunksize": chunksize})
             data = reader(infile, **kwargs)
 
-        yield from (
-            _fix_decimal_expansion(df).astype(
-                {desc.name: desc.pandas_type for desc in ddi.data_description}
+        if dtype is None:
+            yield from (
+                _fix_decimal_expansion(df).astype(
+                    {desc.name: desc.pandas_type for desc in ddi.data_description}
+                )
+                for df in data
             )
-            for df in data
-        )
+        else:
+            if ".dat" in filename.suffixes:
+                # convert variables from default numpy_type to corresponding type in dtype.
+                yield from (_fix_decimal_expansion(df).astype(dtype) for df in data)
+            else:
+                # In contrary to counter condition, df already has right dtype. It would be expensive to call astype for
+                # nothing.
+                yield from (_fix_decimal_expansion(df) for df in data)
 
 
 def read_microdata(
@@ -150,6 +172,7 @@ def read_microdata(
     filename: Optional[fileutils.FileType] = None,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
+    dtype: Optional[dict] = None,
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
@@ -163,6 +186,12 @@ def read_microdata(
                         working directory
         encoding: The encoding of the data file. If not present, reads from ddi
         subset: A list of variable names to keep. If None, will keep all
+        dtype: A dictionary with variable names as keys and variable types as values.
+            Has an effect only when used with pd.read_fwf or pd.read_csv engine. If None, pd.read_fwf or pd.read_csv use
+            type ddi.data_description.pandas_type for all variables. See ipumspy.ddi.VariableDescription for more
+            precision on ddi.data_description.pandas_type. If files are csv, and dtype is not None, pandas converts the
+            column types once: on pd.read_csv call. When file format is .dat or .csv and dtype is None, two conversion
+            occur: one on load, and one when returning the dataframe.
         kwargs: keyword args to be passed to the engine (pd.read_fwf, pd.read_csv, or
             pd.read_parquet depending on the file type)
 
@@ -171,7 +200,12 @@ def read_microdata(
     """
     return next(
         _read_microdata(
-            ddi, filename=filename, encoding=encoding, subset=subset, **kwargs
+            ddi,
+            filename=filename,
+            encoding=encoding,
+            subset=subset,
+            dtype=dtype,
+            **kwargs
         )
     )
 
@@ -182,6 +216,7 @@ def read_microdata_chunked(
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     chunksize: Optional[int] = None,
+    dtype: Optional[dict] = None,
     **kwargs
 ) -> Iterator[pd.DataFrame]:
     """
@@ -199,6 +234,12 @@ def read_microdata_chunked(
                      ddi and assumes the file is relative to the current working directory
         encoding: The encoding of the data file. If not present, reads from ddi
         subset: A list of variable names to keep. If None, will keep all
+        dtype: A dictionary with variable names as keys and variable types as values.
+            Has an effect only when used with pd.read_fwf or pd.read_csv engine. If None, pd.read_fwf or pd.read_csv use
+            type ddi.data_description.pandas_type for all variables. See ipumspy.ddi.VariableDescription for more
+            precision on ddi.data_description.pandas_type. If files are csv, and dtype is not None, pandas converts the
+            column types once: on pd.read_csv call. When file format is .dat or .csv and dtype is None, two conversion
+            occur: one on load, and one when returning the dataframe.
         chunksize: The size of the chunk to return with iterator. See `pandas.read_csv`
         kwargs: keyword args to be passed to pd.read_fwf
     Yields:
@@ -210,6 +251,7 @@ def read_microdata_chunked(
         encoding=encoding,
         subset=subset,
         iterator=True,
+        dtype=dtype,
         chunksize=chunksize,
         **kwargs
     )

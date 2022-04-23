@@ -271,20 +271,20 @@ class Codebook:
             A dict with column names column dtype mapping.
 
         Examples:
-            Let's see an example of usage with pandas.read_csv:
+            Let's see an example of usage with pandas.read_csv engine:
 
             >>> from ipumspy import readers
-            >>> reader = readers.read_ipums_ddi('extract_ddi.xml')
-            >>> dataframe_dtypes = reader.get_all_types(type_format='pandas_type', string_pyarrow=False)
-            >>> df = pd.read_csv("extract.csv", dtype=dataframe_dtypes)
+            >>> ddi_codebook = readers.read_ipums_ddi('extract_ddi.xml')
+            >>> dataframe_dtypes = ddi_codebook.get_all_types(type_format='pandas_type', string_pyarrow=False)
+            >>> df = readers.read_microdata(ddi=ddi_codebook, filename="extract.csv", dtype=dataframe_dtypes)
 
             And an example of usecase of string_pyarrow set to True:
 
             >>> from ipumspy import readers
-            >>> reader = readers.read_ipums_ddi('extract_ddi.xml')
-            >>> dataframe_dtypes = reader.get_all_types(type_format='pandas_type', string_pyarrow=True)
+            >>> ddi_codebook = readers.read_ipums_ddi('extract_ddi.xml')
+            >>> dataframe_dtypes = ddi_codebook.get_all_types(type_format='pandas_type', string_pyarrow=True)
             >>> # No particular impact for reading from csv.
-            >>> df = pd.read_csv("extract.csv", dtype=dataframe_dtypes)
+            >>> df = readers.read_microdata(ddi=ddi_codebook, filename="extract.csv", dtype=dataframe_dtypes)
             >>> # The benefit of using string_pyarrow: converting to parquet. The writing time is reduced.
             >>> df.to_parquet("extract.parquet")
             >>> # Also, the data loaded from the derived extract.parquet will be faster than if the csv file was converted

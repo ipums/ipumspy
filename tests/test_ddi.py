@@ -19,12 +19,12 @@ def cps_df(fixtures_path: Path, cps_ddi: ddi.Codebook) -> pd.DataFrame:
 
 @pytest.fixture(scope="function")
 def cps_ddi2(fixtures_path: Path) -> ddi.Codebook:
-    return readers.read_ipums_ddi(fixtures_path / "tmp/acs_00001.xml")
+    return readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
 
 
 @pytest.fixture(scope="function")
 def cps_df2(fixtures_path: Path, cps_ddi2: ddi.Codebook) -> pd.DataFrame:
-    return readers.read_microdata(cps_ddi2, fixtures_path / "tmp/acs_00001.csv.gz")
+    return readers.read_microdata(cps_ddi2, fixtures_path / "cps_00361.dat.gz")
 
 
 def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
@@ -134,40 +134,27 @@ def test_get_all_types(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
         == pandas_types_efficient
     )
 
-    acceptable_values = [
-        "numpy_type",
-        "pandas_type",
-        "pandas_type_efficient",
-        "python_type",
-        "vartype",
-    ]
-
     # Does it raise a ValueError if the specified type of format, doesn't match existing attribute?
     with pytest.raises(ValueError):
         cps_ddi.get_all_types(type_format="foo")
 
 
-@pytest.mark.character_data
 def test_get_all_types_with_pyarrow(cps_ddi2: ddi.Codebook, cps_df2: pd.DataFrame):
-    # this test can be run with variable INDNAICS from IPUMS USA sample ACS 2020 5% for example. I didn't find
-    # character variable for CPS therefore I propose one with ACS data. Since IPUMS terms of use
-    # https://www.ipums.org/about/terms requires explicit permission for redistribution of the data, I can't share
-    # the data. To run the test just need to create an extract with the variables below and select sample ACS 2020.
-    # Place the ddi and csv in tests/fixtures/tmp/ and name them acs_00001.xml, acs_00001.csv.gz respectively.
-
     pandas_types = {
         "YEAR": pd.Int64Dtype(),
-        "SAMPLE": pd.Int64Dtype(),
         "SERIAL": pd.Int64Dtype(),
-        "CBSERIAL": pd.Int64Dtype(),
-        "HHWT": np.float64,
-        "CLUSTER": pd.Int64Dtype(),
-        "STRATA": pd.Int64Dtype(),
-        "GQ": pd.Int64Dtype(),
+        "MONTH": pd.Int64Dtype(),
+        "HWTFINL": np.float64,
+        "CPSID": pd.Int64Dtype(),
+        "ASECFLAG": pd.Int64Dtype(),
+        "STATEFIP": pd.Int64Dtype(),
+        "HRSERSUF": pd.StringDtype(storage="pyarrow"),
         "PERNUM": pd.Int64Dtype(),
-        "PERWT": np.float64,
-        "INDNAICS": pd.StringDtype(storage="pyarrow"),
+        "WTFINL": np.float64,
+        "CPSIDP": pd.Int64Dtype(),
+        "AGE": pd.Int64Dtype(),
     }
+
     assert (
         cps_ddi2.get_all_types(type_format="pandas_type", string_pyarrow=True)
         == pandas_types
@@ -175,16 +162,17 @@ def test_get_all_types_with_pyarrow(cps_ddi2: ddi.Codebook, cps_df2: pd.DataFram
 
     pandas_types_efficient = {
         "YEAR": np.float64,
-        "SAMPLE": np.float64,
         "SERIAL": np.float64,
-        "CBSERIAL": np.float64,
-        "HHWT": np.float64,
-        "CLUSTER": np.float64,
-        "STRATA": np.float64,
-        "GQ": np.float64,
+        "MONTH": np.float64,
+        "HWTFINL": np.float64,
+        "CPSID": np.float64,
+        "ASECFLAG": np.float64,
+        "STATEFIP": np.float64,
+        "HRSERSUF": pd.StringDtype(storage="pyarrow"),
         "PERNUM": np.float64,
-        "PERWT": np.float64,
-        "INDNAICS": pd.StringDtype(storage="pyarrow"),
+        "WTFINL": np.float64,
+        "CPSIDP": np.float64,
+        "AGE": np.float64,
     }
 
     assert (

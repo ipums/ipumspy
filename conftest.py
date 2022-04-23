@@ -22,27 +22,16 @@ def pytest_addoption(parser):
         default=False,
         help="run integration tests",
     )
-    parser.addoption(
-        "--character_data",
-        action="store_true",
-        default=False,
-        help="run test_get_all_types_with_pyarrow",
-    )
 
 
 def pytest_collection_modifyitems(config, items):
     skip_slow = pytest.mark.skip(reason="need --runslow option to run")
     skip_int = pytest.mark.skip(reason="need --runint option to run")
-    skip_character_data = pytest.mark.skip(reason="need --character_data option to run")
     for item in items:
         if "slow" in item.keywords and not config.getoption("--runslow"):
             item.add_marker(skip_slow)
         elif "integration" in item.keywords and not config.getoption("--runint"):
             item.add_marker(skip_int)
-        elif "character_data" in item.keywords and not config.getoption(
-            "--character_data"
-        ):
-            item.add_marker(skip_character_data)
 
 
 @pytest.fixture(scope="session")
