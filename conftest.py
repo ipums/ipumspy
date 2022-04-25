@@ -30,8 +30,6 @@ def pytest_collection_modifyitems(config, items):
     for item in items:
         if "slow" in item.keywords and not config.getoption("--runslow"):
             item.add_marker(skip_slow)
-        elif "integration" in item.keywords and not config.getoption("--runint"):
-            item.add_marker(skip_int)
 
 
 @pytest.fixture(scope="session")
