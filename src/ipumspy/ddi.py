@@ -86,6 +86,20 @@ class VariableDescription:
             return np.float64
         return pd.StringDtype()
 
+    @property
+    def pandas_type_efficient(self) -> type:
+        """
+        In contrary to `self.pandas_type`, `self.pandas_type_efficient` doesn't implement "Int64" type but "numpy.float64" for
+        integer type. It's more efficient and pandas uses this approach for type inference:
+        https://pandas-docs.github.io/pandas-docs-travis/user_guide/integer_na.html
+        It can be considered as a mix between `self.pandas_type` and `self.numpy_type`
+        """
+        if self.vartype == "numeric":
+            if (self.shift is None) or (self.shift == 0):
+                return np.float64
+            return np.float64
+        return pd.StringDtype()
+
     @classmethod
     def read(cls, elt: Element, ddi_namespace: str) -> VariableDescription:
         """
@@ -242,3 +256,64 @@ class Codebook:
             ][0]
         except IndexError:
             raise ValueError(f"No description found for {name}.")
+
+    def get_all_types(self, type_format: str, string_pyarrow: bool = False) -> dict:
+        """
+        Retrieve all column types
+
+        Args:
+            type_format: type format. Should be one of ["numpy_type", "pandas_type", "pandas_type_efficient",
+                         "python_type", "vartype"]
+            string_pyarrow: has an effect when True and used with type_format in ["pandas_type", "pandas_type_efficient"].
+             In this case, string types==pd.StringDtype() is replaced with pd.StringDtype(storage='pyarrow').
+
+        Returns:
+            A dict with column names column dtype mapping.
+
+        Examples:
+            Let's see an example of usage with pandas.read_csv engine:
+
+            >>> from ipumspy import readers
+            >>> ddi_codebook = readers.read_ipums_ddi('extract_ddi.xml')
+            >>> dataframe_dtypes = ddi_codebook.get_all_types(type_format='pandas_type', string_pyarrow=False)
+            >>> df = readers.read_microdata(ddi=ddi_codebook, filename="extract.csv", dtype=dataframe_dtypes)
+
+            And an example of usecase of string_pyarrow set to True:
+
+            >>> from ipumspy import readers
+            >>> ddi_codebook = readers.read_ipums_ddi('extract_ddi.xml')
+            >>> dataframe_dtypes = ddi_codebook.get_all_types(type_format='pandas_type', string_pyarrow=True)
+            >>> # No particular impact for reading from csv.
+            >>> df = readers.read_microdata(ddi=ddi_codebook, filename="extract.csv", dtype=dataframe_dtypes)
+            >>> # The benefit of using string_pyarrow: converting to parquet. The writing time is reduced.
+            >>> df.to_parquet("extract.parquet")
+            >>> # Also, the data loaded from the derived extract.parquet will be faster than if the csv file was converted
+            >>> # using string_pyarrow=False
+
+
+        """
+        if (
+            type_format not in ["pandas_type", "pandas_type_efficient"]
+            and string_pyarrow is True
+        ):
+            raise ValueError(
+                'string_pyarrow can be set to True only if type_format in ["pandas_type", "pandas_type_efficient"].'
+            )
+        try:
+            # traversing the doc.
+            all_types = {}
+            for variable_descr in self.data_description:
+                type_value = getattr(variable_descr, type_format)
+                if type_value == pd.StringDtype() and string_pyarrow is True:
+                    type_value = pd.StringDtype(storage="pyarrow")
+                all_types.update({variable_descr.name: type_value})
+            return all_types
+        except AttributeError:
+            acceptable_values = [
+                "numpy_type",
+                "pandas_type",
+                "pandas_type_efficient",
+                "python_type",
+                "vartype",
+            ]
+            raise ValueError(f"{type_format} not in {acceptable_values}")
