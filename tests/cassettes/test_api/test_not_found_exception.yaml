@@ -1,0 +1,134 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=beta
+  response:
+    body:
+      string: '{"status":404,"error":"Not Found"}'
+    headers:
+      Content-Length:
+      - '34'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 25 Apr 2022 17:50:59 GMT
+      Server:
+      - nginx/1.18.0 + Phusion Passenger(R) 6.0.12
+      Status:
+      - 404 Not Found
+      Vary:
+      - Origin
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.12
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - ba755d3c-f6d3-4533-84e0-c5877e8a19f7
+      X-Runtime:
+      - '0.229134'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=beta
+  response:
+    body:
+      string: '{"status":404,"error":"Not Found"}'
+    headers:
+      Content-Length:
+      - '34'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 25 Apr 2022 17:51:00 GMT
+      Server:
+      - nginx/1.18.0 + Phusion Passenger(R) 6.0.12
+      Status:
+      - 404 Not Found
+      Vary:
+      - Origin
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.12
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - af3fc039-a18b-4f2f-9845-230f356ea789
+      X-Runtime:
+      - '0.130746'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=beta
+  response:
+    body:
+      string: '{"status":404,"error":"Not Found"}'
+    headers:
+      Content-Length:
+      - '34'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 25 Apr 2022 17:51:00 GMT
+      Server:
+      - nginx/1.18.0 + Phusion Passenger(R) 6.0.12
+      Status:
+      - 404 Not Found
+      Vary:
+      - Origin
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.12
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 6e7a0509-3589-43b9-932b-1818576e917d
+      X-Runtime:
+      - '0.133008'
+    status:
+      code: 404
+      message: Not Found
+version: 1
