@@ -211,8 +211,6 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         return ext
 
     except ValueError:
-        # TODO
-        # this should probably be a custom error/warning at this point
         raise IpumsExtractNotSubmitted(
             "Extract has not been submitted and so has no json response"
         )

@@ -106,7 +106,7 @@ def test_retrieve_previous_extracts(api_client: IpumsApiClient):
     assert len(previous10["usa"]) == 10
 
 
-@pytest.mark.integration
+@pytest.mark.vcr
 def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     """
     Confirm that malformed or impossible extract requests raise
@@ -151,7 +151,7 @@ def test_not_found_exception_mock(api_client: IpumsApiClient):
     )
 
 
-@pytest.mark.integration
+@pytest.mark.vcr
 def test_not_found_exception(live_api_client: IpumsApiClient):
     """
     Confirm that attempts to check on non-existent extracts raises
@@ -175,6 +175,7 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
     )
 
 
+@pytest.mark.vcr
 def test_not_submitted_exception():
     extract = UsaExtract(
         ["us2012b"],
@@ -187,7 +188,7 @@ def test_not_submitted_exception():
     )
 
 
-@pytest.mark.integration
+@pytest.mark.vcr
 def test_extract_was_purged(live_api_client: IpumsApiClient):
     """
     test extract_was_purged() method
