@@ -15,6 +15,7 @@ from ipumspy.api import (
     IpumsApiClient,
     OtherExtract,
     UsaExtract,
+    CpsExtract,
     extract_from_dict,
     extract_to_dict,
 )
@@ -71,9 +72,28 @@ def test_usa_build_extract():
         "data_structure": {"rectangular": {"on": "P"}},
         "samples": {"us2012b": {}},
         "variables": {"AGE": {}, "SEX": {}},
-        "description": "My IPUMS extract",
+        "description": "My IPUMS USA extract",
         "data_format": "fixed_width",
         "collection": "usa",
+    }
+
+
+def test_cps_build_extract():
+    """
+    Confirm that test extract formatted correctly
+    """
+    extract = CpsExtract(
+        ["cps2012_03b"],
+        ["AGE", "SEX"],
+    )
+    assert extract.collection == "cps"
+    assert extract.build() == {
+        "data_structure": {"rectangular": {"on": "P"}},
+        "samples": {"cps2012_03b": {}},
+        "variables": {"AGE": {}, "SEX": {}},
+        "description": "My IPUMS CPS extract",
+        "data_format": "fixed_width",
+        "collection": "cps",
     }
 
 
