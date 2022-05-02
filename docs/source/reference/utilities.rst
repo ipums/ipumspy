@@ -9,3 +9,4 @@ utilities
    :nosignatures:
 
    ipumspy.utilities.tabulate
+   ipumspy.utilities.get_sample_ids
