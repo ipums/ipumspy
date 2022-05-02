@@ -48,6 +48,15 @@ def tabulate(
 
 
 def get_sample_ids(collection: str) -> Dict[str, str]:
+    """
+    Crosswalk of IPUMS sample descriptions and IPUMS sample IDs
+
+    Args:
+        collection: Name of an IPUMS data collection
+    Returns:
+        Dictionary with sample descriptions as keys and sample ids as values
+
+    """
     # kluge to make up for lack of metadata api
     sample_ids_url = (
         f"https://{collection}.ipums.org/{collection}-action/samples/sample_ids"

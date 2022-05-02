@@ -285,7 +285,8 @@ def extract_from_ddi(
 
     Returns:
         A BaseExtract object with the data collection, samples, variables,
-        and data format specified by the DDI Codebook
+        and data structure specified by the DDI Codebook. Data format defaults
+        to fixed-width.
     """
     if isinstance(ddi_codebook, list):
         return [extract_from_ddi(ddi) for ddi in ddi_codebook]
