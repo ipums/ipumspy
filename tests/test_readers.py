@@ -105,6 +105,112 @@ def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
     assert total_length == 7668
 
 
+def test_read_microdata_custom_dtype(fixtures_path):
+    """
+    Make sure use can choose custom dtype in microdata reader.
+    """
+    # Checking default behaviour
+    pandas_types = {
+        "YEAR": pd.Int64Dtype(),
+        "SERIAL": pd.Int64Dtype(),
+        "MONTH": pd.Int64Dtype(),
+        "HWTFINL": np.float64,
+        "CPSID": pd.Int64Dtype(),
+        "ASECFLAG": pd.Int64Dtype(),
+        "STATEFIP": pd.Int64Dtype(),
+        "HRSERSUF": pd.StringDtype(),
+        "PERNUM": pd.Int64Dtype(),
+        "WTFINL": np.float64,
+        "CPSIDP": pd.Int64Dtype(),
+        "AGE": pd.Int64Dtype(),
+    }
+
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
+    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz")
+    assert data.dtypes.to_dict() == pandas_types
+
+    # custom dtype
+    pandas_types_efficient = {
+        "YEAR": np.float64,
+        "SERIAL": np.float64,
+        "MONTH": np.float64,
+        "HWTFINL": np.float64,
+        "CPSID": np.float64,
+        "ASECFLAG": np.float64,
+        "STATEFIP": np.float64,
+        "HRSERSUF": pd.StringDtype(storage="pyarrow"),
+        "PERNUM": np.float64,
+        "WTFINL": np.float64,
+        "CPSIDP": np.float64,
+        "AGE": np.float64,
+    }
+
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
+    dtype = ddi.get_all_types(type_format="pandas_type_efficient", string_pyarrow=True)
+    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz", dtype=dtype)
+    assert data.dtypes.to_dict() == pandas_types_efficient
+
+    with pytest.raises(ValueError):
+        # should raise Value when parquet and dtype != None
+        readers.read_microdata(ddi, fixtures_path / "cps_00006.parquet", dtype=dtype)
+
+
+def test_read_microdata_chunked_custom_dtype(fixtures_path):
+    """
+    Make sure use can choose custom dtype in microdata reader.
+    """
+    # Checking default behaviour
+    pandas_types = {
+        "YEAR": pd.Int64Dtype(),
+        "SERIAL": pd.Int64Dtype(),
+        "MONTH": pd.Int64Dtype(),
+        "HWTFINL": np.float64,
+        "CPSID": pd.Int64Dtype(),
+        "ASECFLAG": pd.Int64Dtype(),
+        "STATEFIP": pd.Int64Dtype(),
+        "HRSERSUF": pd.StringDtype(),
+        "PERNUM": pd.Int64Dtype(),
+        "WTFINL": np.float64,
+        "CPSIDP": pd.Int64Dtype(),
+        "AGE": pd.Int64Dtype(),
+    }
+
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
+    data = readers.read_microdata_chunked(ddi, fixtures_path / "cps_00361.dat.gz")
+    assert next(data).dtypes.to_dict() == pandas_types
+
+    # custom dtype
+    pandas_types_efficient = {
+        "YEAR": np.float64,
+        "SERIAL": np.float64,
+        "MONTH": np.float64,
+        "HWTFINL": np.float64,
+        "CPSID": np.float64,
+        "ASECFLAG": np.float64,
+        "STATEFIP": np.float64,
+        "HRSERSUF": pd.StringDtype(storage="pyarrow"),
+        "PERNUM": np.float64,
+        "WTFINL": np.float64,
+        "CPSIDP": np.float64,
+        "AGE": np.float64,
+    }
+
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
+    dtype = ddi.get_all_types(type_format="pandas_type_efficient", string_pyarrow=True)
+    data = readers.read_microdata_chunked(
+        ddi, fixtures_path / "cps_00361.dat.gz", dtype=dtype
+    )
+    assert next(data).dtypes.to_dict() == pandas_types_efficient
+
+    with pytest.raises(ValueError):
+        # should raise Value when parquet and dtype != None
+        next(
+            readers.read_microdata_chunked(
+                ddi, fixtures_path / "cps_00006.parquet", dtype=dtype
+            )
+        )
+
+
 def test_read_extract_description(fixtures_path: Path):
     """
     Make sure that equivalent extracts can be read as either json or yaml and that

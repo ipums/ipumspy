@@ -22,3 +22,6 @@ docs/source/reference/generated/
 .coverage
 codecov
 coverage.xml
+
+# pycharm ide settings
+.idea/

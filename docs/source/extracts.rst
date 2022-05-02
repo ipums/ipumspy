@@ -35,11 +35,15 @@ filled in as new IPUMS data collections become accessible via API.
       - usa
       - `usa samples <https://usa.ipums.org/usa-action/samples/sample_ids>`__
       - `usa variables <https://usa.ipums.org/usa-action/variables/group>`__
+    * - IPUMS CPS
+      - cps
+      - `cps samples <https://cps.ipums.org/cps-action/samples/sample_ids>`__
+      - `cps variables <https://cps.ipums.org/cps-action/variables/group>`__
 
 Extract Objects
 ---------------
 
-Each IPUMS data collection that is accessible via API (currently just IPUMS USA) has its own extract class.
+Each IPUMS data collection that is accessible via API (currently just IPUMS USA and IPUMS CPS) has its own extract class.
 Using this class to create your extract object obviates the need to specify a data collection.
 
 For example:
@@ -157,7 +161,7 @@ returns:
 Unsupported Features
 --------------------
 
-Not all reatures available through the IPUMS extract web UI are currently supported for extracts made via API. 
+Not all features available through the IPUMS extract web UI are currently supported for extracts made via API. 
 For a list of currently unsupported features, see `the developer documentation <https://beta.developer.ipums.org/docs/apiprogram/apis/usa/>`__.
 This list will be updated as more features become available.
 

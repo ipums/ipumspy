@@ -17,6 +17,7 @@ from ipumspy.api import (
     IpumsApiClient,
     OtherExtract,
     UsaExtract,
+    CpsExtract,
     extract_from_dict,
     extract_to_dict,
     extract_from_ddi,
@@ -74,9 +75,28 @@ def test_usa_build_extract():
         "data_structure": {"rectangular": {"on": "P"}},
         "samples": {"us2012b": {}},
         "variables": {"AGE": {}, "SEX": {}},
-        "description": "My IPUMS extract",
+        "description": "My IPUMS USA extract",
         "data_format": "fixed_width",
         "collection": "usa",
+    }
+
+
+def test_cps_build_extract():
+    """
+    Confirm that test extract formatted correctly
+    """
+    extract = CpsExtract(
+        ["cps2012_03b"],
+        ["AGE", "SEX"],
+    )
+    assert extract.collection == "cps"
+    assert extract.build() == {
+        "data_structure": {"rectangular": {"on": "P"}},
+        "samples": {"cps2012_03b": {}},
+        "variables": {"AGE": {}, "SEX": {}},
+        "description": "My IPUMS CPS extract",
+        "data_format": "fixed_width",
+        "collection": "cps",
     }
 
 
@@ -109,7 +129,7 @@ def test_retrieve_previous_extracts(api_client: IpumsApiClient):
     assert len(previous10["usa"]) == 10
 
 
-@pytest.mark.integration
+@pytest.mark.vcr
 def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     """
     Confirm that malformed or impossible extract requests raise
@@ -154,7 +174,7 @@ def test_not_found_exception_mock(api_client: IpumsApiClient):
     )
 
 
-@pytest.mark.integration
+@pytest.mark.vcr
 def test_not_found_exception(live_api_client: IpumsApiClient):
     """
     Confirm that attempts to check on non-existent extracts raises
@@ -178,6 +198,7 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
     )
 
 
+@pytest.mark.vcr
 def test_not_submitted_exception():
     extract = UsaExtract(
         ["us2012b"],
@@ -190,7 +211,7 @@ def test_not_submitted_exception():
     )
 
 
-@pytest.mark.integration
+@pytest.mark.vcr
 def test_extract_was_purged(live_api_client: IpumsApiClient):
     """
     test extract_was_purged() method
