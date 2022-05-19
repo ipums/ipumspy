@@ -10,7 +10,7 @@ import bs4
 import requests
 
 from ipumspy.ddi import Codebook
-from ipumspy.utilities import Collection
+from ipumspy.utilities import CollectionInformation
 
 from .exceptions import IpumsExtractNotSubmitted
 
@@ -290,8 +290,8 @@ def extract_from_ddi(
     """
     if isinstance(ddi_codebook, list):
         return [extract_from_ddi(ddi) for ddi in ddi_codebook]
-    collection = Collection(ddi_codebook.ipums_collection)
-    sample_ids_dict = Collection(collection).sample_ids
+    collection = ddi_codebook.ipums_collection
+    sample_ids_dict = CollectionInformation(collection).sample_ids
 
     # put extract info in a dict
     extract_info = {}

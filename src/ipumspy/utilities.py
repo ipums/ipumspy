@@ -16,7 +16,7 @@ from functools import cached_property
 from . import ddi as ddi_definitions
 
 
-class Collection:
+class CollectionInformation:
     def __init__(self, collection: str):
         self.collection = collection
         """Name of an IPUMS data collection"""
@@ -26,7 +26,7 @@ class Collection:
         )
         """sample id url"""
         """
-        Information about IPUMS data collections.
+        A class to access collection-level information about IPUMS data collections.
         
         Args:
             collection: Name of an IPUMS data collection
