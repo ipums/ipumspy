@@ -11,8 +11,56 @@ from typing import Dict
 import bs4
 import pandas as pd
 import requests
+from functools import cached_property
 
 from . import ddi as ddi_definitions
+
+
+class Collection:
+    """
+    Information about IPUMS data collections.
+    """
+
+    def __init__(self, collection):
+        self.collection = collection
+        # kluge to make up for lack of metadata api
+        self.sample_ids_url = (
+            f"https://{collection}.ipums.org/{collection}-action/samples/sample_ids"
+        )
+
+    @cached_property
+    def sample_ids(self) -> Dict[str, str]:
+        """
+        Crosswalk of IPUMS sample descriptions and IPUMS sample IDs
+
+        Args:
+            collection: Name of an IPUMS data collection
+        Returns:
+            Dictionary with sample descriptions as keys and sample ids as values
+
+        """
+        sample_ids_page = requests.get(self.sample_ids_url).text
+        td_list = []
+        soup = bs4.BeautifulSoup(sample_ids_page, "html.parser")
+        match = soup.findAll("td")
+        if len(match) > 0:
+            for m in match:
+                td_list.append(str(m))
+
+        # ignore table formatting stuff
+        table_items = td_list[4:]
+        # make list of sample ids and their descriptions
+        descs = []
+        samps = []
+        for i in range(0, len(table_items)):
+            if i % 2 == 0:
+                samps.append(table_items[i][4:-5])
+            else:
+                descs.append(table_items[i][6:-7].strip())
+
+        # zip it into a dict for easy access
+        sample_ids_dict = dict(zip(descs, samps))
+        return sample_ids_dict
 
 
 def tabulate(
@@ -45,41 +93,3 @@ def tabulate(
         col_order = ["val", "lab", "counts", "pct"]
 
     return tab_df[col_order]
-
-
-def get_sample_ids(collection: str) -> Dict[str, str]:
-    """
-    Crosswalk of IPUMS sample descriptions and IPUMS sample IDs
-
-    Args:
-        collection: Name of an IPUMS data collection
-    Returns:
-        Dictionary with sample descriptions as keys and sample ids as values
-
-    """
-    # kluge to make up for lack of metadata api
-    sample_ids_url = (
-        f"https://{collection}.ipums.org/{collection}-action/samples/sample_ids"
-    )
-    sample_ids_page = requests.get(sample_ids_url).text
-    td_list = []
-    soup = bs4.BeautifulSoup(sample_ids_page, "html.parser")
-    match = soup.findAll("td")
-    if len(match) > 0:
-        for m in match:
-            td_list.append(str(m))
-
-    # ignore table formatting stuff
-    table_items = td_list[4:]
-    # make list of sample ids and their descriptions
-    descs = []
-    samps = []
-    for i in range(0, len(table_items)):
-        if i % 2 == 0:
-            samps.append(table_items[i][4:-5])
-        else:
-            descs.append(table_items[i][6:-7].strip())
-
-    # zip it into a dict for easy access
-    sample_ids_dict = dict(zip(descs, samps))
-    return sample_ids_dict
