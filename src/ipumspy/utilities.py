@@ -11,7 +11,7 @@ from typing import Dict
 import bs4
 import pandas as pd
 import requests
-from functools import cached_property
+from functools import lru_cache
 
 from . import ddi as ddi_definitions
 
@@ -32,7 +32,8 @@ class CollectionInformation:
             collection: Name of an IPUMS data collection
          """
 
-    @cached_property
+    @property
+    @lru_cache(maxsize=100)
     def sample_ids(self) -> Dict[str, str]:
         """
         dict: Crosswalk of IPUMS sample descriptions and IPUMS sample IDs; keys are
