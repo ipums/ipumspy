@@ -17,27 +17,26 @@ from . import ddi as ddi_definitions
 
 
 class Collection:
-    """
-    Information about IPUMS data collections.
-    """
-
-    def __init__(self, collection):
+    def __init__(self, collection: str):
         self.collection = collection
+        """Name of an IPUMS data collection"""
         # kluge to make up for lack of metadata api
         self.sample_ids_url = (
             f"https://{collection}.ipums.org/{collection}-action/samples/sample_ids"
         )
+        """sample id url"""
+        """
+        Information about IPUMS data collections.
+        
+        Args:
+            collection: Name of an IPUMS data collection
+         """
 
     @cached_property
     def sample_ids(self) -> Dict[str, str]:
         """
-        Crosswalk of IPUMS sample descriptions and IPUMS sample IDs
-
-        Args:
-            collection: Name of an IPUMS data collection
-        Returns:
-            Dictionary with sample descriptions as keys and sample ids as values
-
+        dict: Crosswalk of IPUMS sample descriptions and IPUMS sample IDs; keys are
+        sample descriptions, values are sample ids
         """
         sample_ids_page = requests.get(self.sample_ids_url).text
         td_list = []
