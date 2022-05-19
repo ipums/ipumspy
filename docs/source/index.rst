@@ -68,3 +68,10 @@ Indices and tables
    :hidden:
 
    CONTRIBUTING
+
+.. toctree::
+   :maxdepth: 6
+   :caption: Project History
+   :hidden:
+
+   change-log
