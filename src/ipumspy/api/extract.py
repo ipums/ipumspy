@@ -10,7 +10,7 @@ import bs4
 import requests
 
 from ipumspy.ddi import Codebook
-from ipumspy.utilities import get_sample_ids
+from ipumspy.utilities import Collection
 
 from .exceptions import IpumsExtractNotSubmitted
 
@@ -290,10 +290,10 @@ def extract_from_ddi(
     """
     if isinstance(ddi_codebook, list):
         return [extract_from_ddi(ddi) for ddi in ddi_codebook]
-    collection = ddi_codebook.ipums_collection
+    collection = Collection(ddi_codebook.ipums_collection)
     # this isn't ideal, as if a list of DDI are supplied for the same collectin,
     # it will grab that web page for each DDI, which is unnecessary.
-    sample_ids_dict = get_sample_ids(collection)
+    sample_ids_dict = Collection(collection).sample_ids
 
     # put extract info in a dict
     extract_info = {}
