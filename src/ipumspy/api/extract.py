@@ -291,8 +291,6 @@ def extract_from_ddi(
     if isinstance(ddi_codebook, list):
         return [extract_from_ddi(ddi) for ddi in ddi_codebook]
     collection = Collection(ddi_codebook.ipums_collection)
-    # this isn't ideal, as if a list of DDI are supplied for the same collectin,
-    # it will grab that web page for each DDI, which is unnecessary.
     sample_ids_dict = Collection(collection).sample_ids
 
     # put extract info in a dict
