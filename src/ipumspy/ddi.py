@@ -198,10 +198,16 @@ class Codebook:
     """FileDescription object"""
     data_description: List[VariableDescription]
     """list of VariableDescription objects"""
+    samples_description: List[str]
+    """list of IPUMS sample descriptions"""
     ipums_citation: str
     """The appropriate citation for the IPUMS extract. Please use it!"""
     ipums_conditions: str
     """IPUMS terms of use"""
+    ipums_collection: str
+    """IPUMS collection name"""
+    ipums_doi: str
+    """"DOI of IPUMS data set"""
 
     @classmethod
     def read(cls, elt: ET, ddi_namespace: str) -> Codebook:
@@ -222,11 +228,24 @@ class Codebook:
                 "Codebooks with more than one file type are not supported"
             )
 
+        # compensation for lack of metadata api
+        _sample_descriptions = []
+        for item in elt.findall("./ddi:stdyDscr/ddi:stdyInfo/ddi:notes", namespaces):
+            sample_name_row = item.text.strip().split("\n")[0]
+            _sample_descriptions.append(sample_name_row)
+        ipums_samples = [desc.split(":")[-1].strip() for desc in _sample_descriptions]
+
         ipums_citation = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:citReq", namespaces
         ).text
         ipums_conditions = elt.find(
             "./ddi:stdyDscr/ddi:dataAccs/ddi:useStmt/ddi:conditions", namespaces
+        ).text
+        ipums_collection = elt.find(
+            "./ddi:stdyDscr/ddi:citation/ddi:serStmt/ddi:serName", namespaces
+        ).attrib["abbr"]
+        ipums_doi = elt.find(
+            "./ddi:stdyDscr/ddi:citation/ddi:serStmt/ddi:serInfo", namespaces
         ).text
 
         return cls(
@@ -235,8 +254,11 @@ class Codebook:
                 VariableDescription.read(desc, ddi_namespace)
                 for desc in elt.findall("./ddi:dataDscr/ddi:var", namespaces)
             ],
+            samples_description=ipums_samples,
             ipums_citation=ipums_citation,
             ipums_conditions=ipums_conditions,
+            ipums_collection=ipums_collection,
+            ipums_doi=ipums_doi,
         )
 
     def get_variable_info(self, name: str) -> VariableDescription:

@@ -13,7 +13,7 @@ What is ipumspy?
 Only rectangular microdata extracts are currently supported. We hope to add support for more complex data structures and spatial data in the future.
 
 IPUMS USA is currently the only IPUMS microdata collection available via the IPUMS microdata extract API. Support for other IPUMS data collections will be added as they become available via API.
-For more information about the IPUMS API program, IPUMS account registration, and API keys, see `here <https://external-api-docs-microdata-documentation.dev.ipums.org/>`_.
+For more information about the IPUMS API program, IPUMS account registration, and API keys, se the `IPUMS developer portal <https://external-api-docs-microdata-documentation.dev.ipums.org/>`_.
 
 ``ipumspy`` can also be used to analyze rectangular extracts made through the IPUMS website for collections unavailable via API.
 
@@ -68,3 +68,10 @@ Indices and tables
    :hidden:
 
    CONTRIBUTING
+
+.. toctree::
+   :maxdepth: 6
+   :caption: Project History
+   :hidden:
+
+   change-log

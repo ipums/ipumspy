@@ -90,7 +90,7 @@ name = "beautifulsoup4"
 version = "4.11.1"
 description = "Screen-scraping library"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6.0"
 
 [package.dependencies]
@@ -126,6 +126,17 @@ d = ["aiohttp (>=3.7.4)"]
 jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 python2 = ["typed-ast (>=1.4.3)"]
 uvloop = ["uvloop (>=0.15.2)"]
+
+[[package]]
+name = "bs4"
+version = "0.0.1"
+description = "Dummy package for Beautiful Soup"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+beautifulsoup4 = "*"
 
 [[package]]
 name = "certifi"
@@ -717,7 +728,7 @@ name = "soupsieve"
 version = "2.3.2.post1"
 description = "A modern CSS selector implementation for Beautiful Soup."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [[package]]
@@ -1022,7 +1033,7 @@ docs = ["Sphinx", "sphinx-autodoc-typehints", "sphinx-copybutton", "myst-parser"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "2dc601dbca8cb25ae662c8f744cf8883ef49fbe92afb19b6ec4bacbf01516de2"
+content-hash = "b83c447b70878994f0a4f89d641ed3aa47b85ecf785b53296b3d2668cd5ad883"
 
 [metadata.files]
 alabaster = [
@@ -1060,6 +1071,9 @@ beautifulsoup4 = [
 black = [
     {file = "black-21.12b0-py3-none-any.whl", hash = "sha256:a615e69ae185e08fdd73e4715e260e2479c861b5740057fde6e8b4e3b7dd589f"},
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
+]
+bs4 = [
+    {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
 ]
 certifi = [
     {file = "certifi-2021.10.8-py2.py3-none-any.whl", hash = "sha256:d62a0163eb4c2344ac042ab2bdf75399a71a2d8c7d47eac2e2ee91b9d6339569"},

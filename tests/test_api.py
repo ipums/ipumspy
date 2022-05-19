@@ -1,4 +1,6 @@
+import json
 import os
+import pickle
 import subprocess
 import time
 import yaml
@@ -10,7 +12,7 @@ from pathlib import Path
 import pytest
 import vcr
 
-from ipumspy import api
+from ipumspy import api, readers
 from ipumspy.api import (
     IpumsApiClient,
     OtherExtract,
@@ -18,12 +20,13 @@ from ipumspy.api import (
     CpsExtract,
     extract_from_dict,
     extract_to_dict,
+    extract_from_ddi,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
     IpumsApiException,
-    IpumsNotFound,
     IpumsExtractNotSubmitted,
+    IpumsNotFound,
 )
 
 
@@ -327,3 +330,24 @@ def test_download_extract_r(live_api_client: IpumsApiClient, tmpdir: Path):
         collection="usa", extract="136", r_command_file=True, download_dir=tmpdir
     )
     assert (tmpdir / "usa_00136.R").exists()
+
+
+def test_extract_from_ddi(fixtures_path: Path):
+    ddi_codebook = readers.read_ipums_ddi(fixtures_path / "usa_00136.xml")
+    extract = extract_from_ddi(ddi_codebook)
+
+    assert extract.collection == "usa"
+    assert extract.samples == ["us2012b"]
+    assert extract.variables == [
+        "YEAR",
+        "SAMPLE",
+        "SERIAL",
+        "CBSERIAL",
+        "HHWT",
+        "GQ",
+        "PERNUM",
+        "PERWT",
+        "SEX",
+        "AGE",
+    ]
+    assert extract.data_format == "fixed_width"

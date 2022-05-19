@@ -44,6 +44,7 @@ objects and from dictonary objects to ipumspy extract objects.
 
    ipumspy.api.extract_from_dict
    ipumspy.api.extract_to_dict
+   ipumspy.api.extract.extract_from_ddi
 
 Exceptions
 ----------
