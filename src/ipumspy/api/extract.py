@@ -275,7 +275,7 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         )
 
 
-def extract_from_ddi(
+def define_extract_from_ddi(
     ddi_codebook: Union[Codebook, List[Codebook]]
 ) -> Union[BaseExtract, List[BaseExtract]]:
     """
@@ -290,7 +290,7 @@ def extract_from_ddi(
         to fixed-width.
     """
     if isinstance(ddi_codebook, list):
-        return [extract_from_ddi(ddi) for ddi in ddi_codebook]
+        return [define_extract_from_ddi(ddi) for ddi in ddi_codebook]
     collection = ddi_codebook.ipums_collection
     sample_ids_dict = CollectionInformation(collection).sample_ids
 

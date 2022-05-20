@@ -19,8 +19,8 @@ This project adheres to `Semantic Versioning`_.
 * Added support for IPUMS CPS extracts with :py:class:`~ipumspy.api.extract.CpsExtract`
 * Added :py:class:`~ipumspy.utilities.CollectionInformation` class to access collection-level information about IPUMS data.
 * Added ability to download Stata, SPSS, SAS, and R command files with data files :py:meth:`~ipumspy.api.IpumsApiClient.download_extract()`.
-* Added :py:meth:`~ipumspy.api.extract.extract_to_dict()` method to enable easy exporting of extract objects to dictionary objects for eventual writing to .json for ease of extract sharing.
-* Added :py:meth:`~ipumspy.api.extract.extract_from_ddi()` method to re-create an IPUMS extract object from a DDI codebook.
+* Added :py:meth:`~ipumspy.api.extract.extract_to_dict()` and :py:meth:`~ipumspy.api.extract.extract_from_dict()` method to enable easy exporting of extract objects to dictionary objects and creation of extract objects from dictionaries.
+* Added :py:meth:`~ipumspy.api.extract.define_extract_from_ddi()` method to re-create an IPUMS extract object from a DDI codebook.
 * Added convenience method :py:meth:`~ipumspy.api.extract.save_extract_as_json()` to save IPUMS extract definition to json file.
 * Added convenience method :py:meth:`~ipumspy.api.extract.define_extract_from_json()` to read an IPUMS extract definition from a json file.
 * Added :py:meth:`~ipumspy.api.exceptions.IpumsExtractNotSubmitted` exception. This will be raised when attempting to retrieve an extract id or download link from a extract that has not been submitted to the IPUMS extract engine.

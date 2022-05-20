@@ -19,7 +19,7 @@ from ipumspy.api import (
     CpsExtract,
     extract_from_dict,
     extract_to_dict,
-    extract_from_ddi,
+    define_extract_from_ddi,
     define_extract_from_json,
     save_extract_as_json,
 )
@@ -333,9 +333,9 @@ def test_download_extract_r(live_api_client: IpumsApiClient, tmpdir: Path):
     assert (tmpdir / "usa_00136.R").exists()
 
 
-def test_extract_from_ddi(fixtures_path: Path):
+def test_define_extract_from_ddi(fixtures_path: Path):
     ddi_codebook = readers.read_ipums_ddi(fixtures_path / "usa_00136.xml")
-    extract = extract_from_ddi(ddi_codebook)
+    extract = define_extract_from_ddi(ddi_codebook)
 
     assert extract.collection == "usa"
     assert extract.samples == ["us2012b"]
