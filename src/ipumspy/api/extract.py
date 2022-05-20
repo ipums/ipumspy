@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import bs4
 import requests
+import json
 
 from ipumspy.ddi import Codebook
 from ipumspy.utilities import CollectionInformation
@@ -310,3 +311,33 @@ def extract_from_ddi(
     return BaseExtract._collection_to_extract[extract_info["collection"]](
         **extract_info
     )
+
+
+def save_extract_as_json(extract: Union[BaseExtract, List[BaseExtract]], filename: str):
+    """
+    Convenience method to save an IPUMS extract definition to a json file.
+
+    Args:
+        extract: IPUMS extract object or list of IPUMS extract objects
+        filename: Path to json file to which to save the IPUMS extract object(s)
+    """
+    with open(filename, "w") as fileh:
+        json.dump(extract_to_dict(extract), fileh)
+
+
+def define_extract_from_json(filename: str) -> Union[BaseExtract, List[BaseExtract]]:
+    """
+    Convenience method to convert an IPUMS extract definition or definitions stored
+    in a json file into a BaseExtract object. If multiple extracts are specified,
+    return a List[BaseExtract] objects.
+
+    Args:
+        filename: Json file containing IPUMS extract definitions
+
+    Returns:
+        The extract(s) specified in the json file
+    """
+    with open(filename, "r") as fileh:
+        extract = extract_from_dict(json.load(fileh))
+
+    return extract

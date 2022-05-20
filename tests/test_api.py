@@ -1,4 +1,3 @@
-import json
 import os
 import pickle
 import subprocess
@@ -21,6 +20,7 @@ from ipumspy.api import (
     extract_from_dict,
     extract_to_dict,
     extract_from_ddi,
+    define_extract_from_json,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
@@ -351,3 +351,11 @@ def test_extract_from_ddi(fixtures_path: Path):
         "AGE",
     ]
     assert extract.data_format == "fixed_width"
+
+
+def test_define_extract_from_json(fixtures_path: Path):
+    extract = define_extract_from_json(fixtures_path / "example_extract.json")
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == ["us2012b"]
+        assert item.variables == ["AGE", "SEX", "RACE"]
