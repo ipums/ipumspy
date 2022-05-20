@@ -13,7 +13,7 @@ This project adheres to `Semantic Versioning`_.
 
 0.2.0
 -----
-2022-05-day
+2022-05-20
 
 * New minimum python version: Python 3.7.1 
 * Added support for IPUMS CPS extracts with :py:class:`~ipumspy.api.extract.CpsExtract`
