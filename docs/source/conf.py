@@ -123,28 +123,34 @@ pygments_style = "friendly"
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-html_logo = "_static/ipums-logo.png"
+html_logo = "_static/ipums-h-n-rgb.png"
 html_favicon = "_static/ipums-favicon-152x152.png"
 html_theme_options = {
     "light_css_variables": {
-        "color-brand-primary": "#26b079",
-        "color-brand-content": "#26b079",
-        "color-api-highlight-on-target": "#e5fff5",
+        # not official IPUMS color
+        "color-brand-primary": "#3280A9",
+        "color-brand-content": "#3280A9",
+        # IPUMS light grey
+        "color-api-highlight-on-target": "#F1F5F7",
     },
     # always use light theme, taken from:
     # https://github.com/pradyunsg/furo/blob/main/src/furo/assets/styles/variables/_index.scss
     "dark_css_variables": {
         "color-foreground-primary": "black",
-        "color-foreground-secondary": "#5a5c63",
-        "color-foreground-muted": "#72747e",
+        # IPUMS Navy
+        "color-foreground-secondary": "#00263A",
+        # IPUMS blue grey
+        "color-foreground-muted": "#7A99AC",
         "color-foreground-border": "#878787",
         "color-background-primary": "white",
-        "color-background-secondary": "#f8f9fb",
+        # IPUMS near white
+        "color-background-secondary": "#FBFCFC",
         "color-background-hover": "#efeff4ff",
         "color-background-hover--transparent": "#efeff400",
         "color-background-border": "#eeebee",
         "color-admonition-background": "transparent",
-        "color-api-highlight-on-target": "#e5fff5",
+        # IPUMS light grey
+        "color-api-highlight-on-target": "#F1F5F7",
     },
 }
 
