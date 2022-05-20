@@ -322,7 +322,7 @@ def save_extract_as_json(extract: Union[BaseExtract, List[BaseExtract]], filenam
         filename: Path to json file to which to save the IPUMS extract object(s)
     """
     with open(filename, "w") as fileh:
-        json.dump(extract_to_dict(extract), fileh)
+        json.dump(extract_to_dict(extract), fileh, indent=4)
 
 
 def define_extract_from_json(filename: str) -> Union[BaseExtract, List[BaseExtract]]:
