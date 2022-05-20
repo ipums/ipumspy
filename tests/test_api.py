@@ -21,6 +21,7 @@ from ipumspy.api import (
     extract_to_dict,
     extract_from_ddi,
     define_extract_from_json,
+    save_extract_as_json,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
@@ -359,3 +360,19 @@ def test_define_extract_from_json(fixtures_path: Path):
         assert item.collection == "usa"
         assert item.samples == ["us2012b"]
         assert item.variables == ["AGE", "SEX", "RACE"]
+
+
+def test_save_extract_as_json(fixtures_path: Path):
+    # remove the test saved extract if it exists
+    if Path(fixtures_path / "test_saved_extract.json").exists():
+        os.remove(str(Path(fixtures_path / "test_saved_extract.json")))
+
+    # reconstitute the extract object from pickle
+    with open(fixtures_path / "usa_extract_obj.pkl", "rb") as infile:
+        extract = pickle.load(infile)
+
+    # save it as an extract
+    save_extract_as_json(extract, fixtures_path / "test_saved_extract.json")
+
+    assert Path(fixtures_path / "test_saved_extract.json").exists()
+    os.remove(str(Path(fixtures_path / "test_saved_extract.json")))
