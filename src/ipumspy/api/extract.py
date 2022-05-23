@@ -6,7 +6,6 @@ from __future__ import annotations
 import warnings
 from typing import Any, Dict, List, Optional, Type, Union
 
-import bs4
 import requests
 import json
 

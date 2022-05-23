@@ -17,7 +17,7 @@ pyarrow = "^3.0.0"
 requests = "^2.25.1"
 importlib-metadata = {version = "^4.0.1", python = "<3.8"}
 PyYAML = "^5.4.1"
-bs4 = "^0.0.1"
+beautifulsoup4 = "^4.11.1"
 
 # Documentation dependencies
 # Note that these are currently required to be specified in this section
