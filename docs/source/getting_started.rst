@@ -16,6 +16,12 @@ Install with ``pip``:
 
     pip install ipumspy
 
+Install with ``conda``:
+
+.. code:: bash
+    
+    conda install ipumspy
+
 Read an IPUMS extract
 ---------------------
 
