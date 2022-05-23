@@ -11,6 +11,12 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.2.1
+-----
+2022-05-23
+
+* Update requirement to beautifulsoup4 instead of bs4
+
 0.2.0
 -----
 2022-05-20
