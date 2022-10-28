@@ -84,7 +84,7 @@ Source variables can be requested using their short or long form variable names.
     ipums.download_extract(extract, download_dir=DOWNLOAD_DIR)
 
     # Get the DDI
-    ddi_file = list(DOWLOAD_DIR.glob("*.xml"))[0]
+    ddi_file = list(DOWNLOAD_DIR.glob("*.xml"))[0]
     ddi = ipumspy.read_ipums_ddi(ddi_file)
 
     # Get the data
