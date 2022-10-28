@@ -85,10 +85,10 @@ Source variables can be requested using their short or long form variable names.
 
     # Get the DDI
     ddi_file = list(DOWNLOAD_DIR.glob("*.xml"))[0]
-    ddi = ipumspy.read_ipums_ddi(ddi_file)
+    ddi = readers.read_ipums_ddi(ddi_file)
 
     # Get the data
-    ipums_df = ipumspy.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
+    ipums_df = readers.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
 
 If you lose track of the ``extract`` object for any reason, you may check the status
 and download the extract using only the name of the ``collection`` and the ``extract_id``.
