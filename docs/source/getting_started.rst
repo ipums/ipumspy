@@ -20,7 +20,7 @@ Install with ``conda``:
 
 .. code:: bash
     
-    conda install ipumspy
+    conda install -c conda-forge ipumspy
 
 Read an IPUMS extract
 ---------------------
