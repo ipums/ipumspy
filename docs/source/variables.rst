@@ -17,8 +17,8 @@ The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook
     from ipumspy import readers
 
     # read ddi and data
-    ddi_codebook = readers.read_ipums_ddi([ddi xml file path])
-    ipums_df = readers.read_microdata(ddi_codebook, [data file path])
+    ddi_codebook = readers.read_ipums_ddi(path/to/ddi/xml/file)
+    ipums_df = readers.read_microdata(ddi_codebook, path/to/data/file)
 
     # get VariableDescription for SEX
     sex_info = ddi_codebook.get_variable_info('SEX')
