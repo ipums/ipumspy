@@ -2,7 +2,7 @@ name: build test lint
 
 on:
   push:
-    branches: [ master, test_actions ]
+    branches: [ master, test_actions, dependency-updates ]
   pull_request:
     branches: [ master ]
 
