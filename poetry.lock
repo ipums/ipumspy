@@ -928,7 +928,7 @@ python-versions = ">=3.6"
 name = "typed-ast"
 version = "1.4.3"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -1061,7 +1061,7 @@ docs = ["Sphinx", "sphinx-autodoc-typehints", "sphinx-copybutton", "myst-parser"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "dc0db624ba27672d2a32d0bd815ca5e06ac5997257cd1b37d2ad7c106c7272a9"
+content-hash = "5c188291ac7fbe3f048b1350e596502367e94bd73155818a02f596e926841e4a"
 
 [metadata.files]
 alabaster = [
