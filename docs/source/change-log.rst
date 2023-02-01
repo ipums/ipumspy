@@ -10,6 +10,11 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+0.2.2-alpha
+-----------
+2023-01-31
+
+* Officially support Python 3.10
 
 0.2.1
 -----
