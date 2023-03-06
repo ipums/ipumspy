@@ -2,7 +2,7 @@ name: build test lint
 
 on:
   push:
-    branches: [ master, test_actions, general-maintenance ]
+    branches: [ master, test_actions ]
   pull_request:
     branches: [ master ]
 
