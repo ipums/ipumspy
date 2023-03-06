@@ -10,6 +10,13 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+0.2.2-alpha.1
+-------------
+2023-03-06
+
+* New minimum python version: Python 3.8
+* Officially support Python 3.11
+
 0.2.2-alpha
 -----------
 2023-01-31
