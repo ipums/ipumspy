@@ -515,7 +515,7 @@ files = [
 name = "importlib-metadata"
 version = "4.13.0"
 description = "Read metadata from Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2164,7 +2164,7 @@ multidict = ">=4.0"
 name = "zipp"
 version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2182,4 +2182,4 @@ docs = []
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "f2505374feb12d0399df84486b475ff5470ca634de54e3cfdf6574fe950232d9"
+content-hash = "7d4948bf50d69df3b934ebb96461b0bc0a049fe6e0ccae9c172d45984ebf5503"
