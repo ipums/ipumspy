@@ -8,7 +8,7 @@ Getting Started
 Installation
 ------------
 
-This package requires that you have at least Python 3.7 installed.
+This package requires that you have at least Python 3.8 installed.
 
 Install with ``pip``:
 
