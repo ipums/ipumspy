@@ -14,7 +14,7 @@ python = "^3.8"
 pandas = "^1.5.2"
 click = "^8.0.0"
 pyarrow = "^10.0.0"
-requests = "^2.25.1"
+requests = {extras = ["use_chardet_on_py3"], version = "^2.25.1"}
 importlib-metadata = "^4.13.0"
 PyYAML = "^5.4.1"
 beautifulsoup4 = "^4.11.1"
