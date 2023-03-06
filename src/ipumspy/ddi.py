@@ -30,21 +30,20 @@ class VariableDescription:
     """variable id (this is the same as its name)"""
     name: str
     """variable name"""
+    rectype: str
+    """record type"""
     codes: Dict[str, Union[int, str]]
     """a dictionary of codes and value labels"""
-
     start: int
     """variable's starting column in the extract data file"""
     end: int
     """variable's final column in the extract data file"""
-
     label: str
     """variable label"""
     description: str
     """variable description"""
     concept: str
     """IPUMS variable group"""
-
     vartype: str
     """variable data type"""
     shift: Optional[int]
@@ -123,10 +122,16 @@ class VariableDescription:
                 labels_dict[label] = int(value)
             else:
                 labels_dict[label] = value
-
+        # rectype attribute only exists for hierarchical extracts
+        try:
+            var_rectype = elt.attrib["rectype"]
+        # stick an empty string in this attribute for rectangular extracts
+        except KeyError:
+            var_rectype = ""
         return cls(
             id=elt.attrib["ID"],
             name=elt.attrib["name"],
+            rectype=var_rectype,
             codes=labels_dict,
             start=int(elt.find("./ddi:location", namespaces).attrib["StartPos"])
             - 1,  # 0 based in python
@@ -176,6 +181,7 @@ class FileDescription:
             FileDescription object
         """
         namespaces = {"ddi": ddi_namespace}
+        
         return cls(
             filename=elt.find("./ddi:fileName", namespaces).text,
             description=elt.find("./ddi:fileCont", namespaces).text,
