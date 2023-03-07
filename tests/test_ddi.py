@@ -27,7 +27,17 @@ def cps_df2(fixtures_path: Path, cps_ddi2: ddi.Codebook) -> pd.DataFrame:
     return readers.read_microdata(cps_ddi2, fixtures_path / "cps_00361.dat.gz")
 
 
-def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
+@pytest.fixture(scope="function")
+def cps_ddi_hierarchical(fixtures_path: Path) -> ddi.Codebook:
+    return readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
+
+# not implemented yet
+# @pytest.fixture(scope="function")
+# def cps_df_hierarchical(fixtures_path: Path, cps_ddi_hierarchical: ddi.Codebook) -> pd.DataFrame:
+#     return readers.read_microdata(cps_ddi_hierarchical, fixtures_path / "cps_00421.dat.gz")
+
+
+def test_get_variable_info_rectangular(cps_ddi: ddi.Codebook):
     # Does it retrieve the appropriate variable?
     assert cps_ddi.get_variable_info("YEAR").id == "YEAR"
 
@@ -59,12 +69,55 @@ def test_get_variable_info(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
         "December": 12,
     }
 
+    # does it have the correct rectype
+    assert cps_ddi.get_variable_info("year").rectype == ""
+
     # And does it raise a ValueError if the variable does not exist?
     with pytest.raises(ValueError):
         cps_ddi.get_variable_info("foo")
 
 
-def test_ddi_codebook(cps_ddi: ddi.Codebook):
+def test_get_variable_info_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
+    # Does it retrieve the appropriate variable?
+    assert cps_ddi_hierarchical.get_variable_info("YEAR").id == "YEAR"
+
+    # Even if the name is not UPPERCASE?
+    assert cps_ddi_hierarchical.get_variable_info("year").id == "YEAR"
+
+    # does it give the right description
+    assert (
+        cps_ddi_hierarchical.get_variable_info("year").description
+        == "YEAR reports the year in which the survey was conducted.  YEARP is repeated on person records."
+    )
+
+    # does it return the name
+    assert cps_ddi_hierarchical.get_variable_info("year").name == "YEAR"
+
+    # codes
+    assert cps_ddi_hierarchical.get_variable_info("month").codes == {
+        "January": 1,
+        "February": 2,
+        "March": 3,
+        "April": 4,
+        "May": 5,
+        "June": 6,
+        "July": 7,
+        "August": 8,
+        "September": 9,
+        "October": 10,
+        "November": 11,
+        "December": 12,
+    }
+
+    # does it have the correct rectype
+    assert cps_ddi_hierarchical.get_variable_info("year").rectype == "H P"
+
+    # And does it raise a ValueError if the variable does not exist?
+    with pytest.raises(ValueError):
+        cps_ddi_hierarchical.get_variable_info("foo")
+
+
+def test_ddi_codebook_rectangular(cps_ddi: ddi.Codebook):
     # sample descriptions/names
     # looks like the test ddi was generated several versions ago
     # and sample <notes> are now formatted differently.
@@ -79,6 +132,9 @@ def test_ddi_codebook(cps_ddi: ddi.Codebook):
 
     # data structure
     assert cps_ddi.file_description.structure == "rectangular"
+
+    # rectypes
+    assert cps_ddi.file_description.rectypes == []
 
     # data collection
     assert cps_ddi.ipums_collection == "cps"
