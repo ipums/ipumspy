@@ -162,6 +162,11 @@ class FileDescription:
     IPUMS extract data file structure.
     Valid structures: rectangular, hierarchical
     """
+    rectypes: List
+    """
+    Record types included in the IPUMS extract.
+    This is an empty list for rectangular extracts.
+    """
     encoding: str
     """IPUMS file encoding scheme"""
     format: str
@@ -181,11 +186,19 @@ class FileDescription:
             FileDescription object
         """
         namespaces = {"ddi": ddi_namespace}
-        
+
+        # only hierarchical files have recGrp information
+        try:
+            file_rectypes = elt.findall("./ddi:fileStrc/ddi:recGrp", namespaces)
+            rts = [rectype.attrib["rectype"] for rectype in file_rectypes]
+        except KeyError:
+            rts = []
+
         return cls(
             filename=elt.find("./ddi:fileName", namespaces).text,
             description=elt.find("./ddi:fileCont", namespaces).text,
             structure=elt.find("./ddi:fileStrc", namespaces).attrib["type"],
+            rectypes = rts,
             encoding=elt.find("./ddi:fileType", namespaces)
             .attrib.get("charset", "iso-8859-1")
             .lower(),
