@@ -12,7 +12,7 @@ import re
 import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Iterator, List, Optional, Union
+from typing import Iterator, List, Optional, Union, Dict
 
 import pandas as pd
 import yaml
@@ -73,7 +73,6 @@ def _read_microdata(
         ]
     else:
         data_description = ddi.data_description
-    print(data_description)
 
     filename = Path(filename or ddi.file_description.filename)
     encoding = encoding or ddi.file_description.encoding
@@ -178,6 +177,7 @@ def _read_hierarchical_microdata(
     dtype: Optional[dict] = None,
     **kwargs
 ):
+    # TODO: try and speed this up
     if subset is not None:
         data_description = [
             desc for desc in ddi.data_description if desc.name in subset
@@ -248,8 +248,11 @@ def read_microdata(
     Returns:
         pandas data frame and pandas text file reader
     """ 
+    # raise a warning if this is a hierarchical file
+    if ddi.file_description.structure == "hierarchical": 
+        raise NotImplementedError("Structure must be rectangular. Use `read_hierarchical_microdata()` for hierarchical extracts.")
     # just read it if its rectangular
-    if ddi.file_description.structure == "rectangular":        
+    else:
         return next(
             _read_microdata(
                 ddi,
@@ -260,6 +263,45 @@ def read_microdata(
                 **kwargs
             )
     )
+
+
+def read_hierarchical_microdata(
+    ddi: ddi_definitions.Codebook,
+    filename: Optional[fileutils.FileType] = None,
+    encoding: Optional[str] = None,
+    subset: Optional[List[str]] = None,
+    dtype: Optional[dict] = None,
+    as_dict: Optional[bool] = False,
+    **kwargs
+) -> Union[pd.DataFrame, Dict]:
+    """
+    Read in microdata as specified by the Codebook. Both .dat and .csv file types
+    are supported.
+
+    Args:
+        ddi: The codebook representing the data
+        filename: The path to the data file. If not present, gets from
+                        ddi and assumes the file is relative to the current
+                        working directory
+        encoding: The encoding of the data file. If not present, reads from ddi
+        subset: A list of variable names to keep. If None, will keep all
+        dtype: A dictionary with variable names as keys and variable types as values.
+            Has an effect only when used with pd.read_fwf or pd.read_csv engine. If None, pd.read_fwf or pd.read_csv use
+            type ddi.data_description.pandas_type for all variables. See ipumspy.ddi.VariableDescription for more
+            precision on ddi.data_description.pandas_type. If files are csv, and dtype is not None, pandas converts the
+            column types once: on pd.read_csv call. When file format is .dat or .csv and dtype is None, two conversion
+            occur: one on load, and one when returning the dataframe.
+        as_dict: A flag to indicate whether to return a single data frame or a dictionary with one data frame per record
+            type in the extract data file. Set to True to recieve a dictionary of data frames.
+        kwargs: keyword args to be passed to the engine (pd.read_fwf, pd.read_csv, or
+            pd.read_parquet depending on the file type)
+
+    Returns:
+        pandas data frame or a dictionary of pandas data frames
+    """ 
+    # raise a warning if this is a rectantgular file
+    if ddi.file_description.structure == "rectangular": 
+        raise NotImplementedError("Structure must be hierarchical. Use `read_microdata()` for rectangular extracts.")
     else:
         if as_dict:
             return _read_hierarchical_microdata(
