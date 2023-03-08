@@ -20,7 +20,7 @@ build:
     post_install:
       # Install only dependencies including docs
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
-      - poetry install --no-root --with docs
+      - poetry install --with docs
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
    configuration: docs/source/conf.py
