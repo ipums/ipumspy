@@ -189,17 +189,14 @@ def _read_hierarchical_microdata(
     # these variables have all rectypes listed in the variable-level rectype attribute
     # these are delimited by spaces within the string attribute
     common_vars = [desc.name for desc in data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
-    print(common_vars)
     # seperate variables by rectype
     rectypes = {}
     for rectype in ddi.file_description.rectypes:
         rectype_vars = []
         rectype_vars.extend(common_vars)
-        print(f"this should be the same both times: {rectype_vars}")
         for desc in data_description:
             if desc.rectype == rectype:
                 rectype_vars.append(desc.name)
-        print(rectype_vars)
         # read microdata for the relevant rectype variables only
         rectypes[rectype] = next(_read_microdata(
                                                 ddi,
@@ -217,17 +214,15 @@ def _read_hierarchical_microdata(
         rt_df = rectypes[rectype]
         rectypes[rectype] = rt_df[rt_df["RECTYPE"] == rectype]
     return rectypes
-    
-             
 
 
 def read_microdata(
     ddi: ddi_definitions.Codebook,
     filename: Optional[fileutils.FileType] = None,
-    hierarchical: Optional[bool] = False,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
+    as_dict: Optional[bool] = False,
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
@@ -252,18 +247,32 @@ def read_microdata(
 
     Returns:
         pandas data frame and pandas text file reader
-    """            
-    return next(
-        _read_microdata(
-            ddi,
-            filename=filename,
-            hierarchical=hierarchical,
-            encoding=encoding,
-            subset=subset,
-            dtype=dtype,
-            **kwargs
-        )
+    """ 
+    # just read it if its rectangular
+    if ddi.file_description.structure == "rectangular":        
+        return next(
+            _read_microdata(
+                ddi,
+                filename=filename,
+                encoding=encoding,
+                subset=subset,
+                dtype=dtype,
+                **kwargs
+            )
     )
+    else:
+        if as_dict:
+            return _read_hierarchical_microdata(
+                                            ddi,
+                                            filename,
+                                            encoding,
+                                            subset,
+                                            dtype,
+                                            **kwargs
+                                        )
+        else:
+            # TODO: fwf representation of hierarchical file in df
+            pass
 
 
 def read_microdata_chunked(
