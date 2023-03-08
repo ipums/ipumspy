@@ -167,6 +167,16 @@ class FileDescription:
     Record types included in the IPUMS extract.
     This is an empty list for rectangular extracts.
     """
+    rectype_idvar: str
+    """
+    The variable that identifies record types.
+    This is an empty string for rectangular extracts.
+    """
+    rectype_keyvar: str
+    """
+    The variable that uniquely identifies records across record types.
+    This is an empty string for rectangular extracts.
+    """
     encoding: str
     """IPUMS file encoding scheme"""
     format: str
@@ -193,12 +203,22 @@ class FileDescription:
             rts = [rectype.attrib["rectype"] for rectype in file_rectypes]
         except KeyError:
             rts = []
-
+        # rectype get rectype id var and rectype key var
+        # these should be the same across record types for all collections
+        # so we should be fine to just grab the first appearance of recidvar and keyvar
+        try:
+            rectype_idvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib["recidvar"]
+            rectype_keyvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib["keyvar"]
+        except AttributeError:
+            rectype_idvar = ""
+            rectype_keyvar = ""
         return cls(
             filename=elt.find("./ddi:fileName", namespaces).text,
             description=elt.find("./ddi:fileCont", namespaces).text,
             structure=elt.find("./ddi:fileStrc", namespaces).attrib["type"],
             rectypes = rts,
+            rectype_idvar = rectype_idvar,
+            rectype_keyvar = rectype_keyvar,
             encoding=elt.find("./ddi:fileType", namespaces)
             .attrib.get("charset", "iso-8859-1")
             .lower(),

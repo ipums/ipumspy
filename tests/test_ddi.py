@@ -136,6 +136,12 @@ def test_ddi_codebook_rectangular(cps_ddi: ddi.Codebook):
     # rectypes
     assert cps_ddi.file_description.rectypes == []
 
+    # rectype idvar
+    assert cps_ddi.file_description.rectype_idvar == ""
+
+    # rectype keyvar
+    assert cps_ddi.file_description.rectype_keyvar == ""
+
     # data collection
     assert cps_ddi.ipums_collection == "cps"
 
@@ -163,6 +169,83 @@ def test_ddi_codebook_rectangular(cps_ddi: ddi.Codebook):
 
     # terms of use
     assert cps_ddi.ipums_conditions == (
+        "Users of IPUMS-CPS data must agree to abide by "
+        "the conditions of use. A user's license is "
+        "valid for one year and may be renewed.  Users "
+        "must agree to the following conditions:\n"
+        "\n"
+        "(1) No fees may be charged for use or "
+        "distribution of the data.  All persons are "
+        "granted a limited license to use these data, "
+        "but you may not charge a fee for the data if "
+        "you distribute it to others.\n"
+        "\n"
+        "(2) Cite IPUMS appropriately.  For information "
+        "on proper citation,  refer to the citation "
+        "requirement section of this DDI document.\n"
+        "\n"
+        "(3) Tell us about any work you do using the "
+        "IPUMS.  Publications, research  reports, or "
+        "presentations making use of IPUMS-CPS should "
+        "be added to our  Bibliography. Continued "
+        "funding for the IPUMS depends on our ability "
+        "to  show our sponsor agencies that researchers "
+        "are using the data for productive  purposes.\n"
+        "\n"
+        "(4) Use it for GOOD -- never for EVIL."
+    )
+
+
+def test_ddi_codebook_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
+    # sample descriptions/names
+    assert cps_ddi_hierarchical.samples_description == ["IPUMS-CPS, January 2022",
+                                                        "IPUMS-CPS, January 2023"]
+
+    # doi
+    assert cps_ddi_hierarchical.ipums_doi == "DOI:10.18128/D030.V10.0"
+
+    # data format
+    assert cps_ddi_hierarchical.file_description.format == "fixed length fields"
+
+    # data structure
+    assert cps_ddi_hierarchical.file_description.structure == "hierarchical"
+
+    # rectypes
+    assert cps_ddi_hierarchical.file_description.rectypes == ["P", "H"]
+
+    # rectype idvar
+    assert cps_ddi_hierarchical.file_description.rectype_idvar == "RECTYPE"
+
+    # rectype keyvar
+    assert cps_ddi_hierarchical.file_description.rectype_keyvar == "SERIAL"
+
+    # data collection
+    assert cps_ddi_hierarchical.ipums_collection == "cps"
+
+    # citation
+    assert cps_ddi_hierarchical.ipums_citation == (
+        "Publications and research reports based on the "
+        "IPUMS-CPS database must cite it appropriately. "
+        "The citation should include the following:\n"
+        "\n"
+        "Sarah Flood, Miriam King, Renae Rodgers, Steven Ruggles, "
+        "J. Robert Warren and Michael Westberry. Integrated Public Use "
+        "Microdata Series, Current Population Survey: "
+        "Version 10.0 [dataset]. Minneapolis, MN: "
+        "IPUMS, 2022. "
+        "https://doi.org/10.18128/D030.V10.0\n"
+        "\n"
+        "The licensing agreement for use of IPUMS-CPS "
+        "data requires that users supply us with the "
+        "title and full citation for any publications, "
+        "research reports, or educational materials "
+        "making use of the data or documentation. Please "
+        "add your citation to the IPUMS bibliography: "
+        "http://bibliography.ipums.org/"
+    )
+
+    # terms of use
+    assert cps_ddi_hierarchical.ipums_conditions == (
         "Users of IPUMS-CPS data must agree to abide by "
         "the conditions of use. A user's license is "
         "valid for one year and may be renewed.  Users "
