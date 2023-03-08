@@ -200,6 +200,7 @@ def _read_hierarchical_microdata(
             if desc.rectype == rectype:
                 rectype_vars.append(desc.name)
         print(rectype_vars)
+        # read microdata for the relevant rectype variables only
         rectypes[rectype] = next(_read_microdata(
                                                 ddi,
                                                 filename,
@@ -212,6 +213,9 @@ def _read_hierarchical_microdata(
                                                 **kwargs
                                             )
         )
+        # retain only records from the relevant record type
+        rt_df = rectypes[rectype]
+        rectypes[rectype] = rt_df[rt_df["RECTYPE"] == rectype]
     return rectypes
     
              
