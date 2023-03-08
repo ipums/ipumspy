@@ -64,8 +64,8 @@ def _read_microdata(
     dtype: Optional[dict] = None,
     **kwargs
 ):
-    if ddi.file_description.structure != "rectangular":
-        raise NotImplementedError("Structure must be rectangular")
+    # if ddi.file_description.structure != "rectangular":
+    #     raise NotImplementedError("Structure must be rectangular")
 
     if subset is not None:
         data_description = [
@@ -73,6 +73,7 @@ def _read_microdata(
         ]
     else:
         data_description = ddi.data_description
+    print(data_description)
 
     filename = Path(filename or ddi.file_description.filename)
     encoding = encoding or ddi.file_description.encoding
@@ -153,7 +154,7 @@ def _read_microdata(
         if dtype is None:
             yield from (
                 _fix_decimal_expansion(df).astype(
-                    {desc.name: desc.pandas_type for desc in ddi.data_description}
+                    {desc.name: desc.pandas_type for desc in data_description}
                 )
                 for df in data
             )
@@ -167,9 +168,59 @@ def _read_microdata(
                 yield from (_fix_decimal_expansion(df) for df in data)
 
 
+def _read_hierarchical_microdata(
+    ddi: ddi_definitions.Codebook,
+    filename: Optional[fileutils.FileType] = None,
+    encoding: Optional[str] = None,
+    subset: Optional[List[str]] = None,
+    iterator: bool = False,
+    chunksize: Optional[int] = None,
+    dtype: Optional[dict] = None,
+    **kwargs
+):
+    if subset is not None:
+        data_description = [
+            desc for desc in ddi.data_description if desc.name in subset
+        ]
+    else:
+        data_description = ddi.data_description
+
+    # identify common variables
+    # these variables have all rectypes listed in the variable-level rectype attribute
+    # these are delimited by spaces within the string attribute
+    common_vars = [desc.name for desc in data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
+    print(common_vars)
+    # seperate variables by rectype
+    rectypes = {}
+    for rectype in ddi.file_description.rectypes:
+        rectype_vars = []
+        rectype_vars.extend(common_vars)
+        print(f"this should be the same both times: {rectype_vars}")
+        for desc in data_description:
+            if desc.rectype == rectype:
+                rectype_vars.append(desc.name)
+        print(rectype_vars)
+        rectypes[rectype] = next(_read_microdata(
+                                                ddi,
+                                                filename,
+                                                encoding,
+                                                # rectype vars are the subset
+                                                rectype_vars,
+                                                iterator,
+                                                chunksize,
+                                                dtype,
+                                                **kwargs
+                                            )
+        )
+    return rectypes
+    
+             
+
+
 def read_microdata(
     ddi: ddi_definitions.Codebook,
     filename: Optional[fileutils.FileType] = None,
+    hierarchical: Optional[bool] = False,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
@@ -197,11 +248,12 @@ def read_microdata(
 
     Returns:
         pandas data frame and pandas text file reader
-    """
+    """            
     return next(
         _read_microdata(
             ddi,
             filename=filename,
+            hierarchical=hierarchical,
             encoding=encoding,
             subset=subset,
             dtype=dtype,
