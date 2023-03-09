@@ -174,7 +174,7 @@ def _read_hierarchical_microdata(
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     iterator: bool = False,
-    chunksize: Optional[int] = None,
+    chunksize: Optional[int] = 100000,
     dtype: Optional[dict] = None,
     **kwargs
 ):
@@ -204,17 +204,16 @@ def _read_hierarchical_microdata(
             if desc.rectype == rectype:
                 rectype_vars.append(desc.name)
         # read microdata for the relevant rectype variables only
-        rectypes[rectype] = next(_read_microdata(
+        # and do it in chunks so it goes quicker
+        rectypes[rectype] = next(read_microdata_chunked(
                                                 ddi,
                                                 filename,
                                                 encoding,
                                                 # rectype vars are the subset
                                                 rectype_vars,
-                                                iterator,
                                                 chunksize,
                                                 dtype,
-                                                **kwargs
-                                            )
+                                                **kwargs)
         )
         # retain only records from the relevant record type
         rt_df = rectypes[rectype]
