@@ -25,6 +25,8 @@ def _assert_cps_000006(data: pd.DataFrame):
         data["HWTSUPP"].iloc[:5]
         == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])
     ).all()
+    assert (data.dtypes.values == np.array([pd.Int64Dtype(), pd.Int64Dtype(), float, pd.Int64Dtype(),
+                                            pd.Int64Dtype(), pd.Int64Dtype(), float, pd.Int64Dtype()])).all()
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
