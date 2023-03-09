@@ -35,18 +35,25 @@ def _assert_cps_00421_df(data: pd.DataFrame):
     assert len(data) == 339278
     assert len(data.columns) == 14
     assert (data["YEAR"].iloc[:5] == 2022).all()
+    # again, gotta be a better way to do this
     assert (
-        data["HWTSUPP"].iloc[:5]
-        == np.array([0.0000, 1662.5757, np.nan, np.nan, np.nan])
+        data["HWTSUPP"].iloc[:2]
+        == np.array([0.0000, 1662.5757])
     ).all()
+    assert (
+        data["HWTSUPP"].iloc[2:5].isna().all()
+    )
     assert(
         data["RECTYPE"].iloc[:5]
         == np.array(["H", "H", "P", "P", "P"])
     ).all()
     assert(
-        data["PERNUM"].iloc[:5]
-        == np.array([pd.NA, pd.NA, 1, 2, 3]).all()
-    )
+        data["PERNUM"].iloc[2:5]
+        == np.array([1, 2, 3])
+    ).all()
+    assert(
+        data["PERNUM"].iloc[:2].isna().all()
+    ).all()
     assert (data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
                                             float, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
                                             pd.Int64Dtype(), float, pd.Int64Dtype(), pd.Int64Dtype(),
@@ -92,11 +99,57 @@ def _assert_cps_00421_dict(data: Dict):
     ).all()
     assert(
         p_data["MISH"].iloc[:5]
-        == np.array([7, 5, 1, 2, 1]).all()
-    )
+        == np.array([7, 5, 1, 2, 1])
+    ).all()
     assert (p_data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
                                               pd.Int64Dtype(), float, pd.Int64Dtype(), pd.Int64Dtype(), 
                                               pd.Int64Dtype()])).all()
+
+
+def _assert_cps_rectantular_subset(data: pd.DataFrame):
+    """Tests subset functionality on rectangular extracts"""
+    assert len(data.columns) == 2
+    assert(
+        data["STATEFIP"].iloc[:5]
+        == np.array([55, 55, 55, 27, 27])
+    ).all()
+
+
+def _assert_cps_hierarchical_subset(data: pd.DataFrame):
+    """Tests subset functionality on hierarchical extracts"""
+    assert len(data.columns) == 3
+    # there has to be a better way to do this...
+    # splitting out nan and non-nan values
+    assert(
+        data["MISH"].iloc[:2]
+        == np.array([7, 5])
+     ).all() 
+    assert(
+        data["MISH"].iloc[2:5].isna().all()
+    )
+    assert(
+        data["AGE"].iloc[2:5]
+        == np.array([36, 41, 5])
+    ).all()
+    assert(
+        data["AGE"].iloc[:2].isna().all()
+    )
+
+
+def _assert_cps_hierarchical_subset_dict(data: Dict):
+    """Tests subset functionality on hierarchical extracts as dictionaries"""
+    p_data = data["P"]
+    h_data = data["H"]
+    assert len(p_data.columns) == 2
+    assert len(h_data.columns) == 2
+    assert(
+        h_data["MISH"].iloc[:5]
+        == np.array([7, 5, 1, 2, 1])
+    ).all()
+    assert(
+        p_data["AGE"].iloc[:5]
+        == np.array([36, 41, 5, 7, 50])
+    ).all()
 
 
 def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
@@ -356,3 +409,42 @@ def test_read_extract_description(fixtures_path: Path):
     # Check that something that is neither YAML nor JSON yields a ValueError
     with pytest.raises(ValueError):
         readers.read_extract_description(fixtures_path / "cps_00006.xml")
+
+
+def test_subset_option(fixtures_path: Path):
+    """Does subset option function for all data structures"""
+    # first for rectangular
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00006.xml")
+    data = readers.read_microdata(ddi, 
+                                  fixtures_path / "cps_00006.dat.gz",
+                                  subset=["STATEFIP", "INCTOT"])
+
+    _assert_cps_rectantular_subset(data)
+
+    # then for hierarchical single data frame
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
+    data = readers.read_hierarchical_microdata(ddi, 
+                                                fixtures_path / "cps_00421.dat.gz",
+                                                subset=["RECTYPE", "MISH", "AGE"])
+
+    _assert_cps_hierarchical_subset(data)
+
+    # then for hierarchical dictionary
+    data = readers.read_hierarchical_microdata(ddi, 
+                                                fixtures_path / "cps_00421.dat.gz", 
+                                                subset=["RECTYPE", "MISH", "AGE"],
+                                                as_dict=True)
+    
+    _assert_cps_hierarchical_subset_dict(data)
+
+    # ValueError should be raised when rectype not included in hierarchical subset
+    with pytest.raises(ValueError):
+        data = readers.read_hierarchical_microdata(ddi, 
+                                                    fixtures_path / "cps_00421.dat.gz",
+                                                    subset=["MISH", "AGE"])
+    
+    with pytest.raises(ValueError):
+        data = readers.read_hierarchical_microdata(ddi, 
+                                                fixtures_path / "cps_00421.dat.gz",
+                                                subset=["MISH", "AGE"])
+
