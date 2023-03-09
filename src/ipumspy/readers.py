@@ -307,7 +307,6 @@ def read_hierarchical_microdata(
     """ 
     # hack for now just to have it in this method - make this a ddi.file_description attribute.
     common_vars = [desc.name for desc in ddi.data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
-    print(common_vars)
     # raise a warning if this is a rectantgular file
     if ddi.file_description.structure == "rectangular": 
         raise NotImplementedError("Structure must be hierarchical. Use `read_microdata()` for rectangular extracts.")
@@ -335,19 +334,24 @@ def read_hierarchical_microdata(
             )
             # for each rectype, nullify variables that belong to other rectypes
             for rectype in df_dict.keys():
-                print(rectype)
-                # this will end up being a list of lists for collections with more than 2 rectypes
-                # [y for x in a for y in [x[0]] * x[1]]
-                # for x in a extracts each of the elements of a one at a time into x. for y in ... 
-                # reates a new list from x and extracts its elements one at a time into y. It all happens at the same time (more or less), 
-                # causing it all to be at the same nesting level.
-                #[y for x in originalList for y in doSomething(x)]
+                # create a list of variables that are for rectypes other than the current rectype
+                # and are not included in the list of varaibles that are common across rectypes
                 non_rt_cols = [cols for rt in df_dict.keys() for cols in df_dict[rt].columns if rt != rectype and cols not in common_vars]
-                print(non_rt_cols)
                 for col in non_rt_cols:
-                    print(col)
-                    #if col not in common_vars:
-                    df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
+                    # maintain data type when "nullifying" variables from other record types
+                    if df[col].dtype == pd.Int64Dtype():
+                        df[col] = np.where(df["RECTYPE"] == rectype, pd.NA, df[col])
+                        df[col] = df[col].astype(pd.Int64Dtype())
+                    elif df[col].dtype == pd.StringDtype():
+                        df[col] = np.where(df["RECTYPE"] == rectype, "", df[col])
+                        df[col] = df[col].astype(pd.StringDtype())
+                    elif df[col].dtype == float:
+                        df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
+                        df[col] = df[col].astype(float)
+                    # this should (theoretically) never be hit... unless someone specifies an illegal data type
+                    # themselves, but that should also be caught before this stage.
+                    else:
+                        raise TypeError(f"Data type {df[col].dtype} for {col} is not an allowed type.")
             return df
 
 
