@@ -227,7 +227,6 @@ def read_microdata(
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
-    as_dict: Optional[bool] = False,
     **kwargs
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
