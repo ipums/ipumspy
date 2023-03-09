@@ -7,6 +7,7 @@ import gzip
 import tempfile
 from functools import partial
 from pathlib import Path
+from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -17,7 +18,7 @@ from ipumspy.api.extract import BaseExtract, UsaExtract
 
 
 def _assert_cps_000006(data: pd.DataFrame):
-    """Run all the checks for the data frame returned by our readers"""
+    """Run all the checks for the data frame returned by our readers for rectangular files"""
     assert len(data) == 7668
     assert len(data.columns) == 8
     assert (data["YEAR"].iloc[:5] == 1962).all()
@@ -27,6 +28,97 @@ def _assert_cps_000006(data: pd.DataFrame):
     ).all()
     assert (data.dtypes.values == np.array([pd.Int64Dtype(), pd.Int64Dtype(), float, pd.Int64Dtype(),
                                             pd.Int64Dtype(), pd.Int64Dtype(), float, pd.Int64Dtype()])).all()
+    
+
+def _assert_cps_00421_df(data: pd.DataFrame):
+    """Run all the checks for the data frame returned by our readers for hierarchical files"""
+    assert len(data) == 339278
+    assert len(data.columns) == 14
+    assert (data["YEAR"].iloc[:5] == 2022).all()
+    assert (
+        data["HWTSUPP"].iloc[:5]
+        == np.array([0.0000, 1662.5757, np.nan, np.nan, np.nan])
+    ).all()
+    assert(
+        data["RECTYPE"].iloc[:5]
+        == np.array(["H", "H", "P", "P", "P"])
+    ).all()
+    assert(
+        data["PERNUM"].iloc[:5]
+        == np.array([pd.NA, pd.NA, 1, 2, 3]).all()
+    )
+    assert (data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
+                                            float, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
+                                            pd.Int64Dtype(), float, pd.Int64Dtype(), pd.Int64Dtype(),
+                                            pd.Int64Dtype(), pd.Int64Dtype()])).all()
+
+
+def _assert_cps_00421_dict(data: Dict):
+    """Run all the checks for the data frame returned by our readers for hierarchical files
+    when a dictionary of data frames is requested"""
+    p_data = data["P"]
+    h_data = data["H"]
+
+    assert len(data.keys()) == 2
+
+    assert len(p_data) == 201993
+    assert len(p_data.columns) == 9
+    assert (p_data["YEAR"].iloc[:5] == 2022).all()
+    assert (
+        p_data["WTFINL"].iloc[:5]
+        == np.array([1662.5757, 1978.19857, 1801.0842, 1243.6042, 2037.9611])
+    ).all()
+    assert(
+        p_data["RECTYPE"].iloc[:5]
+        == np.array(["P", "P", "P", "P", "P"])
+    ).all()
+    assert(
+        p_data["PERNUM"].iloc[:5]
+        == np.array([1, 2, 3, 4, 1]).all()
+    )
+    assert (p_data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(), float,
+                                              pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype()])).all()
+
+    assert len(h_data) == 137285
+    assert len(h_data.columns) == 8
+    assert (h_data["YEAR"].iloc[:5] == 2022).all()
+    assert (
+        p_data["HWTFINL"].iloc[:5]
+        == np.array([0.0000, 1662.5757, 2037.9611, 2094.5077, 1970.8250])
+    ).all()
+    assert(
+        p_data["RECTYPE"].iloc[:5]
+        == np.array(["H", "H", "H", "H", "H"])
+    ).all()
+    assert(
+        p_data["MISH"].iloc[:5]
+        == np.array([7, 5, 1, 2, 1]).all()
+    )
+    assert (p_data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
+                                              pd.Int64Dtype(), float, pd.Int64Dtype(), pd.Int64Dtype(), 
+                                              pd.Int64Dtype()])).all()
+
+
+def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
+    """
+    Confirm that we can read hierarchical microdata ino a single data frame 
+    in .dat format when it is gzipped
+    """
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
+    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "cps_00421.dat.gz")
+
+    _assert_cps_00421_df
+
+
+def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
+    """
+    Confirm that we can read hierarchical microdata ino a dictionary of data frames 
+    in .dat format when it is gzipped
+    """
+    ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
+    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "cps_00421.dat.gz", as_dict=True)
+
+    _assert_cps_00421_dict
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
