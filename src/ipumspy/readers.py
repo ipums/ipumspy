@@ -307,6 +307,9 @@ def read_hierarchical_microdata(
     """ 
     # hack for now just to have it in this method - make this a ddi.file_description attribute.
     common_vars = [desc.name for desc in ddi.data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
+    # RECTYPE must be included if subset list is specified
+    if subset is not None and "RECTYPE" not in subset:
+        raise ValueError("RECTYPE must be included in the subset list for hierarchical extracts.")
     # raise a warning if this is a rectantgular file
     if ddi.file_description.structure == "rectangular": 
         raise NotImplementedError("Structure must be hierarchical. Use `read_microdata()` for rectangular extracts.")
