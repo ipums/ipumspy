@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Iterator, List, Optional, Union, Dict
 
 import pandas as pd
+import numpy as np
 import yaml
 
 from . import ddi as ddi_definitions
@@ -188,9 +189,14 @@ def _read_hierarchical_microdata(
     # identify common variables
     # these variables have all rectypes listed in the variable-level rectype attribute
     # these are delimited by spaces within the string attribute
+    # this list would probably be a useful thing to have as a file-level attribute...
     common_vars = [desc.name for desc in data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
     # seperate variables by rectype
     rectypes = {}
+    # NB: This might result in empty data frames for some rectypes
+    # as the ddi contains all possible collection rectypes, even if only a few 
+    # are actually represented in the file.
+    # TODO: prune empty rectype data frames
     for rectype in ddi.file_description.rectypes:
         rectype_vars = []
         rectype_vars.extend(common_vars)
@@ -299,12 +305,14 @@ def read_hierarchical_microdata(
     Returns:
         pandas data frame or a dictionary of pandas data frames
     """ 
+    # hack for now just to have it in this method - make this a ddi.file_description attribute.
+    common_vars = [desc.name for desc in ddi.data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
+    print(common_vars)
     # raise a warning if this is a rectantgular file
     if ddi.file_description.structure == "rectangular": 
         raise NotImplementedError("Structure must be hierarchical. Use `read_microdata()` for rectangular extracts.")
     else:
-        if as_dict:
-            return _read_hierarchical_microdata(
+        df_dict = _read_hierarchical_microdata(
                                             ddi,
                                             filename,
                                             encoding,
@@ -312,9 +320,35 @@ def read_hierarchical_microdata(
                                             dtype,
                                             **kwargs
                                         )
+        if as_dict:
+            return df_dict
         else:
-            # TODO: fwf representation of hierarchical file in df
-            pass
+            # read the hierarchical file 
+            df = next(_read_microdata(
+                                    ddi,
+                                    filename,
+                                    encoding,
+                                    subset,
+                                    dtype,
+                                    **kwargs
+                                        )
+            )
+            # for each rectype, nullify variables that belong to other rectypes
+            for rectype in df_dict.keys():
+                print(rectype)
+                # this will end up being a list of lists for collections with more than 2 rectypes
+                # [y for x in a for y in [x[0]] * x[1]]
+                # for x in a extracts each of the elements of a one at a time into x. for y in ... 
+                # reates a new list from x and extracts its elements one at a time into y. It all happens at the same time (more or less), 
+                # causing it all to be at the same nesting level.
+                #[y for x in originalList for y in doSomething(x)]
+                non_rt_cols = [cols for rt in df_dict.keys() for cols in df_dict[rt].columns if rt != rectype and cols not in common_vars]
+                print(non_rt_cols)
+                for col in non_rt_cols:
+                    print(col)
+                    #if col not in common_vars:
+                    df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
+            return df
 
 
 def read_microdata_chunked(
