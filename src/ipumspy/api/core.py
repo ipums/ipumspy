@@ -79,7 +79,7 @@ class IpumsApiClient:
         self,
         api_key: str,
         base_url: str = "https://api.ipums.org/extracts",
-        api_version: str = "beta",
+        api_version: str = "v2",
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
     ):
