@@ -195,4 +195,2248 @@ interactions:
     status:
       code: 400
       message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:06 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 329a6f6e-0974-4561-af7b-944769a89922
+      X-Runtime:
+      - '0.384371'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:06 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 2c5c3913-58df-4637-8dc5-887413b9124a
+      X-Runtime:
+      - '0.320246'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:07 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 55170c53-8b3f-4c83-b309-003678d2112e
+      X-Runtime:
+      - '0.325028'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:45 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 5dccf2c9-d0d2-42b6-928f-ca494f514b66
+      X-Runtime:
+      - '0.287313'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:46 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f2e6e94c-97b0-402b-8e12-04b94caf993f
+      X-Runtime:
+      - '0.278003'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:46 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - c8b5935b-4d42-4ac2-892d-9cbb93f36580
+      X-Runtime:
+      - '0.284125'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:33 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - fe6760ce-9c6c-4988-9c7d-d7d142a0c42c
+      X-Runtime:
+      - '0.398743'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:33 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 89c57df7-471e-4cc4-a654-7902c1987cc5
+      X-Runtime:
+      - '0.286791'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:33 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - c5b07a78-2e29-4701-9fbc-15cbb15ef06e
+      X-Runtime:
+      - '0.293406'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:34 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 9db06b80-c33e-4768-860d-7c415188ca5f
+      X-Runtime:
+      - '0.330029'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:34 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 1968fed4-6099-4dcd-bc6e-f9b9bb0f3672
+      X-Runtime:
+      - '0.284532'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:35 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 458a4112-62a4-4e1a-81a4-3a2b4ec3479d
+      X-Runtime:
+      - '0.285053'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:46 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - ec4a8f54-5d3b-4599-895b-dbf76b5bcbc3
+      X-Runtime:
+      - '0.292009'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:47 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 223d8030-42e1-4f00-874c-a27affc0ac06
+      X-Runtime:
+      - '0.287442'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:47 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - a011f64c-6f55-46e0-999d-19a75e18537a
+      X-Runtime:
+      - '0.290636'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:23 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 87da8622-b775-4d81-b9c0-920527ef9bfc
+      X-Runtime:
+      - '0.451987'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:24 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 714ac03c-db3a-4917-a97c-bee21fa0886b
+      X-Runtime:
+      - '0.284086'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:24 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 85b4fdbb-1728-46bd-aabd-6e48a0c976d2
+      X-Runtime:
+      - '0.292507'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 90fbc5e7-0085-4c7e-97ad-2908f3eefd6a
+      X-Runtime:
+      - '0.338510'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:02 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - b23410cf-05ce-412d-892c-865da717d52c
+      X-Runtime:
+      - '0.286898'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:02 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 3a87690c-ddbf-4736-9efb-29a2b4b95341
+      X-Runtime:
+      - '0.282413'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:36 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 70567a39-9599-4758-a768-04549cc9bb7c
+      X-Runtime:
+      - '0.310022'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:37 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 9e933f06-cc05-4abd-b78c-5800b719a2b8
+      X-Runtime:
+      - '0.303187'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:37 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 5496372c-3ac5-48b3-b1de-7ccf0b2c4981
+      X-Runtime:
+      - '0.278513'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:31 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 686059aa-bbb3-4e5a-8400-ec505708bd48
+      X-Runtime:
+      - '0.290907'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:31 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - a46e3ea2-c09b-4c59-90b0-39147fdf1ade
+      X-Runtime:
+      - '0.274873'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:32 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 09c772c5-e3df-4fc5-bb35-436a6d5ea23f
+      X-Runtime:
+      - '0.277963'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:56 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 1e193871-8d46-496f-8e89-6e082e9057fa
+      X-Runtime:
+      - '0.299033'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:57 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - ae28bc55-096e-4a9a-98e6-ff48e9e08d3f
+      X-Runtime:
+      - '0.281486'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:57 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 5f2d8c39-113d-48d3-9aed-c8abc6637db8
+      X-Runtime:
+      - '0.275075'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:56 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - fcd67276-f54a-4aa0-871d-2da3950d22ad
+      X-Runtime:
+      - '0.398624'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:57 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f9cc644d-d55c-4a07-bf73-bc0779b0cba7
+      X-Runtime:
+      - '0.294014'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:57 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 6a0e2962-ce46-4bce-8550-72e054303430
+      X-Runtime:
+      - '0.281797'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '189'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid variable name: AG"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '116'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:37 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 69648b01-41ce-4f20-9aef-c44204d68469
+      X-Runtime:
+      - '0.311150'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '194'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["YRIMMIG: This variable is not available in any of the
+        samples currently selected."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '172'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:38 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - a5717862-1a8b-4311-b30c-6018aedcebbc
+      X-Runtime:
+      - '0.285613'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
+      {}}, "collection": "usa"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '190'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid sample name: us2012x"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '119'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:38 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - e48c4bd9-b904-4fa8-857c-c674d2d94981
+      X-Runtime:
+      - '0.287208'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
 version: 1

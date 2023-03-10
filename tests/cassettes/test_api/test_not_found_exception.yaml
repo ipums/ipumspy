@@ -131,4 +131,1444 @@ interactions:
     status:
       code: 404
       message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:07 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 389858c1-5fba-46b5-8b2a-f07acb1a0b7f
+      X-Runtime:
+      - '0.134945'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:07 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - d29d73b2-b3fe-44d4-9cf2-23e12306b08a
+      X-Runtime:
+      - '0.116053'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:08 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 808ff272-4eec-4cfd-b7de-ea872e33ea46
+      X-Runtime:
+      - '0.128734'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:46 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 1942df16-aa9e-4589-b8d9-3d9dbc03f310
+      X-Runtime:
+      - '0.126514'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:47 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - dfdc2dc5-970a-47cc-b947-6136ebaa8165
+      X-Runtime:
+      - '0.121812'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:47 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 957dccfb-35a5-4857-9909-f74b67d8a8d6
+      X-Runtime:
+      - '0.120169'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:34 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 23b39fae-ac28-4577-a600-0c188b6e7ca6
+      X-Runtime:
+      - '0.140317'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:34 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 7c6209c1-9fb0-4c64-b3a0-981d7e4d7cc9
+      X-Runtime:
+      - '0.133616'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:34 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 0b06b1a5-6df5-4411-b3c5-b50a92573a33
+      X-Runtime:
+      - '0.129178'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:35 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - dc0321a5-ffef-45bb-9e70-13c58da8a8a2
+      X-Runtime:
+      - '0.149447'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:35 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 0522fdb6-2cc2-4043-a098-d01a40bfa6dc
+      X-Runtime:
+      - '0.119762'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:36 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - bc7f7c0f-80da-4035-bfa3-baf544e78d7d
+      X-Runtime:
+      - '0.127241'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:48 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 4c5fcd51-4fcc-4cb7-a098-11fc1dd37ed7
+      X-Runtime:
+      - '0.131554'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:48 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 080e59f3-7790-4526-8a62-4a4619d7efc8
+      X-Runtime:
+      - '0.118144'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:48 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 06b21a27-cb3f-48b8-a15e-ab43c5aabccd
+      X-Runtime:
+      - '0.125505'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:25 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 978490e3-47a4-4b0d-b555-28aed65e9086
+      X-Runtime:
+      - '0.140651'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:25 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 92d938fa-5eb1-4f40-a751-60785ab8c0e2
+      X-Runtime:
+      - '0.126731'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:26 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 5205e4eb-c568-4275-badb-5d19128978c1
+      X-Runtime:
+      - '0.146199'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:02 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - b54e7431-0a87-4ca8-9668-8e388f8ad81b
+      X-Runtime:
+      - '0.133611'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:03 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 4b2107e1-b232-4c5a-bdc7-d4f19eddeb61
+      X-Runtime:
+      - '0.136611'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:03 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - ad1edec5-8c16-4742-93b4-6c3170b153dd
+      X-Runtime:
+      - '0.133807'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:38 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - e5ed6758-1722-493b-9f29-aa84ad4842d7
+      X-Runtime:
+      - '0.126958'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:38 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 983f41c3-194f-470b-bd52-3d3c26ee13c2
+      X-Runtime:
+      - '0.117487'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:38 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - e7112574-9799-4daf-b8a0-56fe98cf3122
+      X-Runtime:
+      - '0.115194'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:32 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - bfb203f8-0c2a-4bdd-b09a-0f4a07e8f8e2
+      X-Runtime:
+      - '0.195354'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:32 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 0a24b2ac-2412-4efb-b4a9-31f79eb2cb26
+      X-Runtime:
+      - '0.118278'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:33 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 729f0650-6c95-490d-9bd8-004554d912d1
+      X-Runtime:
+      - '0.137733'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:57 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 0b6822e9-139d-47d4-9c55-af122cef61ab
+      X-Runtime:
+      - '0.128286'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:58 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 2a0e30cb-38c2-4e2f-8cc9-bc874ce7252a
+      X-Runtime:
+      - '0.123330'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:58 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 960a55bc-8c47-4b02-a055-c37d1cc6fde9
+      X-Runtime:
+      - '0.129322'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:58 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - d47318cc-5e58-43c6-9c27-dd5d0690ba7f
+      X-Runtime:
+      - '0.130408'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:58 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - e48e0e9e-5710-4876-a198-c7df99288159
+      X-Runtime:
+      - '0.114309'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:58 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 5b0d2e3a-8926-49c5-96f9-a7385f0e3008
+      X-Runtime:
+      - '0.116845'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:38 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - e2597944-5b2f-44b8-8cf6-ddb96b9509b0
+      X-Runtime:
+      - '0.126368'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:39 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - c2e5da8e-bde5-4bd3-85d5-dd1a27eb8325
+      X-Runtime:
+      - '0.124637'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/0?collection=usa&version=2
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:39 GMT
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 38b5b301-04a1-4eb9-b610-11e9f907f563
+      X-Runtime:
+      - '0.129932'
+    status:
+      code: 404
+      message: Not Found
 version: 1

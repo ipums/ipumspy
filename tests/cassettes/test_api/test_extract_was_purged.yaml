@@ -60,4 +60,700 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:41:09 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f9374c83-bc26-49c0-8c54-652ba1968a24
+      X-Runtime:
+      - '0.596426'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 18:43:48 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - c0dfe134-79dc-4982-b156-1ed3fdcf086e
+      X-Runtime:
+      - '0.422691'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:35:35 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - e270d186-7308-4ea2-a115-11ece93e2d75
+      X-Runtime:
+      - '0.453070'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:54:36 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 25fe569b-a918-4f06-8b56-4a9bdc0aa21b
+      X-Runtime:
+      - '0.426075'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 19:55:49 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 9b257ce5-1ca5-4c00-8646-69dcc417f30a
+      X-Runtime:
+      - '0.421848'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:08:26 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 64903367-8df5-427d-a2fc-c0d00aaaa062
+      X-Runtime:
+      - '0.454015'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:13:04 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 476a88ca-2443-4791-ba8a-b444b2b7c7c9
+      X-Runtime:
+      - '0.545496'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:24:39 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 7f59df31-0d78-42de-8c40-ef595c7c3f95
+      X-Runtime:
+      - '0.422459'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:44:33 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 574b8fc4-1459-45e3-ab49-21b493e02ebc
+      X-Runtime:
+      - '0.401459'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 20:50:59 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - cb3eeb38-a96d-4664-9c4e-0d084325a7e8
+      X-Runtime:
+      - '0.439164'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:03:59 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f9510fc4-7785-4088-8d04-ff94e161ac90
+      X-Runtime:
+      - '0.438378'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":1,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"spss","caseSelectWho":"individuals","description":"Hist
+        3011 extract","samples":{"us1960a":{},"us1970c":{},"us1980b":{},"us1990c":{},"us2000c":{},"us1940a":{}},"variables":{"AGE":{},"SEX":{},"MARST":{},"FAMSIZE":{},"NCHILD":{},"RACE":{},"BPL":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '637'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Mar 2023 21:05:40 GMT
+      Etag:
+      - W/"d8a18dc8f1df4005dbb19767895cc46d"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - fca51a59-aaf3-4cf0-9146-7e09fa23eb4a
+      X-Runtime:
+      - '0.459393'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
 version: 1
