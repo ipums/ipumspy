@@ -143,10 +143,10 @@ class UsaExtract(BaseExtract, collection="usa"):
     @classmethod
     def from_api_response(cls, api_response: Dict[str, Any]) -> UsaExtract:
         return cls(
-            samples=list(api_response["samples"]),
-            variables=list(api_response["variables"]),
-            data_format=api_response["dataFormat"],
-            description=api_response["description"],
+            samples=list(api_response["extractDefinition"]["samples"]),
+            variables=list(api_response["extractDefinition"]["variables"]),
+            data_format=api_response["extractDefinition"]["dataFormat"],
+            description=api_response["extractDefinition"]["description"],
         )
 
     def build(self) -> Dict[str, Any]:
@@ -197,10 +197,10 @@ class CpsExtract(BaseExtract, collection="cps"):
     @classmethod
     def from_api_response(cls, api_response: Dict[str, Any]) -> CpsExtract:
         return cls(
-            samples=list(api_response["samples"]),
-            variables=list(api_response["variables"]),
-            data_format=api_response["dataFormat"],
-            description=api_response["description"],
+            samples=list(api_response["extractDefinition"]["samples"]),
+            variables=list(api_response["extractDefinition"]["variables"]),
+            data_format=api_response["extractDefinition"]["dataFormat"],
+            description=api_response["extractDefinition"]["description"],
         )
 
     def build(self) -> Dict[str, Any]:

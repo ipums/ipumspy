@@ -30,8 +30,8 @@ db = {}
 
 class ExtractSpec(BaseModel):
     description: str
-    data_format: str
-    data_structure: Dict[str, dict]
+    dataFormat: str
+    dataStructure: Dict[str, dict]
     samples: Dict[str, dict]
     variables: Dict[str, dict]
 
