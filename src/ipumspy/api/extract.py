@@ -145,7 +145,7 @@ class UsaExtract(BaseExtract, collection="usa"):
         return cls(
             samples=list(api_response["samples"]),
             variables=list(api_response["variables"]),
-            data_format=api_response["data_format"],
+            data_format=api_response["dataFormat"],
             description=api_response["description"],
         )
 
@@ -156,8 +156,8 @@ class UsaExtract(BaseExtract, collection="usa"):
         """
         return {
             "description": self.description,
-            "data_format": self.data_format,
-            "data_structure": {"rectangular": {"on": "P"}},
+            "dataFormat": self.data_format,
+            "dataStructure": {"rectangular": {"on": "P"}},
             "samples": {sample: {} for sample in self.samples},
             "variables": {variable.upper(): {} for variable in self.variables},
             "collection": self.collection,
@@ -199,7 +199,7 @@ class CpsExtract(BaseExtract, collection="cps"):
         return cls(
             samples=list(api_response["samples"]),
             variables=list(api_response["variables"]),
-            data_format=api_response["data_format"],
+            data_format=api_response["dataFormat"],
             description=api_response["description"],
         )
 
@@ -210,8 +210,8 @@ class CpsExtract(BaseExtract, collection="cps"):
         """
         return {
             "description": self.description,
-            "data_format": self.data_format,
-            "data_structure": {"rectangular": {"on": "P"}},
+            "dataFormat": self.data_format,
+            "dataStructure": {"rectangular": {"on": "P"}},
             "samples": {sample: {} for sample in self.samples},
             "variables": {variable.upper(): {} for variable in self.variables},
             "collection": self.collection,
@@ -265,7 +265,7 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         ext["collection"] = extract.collection
         ext["api_version"] = extract.api_version
         # pop keys created after submission
-        [ext.pop(key) for key in ["download_links", "number", "status"]]
+        [ext.pop(key) for key in ["downloadLinks", "number", "status"]]
         return ext
 
     except ValueError:
@@ -299,10 +299,10 @@ def define_extract_from_ddi(
     extract_descs = ddi_codebook.samples_description
     extract_info["samples"] = [sample_ids_dict[desc] for desc in extract_descs]
     extract_info["variables"] = [vd.name for vd in ddi_codebook.data_description]
-    extract_info["data_structure"] = ddi_codebook.file_description.structure
+    extract_info["dataStructure"] = ddi_codebook.file_description.structure
     # DDI does not reflect when extract is requested in CSV or other format
     # so this method will default to specifying fixed_width (.dat)
-    extract_info["data_format"] = "fixed_width"
+    extract_info["dataFormat"] = "fixed_width"
 
     # because the DDI doesn't have API version info, the extract will be submitted
     # with the default version of the API or one that the user specifies when

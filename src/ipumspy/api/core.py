@@ -289,25 +289,25 @@ class IpumsApiClient:
             params={"collection": collection, "version": self.api_version},
         )
 
-        download_links = response.json()["download_links"]
+        download_links = response.json()["downloadLinks"]
         try:
             # if the extract has been purged, the download_links element will be
             # an empty dict
             data_url = download_links["data"]["url"]
-            ddi_url = download_links["ddi_codebook"]["url"]
+            ddi_url = download_links["ddiCodebook"]["url"]
             download_urls = [data_url, ddi_url]
 
             if stata_command_file:
-                _url = download_links["stata_command_file"]["url"]
+                _url = download_links["stataCommandFile"]["url"]
                 download_urls.append(_url)
             if spss_command_file:
-                _url = download_links["spss_command_file"]["url"]
+                _url = download_links["spssCommandFile"]["url"]
                 download_urls.append(_url)
             if sas_command_file:
-                _url = download_links["sas_command_file"]["url"]
+                _url = download_links["sasCommandFile"]["url"]
                 download_urls.append(_url)
             if r_command_file:
-                _url = download_links["R_command_file"]["url"]
+                _url = download_links["rCommandFile"]["url"]
                 download_urls.append(_url)
 
         except KeyError:
@@ -451,7 +451,7 @@ class IpumsApiClient:
         """
         extract_id, collection = _extract_and_collection(extract, collection)
         extract_definition = self.get_extract_info(extract_id, collection)
-        if not extract_definition["download_links"]:
+        if not extract_definition["downloadLinks"]:
             return True
         else:
             return False
