@@ -118,7 +118,7 @@ def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     )
 
     api_client.submit_extract(extract)
-    #assert extract.extract_id == 10
+    assert extract.extract_id == 10
 
     api_client.wait_for_extract(extract)
     assert api_client.extract_status(extract) == "completed"
@@ -229,6 +229,9 @@ def test_extract_from_dict(fixtures_path: Path):
         assert item.collection == "usa"
         assert item.samples == ["us2012b"]
         assert item.variables == ["AGE", "SEX", "RACE"]
+        # data structure not currently an extract attribute...
+        # assert item.data_structure == "rectangular"
+        assert item.data_format == "fixed_width"
 
     with open(fixtures_path / "example_extract.json") as infile:
         extract = extract_from_dict(json.load(infile))
@@ -237,6 +240,33 @@ def test_extract_from_dict(fixtures_path: Path):
         assert item.collection == "usa"
         assert item.samples == ["us2012b"]
         assert item.variables == ["AGE", "SEX", "RACE"]
+        # data structure not currently an extract attribute...
+        # assert item.data_structure == "rectangular"
+        assert item.data_format == "fixed_width"
+
+
+def test_extract_from_dict_v2(fixtures_path: Path):
+    with open(fixtures_path / "example_extract_v2.yml") as infile:
+        extract = extract_from_dict(yaml.safe_load(infile))
+
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == ["us2012b"]
+        assert item.variables == ["AGE", "SEX", "RACE"]
+        # data structure not currently an extract attribute...
+        # assert item.data_structure == "rectangular"
+        assert item.data_format == "fixed_width"
+
+    with open(fixtures_path / "example_extract_v2.json") as infile:
+        extract = extract_from_dict(json.load(infile))
+
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == ["us2012b"]
+        assert item.variables == ["AGE", "SEX", "RACE"]
+        # data structure not currently an extract attribute...
+        # assert item.data_structure == "rectangular"
+        assert item.data_format == "fixed_width"
 
 
 def test_extract_to_dict(fixtures_path: Path):

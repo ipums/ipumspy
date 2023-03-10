@@ -1,0 +1,12 @@
+extracts:
+  - description: Simple IPUMS extract
+    collection: usa
+    apiVersion: "2"
+    samples:
+      - us2012b
+    variables:
+      - AGE
+      - SEX
+      - RACE
+    dataStructure: rectangular
+    dataFormat: fixed_width
