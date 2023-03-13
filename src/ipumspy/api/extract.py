@@ -40,7 +40,6 @@ class BaseExtract:
         BaseExtract._collection_to_extract[collection] = cls
 
     def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
-        print(kwargs_dict)
         if not kwargs_dict:
             # no kwargs specified, nothing to do
             pass

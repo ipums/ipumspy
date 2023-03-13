@@ -183,7 +183,6 @@ class IpumsApiClient:
             else:
                 extract = OtherExtract(collection, extract)
 
-        print(extract.api_version, self.api_version)
         response = self.post(
             self.base_url,
             params={"collection": extract.collection, "version": extract.api_version},
