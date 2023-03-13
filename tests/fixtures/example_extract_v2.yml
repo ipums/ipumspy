@@ -1,7 +1,7 @@
 extracts:
   - description: Simple IPUMS extract
     collection: usa
-    apiVersion: "2"
+    version: "2"
     samples:
       - us2012b
     variables:
