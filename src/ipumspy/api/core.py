@@ -167,6 +167,7 @@ class IpumsApiClient:
         Returns:
             The number of the extract for the passed user account
         """
+        # define extract collection
         if not isinstance(extract, BaseExtract):
             extract = copy.deepcopy(extract)
             if "collection" in extract:
@@ -182,9 +183,10 @@ class IpumsApiClient:
             else:
                 extract = OtherExtract(collection, extract)
 
+        print(extract.api_version, self.api_version)
         response = self.post(
             self.base_url,
-            params={"collection": extract.collection, "version": self.api_version},
+            params={"collection": extract.collection, "version": extract.api_version},
             json=extract.build(),
         )
 
