@@ -222,30 +222,7 @@ def test_extract_was_purged(live_api_client: IpumsApiClient):
 
 
 def test_extract_from_dict(fixtures_path: Path):
-    with open(fixtures_path / "example_extract.yml") as infile:
-        extract = extract_from_dict(yaml.safe_load(infile))
-
-    for item in extract:
-        assert item.collection == "usa"
-        assert item.samples == ["us2012b"]
-        assert item.variables == ["AGE", "SEX", "RACE"]
-        # data structure not currently an extract attribute...
-        # assert item.data_structure == "rectangular"
-        assert item.data_format == "fixed_width"
-
-    with open(fixtures_path / "example_extract.json") as infile:
-        extract = extract_from_dict(json.load(infile))
-
-    for item in extract:
-        assert item.collection == "usa"
-        assert item.samples == ["us2012b"]
-        assert item.variables == ["AGE", "SEX", "RACE"]
-        # data structure not currently an extract attribute...
-        # assert item.data_structure == "rectangular"
-        assert item.data_format == "fixed_width"
-
-
-def test_extract_from_dict_v2(fixtures_path: Path):
+    """Ensure extract object can be created from a dict"""
     with open(fixtures_path / "example_extract_v2.yml") as infile:
         extract = extract_from_dict(yaml.safe_load(infile))
 
@@ -257,16 +234,14 @@ def test_extract_from_dict_v2(fixtures_path: Path):
         # assert item.data_structure == "rectangular"
         assert item.data_format == "fixed_width"
 
-    with open(fixtures_path / "example_extract_v2.json") as infile:
-        extract = extract_from_dict(json.load(infile))
-
-    for item in extract:
-        assert item.collection == "usa"
-        assert item.samples == ["us2012b"]
-        assert item.variables == ["AGE", "SEX", "RACE"]
-        # data structure not currently an extract attribute...
-        # assert item.data_structure == "rectangular"
-        assert item.data_format == "fixed_width"
+    # if an unsupported api version is specified
+    # make sure NotImplementedError is raised
+    with pytest.raises(NotImplementedError) as exc_info:
+        with open(fixtures_path / "example_extract.yml") as infile:
+            extract = extract_from_dict(yaml.safe_load(infile))
+    assert exc_info.value.args[0] == (
+        "The IPUMS API version specified in the extract definition is not supported by this version of ipumspy."
+    )
 
 
 def test_extract_to_dict(fixtures_path: Path):
@@ -384,11 +359,20 @@ def test_define_extract_from_ddi(fixtures_path: Path):
 
 
 def test_define_extract_from_json(fixtures_path: Path):
-    extract = define_extract_from_json(fixtures_path / "example_extract.json")
+    """Ensure extract can be created from json file"""
+    extract = define_extract_from_json(fixtures_path / "example_extract_v2.json")
     for item in extract:
         assert item.collection == "usa"
         assert item.samples == ["us2012b"]
         assert item.variables == ["AGE", "SEX", "RACE"]
+
+    # if an unsupported api version is specified, make sure 
+    # NotImplementedError is raised
+    with pytest.raises(NotImplementedError) as exc_info:
+        extract = define_extract_from_json(fixtures_path / "example_extract.json")
+    assert exc_info.value.args[0] == (
+        "The IPUMS API version specified in the extract definition is not supported by this version of ipumspy."
+    )
 
 
 def test_save_extract_as_json(fixtures_path: Path):
