@@ -19,6 +19,10 @@ class DefaultCollectionWarning(Warning):
     pass
 
 
+class ApiVersionWarning(Warning):
+    pass
+
+
 class BaseExtract:
     _collection_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
 
@@ -53,7 +57,7 @@ class BaseExtract:
                 f"are ignored.",
                 DefaultCollectionWarning,
             )
-        
+
     def build(self) -> Dict[str, Any]:
         """
         Convert the object into a dictionary to be passed to the IPUMS API
@@ -87,7 +91,7 @@ class BaseExtract:
             )
         else:
             return self._info
-        
+
     def extract_api_version(self, kwargs_dict: Dict[str, Any]) -> str:
         # check to see if version is specified in kwargs_dict
         if "version" in kwargs_dict.keys() or "api_version" in kwargs_dict.keys():
@@ -95,18 +99,23 @@ class BaseExtract:
                 if kwargs_dict["version"] == self.api_version:
                     # collectin kwarg is the same as default, nothing to do
                     return self.api_version
+                # TODO: more sophisticated parsing of extract vs default api version
                 elif kwargs_dict["version"] != self.api_version:
-                    # update extract object api version to reflect 
+                    warnings.warn(
+                        f"The IPUMS API version specified in the extract definition is not the most recent. "
+                        f"Extract definition IPUMS API version: {kwargs_dict['version']}; most recent IPUMS API version: {self.api_version}",
+                        ApiVersionWarning,
+                    )
+                    # update extract object api version to reflect
                     return kwargs_dict["version"]
             except KeyError:
-                # support beta for now
-                if kwargs_dict["api_version"] != self.api_version:
-                    # update extract object api version to reflect 
-                    return kwargs_dict["api_version"]
+                # no longer supporting beta extract schema
+                raise NotImplementedError(
+                    f"The IPUMS API version specified in the extract definition is not supported by this version of ipumspy."
+                )
         # if no api_version is specified, use default IpumsApiClient version
         else:
             return self.api_version
-
 
 
 class OtherExtract(BaseExtract, collection="other"):
@@ -161,7 +170,6 @@ class UsaExtract(BaseExtract, collection="usa"):
 
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
-        
 
     @classmethod
     def from_api_response(cls, api_response: Dict[str, Any]) -> UsaExtract:
@@ -176,25 +184,15 @@ class UsaExtract(BaseExtract, collection="usa"):
         """
         Convert the object into a dictionary to be passed to the IPUMS API
         as a JSON string
-        """     
-        if self.api_version == "beta" or self.api_version == "1":
-            return {
-                "description": self.description,
-                "data_format": self.data_format,
-                "data_structure": {"rectangular": {"on": "P"}},
-                "samples": {sample: {} for sample in self.samples},
-                "variables": {variable.upper(): {} for variable in self.variables},
-                "collection": self.collection,
-            }
-        else:
-            return {
-                "description": self.description,
-                "dataFormat": self.data_format,
-                "dataStructure": {"rectangular": {"on": "P"}},
-                "samples": {sample: {} for sample in self.samples},
-                "variables": {variable.upper(): {} for variable in self.variables},
-                "collection": self.collection,
-            }
+        """
+        return {
+            "description": self.description,
+            "dataFormat": self.data_format,
+            "dataStructure": {"rectangular": {"on": "P"}},
+            "samples": {sample: {} for sample in self.samples},
+            "variables": {variable.upper(): {} for variable in self.variables},
+            "collection": self.collection,
+        }
 
 
 class CpsExtract(BaseExtract, collection="cps"):
@@ -225,7 +223,7 @@ class CpsExtract(BaseExtract, collection="cps"):
         """Name of an IPUMS data collection"""
         self.api_version = self.extract_api_version(kwargs)
         """IPUMS API version number"""
-        
+
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
 
@@ -243,24 +241,14 @@ class CpsExtract(BaseExtract, collection="cps"):
         Convert the object into a dictionary to be passed to the IPUMS API
         as a JSON string
         """
-        if self.api_version == "beta" or self.api_version == "1":
-            return {
-                "description": self.description,
-                "data_format": self.data_format,
-                "data_structure": {"rectangular": {"on": "P"}},
-                "samples": {sample: {} for sample in self.samples},
-                "variables": {variable.upper(): {} for variable in self.variables},
-                "collection": self.collection,
-            }
-        else:
-            return {
-                "description": self.description,
-                "dataFormat": self.data_format,
-                "dataStructure": {"rectangular": {"on": "P"}},
-                "samples": {sample: {} for sample in self.samples},
-                "variables": {variable.upper(): {} for variable in self.variables},
-                "collection": self.collection,
-            }
+        return {
+            "description": self.description,
+            "dataFormat": self.data_format,
+            "dataStructure": {"rectangular": {"on": "P"}},
+            "samples": {sample: {} for sample in self.samples},
+            "variables": {variable.upper(): {} for variable in self.variables},
+            "collection": self.collection,
+        }
 
 
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
