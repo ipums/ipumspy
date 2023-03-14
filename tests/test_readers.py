@@ -379,13 +379,13 @@ def test_read_extract_description(fixtures_path: Path):
     if a badly formatted extract is provided, we raise a ValueError
     """
     yaml_extract = readers.read_extract_description(
-        fixtures_path / "example_extract.yml"
+        fixtures_path / "example_extract_v2.yml"
     )
     json_extract = readers.read_extract_description(
-        fixtures_path / "example_extract.json"
+        fixtures_path / "example_extract_v2.json"
     )
     from_api_extract = readers.read_extract_description(
-        fixtures_path / "example_extract_from_api.json"
+        fixtures_path / "example_extract_from_api_v2.json"
     )
 
     # Make sure they are the same
@@ -397,11 +397,11 @@ def test_read_extract_description(fixtures_path: Path):
             {
                 "description": "Simple IPUMS extract",
                 "collection": "usa",
-                "api_version": "beta",
+                "version": "2",
                 "samples": ["us2012b"],
                 "variables": ["AGE", "SEX", "RACE"],
-                "data_structure": "rectangular",
-                "data_format": "fixed_width",
+                "dataStructure": "rectangular",
+                "dataFormat": "fixed_width",
             }
         ],
     }
