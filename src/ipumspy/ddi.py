@@ -207,8 +207,12 @@ class FileDescription:
         # these should be the same across record types for all collections
         # so we should be fine to just grab the first appearance of recidvar and keyvar
         try:
-            rectype_idvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib["recidvar"]
-            rectype_keyvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib["keyvar"]
+            rectype_idvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib[
+                "recidvar"
+            ]
+            rectype_keyvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib[
+                "keyvar"
+            ]
         except AttributeError:
             rectype_idvar = ""
             rectype_keyvar = ""
@@ -216,9 +220,9 @@ class FileDescription:
             filename=elt.find("./ddi:fileName", namespaces).text,
             description=elt.find("./ddi:fileCont", namespaces).text,
             structure=elt.find("./ddi:fileStrc", namespaces).attrib["type"],
-            rectypes = rts,
-            rectype_idvar = rectype_idvar,
-            rectype_keyvar = rectype_keyvar,
+            rectypes=rts,
+            rectype_idvar=rectype_idvar,
+            rectype_keyvar=rectype_keyvar,
             encoding=elt.find("./ddi:fileType", namespaces)
             .attrib.get("charset", "iso-8859-1")
             .lower(),

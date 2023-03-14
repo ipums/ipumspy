@@ -63,7 +63,7 @@ def _read_microdata(
     iterator: bool = False,
     chunksize: Optional[int] = None,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ):
     # if ddi.file_description.structure != "rectangular":
     #     raise NotImplementedError("Structure must be rectangular")
@@ -176,7 +176,7 @@ def _read_hierarchical_microdata(
     iterator: bool = False,
     chunksize: Optional[int] = 100000,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ):
     # TODO: try and speed this up
     if subset is not None:
@@ -190,11 +190,15 @@ def _read_hierarchical_microdata(
     # these variables have all rectypes listed in the variable-level rectype attribute
     # these are delimited by spaces within the string attribute
     # this list would probably be a useful thing to have as a file-level attribute...
-    common_vars = [desc.name for desc in data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
+    common_vars = [
+        desc.name
+        for desc in data_description
+        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+    ]
     # seperate variables by rectype
     rectypes = {}
     # NB: This might result in empty data frames for some rectypes
-    # as the ddi contains all possible collection rectypes, even if only a few 
+    # as the ddi contains all possible collection rectypes, even if only a few
     # are actually represented in the file.
     # TODO: prune empty rectype data frames
     for rectype in ddi.file_description.rectypes:
@@ -205,15 +209,17 @@ def _read_hierarchical_microdata(
                 rectype_vars.append(desc.name)
         # read microdata for the relevant rectype variables only
         # and do it in chunks so it goes quicker
-        rectypes[rectype] = next(read_microdata_chunked(
-                                                ddi,
-                                                filename,
-                                                encoding,
-                                                # rectype vars are the subset
-                                                rectype_vars,
-                                                chunksize,
-                                                dtype,
-                                                **kwargs)
+        rectypes[rectype] = next(
+            read_microdata_chunked(
+                ddi,
+                filename,
+                encoding,
+                # rectype vars are the subset
+                rectype_vars,
+                chunksize,
+                dtype,
+                **kwargs,
+            )
         )
         # retain only records from the relevant record type
         rt_df = rectypes[rectype]
@@ -227,7 +233,7 @@ def read_microdata(
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
     Read in microdata as specified by the Codebook. Both .dat and .csv file types
@@ -251,10 +257,12 @@ def read_microdata(
 
     Returns:
         pandas data frame and pandas text file reader
-    """ 
+    """
     # raise a warning if this is a hierarchical file
-    if ddi.file_description.structure == "hierarchical": 
-        raise NotImplementedError("Structure must be rectangular. Use `read_hierarchical_microdata()` for hierarchical extracts.")
+    if ddi.file_description.structure == "hierarchical":
+        raise NotImplementedError(
+            "Structure must be rectangular. Use `read_hierarchical_microdata()` for hierarchical extracts."
+        )
     # just read it if its rectangular
     else:
         return next(
@@ -264,9 +272,9 @@ def read_microdata(
                 encoding=encoding,
                 subset=subset,
                 dtype=dtype,
-                **kwargs
+                **kwargs,
             )
-    )
+        )
 
 
 def read_hierarchical_microdata(
@@ -276,7 +284,7 @@ def read_hierarchical_microdata(
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
     as_dict: Optional[bool] = False,
-    **kwargs
+    **kwargs,
 ) -> Union[pd.DataFrame, Dict]:
     """
     Read in microdata as specified by the Codebook. Both .dat and .csv file types
@@ -302,42 +310,42 @@ def read_hierarchical_microdata(
 
     Returns:
         pandas data frame or a dictionary of pandas data frames
-    """ 
+    """
     # hack for now just to have it in this method - make this a ddi.file_description attribute.
-    common_vars = [desc.name for desc in ddi.data_description if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)]
+    common_vars = [
+        desc.name
+        for desc in ddi.data_description
+        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+    ]
     # RECTYPE must be included if subset list is specified
     if subset is not None and "RECTYPE" not in subset:
-        raise ValueError("RECTYPE must be included in the subset list for hierarchical extracts.")
+        raise ValueError(
+            "RECTYPE must be included in the subset list for hierarchical extracts."
+        )
     # raise a warning if this is a rectantgular file
-    if ddi.file_description.structure == "rectangular": 
-        raise NotImplementedError("Structure must be hierarchical. Use `read_microdata()` for rectangular extracts.")
+    if ddi.file_description.structure == "rectangular":
+        raise NotImplementedError(
+            "Structure must be hierarchical. Use `read_microdata()` for rectangular extracts."
+        )
     else:
         df_dict = _read_hierarchical_microdata(
-                                            ddi,
-                                            filename,
-                                            encoding,
-                                            subset,
-                                            dtype,
-                                            **kwargs
-                                        )
+            ddi, filename, encoding, subset, dtype, **kwargs
+        )
         if as_dict:
             return df_dict
         else:
-            # read the hierarchical file 
-            df = next(_read_microdata(
-                                    ddi,
-                                    filename,
-                                    encoding,
-                                    subset,
-                                    dtype,
-                                    **kwargs
-                                        )
-            )
+            # read the hierarchical file
+            df = next(_read_microdata(ddi, filename, encoding, subset, dtype, **kwargs))
             # for each rectype, nullify variables that belong to other rectypes
             for rectype in df_dict.keys():
                 # create a list of variables that are for rectypes other than the current rectype
                 # and are not included in the list of varaibles that are common across rectypes
-                non_rt_cols = [cols for rt in df_dict.keys() for cols in df_dict[rt].columns if rt != rectype and cols not in common_vars]
+                non_rt_cols = [
+                    cols
+                    for rt in df_dict.keys()
+                    for cols in df_dict[rt].columns
+                    if rt != rectype and cols not in common_vars
+                ]
                 for col in non_rt_cols:
                     # maintain data type when "nullifying" variables from other record types
                     if df[col].dtype == pd.Int64Dtype():
@@ -352,7 +360,9 @@ def read_hierarchical_microdata(
                     # this should (theoretically) never be hit... unless someone specifies an illegal data type
                     # themselves, but that should also be caught before this stage.
                     else:
-                        raise TypeError(f"Data type {df[col].dtype} for {col} is not an allowed type.")
+                        raise TypeError(
+                            f"Data type {df[col].dtype} for {col} is not an allowed type."
+                        )
             return df
 
 
@@ -363,7 +373,7 @@ def read_microdata_chunked(
     subset: Optional[List[str]] = None,
     chunksize: Optional[int] = None,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ) -> Iterator[pd.DataFrame]:
     """
     Read in microdata in chunks as specified by the Codebook.
@@ -399,7 +409,7 @@ def read_microdata_chunked(
         iterator=True,
         dtype=dtype,
         chunksize=chunksize,
-        **kwargs
+        **kwargs,
     )
 
 

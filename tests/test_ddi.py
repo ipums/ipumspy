@@ -31,6 +31,7 @@ def cps_df2(fixtures_path: Path, cps_ddi2: ddi.Codebook) -> pd.DataFrame:
 def cps_ddi_hierarchical(fixtures_path: Path) -> ddi.Codebook:
     return readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
 
+
 # not implemented yet
 # @pytest.fixture(scope="function")
 # def cps_df_hierarchical(fixtures_path: Path, cps_ddi_hierarchical: ddi.Codebook) -> pd.DataFrame:
@@ -198,8 +199,10 @@ def test_ddi_codebook_rectangular(cps_ddi: ddi.Codebook):
 
 def test_ddi_codebook_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
     # sample descriptions/names
-    assert cps_ddi_hierarchical.samples_description == ["IPUMS-CPS, January 2022",
-                                                        "IPUMS-CPS, January 2023"]
+    assert cps_ddi_hierarchical.samples_description == [
+        "IPUMS-CPS, January 2022",
+        "IPUMS-CPS, January 2023",
+    ]
 
     # doi
     assert cps_ddi_hierarchical.ipums_doi == "DOI:10.18128/D030.V10.0"

@@ -26,9 +26,22 @@ def _assert_cps_000006(data: pd.DataFrame):
         data["HWTSUPP"].iloc[:5]
         == np.array([1475.59, 1475.59, 1475.59, 1597.61, 1706.65])
     ).all()
-    assert (data.dtypes.values == np.array([pd.Int64Dtype(), pd.Int64Dtype(), float, pd.Int64Dtype(),
-                                            pd.Int64Dtype(), pd.Int64Dtype(), float, pd.Int64Dtype()])).all()
-    
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+
 
 def _assert_cps_00421_df(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for hierarchical files"""
@@ -36,28 +49,32 @@ def _assert_cps_00421_df(data: pd.DataFrame):
     assert len(data.columns) == 14
     assert (data["YEAR"].iloc[:5] == 2022).all()
     # again, gotta be a better way to do this
+    assert (data["HWTSUPP"].iloc[:2] == np.array([0.0000, 1662.5757])).all()
+    assert data["HWTSUPP"].iloc[2:5].isna().all()
+    assert (data["RECTYPE"].iloc[:5] == np.array(["H", "H", "P", "P", "P"])).all()
+    assert (data["PERNUM"].iloc[2:5] == np.array([1, 2, 3])).all()
+    assert (data["PERNUM"].iloc[:2].isna().all()).all()
     assert (
-        data["HWTSUPP"].iloc[:2]
-        == np.array([0.0000, 1662.5757])
+        data.dtypes.values
+        == np.array(
+            [
+                str,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
     ).all()
-    assert (
-        data["HWTSUPP"].iloc[2:5].isna().all()
-    )
-    assert(
-        data["RECTYPE"].iloc[:5]
-        == np.array(["H", "H", "P", "P", "P"])
-    ).all()
-    assert(
-        data["PERNUM"].iloc[2:5]
-        == np.array([1, 2, 3])
-    ).all()
-    assert(
-        data["PERNUM"].iloc[:2].isna().all()
-    ).all()
-    assert (data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
-                                            float, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
-                                            pd.Int64Dtype(), float, pd.Int64Dtype(), pd.Int64Dtype(),
-                                            pd.Int64Dtype(), pd.Int64Dtype()])).all()
 
 
 def _assert_cps_00421_dict(data: Dict):
@@ -75,16 +92,24 @@ def _assert_cps_00421_dict(data: Dict):
         p_data["WTFINL"].iloc[:5]
         == np.array([1662.5757, 1978.19857, 1801.0842, 1243.6042, 2037.9611])
     ).all()
-    assert(
-        p_data["RECTYPE"].iloc[:5]
-        == np.array(["P", "P", "P", "P", "P"])
+    assert (p_data["RECTYPE"].iloc[:5] == np.array(["P", "P", "P", "P", "P"])).all()
+    assert p_data["PERNUM"].iloc[:5] == np.array([1, 2, 3, 4, 1]).all()
+    assert (
+        p_data.dtypes.values
+        == np.array(
+            [
+                str,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
     ).all()
-    assert(
-        p_data["PERNUM"].iloc[:5]
-        == np.array([1, 2, 3, 4, 1]).all()
-    )
-    assert (p_data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(), float,
-                                              pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype()])).all()
 
     assert len(h_data) == 137285
     assert len(h_data.columns) == 8
@@ -93,26 +118,30 @@ def _assert_cps_00421_dict(data: Dict):
         p_data["HWTFINL"].iloc[:5]
         == np.array([0.0000, 1662.5757, 2037.9611, 2094.5077, 1970.8250])
     ).all()
-    assert(
-        p_data["RECTYPE"].iloc[:5]
-        == np.array(["H", "H", "H", "H", "H"])
+    assert (p_data["RECTYPE"].iloc[:5] == np.array(["H", "H", "H", "H", "H"])).all()
+    assert (p_data["MISH"].iloc[:5] == np.array([7, 5, 1, 2, 1])).all()
+    assert (
+        p_data.dtypes.values
+        == np.array(
+            [
+                str,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
     ).all()
-    assert(
-        p_data["MISH"].iloc[:5]
-        == np.array([7, 5, 1, 2, 1])
-    ).all()
-    assert (p_data.dtypes.values == np.array([str, pd.Int64Dtype(), pd.Int64Dtype(), pd.Int64Dtype(),
-                                              pd.Int64Dtype(), float, pd.Int64Dtype(), pd.Int64Dtype(), 
-                                              pd.Int64Dtype()])).all()
 
 
 def _assert_cps_rectantular_subset(data: pd.DataFrame):
     """Tests subset functionality on rectangular extracts"""
     assert len(data.columns) == 2
-    assert(
-        data["STATEFIP"].iloc[:5]
-        == np.array([55, 55, 55, 27, 27])
-    ).all()
+    assert (data["STATEFIP"].iloc[:5] == np.array([55, 55, 55, 27, 27])).all()
 
 
 def _assert_cps_hierarchical_subset(data: pd.DataFrame):
@@ -120,20 +149,10 @@ def _assert_cps_hierarchical_subset(data: pd.DataFrame):
     assert len(data.columns) == 3
     # there has to be a better way to do this...
     # splitting out nan and non-nan values
-    assert(
-        data["MISH"].iloc[:2]
-        == np.array([7, 5])
-     ).all() 
-    assert(
-        data["MISH"].iloc[2:5].isna().all()
-    )
-    assert(
-        data["AGE"].iloc[2:5]
-        == np.array([36, 41, 5])
-    ).all()
-    assert(
-        data["AGE"].iloc[:2].isna().all()
-    )
+    assert (data["MISH"].iloc[:2] == np.array([7, 5])).all()
+    assert data["MISH"].iloc[2:5].isna().all()
+    assert (data["AGE"].iloc[2:5] == np.array([36, 41, 5])).all()
+    assert data["AGE"].iloc[:2].isna().all()
 
 
 def _assert_cps_hierarchical_subset_dict(data: Dict):
@@ -142,19 +161,13 @@ def _assert_cps_hierarchical_subset_dict(data: Dict):
     h_data = data["H"]
     assert len(p_data.columns) == 2
     assert len(h_data.columns) == 2
-    assert(
-        h_data["MISH"].iloc[:5]
-        == np.array([7, 5, 1, 2, 1])
-    ).all()
-    assert(
-        p_data["AGE"].iloc[:5]
-        == np.array([36, 41, 5, 7, 50])
-    ).all()
+    assert (h_data["MISH"].iloc[:5] == np.array([7, 5, 1, 2, 1])).all()
+    assert (p_data["AGE"].iloc[:5] == np.array([36, 41, 5, 7, 50])).all()
 
 
 def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
     """
-    Confirm that we can read hierarchical microdata ino a single data frame 
+    Confirm that we can read hierarchical microdata ino a single data frame
     in .dat format when it is gzipped
     """
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
@@ -165,11 +178,13 @@ def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
 
 def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
     """
-    Confirm that we can read hierarchical microdata ino a dictionary of data frames 
+    Confirm that we can read hierarchical microdata ino a dictionary of data frames
     in .dat format when it is gzipped
     """
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
-    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "cps_00421.dat.gz", as_dict=True)
+    data = readers.read_hierarchical_microdata(
+        ddi, fixtures_path / "cps_00421.dat.gz", as_dict=True
+    )
 
     _assert_cps_00421_dict
 
@@ -415,36 +430,37 @@ def test_subset_option(fixtures_path: Path):
     """Does subset option function for all data structures"""
     # first for rectangular
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00006.xml")
-    data = readers.read_microdata(ddi, 
-                                  fixtures_path / "cps_00006.dat.gz",
-                                  subset=["STATEFIP", "INCTOT"])
+    data = readers.read_microdata(
+        ddi, fixtures_path / "cps_00006.dat.gz", subset=["STATEFIP", "INCTOT"]
+    )
 
     _assert_cps_rectantular_subset(data)
 
     # then for hierarchical single data frame
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
-    data = readers.read_hierarchical_microdata(ddi, 
-                                                fixtures_path / "cps_00421.dat.gz",
-                                                subset=["RECTYPE", "MISH", "AGE"])
+    data = readers.read_hierarchical_microdata(
+        ddi, fixtures_path / "cps_00421.dat.gz", subset=["RECTYPE", "MISH", "AGE"]
+    )
 
     _assert_cps_hierarchical_subset(data)
 
     # then for hierarchical dictionary
-    data = readers.read_hierarchical_microdata(ddi, 
-                                                fixtures_path / "cps_00421.dat.gz", 
-                                                subset=["RECTYPE", "MISH", "AGE"],
-                                                as_dict=True)
-    
+    data = readers.read_hierarchical_microdata(
+        ddi,
+        fixtures_path / "cps_00421.dat.gz",
+        subset=["RECTYPE", "MISH", "AGE"],
+        as_dict=True,
+    )
+
     _assert_cps_hierarchical_subset_dict(data)
 
     # ValueError should be raised when rectype not included in hierarchical subset
     with pytest.raises(ValueError):
-        data = readers.read_hierarchical_microdata(ddi, 
-                                                    fixtures_path / "cps_00421.dat.gz",
-                                                    subset=["MISH", "AGE"])
-    
-    with pytest.raises(ValueError):
-        data = readers.read_hierarchical_microdata(ddi, 
-                                                fixtures_path / "cps_00421.dat.gz",
-                                                subset=["MISH", "AGE"])
+        data = readers.read_hierarchical_microdata(
+            ddi, fixtures_path / "cps_00421.dat.gz", subset=["MISH", "AGE"]
+        )
 
+    with pytest.raises(ValueError):
+        data = readers.read_hierarchical_microdata(
+            ddi, fixtures_path / "cps_00421.dat.gz", subset=["MISH", "AGE"]
+        )
