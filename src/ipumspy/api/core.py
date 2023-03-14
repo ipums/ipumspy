@@ -182,7 +182,10 @@ class IpumsApiClient:
                 extract = extract_type(**extract)
             else:
                 extract = OtherExtract(collection, extract)
-
+        # if no api version was provided on instantiation of extract object
+        # or in extract definition dict, assign it to the default
+        if extract.api_version is None:
+            extract.api_version = self.api_version
         response = self.post(
             self.base_url,
             params={"collection": extract.collection, "version": extract.api_version},
@@ -194,7 +197,6 @@ class IpumsApiClient:
 
         extract_info = response.json()
         extract._info = extract_info
-        extract.api_version = self.api_version
         return extract
 
     def extract_status(

@@ -165,9 +165,8 @@ class UsaExtract(BaseExtract, collection="usa"):
         self.data_format = data_format
         self.collection = self.collection
         """Name of an IPUMS data collection"""
-        self.api_version = self.extract_api_version(kwargs)
+        self.api_version = self.extract_api_version(kwargs) if len(kwargs.keys()) > 0 else self.api_version
         """IPUMS API version number"""
-
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
 
