@@ -3,7 +3,7 @@
     {
       "description": "Simple IPUMS extract",
       "collection": "usa",
-      "version": "2",
+      "version": 2,
       "samples": [
         "us2012b"
       ],

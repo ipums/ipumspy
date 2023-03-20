@@ -272,7 +272,7 @@ def test_extract_from_dict(fixtures_path: Path):
 
 def test_extract_to_dict(fixtures_path: Path):
     # reconstitute the extract object from pickle
-    with open(fixtures_path / "usa_00172_extract_obj.pkl", "rb") as infile:
+    with open(fixtures_path / "usa_00196_extract_obj.pkl", "rb") as infile:
         extract = pickle.load(infile)
 
     # export extract to dict
@@ -313,10 +313,10 @@ def test_download_extract(live_api_client: IpumsApiClient, tmpdir: Path):
     Confirm that extract data and attendant files can be downloaded
     """
     live_api_client.download_extract(
-        collection="usa", extract="172", download_dir=tmpdir
+        collection="usa", extract="196", download_dir=tmpdir
     )
-    assert (tmpdir / "usa_00172.dat.gz").exists()
-    assert (tmpdir / "usa_00172.xml").exists()
+    assert (tmpdir / "usa_00196.dat.gz").exists()
+    assert (tmpdir / "usa_00196.xml").exists()
 
 
 @pytest.mark.vcr
@@ -325,9 +325,9 @@ def test_download_extract_stata(live_api_client: IpumsApiClient, tmpdir: Path):
     Confirm that extract data and attendant files (Stata) can be downloaded
     """
     live_api_client.download_extract(
-        collection="usa", extract="172", stata_command_file=True, download_dir=tmpdir
+        collection="usa", extract="196", stata_command_file=True, download_dir=tmpdir
     )
-    assert (tmpdir / "usa_00172.do").exists()
+    assert (tmpdir / "usa_00196.do").exists()
 
 
 @pytest.mark.vcr
@@ -336,9 +336,9 @@ def test_download_extract_spss(live_api_client: IpumsApiClient, tmpdir: Path):
     Confirm that extract data and attendant files (SPSS) can be downloaded
     """
     live_api_client.download_extract(
-        collection="usa", extract="172", spss_command_file=True, download_dir=tmpdir
+        collection="usa", extract="196", spss_command_file=True, download_dir=tmpdir
     )
-    assert (tmpdir / "usa_00172.sps").exists()
+    assert (tmpdir / "usa_00196.sps").exists()
 
 
 @pytest.mark.vcr
@@ -347,9 +347,9 @@ def test_download_extract_sas(live_api_client: IpumsApiClient, tmpdir: Path):
     Confirm that extract data and attendant files (SAS) can be downloaded
     """
     live_api_client.download_extract(
-        collection="usa", extract="172", sas_command_file=True, download_dir=tmpdir
+        collection="usa", extract="196", sas_command_file=True, download_dir=tmpdir
     )
-    assert (tmpdir / "usa_00172.sas").exists()
+    assert (tmpdir / "usa_00196.sas").exists()
 
 
 @pytest.mark.vcr
@@ -358,13 +358,13 @@ def test_download_extract_r(live_api_client: IpumsApiClient, tmpdir: Path):
     Confirm that extract data and attendant files (R) can be downloaded
     """
     live_api_client.download_extract(
-        collection="usa", extract="172", r_command_file=True, download_dir=tmpdir
+        collection="usa", extract="196", r_command_file=True, download_dir=tmpdir
     )
-    assert (tmpdir / "usa_00172.R").exists()
+    assert (tmpdir / "usa_00196.R").exists()
 
 
 def test_define_extract_from_ddi(fixtures_path: Path):
-    ddi_codebook = readers.read_ipums_ddi(fixtures_path / "usa_00172.xml")
+    ddi_codebook = readers.read_ipums_ddi(fixtures_path / "usa_00196.xml")
     extract = define_extract_from_ddi(ddi_codebook)
 
     assert extract.collection == "usa"
@@ -474,7 +474,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 data_quality_flags=False,
             ),
         ]
-        assert item.api_version == "2"
+        assert item.api_version == 2
 
     # if an unsupported api version is specified, make sure
     # NotImplementedError is raised
@@ -491,7 +491,7 @@ def test_save_extract_as_json(fixtures_path: Path):
         os.remove(str(Path(fixtures_path / "test_saved_extract.json")))
 
     # reconstitute the extract object from pickle
-    with open(fixtures_path / "usa_00172_extract_obj.pkl", "rb") as infile:
+    with open(fixtures_path / "usa_00196_extract_obj.pkl", "rb") as infile:
         extract = pickle.load(infile)
 
     # save it as an extract

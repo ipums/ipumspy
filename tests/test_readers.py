@@ -397,7 +397,7 @@ def test_read_extract_description(fixtures_path: Path):
             {
                 "description": "Simple IPUMS extract",
                 "collection": "usa",
-                "version": "2",
+                "version": 2,
                 "samples": ["us2012b"],
                 "variables": ["AGE", "SEX", "RACE"],
                 "dataStructure": "rectangular",
