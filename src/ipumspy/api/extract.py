@@ -226,6 +226,8 @@ class UsaExtract(BaseExtract, collection="usa"):
             variables=list(api_response["extractDefinition"]["variables"]),
             data_format=api_response["extractDefinition"]["dataFormat"],
             description=api_response["extractDefinition"]["description"],
+            api_version=api_response["extractDefinition"]["version"],
+            collection=api_response["extractDefinition"]["collection"],
         )
 
     def build(self) -> Dict[str, Any]:
@@ -240,6 +242,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             "samples": {sample.id: {} for sample in self.samples},
             "variables": {variable.name.upper(): {} for variable in self.variables},
             "collection": self.collection,
+            "version": self.api_version,
         }
 
 
@@ -292,6 +295,8 @@ class CpsExtract(BaseExtract, collection="cps"):
             variables=list(api_response["extractDefinition"]["variables"]),
             data_format=api_response["extractDefinition"]["dataFormat"],
             description=api_response["extractDefinition"]["description"],
+            api_version=api_response["extractDefinition"]["version"],
+            collection=api_response["extractDefinition"]["collection"],
         )
 
     def build(self) -> Dict[str, Any]:
@@ -306,6 +311,7 @@ class CpsExtract(BaseExtract, collection="cps"):
             "samples": {sample.id: {} for sample in self.samples},
             "variables": {variable.name.upper(): {} for variable in self.variables},
             "collection": self.collection,
+            "version": self.api_version,
         }
 
 
@@ -353,8 +359,6 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         return dct
     try:
         ext = extract.extract_info
-        ext["collection"] = extract.collection
-        ext["api_version"] = extract.api_version
         # pop keys created after submission
         [ext.pop(key) for key in ["downloadLinks", "number", "status"]]
         return ext

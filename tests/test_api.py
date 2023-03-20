@@ -81,6 +81,7 @@ def test_usa_build_extract():
         "description": "My IPUMS USA extract",
         "dataFormat": "fixed_width",
         "collection": "usa",
+        "version": None,
     }
 
 
@@ -100,6 +101,7 @@ def test_cps_build_extract():
         "description": "My IPUMS CPS extract",
         "dataFormat": "fixed_width",
         "collection": "cps",
+        "version": None,
     }
 
 
@@ -440,6 +442,7 @@ def test_define_extract_from_ddi(fixtures_path: Path):
         ),
     ]
     assert extract.data_format == "fixed_width"
+    assert extract.api_version == None
 
 
 def test_define_extract_from_json(fixtures_path: Path):
@@ -471,6 +474,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 data_quality_flags=False,
             ),
         ]
+        assert item.api_version == "2"
 
     # if an unsupported api version is specified, make sure
     # NotImplementedError is raised
