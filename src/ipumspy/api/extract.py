@@ -43,7 +43,7 @@ class Variable:
             setattr(self, attribute, value)
         else:
             raise KeyError(f"Variable has no attribute '{attribute}'.")
-        
+
     def build(self):
         built_var = self.__dict__.copy()
         # don't repeat the variable name
@@ -165,7 +165,7 @@ class BaseExtract:
         # if no api_version is specified, use default IpumsApiClient version
         else:
             return self.api_version
-        
+
     def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
         if isinstance(variable, Variable):
             variable.update("attached_characteristics", of)
@@ -177,7 +177,9 @@ class BaseExtract:
             else:
                 raise ValueError(f"{variable} is not part of this extract.")
         else:
-            raise TypeError(f"Expected a string or Variable object; {type(variable)} received.")
+            raise TypeError(
+                f"Expected a string or Variable object; {type(variable)} received."
+            )
 
 
 class OtherExtract(BaseExtract, collection="other"):
@@ -263,7 +265,9 @@ class UsaExtract(BaseExtract, collection="usa"):
             "dataFormat": self.data_format,
             "dataStructure": {"rectangular": {"on": "P"}},
             "samples": {sample.id: {} for sample in self.samples},
-            "variables": {variable.name.upper(): variable.build() for variable in self.variables},
+            "variables": {
+                variable.name.upper(): variable.build() for variable in self.variables
+            },
             "collection": self.collection,
             "version": self.api_version,
         }
@@ -332,7 +336,9 @@ class CpsExtract(BaseExtract, collection="cps"):
             "dataFormat": self.data_format,
             "dataStructure": {"rectangular": {"on": "P"}},
             "samples": {sample.id: {} for sample in self.samples},
-            "variables": {variable.name.upper(): {} for variable in self.variables},
+            "variables": {
+                variable.name.upper(): variable.build() for variable in self.variables
+            },
             "collection": self.collection,
             "version": self.api_version,
         }

@@ -77,7 +77,20 @@ def test_usa_build_extract():
     assert extract.build() == {
         "dataStructure": {"rectangular": {"on": "P"}},
         "samples": {"us2012b": {}},
-        "variables": {"AGE": {}, "SEX": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
         "description": "My IPUMS USA extract",
         "dataFormat": "fixed_width",
         "collection": "usa",
@@ -97,7 +110,20 @@ def test_cps_build_extract():
     assert extract.build() == {
         "dataStructure": {"rectangular": {"on": "P"}},
         "samples": {"cps2012_03b": {}},
-        "variables": {"AGE": {}, "SEX": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
         "description": "My IPUMS CPS extract",
         "dataFormat": "fixed_width",
         "collection": "cps",
