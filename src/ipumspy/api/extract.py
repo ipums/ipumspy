@@ -4,6 +4,7 @@ Wrappers for payloads to ship to the IPUMS API
 from __future__ import annotations
 
 import warnings
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Type, Union
 
 import requests
@@ -21,6 +22,44 @@ class DefaultCollectionWarning(Warning):
 
 class ApiVersionWarning(Warning):
     pass
+
+
+@dataclass
+class Variable:
+    name: str
+    preselected: Optional[bool] = False
+    case_selections: Optional[Dict[str, List]] = field(default_factory=dict)
+    attached_characteristics: Optional[List[str]] = field(default_factory=list)
+    data_quality_flags: Optional[bool] = False
+
+    @classmethod
+    def from_name(cls, name: str) -> Variable:
+        return cls(
+            name=name,
+        )
+
+    def update(self, attribute: str, value: Any):
+        if hasattr(self, attribute):
+            setattr(self, attribute, value)
+        else:
+            raise KeyError(f"Variable has no attribute '{attribute}'.")
+
+
+@dataclass
+class Sample:
+    id: str
+
+    @classmethod
+    def from_id(cls, id: str) -> Sample:
+        return cls(
+            id=id,
+        )
+
+    def update(self, attribute: str, value: Any):
+        if hasattr(self, attribute):
+            setattr(self, attribute, value)
+        else:
+            raise KeyError(f"Variable has no attribute '{attribute}'.")
 
 
 class BaseExtract:
@@ -142,8 +181,8 @@ class OtherExtract(BaseExtract, collection="other"):
 class UsaExtract(BaseExtract, collection="usa"):
     def __init__(
         self,
-        samples: List[str],
-        variables: List[str],
+        samples: Union[List[str], List[Sample]],
+        variables: Union[List[str], List[Variable]],
         description: str = "My IPUMS USA extract",
         data_format: str = "fixed_width",
         **kwargs,
@@ -159,13 +198,23 @@ class UsaExtract(BaseExtract, collection="usa"):
         """
 
         super().__init__()
-        self.samples = samples
-        self.variables = variables
+        if all(isinstance(sample, str) for sample in samples):
+            self.samples = [Sample(sample) for sample in samples]
+        else:
+            self.samples = samples
+        if all(isinstance(variable, str) for variable in variables):
+            self.variables = [Variable(variable) for variable in variables]
+        else:
+            self.variables = variables
         self.description = description
         self.data_format = data_format
         self.collection = self.collection
         """Name of an IPUMS data collection"""
-        self.api_version = self.extract_api_version(kwargs) if len(kwargs.keys()) > 0 else self.api_version
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
         """IPUMS API version number"""
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
@@ -188,8 +237,8 @@ class UsaExtract(BaseExtract, collection="usa"):
             "description": self.description,
             "dataFormat": self.data_format,
             "dataStructure": {"rectangular": {"on": "P"}},
-            "samples": {sample: {} for sample in self.samples},
-            "variables": {variable.upper(): {} for variable in self.variables},
+            "samples": {sample.id: {} for sample in self.samples},
+            "variables": {variable.name.upper(): {} for variable in self.variables},
             "collection": self.collection,
         }
 
@@ -197,8 +246,8 @@ class UsaExtract(BaseExtract, collection="usa"):
 class CpsExtract(BaseExtract, collection="cps"):
     def __init__(
         self,
-        samples: List[str],
-        variables: List[str],
+        samples: Union[List[str], List[Sample]],
+        variables: Union[List[str], List[Variable]],
         description: str = "My IPUMS CPS extract",
         data_format: str = "fixed_width",
         **kwargs,
@@ -214,13 +263,23 @@ class CpsExtract(BaseExtract, collection="cps"):
         """
 
         super().__init__()
-        self.samples = samples
-        self.variables = variables
+        if all(isinstance(sample, str) for sample in samples):
+            self.samples = [Sample(sample) for sample in samples]
+        else:
+            self.samples = samples
+        if all(isinstance(variable, str) for variable in variables):
+            self.variables = [Variable(variable) for variable in variables]
+        else:
+            self.variables = variables
         self.description = description
         self.data_format = data_format
         self.collection = self.collection
         """Name of an IPUMS data collection"""
-        self.api_version = self.extract_api_version(kwargs) if len(kwargs.keys()) > 0 else self.api_version
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
         """IPUMS API version number"""
 
         # check kwargs for conflicts with defaults
@@ -244,8 +303,8 @@ class CpsExtract(BaseExtract, collection="cps"):
             "description": self.description,
             "dataFormat": self.data_format,
             "dataStructure": {"rectangular": {"on": "P"}},
-            "samples": {sample: {} for sample in self.samples},
-            "variables": {variable.upper(): {} for variable in self.variables},
+            "samples": {sample.id: {} for sample in self.samples},
+            "variables": {variable.name.upper(): {} for variable in self.variables},
             "collection": self.collection,
         }
 

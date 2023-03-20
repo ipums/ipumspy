@@ -22,6 +22,8 @@ from ipumspy.api import (
     define_extract_from_ddi,
     define_extract_from_json,
     save_extract_as_json,
+    Variable,
+    Sample,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
@@ -228,8 +230,30 @@ def test_extract_from_dict(fixtures_path: Path):
 
     for item in extract:
         assert item.collection == "usa"
-        assert item.samples == ["us2012b"]
-        assert item.variables == ["AGE", "SEX", "RACE"]
+        assert item.samples == [Sample(id="us2012b")]
+        assert item.variables == [
+            Variable(
+                name="AGE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="SEX",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="RACE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+        ]
         # data structure not currently an extract attribute...
         # assert item.data_structure == "rectangular"
         assert item.data_format == "fixed_width"
@@ -342,18 +366,78 @@ def test_define_extract_from_ddi(fixtures_path: Path):
     extract = define_extract_from_ddi(ddi_codebook)
 
     assert extract.collection == "usa"
-    assert extract.samples == ["us2012b"]
+    assert extract.samples == [Sample(id="us2012b")]
     assert extract.variables == [
-        "YEAR",
-        "SAMPLE",
-        "SERIAL",
-        "CBSERIAL",
-        "HHWT",
-        "GQ",
-        "PERNUM",
-        "PERWT",
-        "SEX",
-        "AGE",
+        Variable(
+            name="YEAR",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="SAMPLE",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="SERIAL",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="CBSERIAL",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="HHWT",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="GQ",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="PERNUM",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="PERWT",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="SEX",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
+        Variable(
+            name="AGE",
+            preselected=False,
+            case_selections={},
+            attached_characteristics=[],
+            data_quality_flags=False,
+        ),
     ]
     assert extract.data_format == "fixed_width"
 
@@ -363,10 +447,32 @@ def test_define_extract_from_json(fixtures_path: Path):
     extract = define_extract_from_json(fixtures_path / "example_extract_v2.json")
     for item in extract:
         assert item.collection == "usa"
-        assert item.samples == ["us2012b"]
-        assert item.variables == ["AGE", "SEX", "RACE"]
+        assert item.samples == [Sample(id="us2012b")]
+        assert item.variables == [
+            Variable(
+                name="AGE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="SEX",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="RACE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+        ]
 
-    # if an unsupported api version is specified, make sure 
+    # if an unsupported api version is specified, make sure
     # NotImplementedError is raised
     with pytest.raises(NotImplementedError) as exc_info:
         extract = define_extract_from_json(fixtures_path / "example_extract.json")
