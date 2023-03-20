@@ -191,7 +191,7 @@ class IpumsApiClient:
             params={"collection": extract.collection, "version": extract.api_version},
             json=extract.build(),
         )
-        
+
         extract_id = int(response.json()["number"])
         extract._id = extract_id
 
