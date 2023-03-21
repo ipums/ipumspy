@@ -161,6 +161,21 @@ class BaseExtract:
             return self.api_version
 
     def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
+        """
+        A method to update existing Variable objects or create Variable objects
+        with the IPUMS attach characteristics feature.
+
+        Args:
+            variable: a Variable object or a string variable name
+            of: a list of records for which to create a variable on the individual record.
+                Allowable values include "mother", "father", "spouse", "head". For IPUMS
+                collection that identify same sex couples can also accept "mother2" and "father2"
+                values in this list. If either "<parent>" or "<parent>2" values are included,
+                their same sex counterpart will automatically be included in the extract.
+
+        Returns: A Variable object with the `attached_characteristics` attribute with the 
+                 value of the `of` argument
+        """
         if isinstance(variable, Variable):
             variable.update("attached_characteristics", of)
         elif isinstance(variable, str):
