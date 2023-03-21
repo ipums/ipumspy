@@ -32,12 +32,6 @@ class Variable:
     attached_characteristics: Optional[List[str]] = field(default_factory=list)
     data_quality_flags: Optional[bool] = False
 
-    @classmethod
-    def from_name(cls, name: str) -> Variable:
-        return cls(
-            name=name,
-        )
-
     def update(self, attribute: str, value: Any):
         if hasattr(self, attribute):
             setattr(self, attribute, value)
@@ -59,17 +53,11 @@ class Variable:
 class Sample:
     id: str
 
-    @classmethod
-    def from_id(cls, id: str) -> Sample:
-        return cls(
-            id=id,
-        )
-
     def update(self, attribute: str, value: Any):
         if hasattr(self, attribute):
             setattr(self, attribute, value)
         else:
-            raise KeyError(f"Variable has no attribute '{attribute}'.")
+            raise KeyError(f"Sample has no attribute '{attribute}'.")
 
 
 class BaseExtract:
