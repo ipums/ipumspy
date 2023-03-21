@@ -32,6 +32,9 @@ class Variable:
     attached_characteristics: Optional[List[str]] = field(default_factory=list)
     data_quality_flags: Optional[bool] = False
 
+    def __post_init__(self):
+        self.name = self.name.upper()
+
     def update(self, attribute: str, value: Any):
         if hasattr(self, attribute):
             setattr(self, attribute, value)
@@ -52,6 +55,9 @@ class Variable:
 @dataclass
 class Sample:
     id: str
+
+    def __post_init__(self):
+        self.id = self.id.lower()
 
     def update(self, attribute: str, value: Any):
         if hasattr(self, attribute):
