@@ -98,6 +98,39 @@ def test_usa_build_extract():
     }
 
 
+def test_usa_attach_characteristics():
+    """
+    Confirm that attach_characteristics updates extract definition correctly
+    """
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
+    extract.attach_characteristics("AGE", ["father"])
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"us2012b": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": ["father"],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "description": "My IPUMS USA extract",
+        "dataFormat": "fixed_width",
+        "collection": "usa",
+        "version": None,
+    }
+
+
 def test_cps_build_extract():
     """
     Confirm that test extract formatted correctly

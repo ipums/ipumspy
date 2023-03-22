@@ -159,6 +159,22 @@ class BaseExtract:
         # if no api_version is specified, use default IpumsApiClient version
         else:
             return self.api_version
+        
+    def _update_variable_feature(self, variable, feature, specification):
+            if isinstance(variable, Variable):
+                variable.update(feature, specification)
+            elif isinstance(variable, str):
+                for var in self.variables:
+                    if var.name == variable:
+                        var.update(feature, specification)
+                        break
+                else:
+                    raise ValueError(f"{variable} is not part of this extract.")
+            else:
+                raise TypeError(
+                    f"Expected a string or Variable object; {type(variable)} received."
+                )
+
 
     def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
         """
@@ -176,20 +192,8 @@ class BaseExtract:
         Returns: A Variable object with the `attached_characteristics` attribute with the 
                  value of the `of` argument
         """
-        if isinstance(variable, Variable):
-            variable.update("attached_characteristics", of)
-        elif isinstance(variable, str):
-            for var in self.variables:
-                if var.name == variable:
-                    var.update("attached_characteristics", of)
-                    break
-            else:
-                raise ValueError(f"{variable} is not part of this extract.")
-        else:
-            raise TypeError(
-                f"Expected a string or Variable object; {type(variable)} received."
-            )
-
+        self._update_variable_feature(variable, "attached_characteristics", of)
+    
 
 class OtherExtract(BaseExtract, collection="other"):
     def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
