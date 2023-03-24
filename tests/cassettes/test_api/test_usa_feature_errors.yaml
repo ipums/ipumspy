@@ -1,0 +1,201 @@
+interactions:
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {"general": ["200"]}, "attachedCharacteristics":
+      [], "dataQualityFlags": false}, "SEX": {"preselected": false, "caseSelections":
+      {}, "attachedCharacteristics": [], "dataQualityFlags": false}, "RACE": {"preselected":
+      false, "caseSelections": {}, "attachedCharacteristics": [], "dataQualityFlags":
+      false}}, "collection": "usa", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '545'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid general case selection of 200 for variable AGE"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '145'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 24 Mar 2023 16:48:57 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f0a03074-a613-4f28-95c7-dab8a1b4ee9c
+      X-Runtime:
+      - '0.402650'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}, "SEX": {"preselected": false, "caseSelections":
+      {"detailed": ["100"]}, "attachedCharacteristics": [], "dataQualityFlags": false},
+      "RACE": {"preselected": false, "caseSelections": {}, "attachedCharacteristics":
+      [], "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '546'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Detailed case selection made but detailed variable not
+        found for SEX."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '160'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 24 Mar 2023 16:48:58 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f98d00fa-87b4-4b47-8097-814176ad17d5
+      X-Runtime:
+      - '0.273791'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}, "SEX": {"preselected": false, "caseSelections":
+      {}, "attachedCharacteristics": [], "dataQualityFlags": false}, "RACE": {"preselected":
+      false, "caseSelections": {"detailed": ["1"]}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '544'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid detailed case selection of 001 for variable RACE"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '147'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 24 Mar 2023 16:48:58 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - f4ff6c02-f7e2-4ece-a08a-6a112e48335c
+      X-Runtime:
+      - '0.392526'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+version: 1

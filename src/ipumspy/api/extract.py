@@ -175,10 +175,9 @@ class BaseExtract:
                     f"Expected a string or Variable object; {type(variable)} received."
                 )
 
-
     def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
         """
-        A method to update existing Variable objects or create Variable objects
+        A method to update existing IPUMS Extract Variable objects 
         with the IPUMS attach characteristics feature.
 
         Args:
@@ -193,6 +192,37 @@ class BaseExtract:
                  value of the `of` argument
         """
         self._update_variable_feature(variable, "attached_characteristics", of)
+
+    def add_data_quality_flags(self, variable: Union[Variable, str]):
+        """
+        A method to update existing IPUMS Extract Variable objects to include that
+        variable's data quality flag in the extract if it exists.
+
+        Args:
+            variable: a Variable object or a string variable name
+
+        Returns: A Variable object with the `data_quality_fags` attribute set to True
+        """
+        self._update_variable_feature(variable, "data_quality_flags", True)
+
+    def select_cases(self, variable: Union[Variable, str], values: List[Union[int, str]], general: bool=True):
+        """
+        A method to update existing IPUMS Extract Variable objects to select cases
+        with the specified values of that IPUMS variable.
+
+        Args:
+            variable: a Variable object or a string variable name
+            values: a list of values for which to select records
+            general: set to False to select cases on detailed codes. Defaults to True.
+
+        Returns: A Variable object with the `select_cases` attribute with general or detailed codes specified for selection.
+        """
+        # stringify values
+        values = [str(v) for v in values]
+        if general:
+            self._update_variable_feature(variable, "case_selections", {"general": values})
+        else:
+            self._update_variable_feature(variable, "case_selections", {"detailed": values})
     
 
 class OtherExtract(BaseExtract, collection="other"):

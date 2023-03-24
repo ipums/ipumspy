@@ -130,6 +130,130 @@ def test_usa_attach_characteristics():
         "version": None,
     }
 
+def test_usa_add_data_quality_flags():
+    """
+    Confirm that attach_characteristics updates extract definition correctly
+    """
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+    )
+    extract.add_data_quality_flags("SEX")
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"us2012b": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": True,
+            },
+        },
+        "description": "My IPUMS USA extract",
+        "dataFormat": "fixed_width",
+        "collection": "usa",
+        "version": None,
+    }
+
+def test_usa_select_cases():
+    """
+    Confirm that attach_characteristics updates extract definition correctly
+    """
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "RACE"],
+    )
+    # general codes
+    extract.select_cases("RACE", ["1"], general=True)
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"us2012b": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "RACE": {
+                "preselected": False,
+                "caseSelections": {"general": ["1"]},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "description": "My IPUMS USA extract",
+        "dataFormat": "fixed_width",
+        "collection": "usa",
+        "version": None,
+    }
+    # detailed codes
+    extract.select_cases("RACE", ["100"], general=False)
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"us2012b": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "RACE": {
+                "preselected": False,
+                "caseSelections": {"detailed": ["100"]},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "description": "My IPUMS USA extract",
+        "dataFormat": "fixed_width",
+        "collection": "usa",
+        "version": None,
+    }
+
+
+@pytest.mark.vcr
+def test_usa_feature_errors(live_api_client: IpumsApiClient):
+    """
+    Confirm that illegal feature requests raise appropriate errors
+    """
+    # select an invalid value with the correct level of detail
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX", "RACE"],
+    )
+    
+    extract.select_cases("AGE", ["200"], general=True)
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert exc_info.value.args[0] == "Invalid general case selection of 200 for variable AGE"
+    # ask for detailed codes when  none are available
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX", "RACE"],
+    )
+    extract.select_cases("SEX", ["100"], general=False)
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert exc_info.value.args[0] == "Detailed case selection made but detailed variable not found for SEX."
+    # Specify general codes when requesting detailed codes
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX", "RACE"],
+    )
+    extract.select_cases("RACE", ["1"], general=False)
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert exc_info.value.args[0] == "Invalid detailed case selection of 001 for variable RACE"
+
 
 def test_cps_build_extract():
     """
