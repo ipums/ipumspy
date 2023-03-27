@@ -32,34 +32,38 @@ class Variable:
     attached_characteristics: Optional[List[str]] = field(default_factory=list)
     data_quality_flags: Optional[bool] = False
 
-    @classmethod
-    def from_name(cls, name: str) -> Variable:
-        return cls(
-            name=name,
-        )
+    def __post_init__(self):
+        self.name = self.name.upper()
 
     def update(self, attribute: str, value: Any):
         if hasattr(self, attribute):
             setattr(self, attribute, value)
         else:
             raise KeyError(f"Variable has no attribute '{attribute}'.")
+
+    def build(self):
+        built_var = self.__dict__.copy()
+        # don't repeat the variable name
+        built_var.pop("name")
+        # adhere to API schema camelCase convention
+        built_var["caseSelections"] = built_var.pop("case_selections")
+        built_var["attachedCharacteristics"] = built_var.pop("attached_characteristics")
+        built_var["dataQualityFlags"] = built_var.pop("data_quality_flags")
+        return built_var
 
 
 @dataclass
 class Sample:
     id: str
 
-    @classmethod
-    def from_id(cls, id: str) -> Sample:
-        return cls(
-            id=id,
-        )
+    def __post_init__(self):
+        self.id = self.id.lower()
 
     def update(self, attribute: str, value: Any):
         if hasattr(self, attribute):
             setattr(self, attribute, value)
         else:
-            raise KeyError(f"Variable has no attribute '{attribute}'.")
+            raise KeyError(f"Sample has no attribute '{attribute}'.")
 
 
 class BaseExtract:
@@ -138,14 +142,19 @@ class BaseExtract:
                 if kwargs_dict["version"] == self.api_version:
                     # collectin kwarg is the same as default, nothing to do
                     return self.api_version
-                # TODO: more sophisticated parsing of extract vs default api version
-                elif kwargs_dict["version"] != self.api_version:
+                # this will only get hit if the extract object has already been submitted
+                # or if an api_version other than None was explicitly passed to BaseExtract
+                elif kwargs_dict["version"] != self.api_version and self.api_version is not None:
                     warnings.warn(
                         f"The IPUMS API version specified in the extract definition is not the most recent. "
                         f"Extract definition IPUMS API version: {kwargs_dict['version']}; most recent IPUMS API version: {self.api_version}",
                         ApiVersionWarning,
                     )
                     # update extract object api version to reflect
+                    return kwargs_dict["version"]
+                # In all other instances, return the version from the kwargs dict
+                # If this version is illegal, it will raise an IpumsAPIAuthenticationError upon submission
+                else:
                     return kwargs_dict["version"]
             except KeyError:
                 # no longer supporting beta extract schema
@@ -155,7 +164,71 @@ class BaseExtract:
         # if no api_version is specified, use default IpumsApiClient version
         else:
             return self.api_version
+        
+    def _update_variable_feature(self, variable, feature, specification):
+            if isinstance(variable, Variable):
+                variable.update(feature, specification)
+            elif isinstance(variable, str):
+                for var in self.variables:
+                    if var.name == variable:
+                        var.update(feature, specification)
+                        break
+                else:
+                    raise ValueError(f"{variable} is not part of this extract.")
+            else:
+                raise TypeError(
+                    f"Expected a string or Variable object; {type(variable)} received."
+                )
 
+    def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
+        """
+        A method to update existing IPUMS Extract Variable objects 
+        with the IPUMS attach characteristics feature.
+
+        Args:
+            variable: a Variable object or a string variable name
+            of: a list of records for which to create a variable on the individual record.
+                Allowable values include "mother", "father", "spouse", "head". For IPUMS
+                collection that identify same sex couples can also accept "mother2" and "father2"
+                values in this list. If either "<parent>" or "<parent>2" values are included,
+                their same sex counterpart will automatically be included in the extract.
+
+        Returns: A Variable object with the `attached_characteristics` attribute with the 
+                 value of the `of` argument
+        """
+        self._update_variable_feature(variable, "attached_characteristics", of)
+
+    def add_data_quality_flags(self, variable: Union[Variable, str]):
+        """
+        A method to update existing IPUMS Extract Variable objects to include that
+        variable's data quality flag in the extract if it exists.
+
+        Args:
+            variable: a Variable object or a string variable name
+
+        Returns: A Variable object with the `data_quality_fags` attribute set to True
+        """
+        self._update_variable_feature(variable, "data_quality_flags", True)
+
+    def select_cases(self, variable: Union[Variable, str], values: List[Union[int, str]], general: bool=True):
+        """
+        A method to update existing IPUMS Extract Variable objects to select cases
+        with the specified values of that IPUMS variable.
+
+        Args:
+            variable: a Variable object or a string variable name
+            values: a list of values for which to select records
+            general: set to False to select cases on detailed codes. Defaults to True.
+
+        Returns: A Variable object with the `select_cases` attribute with general or detailed codes specified for selection.
+        """
+        # stringify values
+        values = [str(v) for v in values]
+        if general:
+            self._update_variable_feature(variable, "case_selections", {"general": values})
+        else:
+            self._update_variable_feature(variable, "case_selections", {"detailed": values})
+    
 
 class OtherExtract(BaseExtract, collection="other"):
     def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
@@ -240,7 +313,9 @@ class UsaExtract(BaseExtract, collection="usa"):
             "dataFormat": self.data_format,
             "dataStructure": {"rectangular": {"on": "P"}},
             "samples": {sample.id: {} for sample in self.samples},
-            "variables": {variable.name.upper(): {} for variable in self.variables},
+            "variables": {
+                variable.name.upper(): variable.build() for variable in self.variables
+            },
             "collection": self.collection,
             "version": self.api_version,
         }
@@ -309,7 +384,9 @@ class CpsExtract(BaseExtract, collection="cps"):
             "dataFormat": self.data_format,
             "dataStructure": {"rectangular": {"on": "P"}},
             "samples": {sample.id: {} for sample in self.samples},
-            "variables": {variable.name.upper(): {} for variable in self.variables},
+            "variables": {
+                variable.name.upper(): variable.build() for variable in self.variables
+            },
             "collection": self.collection,
             "version": self.api_version,
         }
@@ -330,7 +407,6 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
-
     if dct["collection"] in BaseExtract._collection_to_extract:
         # cosmetic procedure for when dct comes from json file
         for key in ["samples", "variables"]:
