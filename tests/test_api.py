@@ -130,6 +130,11 @@ def test_usa_attach_characteristics():
         "version": None,
     }
 
+    # try to attach characteristics to a not-included variable
+    with pytest.raises(ValueError) as exc_info:
+        extract.attach_characteristics("RACE", ["father"])
+    assert exc_info.value.args[0] == "RACE is not part of this extract."
+
 
 def test_usa_add_data_quality_flags():
     """
@@ -738,3 +743,11 @@ def test_save_extract_as_json(fixtures_path: Path):
 
     assert Path(fixtures_path / "test_saved_extract.json").exists()
     os.remove(str(Path(fixtures_path / "test_saved_extract.json")))
+
+
+def test_variable_update():
+    # update an attribute that doesn't exist
+    age = Variable("AGE")
+    with pytest.raises(KeyError) as exc_info:
+        age.update("fake_attribute", "fake_value")
+    assert exc_info.value.args[0] == "Variable has no attribute 'fake_attribute'."
