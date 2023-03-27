@@ -299,6 +299,16 @@ def test_cps_build_extract():
     }
 
 
+def test_cps_hierarchical_build_extract():
+    """
+    Confirm that test extract formatted correctly when hierarchical structure specified
+    """
+    extract = CpsExtract(
+        ["cps2012_03b"], ["AGE", "SEX"], data_structure={"hierarchical": {}}
+    )
+    assert extract.data_structure == {"hierarchical": {}}
+
+
 def test_other_build_extract():
     details = {"some": [1, 2, 3], "other": ["a", "b", "c"]}
     extract = OtherExtract("foo", details)
@@ -354,6 +364,28 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_sample)
     assert exc_info.value.args[0] == "Invalid sample name: us2012x"
+
+    # specify "on" w/ hierarchical structure
+    bad_structure = UsaExtract(
+        ["us2012b"], ["AGE"], data_structure={"hierarchical": {"on": "P"}}
+    )
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(bad_structure)
+    assert exc_info.value.args[0] == (
+        "The property '#/dataStructure/hierarchical' contains additional "
+        'properties ["on"] outside of the schema when none are allowed.'
+    )
+
+    # specify illegal rectype to rectangularize on
+    bad_rectype = UsaExtract(
+        ["us2012b"], ["AGE"], data_structure={"rectangular": {"on": "Z"}}
+    )
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(bad_rectype)
+    assert (
+        exc_info.value.args[0]
+        == 'Invalid Record Type specified in "data_structure.rectangular.on".'
+    )
 
 
 def test_not_found_exception_mock(api_client: IpumsApiClient):
@@ -496,6 +528,19 @@ def test_submit_extract_live(live_api_client: IpumsApiClient):
     extract = UsaExtract(
         ["us2012b"],
         ["AGE", "SEX"],
+    )
+
+    live_api_client.submit_extract(extract)
+    assert live_api_client.extract_status(extract) == "queued"
+
+
+@pytest.mark.vcr
+def test_submit_hierarchical_extract_live(live_api_client: IpumsApiClient):
+    """
+    Confirm that test extract submits properly
+    """
+    extract = UsaExtract(
+        ["us2012b"], ["AGE", "SEX"], data_structure={"hierarchical": {}}
     )
 
     live_api_client.submit_extract(extract)
