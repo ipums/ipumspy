@@ -130,6 +130,7 @@ def test_usa_attach_characteristics():
         "version": None,
     }
 
+
 def test_usa_add_data_quality_flags():
     """
     Confirm that attach_characteristics updates extract definition correctly
@@ -161,6 +162,7 @@ def test_usa_add_data_quality_flags():
         "collection": "usa",
         "version": None,
     }
+
 
 def test_usa_select_cases():
     """
@@ -230,11 +232,14 @@ def test_usa_feature_errors(live_api_client: IpumsApiClient):
         ["us2012b"],
         ["AGE", "SEX", "RACE"],
     )
-    
+
     extract.select_cases("AGE", ["200"], general=True)
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(extract)
-    assert exc_info.value.args[0] == "Invalid general case selection of 200 for variable AGE"
+    assert (
+        exc_info.value.args[0]
+        == "Invalid general case selection of 200 for variable AGE"
+    )
     # ask for detailed codes when  none are available
     extract = UsaExtract(
         ["us2012b"],
@@ -243,7 +248,10 @@ def test_usa_feature_errors(live_api_client: IpumsApiClient):
     extract.select_cases("SEX", ["100"], general=False)
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(extract)
-    assert exc_info.value.args[0] == "Detailed case selection made but detailed variable not found for SEX."
+    assert (
+        exc_info.value.args[0]
+        == "Detailed case selection made but detailed variable not found for SEX."
+    )
     # Specify general codes when requesting detailed codes
     extract = UsaExtract(
         ["us2012b"],
@@ -252,7 +260,10 @@ def test_usa_feature_errors(live_api_client: IpumsApiClient):
     extract.select_cases("RACE", ["1"], general=False)
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(extract)
-    assert exc_info.value.args[0] == "Invalid detailed case selection of 001 for variable RACE"
+    assert (
+        exc_info.value.args[0]
+        == "Invalid detailed case selection of 001 for variable RACE"
+    )
 
 
 def test_cps_build_extract():

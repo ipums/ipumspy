@@ -144,7 +144,10 @@ class BaseExtract:
                     return self.api_version
                 # this will only get hit if the extract object has already been submitted
                 # or if an api_version other than None was explicitly passed to BaseExtract
-                elif kwargs_dict["version"] != self.api_version and self.api_version is not None:
+                elif (
+                    kwargs_dict["version"] != self.api_version
+                    and self.api_version is not None
+                ):
                     warnings.warn(
                         f"The IPUMS API version specified in the extract definition is not the most recent. "
                         f"Extract definition IPUMS API version: {kwargs_dict['version']}; most recent IPUMS API version: {self.api_version}",
@@ -164,25 +167,25 @@ class BaseExtract:
         # if no api_version is specified, use default IpumsApiClient version
         else:
             return self.api_version
-        
+
     def _update_variable_feature(self, variable, feature, specification):
-            if isinstance(variable, Variable):
-                variable.update(feature, specification)
-            elif isinstance(variable, str):
-                for var in self.variables:
-                    if var.name == variable:
-                        var.update(feature, specification)
-                        break
-                else:
-                    raise ValueError(f"{variable} is not part of this extract.")
+        if isinstance(variable, Variable):
+            variable.update(feature, specification)
+        elif isinstance(variable, str):
+            for var in self.variables:
+                if var.name == variable:
+                    var.update(feature, specification)
+                    break
             else:
-                raise TypeError(
-                    f"Expected a string or Variable object; {type(variable)} received."
-                )
+                raise ValueError(f"{variable} is not part of this extract.")
+        else:
+            raise TypeError(
+                f"Expected a string or Variable object; {type(variable)} received."
+            )
 
     def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
         """
-        A method to update existing IPUMS Extract Variable objects 
+        A method to update existing IPUMS Extract Variable objects
         with the IPUMS attach characteristics feature.
 
         Args:
@@ -193,7 +196,7 @@ class BaseExtract:
                 values in this list. If either "<parent>" or "<parent>2" values are included,
                 their same sex counterpart will automatically be included in the extract.
 
-        Returns: A Variable object with the `attached_characteristics` attribute with the 
+        Returns: A Variable object with the `attached_characteristics` attribute with the
                  value of the `of` argument
         """
         self._update_variable_feature(variable, "attached_characteristics", of)
@@ -210,7 +213,12 @@ class BaseExtract:
         """
         self._update_variable_feature(variable, "data_quality_flags", True)
 
-    def select_cases(self, variable: Union[Variable, str], values: List[Union[int, str]], general: bool=True):
+    def select_cases(
+        self,
+        variable: Union[Variable, str],
+        values: List[Union[int, str]],
+        general: bool = True,
+    ):
         """
         A method to update existing IPUMS Extract Variable objects to select cases
         with the specified values of that IPUMS variable.
@@ -225,10 +233,14 @@ class BaseExtract:
         # stringify values
         values = [str(v) for v in values]
         if general:
-            self._update_variable_feature(variable, "case_selections", {"general": values})
+            self._update_variable_feature(
+                variable, "case_selections", {"general": values}
+            )
         else:
-            self._update_variable_feature(variable, "case_selections", {"detailed": values})
-    
+            self._update_variable_feature(
+                variable, "case_selections", {"detailed": values}
+            )
+
 
 class OtherExtract(BaseExtract, collection="other"):
     def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
@@ -258,6 +270,7 @@ class UsaExtract(BaseExtract, collection="usa"):
         variables: Union[List[str], List[Variable]],
         description: str = "My IPUMS USA extract",
         data_format: str = "fixed_width",
+        data_structure: Dict = {"rectangular": {"on": "P"}},
         **kwargs,
     ):
         """
@@ -268,6 +281,9 @@ class UsaExtract(BaseExtract, collection="usa"):
             variables: list of IPUMS USA variable names
             description: short description of your extract
             data_format: fixed_width and csv supported
+            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
+                            "rectangular" extracts require further specification of "on" : <record type>.
+                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
         """
 
         super().__init__()
@@ -281,6 +297,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             self.variables = variables
         self.description = description
         self.data_format = data_format
+        self.data_structure = data_structure
         self.collection = self.collection
         """Name of an IPUMS data collection"""
         self.api_version = (
@@ -298,6 +315,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             samples=list(api_response["extractDefinition"]["samples"]),
             variables=list(api_response["extractDefinition"]["variables"]),
             data_format=api_response["extractDefinition"]["dataFormat"],
+            data_structure=api_response["extractDefinition"]["dataStructure"],
             description=api_response["extractDefinition"]["description"],
             api_version=api_response["extractDefinition"]["version"],
             collection=api_response["extractDefinition"]["collection"],
@@ -311,7 +329,7 @@ class UsaExtract(BaseExtract, collection="usa"):
         return {
             "description": self.description,
             "dataFormat": self.data_format,
-            "dataStructure": {"rectangular": {"on": "P"}},
+            "dataStructure": self.data_structure,
             "samples": {sample.id: {} for sample in self.samples},
             "variables": {
                 variable.name.upper(): variable.build() for variable in self.variables
@@ -328,6 +346,7 @@ class CpsExtract(BaseExtract, collection="cps"):
         variables: Union[List[str], List[Variable]],
         description: str = "My IPUMS CPS extract",
         data_format: str = "fixed_width",
+        data_structure: Dict = {"rectangular": {"on": "P"}},
         **kwargs,
     ):
         """
@@ -338,6 +357,9 @@ class CpsExtract(BaseExtract, collection="cps"):
             variables: list of IPUMS CPS variable names
             description: short description of your extract
             data_format: fixed_width and csv supported
+            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
+                            "rectangular" extracts require further specification of "on" : <record type>.
+                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
         """
 
         super().__init__()
@@ -351,6 +373,7 @@ class CpsExtract(BaseExtract, collection="cps"):
             self.variables = variables
         self.description = description
         self.data_format = data_format
+        self.data_structure = data_structure
         self.collection = self.collection
         """Name of an IPUMS data collection"""
         self.api_version = (
@@ -369,6 +392,7 @@ class CpsExtract(BaseExtract, collection="cps"):
             samples=list(api_response["extractDefinition"]["samples"]),
             variables=list(api_response["extractDefinition"]["variables"]),
             data_format=api_response["extractDefinition"]["dataFormat"],
+            data_structure=api_response["extractDefinition"]["dataStructure"],
             description=api_response["extractDefinition"]["description"],
             api_version=api_response["extractDefinition"]["version"],
             collection=api_response["extractDefinition"]["collection"],
@@ -382,7 +406,7 @@ class CpsExtract(BaseExtract, collection="cps"):
         return {
             "description": self.description,
             "dataFormat": self.data_format,
-            "dataStructure": {"rectangular": {"on": "P"}},
+            "dataStructure": self.data_structure,
             "samples": {sample.id: {} for sample in self.samples},
             "variables": {
                 variable.name.upper(): variable.build() for variable in self.variables
