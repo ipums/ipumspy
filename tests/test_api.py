@@ -442,6 +442,7 @@ def test_extract_from_dict(fixtures_path: Path):
         # data structure not currently an extract attribute...
         # assert item.data_structure == "rectangular"
         assert item.data_format == "fixed_width"
+        assert item.api_version == 2
 
     # if an unsupported api version is specified
     # make sure NotImplementedError is raised

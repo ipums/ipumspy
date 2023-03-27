@@ -142,14 +142,19 @@ class BaseExtract:
                 if kwargs_dict["version"] == self.api_version:
                     # collectin kwarg is the same as default, nothing to do
                     return self.api_version
-                # TODO: more sophisticated parsing of extract vs default api version
-                elif kwargs_dict["version"] != self.api_version:
+                # this will only get hit if the extract object has already been submitted
+                # or if an api_version other than None was explicitly passed to BaseExtract
+                elif kwargs_dict["version"] != self.api_version and self.api_version is not None:
                     warnings.warn(
                         f"The IPUMS API version specified in the extract definition is not the most recent. "
                         f"Extract definition IPUMS API version: {kwargs_dict['version']}; most recent IPUMS API version: {self.api_version}",
                         ApiVersionWarning,
                     )
                     # update extract object api version to reflect
+                    return kwargs_dict["version"]
+                # In all other instances, return the version from the kwargs dict
+                # If this version is illegal, it will raise an IpumsAPIAuthenticationError upon submission
+                else:
                     return kwargs_dict["version"]
             except KeyError:
                 # no longer supporting beta extract schema
@@ -402,7 +407,6 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
-
     if dct["collection"] in BaseExtract._collection_to_extract:
         # cosmetic procedure for when dct comes from json file
         for key in ["samples", "variables"]:
