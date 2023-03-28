@@ -416,6 +416,83 @@ class CpsExtract(BaseExtract, collection="cps"):
         }
 
 
+class IpumsiExtract(BaseExtract, collection="ipumsi"):
+    def __init__(
+        self,
+        samples: Union[List[str], List[Sample]],
+        variables: Union[List[str], List[Variable]],
+        description: str = "My IPUMS International extract",
+        data_format: str = "fixed_width",
+        data_structure: Dict = {"rectangular": {"on": "P"}},
+        **kwargs,
+    ):
+        """
+        Defining an IPUMS International extract.
+
+        Args:
+            samples: list of IPUMS International sample IDs
+            variables: list of IPUMS International variable names
+            description: short description of your extract
+            data_format: fixed_width and csv supported
+            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
+                            "rectangular" extracts require further specification of "on" : <record type>.
+                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
+        """
+
+        super().__init__()
+        if all(isinstance(sample, str) for sample in samples):
+            self.samples = [Sample(sample) for sample in samples]
+        else:
+            self.samples = samples
+        if all(isinstance(variable, str) for variable in variables):
+            self.variables = [Variable(variable) for variable in variables]
+        else:
+            self.variables = variables
+        self.description = description
+        self.data_format = data_format
+        self.data_structure = data_structure
+        self.collection = self.collection
+        """Name of an IPUMS data collection"""
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
+        """IPUMS API version number"""
+
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
+
+    @classmethod
+    def from_api_response(cls, api_response: Dict[str, Any]) -> IpumsiExtract:
+        return cls(
+            samples=list(api_response["extractDefinition"]["samples"]),
+            variables=list(api_response["extractDefinition"]["variables"]),
+            data_format=api_response["extractDefinition"]["dataFormat"],
+            data_structure=api_response["extractDefinition"]["dataStructure"],
+            description=api_response["extractDefinition"]["description"],
+            api_version=api_response["extractDefinition"]["version"],
+            collection=api_response["extractDefinition"]["collection"],
+        )
+
+    def build(self) -> Dict[str, Any]:
+        """
+        Convert the object into a dictionary to be passed to the IPUMS API
+        as a JSON string
+        """
+        return {
+            "description": self.description,
+            "dataFormat": self.data_format,
+            "dataStructure": self.data_structure,
+            "samples": {sample.id: {} for sample in self.samples},
+            "variables": {
+                variable.name.upper(): variable.build() for variable in self.variables
+            },
+            "collection": self.collection,
+            "version": self.api_version,
+        }
+    
+
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
     Convert an extract that is currently specified as a dictionary (usually from a file)

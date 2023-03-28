@@ -19,7 +19,7 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
     method: POST
     uri: https://api.ipums.org/extracts?collection=usa&version=2
   response:
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Mar 2023 16:48:57 GMT
+      - Tue, 28 Mar 2023 13:27:32 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -57,9 +57,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - f0a03074-a613-4f28-95c7-dab8a1b4ee9c
+      - 2bb140b1-15de-4571-9106-e3d9d249402c
       X-Runtime:
-      - '0.402650'
+      - '0.376167'
       X-Xss-Protection:
       - '0'
     status:
@@ -85,7 +85,7 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
     method: POST
     uri: https://api.ipums.org/extracts?collection=usa&version=2
   response:
@@ -101,7 +101,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Mar 2023 16:48:58 GMT
+      - Tue, 28 Mar 2023 13:27:32 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -124,9 +124,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - f98d00fa-87b4-4b47-8097-814176ad17d5
+      - 9e19fc60-f5e8-44d9-9493-84ed1a5cf64f
       X-Runtime:
-      - '0.273791'
+      - '0.273306'
       X-Xss-Protection:
       - '0'
     status:
@@ -152,7 +152,7 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
     method: POST
     uri: https://api.ipums.org/extracts?collection=usa&version=2
   response:
@@ -167,7 +167,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Mar 2023 16:48:58 GMT
+      - Tue, 28 Mar 2023 13:27:33 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -190,9 +190,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - f4ff6c02-f7e2-4ece-a08a-6a112e48335c
+      - a2c82935-d71a-4749-93b1-0cd38d33c041
       X-Runtime:
-      - '0.392526'
+      - '0.398751'
       X-Xss-Protection:
       - '0'
     status:

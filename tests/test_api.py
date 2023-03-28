@@ -17,6 +17,7 @@ from ipumspy.api import (
     OtherExtract,
     UsaExtract,
     CpsExtract,
+    IpumsiExtract,
     extract_from_dict,
     extract_to_dict,
     define_extract_from_ddi,
@@ -228,9 +229,9 @@ def test_usa_select_cases():
 
 
 @pytest.mark.vcr
-def test_usa_feature_errors(live_api_client: IpumsApiClient):
+def test_select_cases_feature_errors(live_api_client: IpumsApiClient):
     """
-    Confirm that illegal feature requests raise appropriate errors
+    Confirm that illegal select cases feature requests raise appropriate errors
     """
     # select an invalid value with the correct level of detail
     extract = UsaExtract(
@@ -271,6 +272,26 @@ def test_usa_feature_errors(live_api_client: IpumsApiClient):
     )
 
 
+@pytest.mark.vcr
+def test_attach_characteristics_feature_errors(live_api_client: IpumsApiClient):
+    """
+    Confirm that illegal attach characteristics feature requests raise appropriate errors
+    """
+    # ask for nonexistent pointer from ipumsi
+    extract = IpumsiExtract(
+        ["am2011a"],
+        ["AGE", "SEX"],
+    )
+    extract.attach_characteristics("AGE", ["father2"])
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert(
+        exc_info.value.args[0] == ("Attached variable AGE requested for a same-sex parent, "
+                                  "but attached characteristics support in IPUMS-International "
+                                  "is limited to 'father', 'head', 'mother', and 'spouse'.")
+    )
+
+
 def test_cps_build_extract():
     """
     Confirm that test extract formatted correctly
@@ -302,6 +323,34 @@ def test_cps_build_extract():
         "collection": "cps",
         "version": None,
     }
+
+
+def test_ipumsi_build_extract():
+    """
+    Confirm that test extract formatted correctly
+    """
+    extract = IpumsiExtract(
+        ["am2011a"],
+        ["AGE", "SEX"],
+    )
+    assert extract.build() == {
+        'description': 'My IPUMS International extract',
+        'dataFormat': 'fixed_width',
+        'dataStructure': {'rectangular': {'on': 'P'}},
+        'samples': {'am2011a': {}},
+        'variables': {'AGE': {'preselected': False,
+        'caseSelections': {},
+        'attachedCharacteristics': [],
+        'dataQualityFlags': False},
+        'SEX': {'preselected': False,
+        'caseSelections': {},
+        'attachedCharacteristics': [],
+        'dataQualityFlags': False}},
+        'collection': 'ipumsi',
+        'version': None
+    }
+
+
 
 
 def test_cps_hierarchical_build_extract():
