@@ -135,6 +135,36 @@ class BaseExtract:
         else:
             return self._info
 
+    def _validate_list_args(self, list_arg, arg_obj):
+        # Make sure extracts don't get built with duplicate variables or samples
+        # if the argument is a list of objects, make sure there are not objects with duplicate names
+        if all(isinstance(i, arg_obj) for i in list_arg):
+            try:
+                if len(set([i.name for i in list_arg])) < len(list_arg):
+                    # Because Variable objects can have the same name but differet feature specifications
+                    # force the user to fix this themselves
+                    raise ValueError(
+                        f"Duplicate Variable objects are not allowed in IPUMS Extract definitions."
+                    )
+                else:
+                    # return the list of objects
+                    return list_arg
+            except AttributeError:
+                if len(set([i.id for i in list_arg])) < len(list_arg):
+                    # Because Sample objects can have the same id but differet feature specifications
+                    # force the user to fix this themselves
+                    raise ValueError(
+                        f"Duplicate Sample objects are not allowed in IPUMS Extract definitions."
+                    )
+                else:
+                    # return the list of objects
+                    return list_arg
+        elif all(isinstance(i, str) for i in list_arg):
+            # if duplicate string names are specified, just drop the duplicates
+            # and return a list of the relevant objects
+            unique_list = list(dict.fromkeys(list_arg))
+            return [arg_obj(i) for i in unique_list]
+
     def extract_api_version(self, kwargs_dict: Dict[str, Any]) -> str:
         # check to see if version is specified in kwargs_dict
         if "version" in kwargs_dict.keys() or "api_version" in kwargs_dict.keys():
@@ -287,14 +317,8 @@ class UsaExtract(BaseExtract, collection="usa"):
         """
 
         super().__init__()
-        if all(isinstance(sample, str) for sample in samples):
-            self.samples = [Sample(sample) for sample in samples]
-        else:
-            self.samples = samples
-        if all(isinstance(variable, str) for variable in variables):
-            self.variables = [Variable(variable) for variable in variables]
-        else:
-            self.variables = variables
+        self.samples = self._validate_list_args(samples, Sample)
+        self.variables = self._validate_list_args(variables, Variable)
         self.description = description
         self.data_format = data_format
         self.data_structure = data_structure
@@ -363,14 +387,8 @@ class CpsExtract(BaseExtract, collection="cps"):
         """
 
         super().__init__()
-        if all(isinstance(sample, str) for sample in samples):
-            self.samples = [Sample(sample) for sample in samples]
-        else:
-            self.samples = samples
-        if all(isinstance(variable, str) for variable in variables):
-            self.variables = [Variable(variable) for variable in variables]
-        else:
-            self.variables = variables
+        self.samples = self._validate_list_args(samples, Sample)
+        self.variables = self._validate_list_args(variables, Variable)
         self.description = description
         self.data_format = data_format
         self.data_structure = data_structure
@@ -440,14 +458,8 @@ class IpumsiExtract(BaseExtract, collection="ipumsi"):
         """
 
         super().__init__()
-        if all(isinstance(sample, str) for sample in samples):
-            self.samples = [Sample(sample) for sample in samples]
-        else:
-            self.samples = samples
-        if all(isinstance(variable, str) for variable in variables):
-            self.variables = [Variable(variable) for variable in variables]
-        else:
-            self.variables = variables
+        self.samples = self._validate_list_args(samples, Sample)
+        self.variables = self._validate_list_args(variables, Variable)
         self.description = description
         self.data_format = data_format
         self.data_structure = data_structure
@@ -491,7 +503,7 @@ class IpumsiExtract(BaseExtract, collection="ipumsi"):
             "collection": self.collection,
             "version": self.api_version,
         }
-    
+
 
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """

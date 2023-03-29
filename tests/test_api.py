@@ -285,10 +285,10 @@ def test_attach_characteristics_feature_errors(live_api_client: IpumsApiClient):
     extract.attach_characteristics("AGE", ["father2"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(extract)
-    assert(
-        exc_info.value.args[0] == ("Attached variable AGE requested for a same-sex parent, "
-                                  "but attached characteristics support in IPUMS-International "
-                                  "is limited to 'father', 'head', 'mother', and 'spouse'.")
+    assert exc_info.value.args[0] == (
+        "Attached variable AGE requested for a same-sex parent, "
+        "but attached characteristics support in IPUMS-International "
+        "is limited to 'father', 'head', 'mother', and 'spouse'."
     )
 
 
@@ -334,23 +334,27 @@ def test_ipumsi_build_extract():
         ["AGE", "SEX"],
     )
     assert extract.build() == {
-        'description': 'My IPUMS International extract',
-        'dataFormat': 'fixed_width',
-        'dataStructure': {'rectangular': {'on': 'P'}},
-        'samples': {'am2011a': {}},
-        'variables': {'AGE': {'preselected': False,
-        'caseSelections': {},
-        'attachedCharacteristics': [],
-        'dataQualityFlags': False},
-        'SEX': {'preselected': False,
-        'caseSelections': {},
-        'attachedCharacteristics': [],
-        'dataQualityFlags': False}},
-        'collection': 'ipumsi',
-        'version': None
+        "description": "My IPUMS International extract",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"am2011a": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "collection": "ipumsi",
+        "version": None,
     }
-
-
 
 
 def test_cps_hierarchical_build_extract():
@@ -800,3 +804,66 @@ def test_variable_update():
     with pytest.raises(KeyError) as exc_info:
         age.update("fake_attribute", "fake_value")
     assert exc_info.value.args[0] == "Variable has no attribute 'fake_attribute'."
+
+
+def test_validate_list_args():
+    str_extract = IpumsiExtract(["ar2011a"], ["age", "age", "sex", "sex", "race"])
+
+    assert str_extract.variables == (
+        [
+            Variable(
+                name="AGE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="SEX",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="RACE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+        ]
+    )
+
+    with pytest.raises(ValueError) as exc_info:
+        vars_extract = IpumsiExtract(
+            ["ar2011a"],
+            [
+                Variable("age", attached_characteristics=["father"]),
+                Variable("age"),
+                Variable("sex"),
+                Variable("sex"),
+                Variable("race"),
+            ],
+        )
+    assert (
+        exc_info.value.args[0]
+        == "Duplicate Variable objects are not allowed in IPUMS Extract definitions."
+    )
+
+    str_extract = CpsExtract(["cps2012_03s", "cps2012_03s", "cps2013_03s"], ["AGE"])
+    assert str_extract.samples == ([Sample(id="cps2012_03s"), Sample(id="cps2013_03s")])
+
+    with pytest.raises(ValueError) as exc_info:
+        samples_extract = CpsExtract(
+            [
+                Sample(id="cps2012_03s"),
+                Sample(id="cps2012_03s"),
+                Sample(id="cps2013_03s"),
+            ],
+            ["AGE"],
+        )
+    assert (
+        exc_info.value.args[0]
+        == "Duplicate Sample objects are not allowed in IPUMS Extract definitions."
+    )
