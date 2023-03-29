@@ -867,3 +867,155 @@ def test_validate_list_args():
         exc_info.value.args[0]
         == "Duplicate Sample objects are not allowed in IPUMS Extract definitions."
     )
+
+
+@pytest.mark.vcr
+def test_get_extract_by_id(live_api_client: IpumsApiClient):
+    """
+    Make sure extract can be retrieved with specific ID
+    """
+    cps_ext = live_api_client.get_extract_by_id("cps", 433)
+    assert isinstance(cps_ext, CpsExtract)
+    assert cps_ext.build() == {
+        "description": "my extract",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"cps2023_01s": {}},
+        "variables": {
+            "YEAR": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SERIAL": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "MONTH": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "HWTFINL": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "CPSID": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "PERNUM": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "WTFINL": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "CPSIDP": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "RACE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "collection": "cps",
+        "version": 2,
+    }
+
+    ipumsi_ext = live_api_client.get_extract_by_id("ipumsi", 6)
+    assert isinstance(ipumsi_ext, IpumsiExtract)
+    assert ipumsi_ext.build() == {
+        "description": "My IPUMS International extract",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"am2011a": {}},
+        "variables": {
+            "COUNTRY": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "YEAR": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SAMPLE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SERIAL": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "HHWT": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "PERNUM": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "PERWT": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "collection": "ipumsi",
+        "version": 2,
+    }

@@ -1,0 +1,118 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/433?collection=cps&version=2
+  response:
+    body:
+      string: '{"number":433,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"my
+        extract","samples":{"cps2023_01s":{}},"variables":{"YEAR":{"preselected":true},"SERIAL":{"preselected":true},"MONTH":{"preselected":true},"HWTFINL":{"preselected":true},"CPSID":{"preselected":true},"PERNUM":{"preselected":true},"WTFINL":{"preselected":true},"CPSIDP":{"preselected":true},"AGE":{},"SEX":{},"RACE":{}},"collection":"cps"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '569'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 29 Mar 2023 23:13:06 GMT
+      Etag:
+      - W/"2fd406cc439cb9f107408fd5ebd22c10"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - c2517004-1d8b-4a74-8149-d6656836e60b
+      X-Runtime:
+      - '0.376768'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/6?collection=ipumsi&version=2
+  response:
+    body:
+      string: '{"number":6,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{"sasCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.sas","bytes":23115,"sha256":"bdf46ba893db954b87e28fd12a38b1995b9fd19893ec0e96bbcfb924bc579661"},"ddiCodebook":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.xml","bytes":100032,"sha256":"fb7fc7c14bae6f5e4fedeb283cdbd7c7c70d9039d582b8aeaa0b5dd21909d099"},"stataCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.do","bytes":45247,"sha256":"8156ad38b83a5885861e3585a1e8696a5684f192647675b197b489932fba0484"},"data":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.dat.gz","bytes":1427444,"sha256":"a8b44aae5ea39b836031b0343e495754ff8ddc2d3b1386a450e83bd4d3216eee"},"rCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.R","bytes":409,"sha256":"40ce6c97838a6b35e74d12d46bd1971b912df93feac79cd5c78a6f56c677cd9c"},"basicCodebook":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.cbk","bytes":28151,"sha256":"b8aacd66da07f5ee3e067ba1938558bfca8fc3e94bce21137df2f8e28417462a"},"spssCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.sps","bytes":24384,"sha256":"98d40bf325c43e8609a9ba5a21f6ef266be53325efd2acdab00e5b34a5f1469b"}},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+        IPUMS International extract","samples":{"am2011a":{}},"variables":{"COUNTRY":{"preselected":true},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"AGE":{},"SEX":{}},"collection":"ipumsi"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '1911'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 29 Mar 2023 23:13:07 GMT
+      Etag:
+      - W/"068a3a2d6591e523a16ac6b3b8e25de1"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 1e4365e4-df14-4ef9-bc79-0d8d5d328b37
+      X-Runtime:
+      - '0.280687'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

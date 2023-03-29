@@ -385,9 +385,7 @@ class IpumsApiClient:
             else:
                 break
 
-    def get_previous_extracts(
-        self, collection: str, limit: int = 10
-    ) -> List[Dict]:
+    def get_previous_extracts(self, collection: str, limit: int = 10) -> List[Dict]:
         """
         Return details about the past ``limit`` requests
 
@@ -437,6 +435,29 @@ class IpumsApiClient:
             ).json()
 
             return extract_info
+
+    def get_extract_by_id(
+        self,
+        collection: str,
+        extract_id: int,
+    ) -> BaseExtract:
+        """
+        Convenience method to get a specific previously-submitted IPUMS extract.
+
+        Args:
+            collection: An IPUMS data collection
+            extract_id: IPUMS extract id number to retrieve
+
+        Returns:
+            An IPUMS extract object
+        """
+        extract_def = self.get_extract_info(extract_id, collection)
+        if collection in BaseExtract._collection_to_extract:
+            extract_type = BaseExtract._collection_to_extract[collection]
+            extract = extract_type(**extract_def["extractDefinition"])
+        else:
+            extract = OtherExtract(collection, extract)
+        return extract
 
     def extract_was_purged(
         self,
