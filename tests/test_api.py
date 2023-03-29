@@ -390,8 +390,8 @@ def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     assert api_client.extract_status(extract) == "completed"
 
 
-def test_retrieve_previous_extracts(api_client: IpumsApiClient):
-    previous10 = api_client.retrieve_previous_extracts("usa")
+def test_get_previous_extracts(api_client: IpumsApiClient):
+    previous10 = api_client.get_previous_extracts("usa")
     assert len(previous10["usa"]) == 10
 
 

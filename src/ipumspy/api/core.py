@@ -385,7 +385,7 @@ class IpumsApiClient:
             else:
                 break
 
-    def retrieve_previous_extracts(
+    def get_previous_extracts(
         self, collection: str, limit: int = 10
     ) -> List[Dict]:
         """
