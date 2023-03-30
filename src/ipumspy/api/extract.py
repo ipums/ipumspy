@@ -24,6 +24,10 @@ class ApiVersionWarning(Warning):
     pass
 
 
+class ModifiedExtractWarning(Warning):
+    pass
+
+
 @dataclass
 class Variable:
     name: str
@@ -87,18 +91,28 @@ class BaseExtract:
         BaseExtract._collection_to_extract[collection] = cls
 
     def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
-        if not kwargs_dict:
-            # no kwargs specified, nothing to do
+        try:
+            if kwargs_dict["collection"] == self.collection:
+                # collection kwarg is same as default, nothing to do
+                pass
+            elif kwargs_dict["collection"] != self.collection:
+                warnings.warn(
+                    f"This extract object already has a default collection "
+                    f"{self.collection}. Collection Key Word Arguments "
+                    f"are ignored.",
+                    DefaultCollectionWarning,
+                )
+        except KeyError:
+            # if there collection isn't specified
+            # then nothing to warn about there
             pass
-        elif kwargs_dict["collection"] == self.collection:
-            # collection kwarg is same as default, nothing to do
-            pass
-        elif kwargs_dict["collection"] != self.collection:
+        # raise kwarg warnings if they exist
+        if "warnings" in kwargs_dict.keys():
+            newline = "\n"
             warnings.warn(
-                f"This extract object already has a default collection "
-                f"{self.collection}. Collection Key Word Arguments "
-                f"are ignored.",
-                DefaultCollectionWarning,
+                f"This extract object has been modified from its original form in the following ways: "
+                f"{newline.join(kwargs_dict['warnings'])}",
+                ModifiedExtractWarning,
             )
 
     def build(self) -> Dict[str, Any]:
@@ -134,6 +148,22 @@ class BaseExtract:
             )
         else:
             return self._info
+        
+    def _snake_to_camel(self, kwarg_dict):
+        for key in list(kwarg_dict.keys()):
+            # create camelCase equivalent
+            key_list = key.split("_")
+            # join capitalized versions of all parts except the first
+            camelized = ''.join([k.capitalize() for k in key_list[1:]])
+            # prepend the first part
+            camel_key = f"{key_list[0]}{camelized}"
+            # add the camelCase key
+            kwarg_dict[camel_key] = kwarg_dict[key]
+            # pop the snake_case key
+            kwarg_dict.pop(key)
+
+        return kwarg_dict
+
 
     def _validate_list_args(self, list_arg, arg_obj):
         # Make sure extracts don't get built with duplicate variables or samples
@@ -332,6 +362,8 @@ class UsaExtract(BaseExtract, collection="usa"):
         """IPUMS API version number"""
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
 
     @classmethod
     def from_api_response(cls, api_response: Dict[str, Any]) -> UsaExtract:
@@ -360,6 +392,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             },
             "collection": self.collection,
             "version": self.api_version,
+            **self.kwargs
         }
 
 
@@ -403,6 +436,8 @@ class CpsExtract(BaseExtract, collection="cps"):
 
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
 
     @classmethod
     def from_api_response(cls, api_response: Dict[str, Any]) -> CpsExtract:
@@ -431,6 +466,7 @@ class CpsExtract(BaseExtract, collection="cps"):
             },
             "collection": self.collection,
             "version": self.api_version,
+            **self.kwargs,
         }
 
 
@@ -474,6 +510,8 @@ class IpumsiExtract(BaseExtract, collection="ipumsi"):
 
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
 
     @classmethod
     def from_api_response(cls, api_response: Dict[str, Any]) -> IpumsiExtract:
@@ -502,6 +540,7 @@ class IpumsiExtract(BaseExtract, collection="ipumsi"):
             },
             "collection": self.collection,
             "version": self.api_version,
+            **self.kwargs,
         }
 
 
