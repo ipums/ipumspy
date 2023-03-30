@@ -3,6 +3,7 @@ Core utilities for interacting with the IPUMS API
 """
 import copy
 import time
+import warnings
 from functools import wraps
 from http import HTTPStatus
 from pathlib import Path
@@ -24,6 +25,10 @@ from .exceptions import (
     TransientIpumsApiException,
 )
 from .extract import BaseExtract, OtherExtract
+
+
+class ModifiedIpumsExtract(Warning):
+    pass
 
 
 def retry_on_transient_error(func):
@@ -433,7 +438,11 @@ class IpumsApiClient:
                 f"{self.base_url}/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             ).json()
-
+            new_line = "\n"
+            if "warnings" in extract_info.keys():
+                warnings.warn(f"This IPUMS extract has been modified from its original form to remove invalid content and features:{new_line}"
+                              f"{new_line.join(extract_info['warnings'])}",
+                              ModifiedIpumsExtract)
             return extract_info
 
     def get_extract_by_id(

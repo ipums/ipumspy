@@ -24,7 +24,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 29 Mar 2023 23:13:06 GMT
+      - Thu, 30 Mar 2023 19:49:04 GMT
       Etag:
       - W/"2fd406cc439cb9f107408fd5ebd22c10"
       Referrer-Policy:
@@ -49,9 +49,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - c2517004-1d8b-4a74-8149-d6656836e60b
+      - 9aa1fbae-b3fb-4922-adfc-4ba9a2df8b19
       X-Runtime:
-      - '0.376768'
+      - '0.306242'
       X-Xss-Protection:
       - '0'
     status:
@@ -82,7 +82,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 29 Mar 2023 23:13:07 GMT
+      - Thu, 30 Mar 2023 19:49:04 GMT
       Etag:
       - W/"068a3a2d6591e523a16ac6b3b8e25de1"
       Referrer-Policy:
@@ -107,9 +107,70 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 1e4365e4-df14-4ef9-bc79-0d8d5d328b37
+      - e05b8b59-ac65-4748-b13d-e12e9942b454
       X-Runtime:
-      - '0.280687'
+      - '0.422595'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/95?collection=cps&version=2
+  response:
+    body:
+      string: '{"number":95,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"csv","caseSelectWho":"individuals","description":"2010-2015
+        family pointers (CSV)","samples":{"cps2010_03s":{},"cps2011_03s":{},"cps2010_01s":{},"cps2010_02b":{},"cps2010_04b":{},"cps2010_03b":{},"cps2010_05s":{},"cps2010_06s":{},"cps2010_07s":{},"cps2010_09s":{},"cps2010_10s":{},"cps2010_12s":{},"cps2012_03s":{},"cps2013_03s":{},"cps2010_11s":{},"cps2011_01s":{},"cps2011_02b":{},"cps2011_03b":{},"cps2011_04b":{},"cps2011_06s":{},"cps2011_07s":{},"cps2011_08s":{},"cps2011_09s":{},"cps2011_10s":{},"cps2011_11s":{},"cps2011_12s":{},"cps2012_01s":{},"cps2012_02b":{},"cps2012_03b":{},"cps2012_04b":{},"cps2012_05s":{},"cps2012_06s":{},"cps2012_08s":{},"cps2012_09s":{},"cps2012_10s":{},"cps2012_11s":{},"cps2012_12s":{},"cps2013_01b":{},"cps2013_02s":{},"cps2013_03b":{},"cps2013_04b":{},"cps2013_05b":{},"cps2013_06s":{},"cps2013_07s":{},"cps2013_08s":{},"cps2013_09s":{},"cps2013_10s":{},"cps2013_11s":{},"cps2013_12s":{},"cps2014_03s":{},"cps2010_08s":{},"cps2014_01s":{},"cps2014_02s":{},"cps2014_03b":{},"cps2014_04b":{},"cps2014_05b":{},"cps2014_06s":{},"cps2014_07s":{},"cps2014_08s":{},"cps2014_09s":{},"cps2014_10s":{},"cps2014_11s":{},"cps2014_12s":{},"cps2015_03s":{},"cps2015_01s":{},"cps2015_02s":{},"cps2015_03b":{},"cps2015_04b":{},"cps2015_05s":{},"cps2015_06s":{},"cps2015_07s":{},"cps2015_08s":{},"cps2015_09s":{},"cps2015_10s":{},"cps2015_11b":{},"cps2015_12s":{}},"variables":{"MOMLOC":{},"MOMRULE":{},"POPLOC":{},"POPRULE":{},"SPLOC":{},"SPRULE":{},"FAMSIZE":{},"NCHILD":{},"NCHLT5":{},"FAMUNIT":{},"ELDCH":{},"YNGCH":{},"NSIBS":{},"NFAMS":{},"NCOUPLES":{},"NMOTHERS":{},"NFATHERS":{},"YEAR":{"preselected":true},"SERIAL":{"preselected":true},"HWTFINL":{"preselected":true},"PERNUM":{"preselected":true},"MONTH":{"preselected":true},"HWTSUPP":{},"WTSUPP":{},"WTFINL":{"preselected":true},"CPSID":{"preselected":true},"CPSIDP":{"preselected":true},"ASECFLAG":{"preselected":true},"HFLAG":{"preselected":true}},"collection":"cps"},"warnings":["The
+        following samples were dropped, as they are no longer available: cps2011_05b,
+        cps2012_07b","The following variables were dropped, as they are no longer
+        available: STEPMOM, STEPPOP"]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '2322'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 30 Mar 2023 19:49:05 GMT
+      Etag:
+      - W/"b35b767d32fbcd5787654ca9ea3770dc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 333d1214-d8c6-4426-b6c7-5e5dbbcc62c2
+      X-Runtime:
+      - '0.526995'
       X-Xss-Protection:
       - '0'
     status:

@@ -6,6 +6,7 @@ import yaml
 import json
 import pickle
 import tempfile
+import warnings
 from pathlib import Path
 
 import pytest
@@ -1019,3 +1020,10 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         "collection": "ipumsi",
         "version": 2,
     }
+
+    # extract with warnings
+    with pytest.warns(Warning) as record:
+        ext = live_api_client.get_extract_by_id("cps", 95)
+        if not record:
+            pytest.fail("Expected ModifiedIpumsExtract warning.")
+        
