@@ -46,6 +46,8 @@ class VariableDescription:
     """IPUMS variable group"""
     vartype: str
     """variable data type"""
+    notes: str
+    """notes about this variable from the ddi"""
     shift: Optional[int]
     """number of implied decimal places"""
 
@@ -128,6 +130,11 @@ class VariableDescription:
         # stick an empty string in this attribute for rectangular extracts
         except KeyError:
             var_rectype = ""
+        # if a variable has notes, capture those
+        try:
+            var_notes = elt.find("./ddi:notes", namespaces).text
+        except AttributeError:
+            var_notes = ""
         return cls(
             id=elt.attrib["ID"],
             name=elt.attrib["name"],
@@ -142,6 +149,7 @@ class VariableDescription:
             description=elt.find("./ddi:txt", namespaces).text,
             concept=elt.find("./ddi:concept", namespaces).text,
             vartype=vartype,
+            notes=var_notes,
             shift=int(elt.attrib.get("dcml")) if "dcml" in elt.attrib else None,
         )
 
