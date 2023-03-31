@@ -597,44 +597,6 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         )
 
 
-def define_extract_from_ddi(
-    ddi_codebook: Union[Codebook, List[Codebook]]
-) -> Union[BaseExtract, List[BaseExtract]]:
-    """
-    Create a BaseExtract object from a parsed DDI codebook.
-
-    Args:
-        ddi_codebook: A parsed IPUMS DDI Codebook object or list of such objects
-
-    Returns:
-        A BaseExtract object with the data collection, samples, variables,
-        and data structure specified by the DDI Codebook. Data format defaults
-        to fixed-width.
-    """
-    if isinstance(ddi_codebook, list):
-        return [define_extract_from_ddi(ddi) for ddi in ddi_codebook]
-    collection = ddi_codebook.ipums_collection
-    sample_ids_dict = CollectionInformation(collection).sample_ids
-
-    # put extract info in a dict
-    extract_info = {}
-    extract_info["collection"] = collection
-    extract_descs = ddi_codebook.samples_description
-    extract_info["samples"] = [sample_ids_dict[desc] for desc in extract_descs]
-    extract_info["variables"] = [vd.name for vd in ddi_codebook.data_description]
-    extract_info["dataStructure"] = ddi_codebook.file_description.structure
-    # DDI does not reflect when extract is requested in CSV or other format
-    # so this method will default to specifying fixed_width (.dat)
-    extract_info["dataFormat"] = "fixed_width"
-
-    # because the DDI doesn't have API version info, the extract will be submitted
-    # with the default version of the API or one that the user specifies when
-    # instantiating IpumsAPIClient
-    return BaseExtract._collection_to_extract[extract_info["collection"]](
-        **extract_info
-    )
-
-
 def save_extract_as_json(extract: Union[BaseExtract, List[BaseExtract]], filename: str):
     """
     Convenience method to save an IPUMS extract definition to a json file.

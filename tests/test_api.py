@@ -21,7 +21,6 @@ from ipumspy.api import (
     IpumsiExtract,
     extract_from_dict,
     extract_to_dict,
-    define_extract_from_ddi,
     define_extract_from_json,
     save_extract_as_json,
     Variable,
@@ -659,88 +658,6 @@ def test_download_extract_r(live_api_client: IpumsApiClient, tmpdir: Path):
         collection="usa", extract="196", r_command_file=True, download_dir=tmpdir
     )
     assert (tmpdir / "usa_00196.R").exists()
-
-
-def test_define_extract_from_ddi(fixtures_path: Path):
-    ddi_codebook = readers.read_ipums_ddi(fixtures_path / "usa_00196.xml")
-    extract = define_extract_from_ddi(ddi_codebook)
-
-    assert extract.collection == "usa"
-    assert extract.samples == [Sample(id="us2012b")]
-    assert extract.variables == [
-        Variable(
-            name="YEAR",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="SAMPLE",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="SERIAL",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="CBSERIAL",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="HHWT",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="GQ",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="PERNUM",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="PERWT",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="SEX",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-        Variable(
-            name="AGE",
-            preselected=False,
-            case_selections={},
-            attached_characteristics=[],
-            data_quality_flags=False,
-        ),
-    ]
-    assert extract.data_format == "fixed_width"
-    assert extract.api_version == None
 
 
 def test_define_extract_from_json(fixtures_path: Path):
