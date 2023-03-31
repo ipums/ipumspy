@@ -38,9 +38,3 @@ def test_tabulate(fixtures_path: Path):
     assert (crosstab_df["counts"]).all() == (np.array([7668])).all()
     assert (crosstab_df["pct"]).all() == (np.array([1.0])).all()
 
-
-@pytest.mark.vcr
-def test_get_sample_ids():
-    sample_ids = CollectionInformation("cps").sample_ids
-    assert sample_ids["IPUMS-CPS, ASEC 2019"] == "cps2019_03s"
-    assert sample_ids["IPUMS-CPS, January 1976"] == "cps1976_01s"

@@ -516,3 +516,23 @@ class IpumsApiClient:
                 f"has not been purged. You may download the data "
                 f"and ddi files directly using download_extract()"
             )
+        
+    def get_all_sample_info(self, collection: str) -> Dict:
+        """
+        Retrieve sample descriptions and ids for all samples in an IPUMS collection.
+
+        Args:
+            collection: An IPUMS data collection
+
+        Returns:
+            A dictionary of IPUMS sample descriptions and IPUMS sample IDs; keys are
+            sample ids, values are sample descriptions
+        """
+        # shoehorn since this is the only metadata api endpoint avaialble
+        url = f"https://api.ipums.org/metadata/{collection}/samples"
+        samples = self.get(url, params={"version": self.api_version}).json()
+        # make it into the expected dict
+        samples_dict = {}
+        for item in samples["data"]:
+            samples_dict[item["name"]] = item["description"]
+        return samples_dict

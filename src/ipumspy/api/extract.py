@@ -4,7 +4,6 @@ Wrappers for payloads to ship to the IPUMS API
 from __future__ import annotations
 
 import warnings
-from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Type, Union
 
 import requests
@@ -13,6 +12,7 @@ import json
 from ipumspy.ddi import Codebook
 from ipumspy.utilities import CollectionInformation
 
+from dataclasses import dataclass, field
 from .exceptions import IpumsExtractNotSubmitted
 
 
@@ -59,6 +59,7 @@ class Variable:
 @dataclass
 class Sample:
     id: str
+    description: Optional[str] = ""
 
     def __post_init__(self):
         self.id = self.id.lower()
