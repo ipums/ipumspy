@@ -396,7 +396,7 @@ class IpumsApiClient:
 
         Args:
             collection: The collection for which to look up most recent previous extracts.
-            limit: The number of extracts to look up. Default is 10
+            limit: The number of most recent extracts to look up. Default is 10
 
         Returns:
             A list of the user's most recent previous extract definitions.
@@ -406,7 +406,7 @@ class IpumsApiClient:
             self.base_url,
             params={
                 "collection": collection,
-                "limit": limit,
+                "pageSize": limit,
                 "version": self.api_version,
             },
         ).json()
