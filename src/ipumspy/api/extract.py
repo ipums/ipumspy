@@ -29,22 +29,38 @@ class ModifiedExtractWarning(Warning):
 
 @dataclass
 class Variable:
+    """
+    IPUMS variable object to include in an IPUMS extract object.
+    """
     name: str
+    """IPUMS variable name"""
     preselected: Optional[bool] = False
+    """Whether the variable is preselected. Defaults to False."""
     case_selections: Optional[Dict[str, List]] = field(default_factory=dict)
+    """Case selection specifications."""
     attached_characteristics: Optional[List[str]] = field(default_factory=list)
+    """Attach characteristics specifications."""
     data_quality_flags: Optional[bool] = False
+    """Flag to include the variable's associated data quality flags if they exist."""
 
     def __post_init__(self):
         self.name = self.name.upper()
 
     def update(self, attribute: str, value: Any):
+        """
+        Update Variable features
+        
+        Args:
+            attribute: name of the Variable attribute to update
+            value: values with which to update the `attribute`
+        """
         if hasattr(self, attribute):
             setattr(self, attribute, value)
         else:
             raise KeyError(f"Variable has no attribute '{attribute}'.")
 
     def build(self):
+        """Format Variable information for API Extract submission"""
         built_var = self.__dict__.copy()
         # don't repeat the variable name
         built_var.pop("name")
@@ -57,13 +73,25 @@ class Variable:
 
 @dataclass
 class Sample:
+    """
+    IPUMS sample object to include in an IPUMS extract object.
+    """
     id: str
+    """IPUMS sample id"""
     description: Optional[str] = ""
+    """IPUMS sample description"""
 
     def __post_init__(self):
         self.id = self.id.lower()
 
     def update(self, attribute: str, value: Any):
+        """
+        Update Sample features
+        
+        Args:
+            attribute: name of the Sample attribute to update
+            value: values with which to update the `attribute`
+        """
         if hasattr(self, attribute):
             setattr(self, attribute, value)
         else:
