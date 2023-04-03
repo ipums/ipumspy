@@ -10,7 +10,6 @@ import requests
 import json
 
 from ipumspy.ddi import Codebook
-from ipumspy.utilities import CollectionInformation
 
 from dataclasses import dataclass, field
 from .exceptions import IpumsExtractNotSubmitted
