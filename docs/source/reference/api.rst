@@ -32,6 +32,8 @@ extract class.
    ipumspy.api.UsaExtract
    ipumspy.api.CpsExtract
    ipumspy.api.IpumsiExtract
+   ipumspy.api.Variable
+   ipumspy.api.Sample
 
 Importing or Exporting Extract Definitions
 ------------------------------------------
