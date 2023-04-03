@@ -283,13 +283,10 @@ class BaseExtract:
                 collection that identify same sex couples can also accept "mother2" and "father2"
                 values in this list. If either "<parent>" or "<parent>2" values are included,
                 their same sex counterpart will automatically be included in the extract.
-
-        Returns: A Variable object with the `attached_characteristics` attribute with the
-                 value of the `of` argument
         """
         self._update_variable_feature(variable, "attached_characteristics", of)
 
-    def add_data_quality_flags(self, variable: Union[Variable, str]):
+    def add_data_quality_flags(self, variable: Union[Variable, str, List[Variable], List[str]]):
         """
         A method to update existing IPUMS Extract Variable objects to include that
         variable's data quality flag in the extract if it exists.
@@ -297,9 +294,12 @@ class BaseExtract:
         Args:
             variable: a Variable object or a string variable name
 
-        Returns: A Variable object with the `data_quality_fags` attribute set to True
         """
-        self._update_variable_feature(variable, "data_quality_flags", True)
+        if isinstance(variable, list):
+            for v in variable:
+                self._update_variable_feature(v, "data_quality_flags", True)
+        else:
+            self._update_variable_feature(variable, "data_quality_flags", True)
 
     def select_cases(
         self,
@@ -315,8 +315,6 @@ class BaseExtract:
             variable: a Variable object or a string variable name
             values: a list of values for which to select records
             general: set to False to select cases on detailed codes. Defaults to True.
-
-        Returns: A Variable object with the `select_cases` attribute with general or detailed codes specified for selection.
         """
         # stringify values
         values = [str(v) for v in values]

@@ -92,7 +92,7 @@ class IpumsApiClient:
         Class for creating and retrieving IPUMS extracts via API
 
         Args:
-            api_key: User's IPUMs API key
+            api_key: User's IPUMS API key
             base_url: IPUMS API url
             num_retries: number of times a request will be retried before
                         raising `TransientIpumsApiException`

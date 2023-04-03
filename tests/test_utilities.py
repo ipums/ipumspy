@@ -11,7 +11,7 @@ import pytest
 import vcr
 
 from ipumspy import readers
-from ipumspy.utilities import tabulate, CollectionInformation
+from ipumspy.utilities import tabulate
 
 
 def test_tabulate(fixtures_path: Path):

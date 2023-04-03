@@ -143,7 +143,7 @@ def test_usa_add_data_quality_flags():
     """
     extract = UsaExtract(
         ["us2012b"],
-        ["AGE", "SEX"],
+        ["AGE", "SEX", "RACE"],
     )
     extract.add_data_quality_flags("SEX")
     assert extract.build() == {
@@ -157,6 +157,48 @@ def test_usa_add_data_quality_flags():
                 "dataQualityFlags": False,
             },
             "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": True,
+            },
+            "RACE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "description": "My IPUMS USA extract",
+        "dataFormat": "fixed_width",
+        "collection": "usa",
+        "version": None,
+    }
+
+    # add a list of flags
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX", "RACE"],
+    )
+
+    extract.add_data_quality_flags(["AGE", "RACE"])
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"us2012b": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": True,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
