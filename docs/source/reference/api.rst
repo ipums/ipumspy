@@ -31,6 +31,7 @@ extract class.
    ipumspy.api.OtherExtract
    ipumspy.api.UsaExtract
    ipumspy.api.CpsExtract
+   ipumspy.api.IpumsiExtract
 
 Importing or Exporting Extract Definitions
 ------------------------------------------
@@ -46,7 +47,6 @@ objects and from dictonary objects to ipumspy extract objects.
    ipumspy.api.extract_to_dict
    ipumspy.api.extract.save_extract_as_json
    ipumspy.api.extract.define_extract_from_json
-   ipumspy.api.extract.define_extract_from_ddi
 
 Exceptions
 ----------
