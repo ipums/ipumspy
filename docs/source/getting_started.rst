@@ -32,19 +32,20 @@ Both fixed-width and csv files are supported.
 
     from ipumspy import readers, ddi
 
-    ddi_codebook = readers.read_ipums_ddi([ddi xml file path])
-    ipums_df = readers.read_microdata(ddi_codebook, [data file path])
+    ddi_codebook = readers.read_ipums_ddi(ddi/xml/file path/)
+    ipums_df = readers.read_microdata(ddi_codebook, data/file/path)
 
 
 IPUMS API Wrappers for Python
 -----------------------------
 
-``ipumspy`` provides an easy-to-use Python wrapper for IPUMS Microdata Extract API endpoints. Note that the IPUMS Microdata Extract API is still in beta!
+``ipumspy`` provides an easy-to-use Python wrapper for IPUMS API endpoints.
 
 Quick Start
 ***********
 
-Once you have created a user account for your data collection of interest (currently only `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__ and `IPUMS CPS <https://uma.pop.umn.edu/cps/user/new?return_url=https%3A%2F%2Fcps.ipums.org%2Fusa-action%2Fmenu>`__ are available via API) and generated an API key:
+Once you have created a user account for your data collection of interest generated an API key.
+This quick start example uses `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__. Note that not all IPUMS data collections are available via API.
 
 .. code:: python
 
@@ -136,4 +137,4 @@ Then you can run the following code:
 
 Alternatively, you can utilize the :doc:`CLI <cli>`.
 
-For more information on the IPUMS Microdata Extract API, visit the `IPUMS developer portal <https://beta.developer.ipums.org/>`__.
+For more information on the IPUMS API, visit the `IPUMS developer portal <https://developer.ipums.org/>`__.
