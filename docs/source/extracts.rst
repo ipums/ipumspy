@@ -16,10 +16,7 @@ An extract is defined by:
 2. A list of IPUMS sample IDs from that collection
 3. A list of IPUMS variable names from that collection
 
-IPUMS metadata is not currently accessible via API. 
-Sample IDs and IPUMS variable names can be browsed via the data collection's website. 
-See the table below for data collection abreviations and links to sample IDs and variable browsing.
-Note that not all IPUMS data collections are currently available via API. The table below will be
+IPUMS metadata is not currently accessible via API. Sample IDs and IPUMS variable names can be browsed via the data collection's website. See the table below for data collection abreviations and links to sample IDs and variable browsing. Note that not all IPUMS data collections are currently available via API. The table below will be
 filled in as new IPUMS data collections become accessible via API.
 
 .. _collection availability table:
@@ -50,8 +47,7 @@ filled in as new IPUMS data collections become accessible via API.
 Extract Objects
 ---------------
 
-Each IPUMS data collection that is accessible via API has its own extract class.
-Using this class to create your extract object obviates the need to specify a data collection.
+Each IPUMS data collection that is accessible via API has its own extract class. Using this class to create your extract object obviates the need to specify a data collection.
 
 For example:
 
@@ -64,6 +60,16 @@ For example:
 
 instantiates a UsaExtract object for the IPUMS USA data collection that includes the us2012b (2012 PRCS) sample, and the variables AGE and SEX.
 
+IPUMS extracts can be requested as rectangular or hierarchical files. The ``data_structure`` argument defaults to ``{"rectangular": {"on": "P"}}`` to request a rectangular, person-level extract. The code snippet below requests a hierarchical USA extract.
+
+.. code:: python
+
+    extract = UsaExtract(
+        ["us2012b"],
+        ["AGE", "SEX"],
+        data_structure={"hierarchical": {}}
+    )
+
 Users also have the option to specify a data format and an extract description when creating an extract object.
 
 .. code:: python
@@ -74,6 +80,8 @@ Users also have the option to specify a data format and an extract description w
         data_format="csv",
         description="My first IPUMS USA extract!"
     )
+
+
 
 Once an extract object has been created, the extract must be submitted to the API.
 
@@ -254,7 +262,7 @@ Data quality flags can also be selected for specific variables using the :meth:`
 Using Variable Objects to Include Extract Features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is also possible to define all variable-level extract features when the IPUMS extract object is first defined using :class:`ipumspy.api.extract.Variable` objects. The example below defines an IPUMS CPS extract that includes a variable for the age of the spouse (`attached_characteristics`), limits the sample to women (`case_selections`), and includes the data quality flag for RACE (`data_quality_flags`).
+It is also possible to define all variable-level extract features when the IPUMS extract object is first defined using :class:`ipumspy.api.extract.Variable` objects. The example below defines an IPUMS CPS extract that includes a variable for the age of the spouse (``attached_characteristics``), limits the sample to women (``case_selections``), and includes the data quality flag for RACE (``data_quality_flags``).
 
 .. code:: python
 

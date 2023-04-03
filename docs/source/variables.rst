@@ -2,18 +2,21 @@
 
 .. currentmodule:: ipumspy
 
+IPUMS variables
+===============
+
 IPUMS Variable Objects
-======================
+----------------------
 
 A list of user-defined :class:`ipumspy.api.extract.Variable` objects can be passed to the IPUMS Extract classes to build extracts that take advantage of available IPUMS extract features. For more information on using IPUMS extract features in `ipumspy`, see :ref:`Using Variable Objects to Include Extract Features` for more information.
 
 IPUMS Variable Metadata
-=======================
+-----------------------
 
 Currently, IPUMS metadata is not accessible via API and all variable information is pulled from an extract's DDI codebook. This codebook is created after the extract is submitted to the IPUMS extract system.
 
 Variable Descriptions
----------------------
+*********************
 
 The :class:`ipumspy.ddi.VariableDescription` objects built from the ddi codebook provide easy access to variable metadata. These can be returned using the :meth:`.get_variable_info()` method.
 
@@ -43,7 +46,7 @@ The above code results in the following::
     'SEX reports whether the person was male or female.'
 
 More on Value labels
---------------------
+********************
 
 Users can filter on categorical variables using labels instead of numerical values
 For example, the following code retains only the female respondents in ``ipums_df``.
