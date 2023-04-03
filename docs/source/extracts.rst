@@ -22,6 +22,8 @@ See the table below for data collection abreviations and links to sample IDs and
 Note that not all IPUMS data collections are currently available via API. The table below will be
 filled in as new IPUMS data collections become accessible via API.
 
+.. _collection availability table:
+
 .. list-table:: IPUMS data collections metadata resources
     :widths: 25 25 25 25
     :header-rows: 1
@@ -162,6 +164,111 @@ returns:
 .. code:: python
 
     2
+
+Extract Features
+----------------
+
+IPUMS Extract features can be added or updated before an extract request is submitted. This section demonstrates adding features to the following IPUMS CPS extract.
+
+.. code:: python
+
+    extract = CPSExtract(
+        ["cps2022_03s"],
+        ["AGE", "SEX", "RACE"],
+    )
+
+Attach Characteristics
+~~~~~~~~~~~~~~~~~~~~~~
+
+IPUMS allows users to create variables that reflect the characteristics of other household members. The example below uses the :meth:`.attach_characteristics()` method to attach the spouse's AGE value, creating a new variable called SEX_SP in the extract that will contain the age of a person's spouse if they have one and be 0 otherwise. The :meth:`.attach_characteristics()` method takes the name of the variable to attach and the household member whose values the new variable will include. Valid household members include "spouse", "mother", "father", and "head".
+
+.. code:: python
+
+    extract.attach_characteristics("SEX", ["spouse"])
+
+The following would add variables for the RACE value of both parents:
+
+.. code:: python
+
+    extract.attach_characteristics("RACE", ["mother", "father"])
+
+Select Cases
+~~~~~~~~~~~~
+
+IPUMS allows users to limit their extract based on values of included variables. The code below uses the :meth:`.select_cases()` to select only the female records in the example IPUMS CPS extract. This method takes a variable name and a list of values for that variable for which to include records in the extract. Note that the variable must be included in the IPUMS extract object in order to use this feature; also note that this feature is only available for categorical varaibles.
+
+.. code:: python
+
+    extract.select_cases("SEX", ["2"])
+
+The :meth:`.select_cases()` method defaults to using "general" codes to select cases. Some variables also have detailed codes that can be used to select cases. Consider the following example extract of the 2021 ACS data from IPUMS USA:
+
+.. code:: python
+
+    extract = UsaExtract(
+        ["us2021a"],
+        ["AGE", "SEX", "RACE"]
+    )
+
+In IPUMS USA, the `RACE <https://usa.ipums.org/usa-action/variables/race#codes_section>`_ variable has both general and detailed codes. A user interested in respondents who identify themselves with two major race groups can use general codes:
+
+.. code:: python
+
+    extract.select_cases("RACE", ["8"])
+
+A user interested in respondents who identify as both White and Asian can use detailed case selection to only include those chose White and another available Asian cateogry. To do this, in addition to specifying the correct detailed codes, set the `general` flag to `False`:
+
+.. code:: python
+
+    extract.select_cases("RACE", 
+                         ["810", "811", "812", "813", "814", "815", "816", "818"], 
+                         general=False)
+
+Add Data Quality Flags
+~~~~~~~~~~~~~~~~~~~~~~
+
+Data quality flags can be added to an extract on a per-variable basis or for the entire extract. The CPS extract example above could be re-defined as follows in order to add all available data quality flags:
+
+.. code:: python
+
+    extract = CpsExtract(
+        ["cps2022_03s"],
+        ["AGE", "SEX", "RACE"],
+        data_quality_flags=True
+    )
+
+This extract specification will add data quality flags for all variables in the variable list to the extract for which data quality flags exist in the sample(s) in the samples list.
+
+Data quality flags can also be selected for specific variables using the :meth:`.add_data_quality_flags()` method.
+
+.. code:: python
+
+    # add the data quality flag for AGE to the extract
+    extract.add_data_quality_flags("AGE")
+
+    # note that this method will also accept a list!
+    extract.add_data_quality_flags(["AGE", "SEX"])
+
+.. _Using Variable Objects to Include Extract Features:
+
+Using Variable Objects to Include Extract Features
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is also possible to define all variable-level extract features when the IPUMS extract object is first defined using :class:`ipumspy.api.extract.Variable` objects. The example below defines an IPUMS CPS extract that includes a variable for the age of the spouse (`attached_characteristics`), limits the sample to women (`case_selections`), and includes the data quality flag for RACE (`data_quality_flags`).
+
+.. code:: python
+
+    fancy_extract = CpsExtract(
+        ["cps2022_03s"],
+        [
+            Variable(name="AGE",
+                     attached_characteristics=["spouse"]),
+            Variable(name="SEX",
+                     case_selections={"general": ["2"]}),
+            Variable(name="RACE",
+                     data_quality_flags=True)
+         ]
+    )
 
 Unsupported Features
 --------------------

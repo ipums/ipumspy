@@ -32,6 +32,17 @@ extract class.
    ipumspy.api.UsaExtract
    ipumspy.api.CpsExtract
    ipumspy.api.IpumsiExtract
+
+Other IPUMS Objects
+-------------------
+
+Helpful data classes for defining IPUMS Extract objects.
+
+.. autosummary::
+   :toctree: generated
+   :template: class.rst
+   :nosignatures:
+
    ipumspy.api.Variable
    ipumspy.api.Sample
 

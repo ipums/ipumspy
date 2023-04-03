@@ -45,7 +45,7 @@ Quick Start
 ***********
 
 Once you have created a user account for your data collection of interest generated an API key.
-This quick start example uses `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__. Note that not all IPUMS data collections are available via API.
+This quick start example uses `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__. Note that not all IPUMS data collections are available via API. For an up-to-date list of available collections and links to sample and variable information, see the :ref:`collection availability table`.
 
 .. code:: python
 

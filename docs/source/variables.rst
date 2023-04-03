@@ -2,10 +2,15 @@
 
 .. currentmodule:: ipumspy
 
+IPUMS Variable Objects
+======================
+
+A list of user-defined :class:`ipumspy.api.extract.Variable` objects can be passed to the IPUMS Extract classes to build extracts that take advantage of available IPUMS extract features. For more information on using IPUMS extract features in `ipumspy`, see :ref:`Using Variable Objects to Include Extract Features` for more information.
+
 IPUMS Variable Metadata
 =======================
 
-Currently, IPUMS metadata is not accessible via API and all variable information is pulled from an extract's DDI codebook.
+Currently, IPUMS metadata is not accessible via API and all variable information is pulled from an extract's DDI codebook. This codebook is created after the extract is submitted to the IPUMS extract system.
 
 Variable Descriptions
 ---------------------
