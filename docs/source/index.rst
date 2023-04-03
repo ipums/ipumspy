@@ -53,6 +53,7 @@ Indices and tables
    getting_started
    extracts
    variables
+   reading_data
    cli
 
 .. toctree::
