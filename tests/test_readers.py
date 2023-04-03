@@ -439,7 +439,9 @@ def test_subset_option(fixtures_path: Path):
     # then for hierarchical single data frame
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
     data = readers.read_hierarchical_microdata(
-        ddi, fixtures_path / "cps_00421.dat.gz", subset=["RECTYPE", "MISH", "AGE"]
+        ddi, fixtures_path / "cps_00421.dat.gz", 
+        subset=["RECTYPE", "MISH", "AGE"],
+        as_dict=False
     )
 
     _assert_cps_hierarchical_subset(data)
