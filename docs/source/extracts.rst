@@ -133,11 +133,11 @@ returns:
 
     'started'
 
-While IPUMS retains all of a user's extract definitions, after a certain period, the extract data and syntax files are purged from the IPUMS cache. Importantly, if an extract's data and syntax files have been purged, the extract is still considered to have been completed, and :meth:`.extract_status()` will return "completed."
+While IPUMS retains all of a user's extract definitions, after a certain period, the extract data and syntax files are purged from the IPUMS cache - these extracts are said to be "expired". Importantly, if an extract's data and syntax files have been removed, the extract is still considered to have been completed, and :meth:`.extract_status()` will return "completed."
 
 .. code:: python
 
-    # extract number 1 has been purged
+    # extract number 1 has expired
     ipums.extract_status(collection="usa", extract="1")
 
 returns:
@@ -146,11 +146,11 @@ returns:
 
     'completed'
 
-If an extract has been purged: 
+If an extract has expired: 
 
 .. code:: python
 
-    ipums.extract_was_purged(collection="usa", extract="1")
+    ipums.extract_was_expired(collection="usa", extract="1")
 
 
 returns:
@@ -159,11 +159,11 @@ returns:
 
     True
 
-For extracts that have had their files purged, the data collection name and extract ID number can be used to resubmit the old extract. Note that resubmitting a purged extract results in a new extract with its own unique ID number!
+For extracts that have had their files expired, the data collection name and extract ID number can be used to resubmit the old extract. Note that resubmitting a expired extract results in a new extract with its own unique ID number!
 
 .. code:: python
 
-    resubmitted_extract = ipums.resubmit_purged_extract(collection="usa", extract="1")
+    resubmitted_extract = ipums.resubmit_expired_extract(collection="usa", extract="1")
 
     resubmitted_extract.extract_id
 

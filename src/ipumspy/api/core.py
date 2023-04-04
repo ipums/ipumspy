@@ -71,7 +71,7 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
         return response_message
 
 
-def _reconstitute_purged_extract(
+def _reconstitute_expired_extract(
     collection: str, api_response: Dict[str, Any]
 ) -> BaseExtract:
     return BaseExtract._collection_to_extract[collection].from_api_response(
@@ -299,7 +299,7 @@ class IpumsApiClient:
 
         download_links = response.json()["downloadLinks"]
         try:
-            # if the extract has been purged, the download_links element will be
+            # if the extract has been expired, the download_links element will be
             # an empty dict
             data_url = download_links["data"]["url"]
             ddi_url = download_links["ddiCodebook"]["url"]
@@ -320,7 +320,7 @@ class IpumsApiClient:
 
         except KeyError:
             raise IpumsExtractNotReady(
-                f"Your IPUMS {collection} extract number {extract_id} was purged "
+                f"Your IPUMS {collection} extract number {extract_id} was expired "
                 f"from our cache. Please resubmit your extract."
             )
         for url in download_urls:
@@ -468,13 +468,13 @@ class IpumsApiClient:
             extract = OtherExtract(collection, extract)
         return extract
 
-    def extract_was_purged(
+    def extract_was_expired(
         self,
         extract: Union[BaseExtract, int],
         collection: Optional[str] = None,
     ) -> bool:
         """
-        Returns True if the IPUMS extract's files have been purged from the cache.
+        Returns True if the IPUMS extract's files have been expired from the cache.
 
         extract: An extract object. This extract must have been submitted.
                  Alternatively, can be an extract id. If an extract id is provided, you
@@ -489,23 +489,23 @@ class IpumsApiClient:
         else:
             return False
 
-    def resubmit_purged_extract(self, extract: str, collection: str):
+    def resubmit_expired_extract(self, extract: str, collection: str):
         """
-        Re-submits an IPUMS extract for which the data and ddi files have been purged
+        Re-submits an IPUMS extract for which the data and ddi files have been expired
         from the IPUMS extract system cache.
 
         Args:
-            collection: The collection of the purged extract to be re-submitted
-            extract_id: The extract id of the purged extract to be re-submitted
+            collection: The collection of the expired extract to be re-submitted
+            extract_id: The extract id of the expired extract to be re-submitted
 
         Returns:
             An IPUMS extract object. NB: the re-submitted extract will have its own
-            extract id number, different from the extract_id of the purged extract!
+            extract id number, different from the extract_id of the expired extract!
         """
 
-        if self.extract_was_purged(collection=collection, extract=extract):
+        if self.extract_was_expired(collection=collection, extract=extract):
             extract_definition = self.get_extract_info(extract, collection)
-            base_obj = _reconstitute_purged_extract(collection, extract_definition)
+            base_obj = _reconstitute_expired_extract(collection, extract_definition)
             base_obj.description = f"Revision of ({base_obj.description})"
             extract_obj = self.submit_extract(base_obj, collection=collection)
 
@@ -513,7 +513,7 @@ class IpumsApiClient:
         else:
             raise IpumsApiException(
                 f"IPUMS {collection} extract number {extract} "
-                f"has not been purged. You may download the data "
+                f"has not been expired. You may download the data "
                 f"and ddi files directly using download_extract()"
             )
         

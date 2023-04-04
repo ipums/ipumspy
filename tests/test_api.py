@@ -522,7 +522,7 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
     )
 
     with pytest.raises(IpumsNotFound) as exc_info:
-        live_api_client.resubmit_purged_extract(extract="0", collection="usa")
+        live_api_client.resubmit_expired_extract(extract="0", collection="usa")
     assert exc_info.value.args[0] == (
         "Page not found. Perhaps you passed the wrong extract id?"
     )
@@ -542,12 +542,12 @@ def test_not_submitted_exception():
 
 
 @pytest.mark.vcr
-def test_extract_was_purged(live_api_client: IpumsApiClient):
+def test_extract_was_expired(live_api_client: IpumsApiClient):
     """
-    test extract_was_purged() method
+    test extract_was_expired() method
     """
-    was_purged = live_api_client.extract_was_purged(extract="1", collection="usa")
-    assert was_purged == True
+    was_expired = live_api_client.extract_was_expired(extract="1", collection="usa")
+    assert was_expired == True
 
 
 def test_extract_from_dict(fixtures_path: Path):
