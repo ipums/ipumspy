@@ -71,14 +71,6 @@ def _prettify_message(response_message: Union[str, List[str]]) -> str:
         return response_message
 
 
-def _reconstitute_expired_extract(
-    collection: str, api_response: Dict[str, Any]
-) -> BaseExtract:
-    return BaseExtract._collection_to_extract[collection].from_api_response(
-        api_response
-    )
-
-
 class IpumsApiClient:
     def __init__(
         self,
@@ -320,8 +312,8 @@ class IpumsApiClient:
 
         except KeyError:
             raise IpumsExtractNotReady(
-                f"Your IPUMS {collection} extract number {extract_id} was expired "
-                f"from our cache. Please resubmit your extract."
+                f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
+                f"Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
             )
         for url in download_urls:
             file_name = url.split("/")[-1]
@@ -468,7 +460,7 @@ class IpumsApiClient:
             extract = OtherExtract(collection, extract)
         return extract
 
-    def extract_was_expired(
+    def extract_is_expired(
         self,
         extract: Union[BaseExtract, int],
         collection: Optional[str] = None,
@@ -488,34 +480,6 @@ class IpumsApiClient:
             return True
         else:
             return False
-
-    def resubmit_expired_extract(self, extract: str, collection: str):
-        """
-        Re-submits an IPUMS extract for which the data and ddi files have been expired
-        from the IPUMS extract system cache.
-
-        Args:
-            collection: The collection of the expired extract to be re-submitted
-            extract_id: The extract id of the expired extract to be re-submitted
-
-        Returns:
-            An IPUMS extract object. NB: the re-submitted extract will have its own
-            extract id number, different from the extract_id of the expired extract!
-        """
-
-        if self.extract_was_expired(collection=collection, extract=extract):
-            extract_definition = self.get_extract_info(extract, collection)
-            base_obj = _reconstitute_expired_extract(collection, extract_definition)
-            base_obj.description = f"Revision of ({base_obj.description})"
-            extract_obj = self.submit_extract(base_obj, collection=collection)
-
-            return extract_obj
-        else:
-            raise IpumsApiException(
-                f"IPUMS {collection} extract number {extract} "
-                f"has not been expired. You may download the data "
-                f"and ddi files directly using download_extract()"
-            )
         
     def get_all_sample_info(self, collection: str) -> Dict:
         """

@@ -31,6 +31,7 @@ from ipumspy.api.exceptions import (
     IpumsApiException,
     IpumsExtractNotSubmitted,
     IpumsNotFound,
+    IpumsExtractNotReady,
 )
 
 
@@ -521,12 +522,6 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
         "Be sure to submit your extract before trying to download it!"
     )
 
-    with pytest.raises(IpumsNotFound) as exc_info:
-        live_api_client.resubmit_expired_extract(extract="0", collection="usa")
-    assert exc_info.value.args[0] == (
-        "Page not found. Perhaps you passed the wrong extract id?"
-    )
-
 
 @pytest.mark.vcr
 def test_not_submitted_exception():
@@ -542,12 +537,12 @@ def test_not_submitted_exception():
 
 
 @pytest.mark.vcr
-def test_extract_was_expired(live_api_client: IpumsApiClient):
+def test_extract_is_expired(live_api_client: IpumsApiClient):
     """
-    test extract_was_expired() method
+    Ensure expired status is correctly returned
     """
-    was_expired = live_api_client.extract_was_expired(extract="1", collection="usa")
-    assert was_expired == True
+    is_expired = live_api_client.extract_is_expired(extract="1", collection="usa")
+    assert is_expired == True
 
 
 def test_extract_from_dict(fixtures_path: Path):
@@ -656,6 +651,19 @@ def test_download_extract(live_api_client: IpumsApiClient, tmpdir: Path):
     )
     assert (tmpdir / "usa_00196.dat.gz").exists()
     assert (tmpdir / "usa_00196.xml").exists()
+
+
+@pytest.mark.vcr
+def test_download_expired_extract(live_api_client: IpumsApiClient, tmpdir: Path):
+    # if the extract has expired, raise IpumsExtractNotReady error
+    with pytest.raises(IpumsExtractNotReady) as exc_info:
+        live_api_client.download_extract(
+        collection="usa", extract="1", download_dir=tmpdir
+    )
+    assert exc_info.value.args[0] == (
+        "IPUMS usa extract 1 has expired and its files have been deleted.\n"
+        "Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
+    )
 
 
 @pytest.mark.vcr

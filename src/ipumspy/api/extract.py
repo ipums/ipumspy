@@ -391,18 +391,6 @@ class UsaExtract(BaseExtract, collection="usa"):
         # make the kwargs camelCase
         self.kwargs = self._snake_to_camel(kwargs)
 
-    @classmethod
-    def from_api_response(cls, api_response: Dict[str, Any]) -> UsaExtract:
-        return cls(
-            samples=list(api_response["extractDefinition"]["samples"]),
-            variables=list(api_response["extractDefinition"]["variables"]),
-            data_format=api_response["extractDefinition"]["dataFormat"],
-            data_structure=api_response["extractDefinition"]["dataStructure"],
-            description=api_response["extractDefinition"]["description"],
-            api_version=api_response["extractDefinition"]["version"],
-            collection=api_response["extractDefinition"]["collection"],
-        )
-
     def build(self) -> Dict[str, Any]:
         """
         Convert the object into a dictionary to be passed to the IPUMS API
@@ -465,18 +453,6 @@ class CpsExtract(BaseExtract, collection="cps"):
         # make the kwargs camelCase
         self.kwargs = self._snake_to_camel(kwargs)
 
-    @classmethod
-    def from_api_response(cls, api_response: Dict[str, Any]) -> CpsExtract:
-        return cls(
-            samples=list(api_response["extractDefinition"]["samples"]),
-            variables=list(api_response["extractDefinition"]["variables"]),
-            data_format=api_response["extractDefinition"]["dataFormat"],
-            data_structure=api_response["extractDefinition"]["dataStructure"],
-            description=api_response["extractDefinition"]["description"],
-            api_version=api_response["extractDefinition"]["version"],
-            collection=api_response["extractDefinition"]["collection"],
-        )
-
     def build(self) -> Dict[str, Any]:
         """
         Convert the object into a dictionary to be passed to the IPUMS API
@@ -538,18 +514,6 @@ class IpumsiExtract(BaseExtract, collection="ipumsi"):
         self._kwarg_warning(kwargs)
         # make the kwargs camelCase
         self.kwargs = self._snake_to_camel(kwargs)
-
-    @classmethod
-    def from_api_response(cls, api_response: Dict[str, Any]) -> IpumsiExtract:
-        return cls(
-            samples=list(api_response["extractDefinition"]["samples"]),
-            variables=list(api_response["extractDefinition"]["variables"]),
-            data_format=api_response["extractDefinition"]["dataFormat"],
-            data_structure=api_response["extractDefinition"]["dataStructure"],
-            description=api_response["extractDefinition"]["description"],
-            api_version=api_response["extractDefinition"]["version"],
-            collection=api_response["extractDefinition"]["collection"],
-        )
 
     def build(self) -> Dict[str, Any]:
         """
