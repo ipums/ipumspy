@@ -439,8 +439,8 @@ class IpumsApiClient:
 
     def get_extract_by_id(
         self,
-        collection: str,
         extract_id: int,
+        collection: str,
     ) -> BaseExtract:
         """
         Convenience method to get a specific previously-submitted IPUMS extract.
