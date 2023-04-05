@@ -150,7 +150,7 @@ If an extract has expired:
 
 .. code:: python
 
-    ipums.extract_was_expired(collection="usa", extract="1")
+    ipums.extract_is_expired(collection="usa", extract="1")
 
 
 returns:
@@ -159,11 +159,15 @@ returns:
 
     True
 
-For extracts that have had their files expired, the data collection name and extract ID number can be used to resubmit the old extract. Note that resubmitting a expired extract results in a new extract with its own unique ID number!
+For extracts that have expired, the data collection name and extract ID number can be used to re-create and re-submit the old extract. **Note that re-creating and re-submitting a expired extract results in a new extract with its own unique ID number!**
 
 .. code:: python
 
-    resubmitted_extract = ipums.resubmit_expired_extract(collection="usa", extract="1")
+    # create a UsaExtract object from the expired extract definition
+    renewed_extract = ipums.get_extract_by_id(collection="usa", extract_id=1)
+
+    # submit the renewed extract to re-generate the data and syntax files
+    resubmitted_extract = ipums.submit_extract(renewed_extract)
 
     resubmitted_extract.extract_id
 
