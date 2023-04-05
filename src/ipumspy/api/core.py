@@ -311,10 +311,16 @@ class IpumsApiClient:
                 download_urls.append(_url)
 
         except KeyError:
-            raise IpumsExtractNotReady(
-                f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
-                f"Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
-            )
+            if isinstance(extract, BaseExtract):
+                raise IpumsExtractNotReady(
+                    f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
+                    f"Use `submit_extract() to resubmit this extract object as a new extract request."
+                )
+            else:
+                raise IpumsExtractNotReady(
+                    f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
+                    f"Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
+                )
         for url in download_urls:
             file_name = url.split("/")[-1]
             download_path = download_dir / file_name

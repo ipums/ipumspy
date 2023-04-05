@@ -842,7 +842,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
     """
     Make sure extract can be retrieved with specific ID
     """
-    cps_ext = live_api_client.get_extract_by_id("cps", 433)
+    cps_ext = live_api_client.get_extract_by_id(433, "cps")
     assert isinstance(cps_ext, CpsExtract)
     assert cps_ext.build() == {
         "description": "my extract",
@@ -921,7 +921,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         "version": 2,
     }
 
-    ipumsi_ext = live_api_client.get_extract_by_id("ipumsi", 6)
+    ipumsi_ext = live_api_client.get_extract_by_id(6, "ipumsi")
     assert isinstance(ipumsi_ext, IpumsiExtract)
     assert ipumsi_ext.build() == {
         "description": "My IPUMS International extract",
@@ -990,7 +990,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
 
     # extract with warnings
     with pytest.warns(Warning) as record:
-        ext = live_api_client.get_extract_by_id("cps", 95)
+        ext = live_api_client.get_extract_by_id(95, "cps")
         if not record:
             pytest.fail("Expected ModifiedIpumsExtract warning.")
 
