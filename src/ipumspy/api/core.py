@@ -7,7 +7,7 @@ import warnings
 from functools import wraps
 from http import HTTPStatus
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union, Generator
 
 import requests
 from requests.models import Response
@@ -132,7 +132,7 @@ class IpumsApiClient:
             elif response.status_code == HTTPStatus.NOT_FOUND:
                 # No request with the passed error
                 raise IpumsNotFound(
-                    "Page not found. Perhaps you passed the wrong extract id?"
+                    "Page not found. Perhaps you passed the wrong extract id or an invalid page size?"
                 )
             else:
                 error_details = _prettify_message(response.json()["detail"])
@@ -486,6 +486,31 @@ class IpumsApiClient:
             return True
         else:
             return False
+        
+    def get_pages(self, collection: str, page_size=2500) -> Generator[Dict, None, None]:
+        """
+        An IPUMS API pages generator.
+
+        Args:
+            collection: An IPUMS data collection
+            page_size: The number of items to return per page. Default to maximum page size, 2500.
+
+        Yields:
+            IPUMS API page JSON 
+        """
+        first_page = self.get(
+                            self.base_url,
+                            params={"collection": collection,
+                                    "version": self.api_version,
+                                    "pageSize": page_size}
+                            ).json()
+        yield first_page
+        next_page = first_page["links"]["nextPage"]
+
+        while next_page is not None:
+            page = self.get(next_page).json()
+            yield page
+            next_page = page["links"]["nextPage"]
         
     def get_all_sample_info(self, collection: str) -> Dict:
         """

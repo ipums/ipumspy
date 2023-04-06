@@ -1153,4 +1153,12 @@ def test_get_all_sample_info(live_api_client: IpumsApiClient):
     "us2021c": "2017-2021, ACS 5-year",    
     "us2021d": "2017-2021, PRCS 5-year"
     }
-        
+
+
+@pytest.mark.vcr
+def test_get_pages(live_api_client: IpumsApiClient):
+    """
+    Test API pages generator.
+    """
+    page1 = next(live_api_client.get_pages(collection="usa", page_size=5))
+    assert len(page1["data"]) == 5
