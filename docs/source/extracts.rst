@@ -289,5 +289,34 @@ Not all features available through the IPUMS extract web UI are currently suppor
 For a list of currently unsupported features, see `the developer documentation <https://beta.developer.ipums.org/docs/apiprogram/apis/>`__.
 This list will be updated as more features become available.
 
+Extract Histories
+-----------------
+``ipumspy`` offers several ways to peruse your extract history for a given IPUMS data collection.
 
+:meth:`.get_previous_extracts()` can be used to retrieve your 10 most recent extracts for a given collection. The limit can be set to a custom n of most recent previous extracts.
+
+.. code:: python
+    
+    from ipumspy import IpumsApiClient
+
+    ipums = IpumsApiClient("YOUR_API_KEY")
+
+    # get my 10 most-recent USA extracts
+    recent_extracts = ipums.get_previous_extracts("usa")
+
+    # get my 20 most-recent CPS extracts
+    more_recent_extracts = ipums.get_previous_extracts("cps", limit=20)
+
+The :meth:`.get_extract_history()` generator makes it easy to filter your extract history to pull out extracts with certain variables, samples, features, file formats, etc. By default, this generator returns pages extract definitions of the maximum possible size, 2500. Page size can be set to a lower number using the ``page_size`` argument.
+
+.. code:: python
+
+    # make a list of all of my extracts from IPUMS CPS that include the variable STATEFIP
+    extracts_with_state = []
+    # get pages with 50 CPS extracts per page
+    for page in ipums.get_extract_history("cps", page_size=100):
+        for ext in page["data"]:
+            extract_obj = CpsExtract(**ext["extractDefinition"])
+            if "STATEFIP" in [var.name for var in extract_obj.variables]:
+                extracts_with_state.append(extract_obj)
 
