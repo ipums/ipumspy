@@ -470,7 +470,6 @@ class CpsExtract(BaseExtract, collection="cps"):
         """
 
         super().__init__()
-        print(type(variables))
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)
         self.description = description
