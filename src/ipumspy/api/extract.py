@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import requests
 import json
+import inspect
 
 from ipumspy.ddi import Codebook
 
@@ -69,7 +70,7 @@ class Variable:
         built_var["attachedCharacteristics"] = built_var.pop("attached_characteristics")
         built_var["dataQualityFlags"] = built_var.pop("data_quality_flags")
         return built_var
-
+    
 
 @dataclass
 class Sample:
@@ -96,6 +97,32 @@ class Sample:
             setattr(self, attribute, value)
         else:
             raise KeyError(f"Sample has no attribute '{attribute}'.")
+
+
+def _unpack_samples_dict(dct: dict) -> List[Sample]:
+    return [Sample(id=samp) for samp in dct.keys()]
+
+
+def _unpack_variables_dict(dct: dict) -> List[Variable]:
+    vars = []
+    for var in dct.keys():
+        var_obj = Variable(name=var)
+        # this feels dumb, but the best way to avoid KeyErrors
+        # that is coming to my brain at the moment
+        if "preselected" in dct[var]:
+            var_obj.update("preselected", 
+                            dct[var]["preselected"])
+        if "caseSelections" in dct[var]:
+            var_obj.update("case_selections", 
+                            dct[var]["caseSelections"])
+        if "attachedCharacteristics" in dct[var]:
+            var_obj.update("attached_characteristics", 
+                            dct[var]["attachedCharacteristics"])
+        if "dataQualityFlags" in dct[var]:
+            var_obj.update("data_quality_flags", 
+                            dct[var]["dataQualityFlags"])
+        vars.append(var_obj)
+    return vars
 
 
 class BaseExtract:
@@ -192,11 +219,19 @@ class BaseExtract:
 
         return kwarg_dict
 
-
     def _validate_list_args(self, list_arg, arg_obj):
+        # this bit feels extra sketch, but it seems like a better solution
+        # than just having the BaseExtract(**kwargs) method of instantiating
+        # an extract object quietly leave out variable-level extract features
+        if isinstance(list_arg, dict) and arg_obj is Variable:
+            args = _unpack_variables_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is Sample:
+            args = _unpack_samples_dict(list_arg)
+            return args
         # Make sure extracts don't get built with duplicate variables or samples
         # if the argument is a list of objects, make sure there are not objects with duplicate names
-        if all(isinstance(i, arg_obj) for i in list_arg):
+        elif all(isinstance(i, arg_obj) for i in list_arg):
             try:
                 if len(set([i.name for i in list_arg])) < len(list_arg):
                     # Because Variable objects can have the same name but differet feature specifications
@@ -222,7 +257,8 @@ class BaseExtract:
             # and return a list of the relevant objects
             unique_list = list(dict.fromkeys(list_arg))
             return [arg_obj(i) for i in unique_list]
-
+        
+        
     def extract_api_version(self, kwargs_dict: Dict[str, Any]) -> str:
         # check to see if version is specified in kwargs_dict
         if "version" in kwargs_dict.keys() or "api_version" in kwargs_dict.keys():
@@ -434,6 +470,7 @@ class CpsExtract(BaseExtract, collection="cps"):
         """
 
         super().__init__()
+        print(type(variables))
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)
         self.description = description
@@ -550,10 +587,18 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
     if dct["collection"] in BaseExtract._collection_to_extract:
-        # cosmetic procedure for when dct comes from json file
-        for key in ["samples", "variables"]:
-            if isinstance(dct[key], dict):
-                dct[key] = list(dct[key].keys())
+        # some fanciness to make sure sample and variable features
+        # are preserved
+        # make samples Sample objects
+        if isinstance(dct["samples"], dict):
+            dct["samples"] = _unpack_samples_dict(dct["samples"])
+        else:
+            dct["samples"] = [Sample(id=samp) for samp in dct["samples"]]
+        # make varibales Variable objects
+        if isinstance(dct["variables"], dict):
+            dct["variables"] = _unpack_variables_dict(dct["variables"])
+        else:
+            dct["variables"] = [Variable(name=var) for var in dct["variables"]]
 
         return BaseExtract._collection_to_extract[dct["collection"]](**dct)
 
@@ -566,7 +611,7 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
     If multiple extracts are specified, return a dict object.
 
     Args:
-        extract: IPUMS extract object or list of IPUMS extract objects
+        extract: A submitted IPUMS extract object or list of submitted IPUMS extract objects
 
     Returns:
         The extract(s) specified as a dictionary
@@ -577,9 +622,8 @@ def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str,
         return dct
     try:
         ext = extract.extract_info
-        # pop keys created after submission
-        [ext.pop(key) for key in ["downloadLinks", "number", "status"]]
-        return ext
+        # just retain the definition part
+        return ext["extractDefinition"]
 
     except ValueError:
         raise IpumsExtractNotSubmitted(

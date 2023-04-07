@@ -598,9 +598,9 @@ def test_extract_to_dict(fixtures_path: Path):
 
     # export extract to dict
     dct = extract_to_dict(extract)
-    assert dct["extractDefinition"]["collection"] == "usa"
-    assert dct["extractDefinition"]["samples"] == {"us2012b": {}}
-    assert dct["extractDefinition"]["variables"] == {
+    assert dct["collection"] == "usa"
+    assert dct["samples"] == {"us2012b": {}}
+    assert dct["variables"] == {
         "YEAR": {"preselected": True},
         "SAMPLE": {"preselected": True},
         "SERIAL": {"preselected": True},
@@ -749,6 +749,51 @@ def test_define_extract_from_json(fixtures_path: Path):
         "The IPUMS API version specified in the extract definition is not supported by this version of ipumspy."
     )
 
+def test_extract_from_api_response_json(fixtures_path: Path):
+    """
+    Ensure extract object can be created from a dict that contains
+    variable-level features as nested dicts
+    """
+    extract = define_extract_from_json(fixtures_path / "example_fancy_extract_from_api_v2.json")
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == [Sample(id="us2012b")]
+        assert item.variables == [
+            Variable(
+                name="YEAR",
+                preselected=True,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="AGE",
+                preselected=False,
+                case_selections={"general": [1, 2, 3]},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="SEX",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=True,
+            ),
+            Variable(
+                name="RACE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=["head",
+                                             "mother",
+                                             "mother2",
+                                             "father",
+                                             "father2",
+                                             "spouse"],
+                data_quality_flags=False,
+            ),
+        ]
+        assert item.api_version == 2
 
 def test_save_extract_as_json(fixtures_path: Path):
     # remove the test saved extract if it exists
@@ -851,49 +896,49 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         "samples": {"cps2023_01s": {}},
         "variables": {
             "YEAR": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "SERIAL": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "MONTH": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "HWTFINL": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "CPSID": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "PERNUM": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "WTFINL": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "CPSIDP": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
@@ -930,43 +975,43 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         "samples": {"am2011a": {}},
         "variables": {
             "COUNTRY": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "YEAR": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "SAMPLE": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "SERIAL": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "HHWT": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "PERNUM": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
             },
             "PERWT": {
-                "preselected": False,
+                "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,

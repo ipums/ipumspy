@@ -1,0 +1,25 @@
+{
+  "extracts": [
+    {
+      "description": "Simple IPUMS extract",
+      "collection": "usa",
+      "version": 2,
+      "samples": {
+        "us2012b": {}
+      },
+      "variables": {
+        "YEAR": {"preselected": true},
+        "AGE": {"caseSelections": {"general": [1, 2, 3]}},
+        "SEX": {"dataQualityFlags": true},
+        "RACE": {"attachedCharacteristics": ["head",
+                                             "mother",
+                                             "mother2",
+                                             "father",
+                                             "father2",
+                                             "spouse"]}
+      },
+      "dataStructure": "rectangular",
+      "dataFormat": "fixed_width"
+    }
+  ]
+}
