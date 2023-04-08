@@ -236,6 +236,21 @@ A user interested in respondents who identify as both White and Asian can use de
                          ["810", "811", "812", "813", "814", "815", "816", "818"], 
                          general=False)
 
+By default, case selection includes only individuals with the specified values for the specified variables. In the previous example, only persons who identified as both White and Asian are included in the extract. To make an extract that contains individuals in households that include an individual who identifies as both White and Asian, set the ``case_select_who`` flag to ``True`` when instantiating the extract object. The code snippet below creates such an extract. Note that whether to select individuals or households must be specified at the extract level, while what values to select on and whether these values are general or detailed codes is specified at the variable level.
+
+.. code:: python
+
+    extract = UsaExtract(
+        ["us2021a"],
+        ["AGE", "SEX", "RACE"],
+        case_select_who = "households"
+    )
+    extract.select_cases("RACE", 
+                         ["810", "811", "812", "813", "814", "815", "816", "818"], 
+                         general=False)
+
+
+
 Add Data Quality Flags
 ~~~~~~~~~~~~~~~~~~~~~~
 
