@@ -2,7 +2,7 @@
 Thank you for considering improving this project! By participating, you
 agree to abide by the [code of conduct](https://github.com/ipums/ipumspy/blob/master/CONDUCT.md).
 
-# Issues (Reporting a problem or suggestion)
+## Issues (Reporting a problem or suggestion)
 If you've experience a problem with the package, or have a suggestion for it, 
 please post it on the [issues tab](https://github.com/ipums/ipumspy/issues).
 This space is meant for questions directly related to the python package, so questions
@@ -15,7 +15,7 @@ much detail about your problem as possible including the code and error message,
 the project the extract is from, the variables you have selected, file type, etc. 
 We'll do our best to answer your question.
 
-# Pull Requests (Making changes to the package)
+## Pull Requests (Making changes to the package)
 We appreciate pull requests that follow these guidelines:
 1) Make sure that tests pass (and add new ones if possible). 
 

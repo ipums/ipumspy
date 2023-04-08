@@ -9,4 +9,3 @@ utilities
    :nosignatures:
 
    ipumspy.utilities.tabulate
-   ipumspy.utilities.CollectionInformation

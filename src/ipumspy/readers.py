@@ -283,7 +283,7 @@ def read_hierarchical_microdata(
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
-    as_dict: Optional[bool] = False,
+    as_dict: Optional[bool] = True,
     **kwargs,
 ) -> Union[pd.DataFrame, Dict]:
     """
