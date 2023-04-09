@@ -33,6 +33,7 @@ class Variable:
     """
     IPUMS variable object to include in an IPUMS extract object.
     """
+
     name: str
     """IPUMS variable name"""
     preselected: Optional[bool] = False
@@ -50,7 +51,7 @@ class Variable:
     def update(self, attribute: str, value: Any):
         """
         Update Variable features
-        
+
         Args:
             attribute: name of the Variable attribute to update
             value: values with which to update the `attribute`
@@ -70,13 +71,14 @@ class Variable:
         built_var["attachedCharacteristics"] = built_var.pop("attached_characteristics")
         built_var["dataQualityFlags"] = built_var.pop("data_quality_flags")
         return built_var
-    
+
 
 @dataclass
 class Sample:
     """
     IPUMS sample object to include in an IPUMS extract object.
     """
+
     id: str
     """IPUMS sample id"""
     description: Optional[str] = ""
@@ -88,7 +90,7 @@ class Sample:
     def update(self, attribute: str, value: Any):
         """
         Update Sample features
-        
+
         Args:
             attribute: name of the Sample attribute to update
             value: values with which to update the `attribute`
@@ -110,17 +112,15 @@ def _unpack_variables_dict(dct: dict) -> List[Variable]:
         # this feels dumb, but the best way to avoid KeyErrors
         # that is coming to my brain at the moment
         if "preselected" in dct[var]:
-            var_obj.update("preselected", 
-                            dct[var]["preselected"])
+            var_obj.update("preselected", dct[var]["preselected"])
         if "caseSelections" in dct[var]:
-            var_obj.update("case_selections", 
-                            dct[var]["caseSelections"])
+            var_obj.update("case_selections", dct[var]["caseSelections"])
         if "attachedCharacteristics" in dct[var]:
-            var_obj.update("attached_characteristics", 
-                            dct[var]["attachedCharacteristics"])
+            var_obj.update(
+                "attached_characteristics", dct[var]["attachedCharacteristics"]
+            )
         if "dataQualityFlags" in dct[var]:
-            var_obj.update("data_quality_flags", 
-                            dct[var]["dataQualityFlags"])
+            var_obj.update("data_quality_flags", dct[var]["dataQualityFlags"])
         vars.append(var_obj)
     return vars
 
@@ -203,13 +203,13 @@ class BaseExtract:
             )
         else:
             return self._info
-        
+
     def _snake_to_camel(self, kwarg_dict):
         for key in list(kwarg_dict.keys()):
             # create camelCase equivalent
             key_list = key.split("_")
             # join capitalized versions of all parts except the first
-            camelized = ''.join([k.capitalize() for k in key_list[1:]])
+            camelized = "".join([k.capitalize() for k in key_list[1:]])
             # prepend the first part
             camel_key = f"{key_list[0]}{camelized}"
             # add the camelCase key
@@ -257,8 +257,7 @@ class BaseExtract:
             # and return a list of the relevant objects
             unique_list = list(dict.fromkeys(list_arg))
             return [arg_obj(i) for i in unique_list]
-        
-        
+
     def extract_api_version(self, kwargs_dict: Dict[str, Any]) -> str:
         # check to see if version is specified in kwargs_dict
         if "version" in kwargs_dict.keys() or "api_version" in kwargs_dict.keys():
@@ -322,7 +321,9 @@ class BaseExtract:
         """
         self._update_variable_feature(variable, "attached_characteristics", of)
 
-    def add_data_quality_flags(self, variable: Union[Variable, str, List[Variable], List[str]]):
+    def add_data_quality_flags(
+        self, variable: Union[Variable, str, List[Variable], List[str]]
+    ):
         """
         A method to update existing IPUMS Extract Variable objects to include that
         variable's data quality flag in the extract if it exists.
@@ -442,7 +443,7 @@ class UsaExtract(BaseExtract, collection="usa"):
             },
             "collection": self.collection,
             "version": self.api_version,
-            **self.kwargs
+            **self.kwargs,
         }
 
 

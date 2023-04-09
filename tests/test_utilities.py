@@ -37,4 +37,3 @@ def test_tabulate(fixtures_path: Path):
     assert list(crosstab_df["lab"]) == ["March"]
     assert (crosstab_df["counts"]).all() == (np.array([7668])).all()
     assert (crosstab_df["pct"]).all() == (np.array([1.0])).all()
-

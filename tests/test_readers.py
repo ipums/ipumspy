@@ -426,17 +426,17 @@ def test_read_extract_description(fixtures_path: Path):
 
     # check that this can read fancier things as well
     extract_description_fancy = from_api_extract_fancy["extracts"][0]
-    api_extract_fancy = BaseExtract._collection_to_extract[extract_description_fancy["collection"]](
-        **extract_description_fancy
-    )
+    api_extract_fancy = BaseExtract._collection_to_extract[
+        extract_description_fancy["collection"]
+    ](**extract_description_fancy)
 
     # truncated test
     assert api_extract_fancy.build()["variables"]["AGE"] == {
-                    "preselected": False,
-                    "caseSelections": {"general": [1, 2, 3]},
-                    "attachedCharacteristics": [],
-                    "dataQualityFlags": False
-                }
+        "preselected": False,
+        "caseSelections": {"general": [1, 2, 3]},
+        "attachedCharacteristics": [],
+        "dataQualityFlags": False,
+    }
 
     # Check that something that is neither YAML nor JSON yields a ValueError
     with pytest.raises(ValueError):
@@ -456,9 +456,10 @@ def test_subset_option(fixtures_path: Path):
     # then for hierarchical single data frame
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
     data = readers.read_hierarchical_microdata(
-        ddi, fixtures_path / "cps_00421.dat.gz", 
+        ddi,
+        fixtures_path / "cps_00421.dat.gz",
         subset=["RECTYPE", "MISH", "AGE"],
-        as_dict=False
+        as_dict=False,
     )
 
     _assert_cps_hierarchical_subset(data)

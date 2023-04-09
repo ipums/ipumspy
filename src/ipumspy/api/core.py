@@ -438,9 +438,11 @@ class IpumsApiClient:
             ).json()
             new_line = "\n"
             if "warnings" in extract_info.keys():
-                warnings.warn(f"This IPUMS extract has been modified from its original form to remove invalid content and features:{new_line}"
-                              f"{new_line.join(extract_info['warnings'])}",
-                              ModifiedIpumsExtract)
+                warnings.warn(
+                    f"This IPUMS extract has been modified from its original form to remove invalid content and features:{new_line}"
+                    f"{new_line.join(extract_info['warnings'])}",
+                    ModifiedIpumsExtract,
+                )
             return extract_info
 
     def get_extract_by_id(
@@ -486,8 +488,10 @@ class IpumsApiClient:
             return True
         else:
             return False
-        
-    def _get_pages(self, collection: str, page_size: Optional[int]=2500) -> Generator[Dict, None, None]:
+
+    def _get_pages(
+        self, collection: str, page_size: Optional[int] = 2500
+    ) -> Generator[Dict, None, None]:
         """
         An IPUMS API pages generator.
 
@@ -496,16 +500,18 @@ class IpumsApiClient:
             page_size: The number of items to return per page. Default to maximum page size, 2500.
 
         Yields:
-            IPUMS API page JSON 
+            IPUMS API page JSON
         """
         # made this a private method looking forward to making this a more
         # general purpose generator for non-extract endpoints
         first_page = self.get(
-                            self.base_url,
-                            params={"collection": collection,
-                                    "version": self.api_version,
-                                    "pageSize": page_size}
-                            ).json()
+            self.base_url,
+            params={
+                "collection": collection,
+                "version": self.api_version,
+                "pageSize": page_size,
+            },
+        ).json()
         yield first_page
         next_page = first_page["links"]["nextPage"]
 
@@ -514,19 +520,21 @@ class IpumsApiClient:
             yield page
             next_page = page["links"]["nextPage"]
 
-    def get_extract_history(self, collection: str, page_size: Optional[int]=2500) -> Generator[Dict, None, None]:
+    def get_extract_history(
+        self, collection: str, page_size: Optional[int] = 2500
+    ) -> Generator[Dict, None, None]:
         """
         Retrieve extract history for a specific collection.
 
-        Args: 
+        Args:
             collection: An IPUMS data collection
             page_size: The number of items to return per page. Default to maximum page size, 2500.
-        
+
         Yields:
             An iterator of extract history pages
         """
         yield from self._get_pages(collection, page_size)
-        
+
     def get_all_sample_info(self, collection: str) -> Dict:
         """
         Retrieve sample descriptions and ids for all samples in an IPUMS collection.
