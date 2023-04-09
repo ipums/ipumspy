@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts?collection=usa&version=2&pageSize=5
+  response:
+    body:
+      string: '{"data":[{"number":206,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"hierarchical":{}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+        IPUMS USA extract","samples":{"us2012b":{}},"variables":{"RECTYPE":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"STATEFIP":{},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{},"RACE":{}},"collection":"usa"}},{"number":205,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"hierarchical":{}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+        IPUMS USA extract","samples":{"us2012b":{}},"variables":{"RECTYPE":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{}},"collection":"usa"}},{"number":204,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"hierarchical":{}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+        IPUMS USA extract","samples":{"us2012b":{}},"variables":{"RECTYPE":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{}},"collection":"usa"}},{"number":203,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+        IPUMS USA extract","samples":{"us2012b":{}},"variables":{"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{},"RACE":{}},"collection":"usa"}},{"number":202,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"Simple
+        IPUMS extract","samples":{"us2012b":{}},"variables":{"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"SEX":{},"AGE":{},"RACE":{}},"collection":"usa"}}],"totalCount":206,"pageNumber":1,"pageSize":5,"links":{"previousPage":null,"nextPage":"https://api.ipums.org/extracts/?collection=usa\u0026pageNumber=2\u0026pageSize=5\u0026version=2"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '3066'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 06 Apr 2023 15:32:58 GMT
+      Etag:
+      - W/"729e2fae8ea9550747eaaa79cfab60b4"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 30e6115f-e657-4ea7-b533-ae36e994bece
+      X-Runtime:
+      - '0.407559'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

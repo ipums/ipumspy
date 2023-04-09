@@ -12,9 +12,10 @@ import re
 import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Iterator, List, Optional, Union
+from typing import Iterator, List, Optional, Union, Dict
 
 import pandas as pd
+import numpy as np
 import yaml
 
 from . import ddi as ddi_definitions
@@ -62,10 +63,10 @@ def _read_microdata(
     iterator: bool = False,
     chunksize: Optional[int] = None,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ):
-    if ddi.file_description.structure != "rectangular":
-        raise NotImplementedError("Structure must be rectangular")
+    # if ddi.file_description.structure != "rectangular":
+    #     raise NotImplementedError("Structure must be rectangular")
 
     if subset is not None:
         data_description = [
@@ -153,7 +154,7 @@ def _read_microdata(
         if dtype is None:
             yield from (
                 _fix_decimal_expansion(df).astype(
-                    {desc.name: desc.pandas_type for desc in ddi.data_description}
+                    {desc.name: desc.pandas_type for desc in data_description}
                 )
                 for df in data
             )
@@ -167,13 +168,72 @@ def _read_microdata(
                 yield from (_fix_decimal_expansion(df) for df in data)
 
 
+def _read_hierarchical_microdata(
+    ddi: ddi_definitions.Codebook,
+    filename: Optional[fileutils.FileType] = None,
+    encoding: Optional[str] = None,
+    subset: Optional[List[str]] = None,
+    iterator: bool = False,
+    chunksize: Optional[int] = 100000,
+    dtype: Optional[dict] = None,
+    **kwargs,
+):
+    # TODO: try and speed this up
+    if subset is not None:
+        data_description = [
+            desc for desc in ddi.data_description if desc.name in subset
+        ]
+    else:
+        data_description = ddi.data_description
+
+    # identify common variables
+    # these variables have all rectypes listed in the variable-level rectype attribute
+    # these are delimited by spaces within the string attribute
+    # this list would probably be a useful thing to have as a file-level attribute...
+    common_vars = [
+        desc.name
+        for desc in data_description
+        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+    ]
+    # seperate variables by rectype
+    rectypes = {}
+    # NB: This might result in empty data frames for some rectypes
+    # as the ddi contains all possible collection rectypes, even if only a few
+    # are actually represented in the file.
+    # TODO: prune empty rectype data frames
+    for rectype in ddi.file_description.rectypes:
+        rectype_vars = []
+        rectype_vars.extend(common_vars)
+        for desc in data_description:
+            if desc.rectype == rectype:
+                rectype_vars.append(desc.name)
+        # read microdata for the relevant rectype variables only
+        # and do it in chunks so it goes quicker
+        rectypes[rectype] = next(
+            read_microdata_chunked(
+                ddi,
+                filename,
+                encoding,
+                # rectype vars are the subset
+                rectype_vars,
+                chunksize,
+                dtype,
+                **kwargs,
+            )
+        )
+        # retain only records from the relevant record type
+        rt_df = rectypes[rectype]
+        rectypes[rectype] = rt_df[rt_df["RECTYPE"] == rectype]
+    return rectypes
+
+
 def read_microdata(
     ddi: ddi_definitions.Codebook,
     filename: Optional[fileutils.FileType] = None,
     encoding: Optional[str] = None,
     subset: Optional[List[str]] = None,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ) -> Union[pd.DataFrame, pd.io.parsers.TextFileReader]:
     """
     Read in microdata as specified by the Codebook. Both .dat and .csv file types
@@ -198,16 +258,112 @@ def read_microdata(
     Returns:
         pandas data frame and pandas text file reader
     """
-    return next(
-        _read_microdata(
-            ddi,
-            filename=filename,
-            encoding=encoding,
-            subset=subset,
-            dtype=dtype,
-            **kwargs
+    # raise a warning if this is a hierarchical file
+    if ddi.file_description.structure == "hierarchical":
+        raise NotImplementedError(
+            "Structure must be rectangular. Use `read_hierarchical_microdata()` for hierarchical extracts."
         )
-    )
+    # just read it if its rectangular
+    else:
+        return next(
+            _read_microdata(
+                ddi,
+                filename=filename,
+                encoding=encoding,
+                subset=subset,
+                dtype=dtype,
+                **kwargs,
+            )
+        )
+
+
+def read_hierarchical_microdata(
+    ddi: ddi_definitions.Codebook,
+    filename: Optional[fileutils.FileType] = None,
+    encoding: Optional[str] = None,
+    subset: Optional[List[str]] = None,
+    dtype: Optional[dict] = None,
+    as_dict: Optional[bool] = True,
+    **kwargs,
+) -> Union[pd.DataFrame, Dict]:
+    """
+    Read in microdata as specified by the Codebook. Both .dat and .csv file types
+    are supported.
+
+    Args:
+        ddi: The codebook representing the data
+        filename: The path to the data file. If not present, gets from
+                        ddi and assumes the file is relative to the current
+                        working directory
+        encoding: The encoding of the data file. If not present, reads from ddi
+        subset: A list of variable names to keep. If None, will keep all
+        dtype: A dictionary with variable names as keys and variable types as values.
+            Has an effect only when used with pd.read_fwf or pd.read_csv engine. If None, pd.read_fwf or pd.read_csv use
+            type ddi.data_description.pandas_type for all variables. See ipumspy.ddi.VariableDescription for more
+            precision on ddi.data_description.pandas_type. If files are csv, and dtype is not None, pandas converts the
+            column types once: on pd.read_csv call. When file format is .dat or .csv and dtype is None, two conversion
+            occur: one on load, and one when returning the dataframe.
+        as_dict: A flag to indicate whether to return a single data frame or a dictionary with one data frame per record
+            type in the extract data file. Set to True to recieve a dictionary of data frames.
+        kwargs: keyword args to be passed to the engine (pd.read_fwf, pd.read_csv, or
+            pd.read_parquet depending on the file type)
+
+    Returns:
+        pandas data frame or a dictionary of pandas data frames
+    """
+    # hack for now just to have it in this method - make this a ddi.file_description attribute.
+    common_vars = [
+        desc.name
+        for desc in ddi.data_description
+        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+    ]
+    # RECTYPE must be included if subset list is specified
+    if subset is not None and "RECTYPE" not in subset:
+        raise ValueError(
+            "RECTYPE must be included in the subset list for hierarchical extracts."
+        )
+    # raise a warning if this is a rectantgular file
+    if ddi.file_description.structure == "rectangular":
+        raise NotImplementedError(
+            "Structure must be hierarchical. Use `read_microdata()` for rectangular extracts."
+        )
+    else:
+        df_dict = _read_hierarchical_microdata(
+            ddi, filename, encoding, subset, dtype, **kwargs
+        )
+        if as_dict:
+            return df_dict
+        else:
+            # read the hierarchical file
+            df = next(_read_microdata(ddi, filename, encoding, subset, dtype, **kwargs))
+            # for each rectype, nullify variables that belong to other rectypes
+            for rectype in df_dict.keys():
+                # create a list of variables that are for rectypes other than the current rectype
+                # and are not included in the list of varaibles that are common across rectypes
+                non_rt_cols = [
+                    cols
+                    for rt in df_dict.keys()
+                    for cols in df_dict[rt].columns
+                    if rt != rectype and cols not in common_vars
+                ]
+                for col in non_rt_cols:
+                    # maintain data type when "nullifying" variables from other record types
+                    if df[col].dtype == pd.Int64Dtype():
+                        df[col] = np.where(df["RECTYPE"] == rectype, pd.NA, df[col])
+                        df[col] = df[col].astype(pd.Int64Dtype())
+                    elif df[col].dtype == pd.StringDtype():
+                        df[col] = np.where(df["RECTYPE"] == rectype, "", df[col])
+                        df[col] = df[col].astype(pd.StringDtype())
+                    elif df[col].dtype == float:
+                        df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
+                        df[col] = df[col].astype(float)
+                    # this should (theoretically) never be hit... unless someone specifies an illegal data type
+                    # themselves, but that should also be caught before this stage.
+                    else:
+                        raise TypeError(
+                            f"Data type {df[col].dtype} for {col} is not an allowed type."
+                        )
+            return df
 
 
 def read_microdata_chunked(
@@ -217,7 +373,7 @@ def read_microdata_chunked(
     subset: Optional[List[str]] = None,
     chunksize: Optional[int] = None,
     dtype: Optional[dict] = None,
-    **kwargs
+    **kwargs,
 ) -> Iterator[pd.DataFrame]:
     """
     Read in microdata in chunks as specified by the Codebook.
@@ -253,7 +409,7 @@ def read_microdata_chunked(
         iterator=True,
         dtype=dtype,
         chunksize=chunksize,
-        **kwargs
+        **kwargs,
     )
 
 

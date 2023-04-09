@@ -1,8 +1,9 @@
 interactions:
 - request:
-    body: '{"description": "My IPUMS extract", "data_format": "fixed_width", "data_structure":
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
       {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AG":
-      {}}, "collection": "usa"}'
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
     headers:
       Accept:
       - '*/*'
@@ -11,13 +12,13 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '187'
+      - '303'
       Content-Type:
       - application/json
       User-Agent:
-      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
     method: POST
-    uri: https://api.ipums.org/extracts?collection=usa&version=beta
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
   response:
     body:
       string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
@@ -30,15 +31,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 25 Apr 2022 18:04:14 GMT
+      - Mon, 27 Mar 2023 19:39:19 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0 + Phusion Passenger(R) 6.0.12
-      Status:
-      - 400 Bad Request
+      - nginx/1.18.0
       Vary:
       - Origin
+      - Accept
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -47,8 +47,6 @@ interactions:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger(R) 6.0.12
       X-Ratelimit-Limit:
       - '-1'
       X-Ratelimit-Remaining:
@@ -56,18 +54,19 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 564da9bf-9e14-4751-aedc-b3e762309fd2
+      - 141fac01-1731-4f16-972b-2030b8382c11
       X-Runtime:
-      - '0.281496'
+      - '0.314188'
       X-Xss-Protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 400
       message: Bad Request
 - request:
-    body: '{"description": "My IPUMS extract", "data_format": "fixed_width", "data_structure":
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
       {"rectangular": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"YRIMMIG":
-      {}}, "collection": "usa"}'
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
     headers:
       Accept:
       - '*/*'
@@ -76,13 +75,13 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '192'
+      - '308'
       Content-Type:
       - application/json
       User-Agent:
-      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
     method: POST
-    uri: https://api.ipums.org/extracts?collection=usa&version=beta
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
   response:
     body:
       string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
@@ -96,15 +95,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 25 Apr 2022 18:04:14 GMT
+      - Mon, 27 Mar 2023 19:39:19 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0 + Phusion Passenger(R) 6.0.12
-      Status:
-      - 400 Bad Request
+      - nginx/1.18.0
       Vary:
       - Origin
+      - Accept
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -113,8 +111,6 @@ interactions:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger(R) 6.0.12
       X-Ratelimit-Limit:
       - '-1'
       X-Ratelimit-Remaining:
@@ -122,18 +118,19 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 349086bf-aef8-432f-93b9-4dc2329c820a
+      - 537bf025-e2b5-4911-961d-9d39c752ec3d
       X-Runtime:
-      - '0.282734'
+      - '0.275980'
       X-Xss-Protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 400
       message: Bad Request
 - request:
-    body: '{"description": "My IPUMS extract", "data_format": "fixed_width", "data_structure":
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
       {"rectangular": {"on": "P"}}, "samples": {"us2012x": {}}, "variables": {"AGE":
-      {}}, "collection": "usa"}'
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
     headers:
       Accept:
       - '*/*'
@@ -142,13 +139,13 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '188'
+      - '304'
       Content-Type:
       - application/json
       User-Agent:
-      - python-ipumspy:0.1.0.github.com/ipums/ipumspy
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
     method: POST
-    uri: https://api.ipums.org/extracts?collection=usa&version=beta
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
   response:
     body:
       string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
@@ -161,15 +158,14 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 25 Apr 2022 18:04:15 GMT
+      - Mon, 27 Mar 2023 19:39:20 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0 + Phusion Passenger(R) 6.0.12
-      Status:
-      - 400 Bad Request
+      - nginx/1.18.0
       Vary:
       - Origin
+      - Accept
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -178,8 +174,6 @@ interactions:
       - SAMEORIGIN
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger(R) 6.0.12
       X-Ratelimit-Limit:
       - '-1'
       X-Ratelimit-Remaining:
@@ -187,11 +181,138 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 9d81d657-2b5a-4581-b37d-ddff93796125
+      - 2819e230-0eeb-485f-843e-f862cff8064a
       X-Runtime:
-      - '0.252649'
+      - '0.278560'
       X-Xss-Protection:
-      - 1; mode=block
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"hierarchical": {"on": "P"}}, "samples": {"us2012b": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '305'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["The property ''#/dataStructure/hierarchical'' contains
+        additional properties [\"on\"] outside of the schema when none are allowed."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '219'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 27 Mar 2023 19:39:20 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 97896a07-4300-420f-bb93-e3277988011d
+      X-Runtime:
+      - '0.062938'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "Z"}}, "samples": {"us2012b": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}}, "collection": "usa", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '304'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.2.2a0.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Invalid Record Type specified in \"data_structure.rectangular.on\"."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '158'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 27 Mar 2023 19:39:20 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.18.0
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 323a65ed-a787-422b-b777-3856041239cf
+      X-Runtime:
+      - '0.269131'
+      X-Xss-Protection:
+      - '0'
     status:
       code: 400
       message: Bad Request

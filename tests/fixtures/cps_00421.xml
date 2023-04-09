@@ -1,0 +1,1174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ipums-ddi-xslt.xsl"?>
+<codeBook ID="ddi2-27363a39-8e14-11e5-8c97-b82a72e0b782-cps_00421.dat-cps.ipums.org" version="2.5" xmlns="ddi:codebook:2_5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ddi:codebook:2_5 http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd">
+  <docDscr>
+    <citation>
+      <titlStmt>
+        <titl>Codebook for an IPUMS-CPS Data Extract</titl>
+        <subTitl>DDI 2.5 metadata describing the extract file  'cps_00421.dat'</subTitl>
+        <IDNo>ddi2-27363a39-8e14-11e5-8c97-b82a72e0b782-cps_00421.dat-cps.ipums.org</IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="University of Minnesota">IPUMS</AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="IPUMS" affiliation="University of Minnesota" role="Documentation">IPUMS</producer>
+        <prodDate date="2023-03-06">March 6, 2023</prodDate>
+        <prodPlac>IPUMS, 50 Willey Hall, 225 - 19th Avenue South, Minneapolis, MN 55455</prodPlac>
+      </prodStmt>
+      <distStmt>
+        <contact URI="https://ipums.org" affiliation="University of Minnesota">IPUMS</contact>
+      </distStmt>
+    </citation>
+  </docDscr>
+  <stdyDscr>
+    <citation>
+      <titlStmt>
+        <titl>User Extract cps_00421.dat</titl>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="University of Minnesota">IPUMS</AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="IPUMS" affiliation="University of Minnesota" role="Documentation">IPUMS</producer>
+        <prodDate date="2023-03-06">March 6, 2023</prodDate>
+        <prodPlac>IPUMS, 50 Willey Hall, 225 - 19th Avenue South, Minneapolis, MN 55455</prodPlac>
+      </prodStmt>
+      <distStmt>
+        <contact URI="https://ipums.org" affiliation="University of Minnesota">IPUMS</contact>
+      </distStmt>
+      <serStmt>
+        <serName abbr="cps">IPUMS CPS</serName>
+        <serInfo>DOI:10.18128/D030.V10.0</serInfo>
+      </serStmt>
+      <verStmt>
+        <version date="2023-03-06"/>
+      </verStmt>
+    </citation>
+    <stdyInfo>
+      <subject>
+        <topcClas vocab="IPUMS">Technical Variables -- HOUSEHOLD</topcClas>
+        <topcClas vocab="IPUMS">Linking Variables -- HOUSEHOLD</topcClas>
+        <topcClas vocab="IPUMS">Geographic Variables -- HOUSEHOLD</topcClas>
+        <topcClas vocab="IPUMS">Technical Variables -- PERSON</topcClas>
+        <topcClas vocab="IPUMS">Linking Variables -- PERSON</topcClas>
+        <topcClas vocab="IPUMS">Demographics Variables -- PERSON</topcClas>
+      </subject>
+      <sumDscr ID="sdatref-3001">
+        <timePrd date="2022-01" event="single">2022-01</timePrd>
+        <nation abbr="us">United States</nation>
+      </sumDscr>
+      <sumDscr ID="sdatref-3015">
+        <timePrd date="2023-01" event="single">2023-01</timePrd>
+        <nation abbr="us">United States</nation>
+      </sumDscr>
+      <notes><![CDATA[Additional notes on a sample that is part of this study:  IPUMS-CPS, January 2022
+            Density of the full data file:  0.01%
+            Density of this extract: 0.0%
+]]></notes>
+      <notes><![CDATA[Additional notes on a sample that is part of this study:  IPUMS-CPS, January 2023
+            Density of the full data file:  0.01%
+            Density of this extract: 0.0%
+]]></notes>
+    </stdyInfo>
+    <dataAccs>
+      <useStmt>
+        <confDec required="no"><![CDATA[None]]></confDec>
+        <contact URI="http://cps.ipums.org/" affiliation="IPUMS">IPUMS-CPS</contact>
+        <citReq><![CDATA[Publications and research reports based on the IPUMS-CPS database must cite it appropriately. The citation should include the following:
+
+Sarah Flood, Miriam King, Renae Rodgers, Steven Ruggles, J. Robert Warren and Michael Westberry. Integrated Public Use Microdata Series, Current Population Survey: Version 10.0 [dataset]. Minneapolis, MN: IPUMS, 2022. https://doi.org/10.18128/D030.V10.0
+
+The licensing agreement for use of IPUMS-CPS data requires that users supply us with the title and full citation for any publications, research reports, or educational materials making use of the data or documentation. Please add your citation to the IPUMS bibliography: http://bibliography.ipums.org/]]></citReq>
+        <conditions><![CDATA[Users of IPUMS-CPS data must agree to abide by the conditions of use. A user's license is valid for one year and may be renewed.  Users must agree to the following conditions:
+
+(1) No fees may be charged for use or distribution of the data.  All persons are granted a limited license to use these data, but you may not charge a fee for the data if you distribute it to others.
+
+(2) Cite IPUMS appropriately.  For information on proper citation,  refer to the citation requirement section of this DDI document.
+
+(3) Tell us about any work you do using the IPUMS.  Publications, research  reports, or presentations making use of IPUMS-CPS should be added to our  Bibliography. Continued funding for the IPUMS depends on our ability to  show our sponsor agencies that researchers are using the data for productive  purposes.
+
+(4) Use it for GOOD -- never for EVIL.]]></conditions>
+        <disclaimer>The user of the data acknowledges that the original collector of the data, the authorized distributor of the data, and the relevant funding agency bear no responsibility for use of the data or for interpretations or inferences based upon such uses.</disclaimer>
+      </useStmt>
+    </dataAccs>
+    <notes><![CDATA[User-provided description:  Revision of (test hierarchical extract)]]></notes>
+    <notes>This extract is a revision of the user's previous extract, ID 12546486.</notes>
+  </stdyDscr>
+  <fileDscr ID="ExtractData">
+    <fileTxt>
+      <fileName>cps_00421.dat</fileName>
+      <fileCont>Microdata records</fileCont>
+      <fileStrc type="hierarchical">
+        <recGrp keyvar="SERIAL" recidvar="RECTYPE" rectype="P">
+          <labl>Person Record</labl>
+        </recGrp>
+        <recGrp recidvar="RECTYPE" rectype="H">
+          <labl>Household Record</labl>
+        </recGrp>
+      </fileStrc>
+      <fileType charset="ISO-8859-1">ISO-8859-1 data file</fileType>
+      <format>fixed length fields</format>
+      <filePlac>IPUMS, 50 Willey Hall, 225 - 19th Avenue South, Minneapolis, MN 55455</filePlac>
+    </fileTxt>
+  </fileDscr>
+  <dataDscr>
+    <var ID="RECTYPE" dcml="0" files="ExtractData" intrvl="contin" name="RECTYPE" rectype="H P">
+      <location EndPos="1" StartPos="1" width="1"/>
+      <labl>Record type</labl>
+      <txt><![CDATA[RECTYPE assigns all household records the alphabetic string "H" and all person records a "P".  This allows researchers using the hierarchical data format to discriminate between household and person records.  Each household record is followed by one or more person records, and all data pertaining to any household record usually pertain to all of the persons within it.
+
+The original CPS data did not have household records until 1976.  Because the IPUMS system is designed to handle hierarchical records consisting of a household record followed by person records, IPUMS-CPS created a new household record by copying the person record of the household head for earlier years.]]></txt>
+      <catgry>
+        <catValu>H</catValu>
+        <labl>Household</labl>
+      </catgry>
+      <catgry>
+        <catValu>P</catValu>
+        <labl>Person</labl>
+      </catgry>
+      <concept vocab="IPUMS">Technical Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="character"/>
+    </var>
+    <var ID="YEAR" dcml="0" files="ExtractData" intrvl="contin" name="YEAR" rectype="H P">
+      <location EndPos="5" StartPos="2" width="4"/>
+      <labl>Survey year</labl>
+      <txt><![CDATA[YEAR reports the year in which the survey was conducted.  YEARP is repeated on person records.]]></txt>
+      <codInstr><![CDATA[CodesYEAR is a 4-digit numeric value.]]></codInstr>
+      <concept vocab="IPUMS">Technical Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="SERIAL" dcml="0" files="ExtractData" intrvl="contin" name="SERIAL" rectype="H P">
+      <location EndPos="10" StartPos="6" width="5"/>
+      <labl>Household serial number</labl>
+      <txt><![CDATA[SERIAL is an identifying number unique to each household in a given survey month and year.  All person records are assigned the same serial number as the household record they follow.  A combination of YEAR, MONTH, and SERIAL provides a within-sample unique identifier for every household in IPUMS-CPS; YEAR, MONTH, SERIAL, and PERNUM uniquely identify every person within a single sample.
+
+SERIAL is a new value generated for IPUMS-CPS and should not be confused with the household serial number created by the Census Bureau and included in the original CPS data.]]></txt>
+      <codInstr><![CDATA[CodesSERIAL is a 5-digit numeric variable.]]></codInstr>
+      <concept vocab="IPUMS">Technical Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="MONTH" dcml="0" files="ExtractData" intrvl="discrete" name="MONTH" rectype="H">
+      <location EndPos="12" StartPos="11" width="2"/>
+      <labl>Month</labl>
+      <txt><![CDATA[MONTH indicates the calendar month of the CPS interview.]]></txt>
+      <catgry>
+        <catValu>01</catValu>
+        <labl>January</labl>
+      </catgry>
+      <catgry>
+        <catValu>02</catValu>
+        <labl>February</labl>
+      </catgry>
+      <catgry>
+        <catValu>03</catValu>
+        <labl>March</labl>
+      </catgry>
+      <catgry>
+        <catValu>04</catValu>
+        <labl>April</labl>
+      </catgry>
+      <catgry>
+        <catValu>05</catValu>
+        <labl>May</labl>
+      </catgry>
+      <catgry>
+        <catValu>06</catValu>
+        <labl>June</labl>
+      </catgry>
+      <catgry>
+        <catValu>07</catValu>
+        <labl>July</labl>
+      </catgry>
+      <catgry>
+        <catValu>08</catValu>
+        <labl>August</labl>
+      </catgry>
+      <catgry>
+        <catValu>09</catValu>
+        <labl>September</labl>
+      </catgry>
+      <catgry>
+        <catValu>10</catValu>
+        <labl>October</labl>
+      </catgry>
+      <catgry>
+        <catValu>11</catValu>
+        <labl>November</labl>
+      </catgry>
+      <catgry>
+        <catValu>12</catValu>
+        <labl>December</labl>
+      </catgry>
+      <concept vocab="IPUMS">Technical Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="HWTFINL" dcml="4" files="ExtractData" intrvl="contin" name="HWTFINL" rectype="H">
+      <location EndPos="22" StartPos="13" width="10"/>
+      <labl>Household weight, Basic Monthly</labl>
+      <txt><![CDATA[HWTFINL is a household-level weight that should be used to generate statistics about households. The CPS uses a complex stratified sampling scheme, and HWTFINL must be used to produce unbiased household-level statistics from IPUMS-CPS basic monthly samples. For analyses of March Annual Social and Economic (ASEC) data, researchers should use HWTSUPP. For individual-level analyses, researchers should use WTFINL, WTSUPP, or EARNWT. 
+
+HWTFINL generally has the same value as WTFINL for the household head or reference person. Vacant housing units and households that could not be interviewed due to residents' absence or refusal to participate have a value of zero in HWTFINL; such sampled units were included in the public use CPS data beginning in 1988.]]></txt>
+      <codInstr><![CDATA[CodesHWTFINL is a 10-digit numeric variable.]]></codInstr>
+      <concept vocab="IPUMS">Technical Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="CPSID" dcml="0" files="ExtractData" intrvl="contin" name="CPSID" rectype="H">
+      <location EndPos="36" StartPos="23" width="14"/>
+      <labl>CPSID, household record</labl>
+      <txt><![CDATA[CPSID is an IPUMS-CPS defined variable that uniquely identifies households across CPS samples. The first six digits of CPSID index the four-digit year and two-digit month that the household was first in the CPS. CPSID allows users to link a household record across samples, based on the 4-8-4 rotation pattern, by assigning a unique CPSID value based on a combination of household identifiers. CPSID will only ever appear for a maximum of 8 times, which is the number of times a household may be observed in the CPS survey (as indexed by MISH). In some cases, a household will appear fewer than 8 times due to migration, mortality, non-response, and recording errors. CPSID Extensive documentation about the creation of CPSID is available elsewhere.
+
+CPSID may also be used to link ASEC respondents who are in the March Basic Monthly file to other months of CPS data. This linking is made possible by IPUMS through the creation of MARBASECIDP. Users should note that ASEC oversample households (as indicated by ASECOVERH) will always have a CPSID value of 0.
+
+Users may also want to see CPSIDP for more information about linking individuals across time using a person-specific version of CPSID.]]></txt>
+      <codInstr><![CDATA[CodesCPSID is a 14-digit numeric variable.]]></codInstr>
+      <concept vocab="IPUMS">Linking Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="MISH" dcml="0" files="ExtractData" intrvl="discrete" name="MISH" rectype="H">
+      <location EndPos="37" StartPos="37" width="1"/>
+      <labl>Month in sample, household level</labl>
+      <txt><![CDATA[MISH indicates the number of times (from 1 to 8) occupants of a housing unit have been interviewed for the CPS. Household members are interviewed for four consecutive months, excluded for eight months, and then included for four more consecutive months. On first interview, a household has a value of 1 for MISH. Households returning to the sample after an 8-month hiatus have a value of 5, and those which have completed their last interview have a value of 8. Persons with codes of 4 or 8 in MISH are said to be in "outgoing rotation groups," because they will not be interviewed during the following month. For 1962-1967, the same information is given in ROTATE, a person-level variable. 
+
+IPUMS CPS has identified an error in the month-in-sample values in the original data in the 2016, 2018, 2020, and 2022 CPS-ASEC files. Records in the Census Bureau CPS-ASEC PUMS files in these years have month-in-sample values that do not correspond to these record's values in the March basic file. IPUMS CPS corrects the March basic monthly respondent's month-in-sample values in the 2016, 2018, 2020, and 2022 CPS-ASEC to match the March basic monthly file values. Month-in-sample values for ASEC oversample records are not adjusted. The fix is as follows:
+
+Original month-in-sample of 1 become MISH of 5
+Original month-in-sample of 2 become MISH of 6
+Original month-in-sample of 3 become MISH of 7
+Original month-in-sample of 4 become MISH of 8
+
+Original month-in-sample of 5 become MISH of 1
+Original month-in-sample of 6 become MISH of 2
+Original month-in-sample of 7 become MISH of 3
+Original month-in-sample of 8 become MISH of 4]]></txt>
+      <catgry>
+        <catValu>1</catValu>
+        <labl>One</labl>
+      </catgry>
+      <catgry>
+        <catValu>2</catValu>
+        <labl>Two</labl>
+      </catgry>
+      <catgry>
+        <catValu>3</catValu>
+        <labl>Three</labl>
+      </catgry>
+      <catgry>
+        <catValu>4</catValu>
+        <labl>Four</labl>
+      </catgry>
+      <catgry>
+        <catValu>5</catValu>
+        <labl>Five</labl>
+      </catgry>
+      <catgry>
+        <catValu>6</catValu>
+        <labl>Six</labl>
+      </catgry>
+      <catgry>
+        <catValu>7</catValu>
+        <labl>Seven</labl>
+      </catgry>
+      <catgry>
+        <catValu>8</catValu>
+        <labl>Eight</labl>
+      </catgry>
+      <concept vocab="IPUMS">Technical Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="STATEFIP" dcml="0" files="ExtractData" intrvl="discrete" name="STATEFIP" rectype="H">
+      <location EndPos="39" StartPos="38" width="2"/>
+      <labl>State (FIPS code)</labl>
+      <txt><![CDATA[STATEFIP identifies the household's state of residence, using the Federal Information Processing Standards (FIPS) coding scheme, which orders the states alphabetically.
+
+In 1973-1975 ASEC samples, all households in the Anaheim-Santa Ana-Garden Grove, CA METAREA are coded as Michigan-Wisconsin for STATEFIP in the original data. As there is insufficient geographic information in the public use data to determine which variable is in error, this mistake has been left un-recoded.]]></txt>
+      <catgry>
+        <catValu>01</catValu>
+        <labl>Alabama</labl>
+      </catgry>
+      <catgry>
+        <catValu>02</catValu>
+        <labl>Alaska</labl>
+      </catgry>
+      <catgry>
+        <catValu>04</catValu>
+        <labl>Arizona</labl>
+      </catgry>
+      <catgry>
+        <catValu>05</catValu>
+        <labl>Arkansas</labl>
+      </catgry>
+      <catgry>
+        <catValu>06</catValu>
+        <labl>California</labl>
+      </catgry>
+      <catgry>
+        <catValu>08</catValu>
+        <labl>Colorado</labl>
+      </catgry>
+      <catgry>
+        <catValu>09</catValu>
+        <labl>Connecticut</labl>
+      </catgry>
+      <catgry>
+        <catValu>10</catValu>
+        <labl>Delaware</labl>
+      </catgry>
+      <catgry>
+        <catValu>11</catValu>
+        <labl>District of Columbia</labl>
+      </catgry>
+      <catgry>
+        <catValu>12</catValu>
+        <labl>Florida</labl>
+      </catgry>
+      <catgry>
+        <catValu>13</catValu>
+        <labl>Georgia</labl>
+      </catgry>
+      <catgry>
+        <catValu>15</catValu>
+        <labl>Hawaii</labl>
+      </catgry>
+      <catgry>
+        <catValu>16</catValu>
+        <labl>Idaho</labl>
+      </catgry>
+      <catgry>
+        <catValu>17</catValu>
+        <labl>Illinois</labl>
+      </catgry>
+      <catgry>
+        <catValu>18</catValu>
+        <labl>Indiana</labl>
+      </catgry>
+      <catgry>
+        <catValu>19</catValu>
+        <labl>Iowa</labl>
+      </catgry>
+      <catgry>
+        <catValu>20</catValu>
+        <labl>Kansas</labl>
+      </catgry>
+      <catgry>
+        <catValu>21</catValu>
+        <labl>Kentucky</labl>
+      </catgry>
+      <catgry>
+        <catValu>22</catValu>
+        <labl>Louisiana</labl>
+      </catgry>
+      <catgry>
+        <catValu>23</catValu>
+        <labl>Maine</labl>
+      </catgry>
+      <catgry>
+        <catValu>24</catValu>
+        <labl>Maryland</labl>
+      </catgry>
+      <catgry>
+        <catValu>25</catValu>
+        <labl>Massachusetts</labl>
+      </catgry>
+      <catgry>
+        <catValu>26</catValu>
+        <labl>Michigan</labl>
+      </catgry>
+      <catgry>
+        <catValu>27</catValu>
+        <labl>Minnesota</labl>
+      </catgry>
+      <catgry>
+        <catValu>28</catValu>
+        <labl>Mississippi</labl>
+      </catgry>
+      <catgry>
+        <catValu>29</catValu>
+        <labl>Missouri</labl>
+      </catgry>
+      <catgry>
+        <catValu>30</catValu>
+        <labl>Montana</labl>
+      </catgry>
+      <catgry>
+        <catValu>31</catValu>
+        <labl>Nebraska</labl>
+      </catgry>
+      <catgry>
+        <catValu>32</catValu>
+        <labl>Nevada</labl>
+      </catgry>
+      <catgry>
+        <catValu>33</catValu>
+        <labl>New Hampshire</labl>
+      </catgry>
+      <catgry>
+        <catValu>34</catValu>
+        <labl>New Jersey</labl>
+      </catgry>
+      <catgry>
+        <catValu>35</catValu>
+        <labl>New Mexico</labl>
+      </catgry>
+      <catgry>
+        <catValu>36</catValu>
+        <labl>New York</labl>
+      </catgry>
+      <catgry>
+        <catValu>37</catValu>
+        <labl>North Carolina</labl>
+      </catgry>
+      <catgry>
+        <catValu>38</catValu>
+        <labl>North Dakota</labl>
+      </catgry>
+      <catgry>
+        <catValu>39</catValu>
+        <labl>Ohio</labl>
+      </catgry>
+      <catgry>
+        <catValu>40</catValu>
+        <labl>Oklahoma</labl>
+      </catgry>
+      <catgry>
+        <catValu>41</catValu>
+        <labl>Oregon</labl>
+      </catgry>
+      <catgry>
+        <catValu>42</catValu>
+        <labl>Pennsylvania</labl>
+      </catgry>
+      <catgry>
+        <catValu>44</catValu>
+        <labl>Rhode Island</labl>
+      </catgry>
+      <catgry>
+        <catValu>45</catValu>
+        <labl>South Carolina</labl>
+      </catgry>
+      <catgry>
+        <catValu>46</catValu>
+        <labl>South Dakota</labl>
+      </catgry>
+      <catgry>
+        <catValu>47</catValu>
+        <labl>Tennessee</labl>
+      </catgry>
+      <catgry>
+        <catValu>48</catValu>
+        <labl>Texas</labl>
+      </catgry>
+      <catgry>
+        <catValu>49</catValu>
+        <labl>Utah</labl>
+      </catgry>
+      <catgry>
+        <catValu>50</catValu>
+        <labl>Vermont</labl>
+      </catgry>
+      <catgry>
+        <catValu>51</catValu>
+        <labl>Virginia</labl>
+      </catgry>
+      <catgry>
+        <catValu>53</catValu>
+        <labl>Washington</labl>
+      </catgry>
+      <catgry>
+        <catValu>54</catValu>
+        <labl>West Virginia</labl>
+      </catgry>
+      <catgry>
+        <catValu>55</catValu>
+        <labl>Wisconsin</labl>
+      </catgry>
+      <catgry>
+        <catValu>56</catValu>
+        <labl>Wyoming</labl>
+      </catgry>
+      <catgry>
+        <catValu>61</catValu>
+        <labl>Maine-New Hampshire-Vermont</labl>
+      </catgry>
+      <catgry>
+        <catValu>65</catValu>
+        <labl>Montana-Idaho-Wyoming</labl>
+      </catgry>
+      <catgry>
+        <catValu>68</catValu>
+        <labl>Alaska-Hawaii</labl>
+      </catgry>
+      <catgry>
+        <catValu>69</catValu>
+        <labl>Nebraska-North Dakota-South Dakota</labl>
+      </catgry>
+      <catgry>
+        <catValu>70</catValu>
+        <labl>Maine-Massachusetts-New Hampshire-Rhode Island-Vermont</labl>
+      </catgry>
+      <catgry>
+        <catValu>71</catValu>
+        <labl>Michigan-Wisconsin</labl>
+      </catgry>
+      <catgry>
+        <catValu>72</catValu>
+        <labl>Minnesota-Iowa</labl>
+      </catgry>
+      <catgry>
+        <catValu>73</catValu>
+        <labl>Nebraska-North Dakota-South Dakota-Kansas</labl>
+      </catgry>
+      <catgry>
+        <catValu>74</catValu>
+        <labl>Delaware-Virginia</labl>
+      </catgry>
+      <catgry>
+        <catValu>75</catValu>
+        <labl>North Carolina-South Carolina</labl>
+      </catgry>
+      <catgry>
+        <catValu>76</catValu>
+        <labl>Alabama-Mississippi</labl>
+      </catgry>
+      <catgry>
+        <catValu>77</catValu>
+        <labl>Arkansas-Oklahoma</labl>
+      </catgry>
+      <catgry>
+        <catValu>78</catValu>
+        <labl>Arizona-New Mexico-Colorado</labl>
+      </catgry>
+      <catgry>
+        <catValu>79</catValu>
+        <labl>Idaho-Wyoming-Utah-Montana-Nevada</labl>
+      </catgry>
+      <catgry>
+        <catValu>80</catValu>
+        <labl>Alaska-Washington-Hawaii</labl>
+      </catgry>
+      <catgry>
+        <catValu>81</catValu>
+        <labl>New Hampshire-Maine-Vermont-Rhode Island</labl>
+      </catgry>
+      <catgry>
+        <catValu>83</catValu>
+        <labl>South Carolina-Georgia</labl>
+      </catgry>
+      <catgry>
+        <catValu>84</catValu>
+        <labl>Kentucky-Tennessee</labl>
+      </catgry>
+      <catgry>
+        <catValu>85</catValu>
+        <labl>Arkansas-Louisiana-Oklahoma</labl>
+      </catgry>
+      <catgry>
+        <catValu>87</catValu>
+        <labl>Iowa-N Dakota-S Dakota-Nebraska-Kansas-Minnesota-Missouri</labl>
+      </catgry>
+      <catgry>
+        <catValu>88</catValu>
+        <labl>Washington-Oregon-Alaska-Hawaii</labl>
+      </catgry>
+      <catgry>
+        <catValu>89</catValu>
+        <labl>Montana-Wyoming-Colorado-New Mexico-Utah-Nevada-Arizona</labl>
+      </catgry>
+      <catgry>
+        <catValu>90</catValu>
+        <labl>Delaware-Maryland-Virginia-West Virginia</labl>
+      </catgry>
+      <catgry>
+        <catValu>99</catValu>
+        <labl>State not identified</labl>
+      </catgry>
+      <concept vocab="IPUMS">Geographic Variables -- HOUSEHOLD</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="PERNUM" dcml="0" files="ExtractData" intrvl="contin" name="PERNUM" rectype="P">
+      <location EndPos="12" StartPos="11" width="2"/>
+      <labl>Person number in sample unit</labl>
+      <txt><![CDATA[PERNUM numbers all persons within each household consecutively (starting with "1") in the order in which they are listed in the original CPS data.  When combined with YEAR , MONTH, and SERIAL, PERNUM uniquely identifies each person within IPUMS-CPS samples, though not across IPUMS-CPS samples.]]></txt>
+      <codInstr><![CDATA[CodesPERNUM is a 2-digit numeric variable.]]></codInstr>
+      <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="WTFINL" dcml="4" files="ExtractData" intrvl="contin" name="WTFINL" rectype="P">
+      <location EndPos="26" StartPos="13" width="14"/>
+      <labl>Final Basic Weight</labl>
+      <txt><![CDATA[WTFINL is the final person-level weight that should be used in analyses of basic monthly data. 
+
+When analyzing ASEC data, researchers should use the person weight ASECWT. For analyses including the variables EARNWEEK, HOURWAGE, PAIDHOUR, and UNION, researchers should use the EARNWT variable. 
+
+WTFINL is the second stage weight in CPS (see technical documentation). It is based on the inverse probability of selection into the sample and adjustments for the following factors: failure to obtain an interview; sampling within large sample units; adjustments to the known distribution of the entire population according to stage, age, sex, race, and Hispanic ethnicity; and allotting a weight of zero to populations not sampled in other monthly surveys (i.e., persons in the Hispanic oversample and members of the armed forces in ASEC samples).]]></txt>
+      <codInstr><![CDATA[CodesWTFINL is a 14-digit numeric variable with four implied decimals.  That is, 12345678901234 should be interpreted as 1234567890.1234.  The IPUMS command files automatically make the necessary adjustment, so no further adjustment is needed.]]></codInstr>
+      <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="CPSIDP" dcml="0" files="ExtractData" intrvl="contin" name="CPSIDP" rectype="P">
+      <location EndPos="40" StartPos="27" width="14"/>
+      <labl>CPSID, person record</labl>
+      <txt><![CDATA[CPSIDP is an IPUMS CPS defined variable that uniquely identifies individuals across CPS samples. The first six digits of CPSIDP index the four-digit year and two-digit month that the household was first in the CPS. CPSIDP allows users to link a respondent appearing with a designated household roster line number (LINENO) across samples, based on the 4-8-4 rotation pattern, by assigning a unique CPSIDP value to this line number. CPSIDP will only ever appear for a maximum of 8 times, which is the number of times a household may be observed in the CPS survey (as indexed by MISH). In some cases, individuals will appear fewer than 8 times due to migration, mortality, non-response, and recording errors. Extensive documentation about the creation of CPSIDP is available elsewhere.
+
+Users should note that it is important to verify CPSIDP linkages with AGE, SEX, and RACE. In some cases CPSIDP will result in erroneous links, which are due to errors in the source data. Cases with the same CPSIDP value may also have inconsistent responses across samples due to errors on the part of the respondent or in recording the response. Ultimately, it is up to the individual researcher to determine the acceptability of the linkages made using CPSIDP. 
+
+CPSIDP may also be used to link ASEC respondents who are in the March Basic Monthly file to other months of CPS data. This linking is made possible by IPUMS through the creation of MARBASECIDP. 
+
+To get started using CPSIDP, users may want to sort their data file by CPSIDP and MISH to create a person-time file. 
+
+Users should take care when including the March Basic or ASEC as part of their linking. Respondents who are part of the ASEC oversample (as indicated by ASECOVERP) have a CPSIDP value of 0. For further information about the relationship between the March Basic and the ASEC, please see our additional documentation.]]></txt>
+      <codInstr><![CDATA[CodesCPSIDP is a 14-digit numeric variable.]]></codInstr>
+      <concept vocab="IPUMS">Linking Variables -- PERSON</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="AGE" dcml="0" files="ExtractData" intrvl="discrete" name="AGE" rectype="P">
+      <location EndPos="42" StartPos="41" width="2"/>
+      <labl>Age</labl>
+      <txt><![CDATA[Age gives each person's age at last birthday.]]></txt>
+      <catgry>
+        <catValu>00</catValu>
+        <labl>Under 1 year</labl>
+      </catgry>
+      <catgry>
+        <catValu>01</catValu>
+        <labl>1</labl>
+      </catgry>
+      <catgry>
+        <catValu>02</catValu>
+        <labl>2</labl>
+      </catgry>
+      <catgry>
+        <catValu>03</catValu>
+        <labl>3</labl>
+      </catgry>
+      <catgry>
+        <catValu>04</catValu>
+        <labl>4</labl>
+      </catgry>
+      <catgry>
+        <catValu>05</catValu>
+        <labl>5</labl>
+      </catgry>
+      <catgry>
+        <catValu>06</catValu>
+        <labl>6</labl>
+      </catgry>
+      <catgry>
+        <catValu>07</catValu>
+        <labl>7</labl>
+      </catgry>
+      <catgry>
+        <catValu>08</catValu>
+        <labl>8</labl>
+      </catgry>
+      <catgry>
+        <catValu>09</catValu>
+        <labl>9</labl>
+      </catgry>
+      <catgry>
+        <catValu>10</catValu>
+        <labl>10</labl>
+      </catgry>
+      <catgry>
+        <catValu>11</catValu>
+        <labl>11</labl>
+      </catgry>
+      <catgry>
+        <catValu>12</catValu>
+        <labl>12</labl>
+      </catgry>
+      <catgry>
+        <catValu>13</catValu>
+        <labl>13</labl>
+      </catgry>
+      <catgry>
+        <catValu>14</catValu>
+        <labl>14</labl>
+      </catgry>
+      <catgry>
+        <catValu>15</catValu>
+        <labl>15</labl>
+      </catgry>
+      <catgry>
+        <catValu>16</catValu>
+        <labl>16</labl>
+      </catgry>
+      <catgry>
+        <catValu>17</catValu>
+        <labl>17</labl>
+      </catgry>
+      <catgry>
+        <catValu>18</catValu>
+        <labl>18</labl>
+      </catgry>
+      <catgry>
+        <catValu>19</catValu>
+        <labl>19</labl>
+      </catgry>
+      <catgry>
+        <catValu>20</catValu>
+        <labl>20</labl>
+      </catgry>
+      <catgry>
+        <catValu>21</catValu>
+        <labl>21</labl>
+      </catgry>
+      <catgry>
+        <catValu>22</catValu>
+        <labl>22</labl>
+      </catgry>
+      <catgry>
+        <catValu>23</catValu>
+        <labl>23</labl>
+      </catgry>
+      <catgry>
+        <catValu>24</catValu>
+        <labl>24</labl>
+      </catgry>
+      <catgry>
+        <catValu>25</catValu>
+        <labl>25</labl>
+      </catgry>
+      <catgry>
+        <catValu>26</catValu>
+        <labl>26</labl>
+      </catgry>
+      <catgry>
+        <catValu>27</catValu>
+        <labl>27</labl>
+      </catgry>
+      <catgry>
+        <catValu>28</catValu>
+        <labl>28</labl>
+      </catgry>
+      <catgry>
+        <catValu>29</catValu>
+        <labl>29</labl>
+      </catgry>
+      <catgry>
+        <catValu>30</catValu>
+        <labl>30</labl>
+      </catgry>
+      <catgry>
+        <catValu>31</catValu>
+        <labl>31</labl>
+      </catgry>
+      <catgry>
+        <catValu>32</catValu>
+        <labl>32</labl>
+      </catgry>
+      <catgry>
+        <catValu>33</catValu>
+        <labl>33</labl>
+      </catgry>
+      <catgry>
+        <catValu>34</catValu>
+        <labl>34</labl>
+      </catgry>
+      <catgry>
+        <catValu>35</catValu>
+        <labl>35</labl>
+      </catgry>
+      <catgry>
+        <catValu>36</catValu>
+        <labl>36</labl>
+      </catgry>
+      <catgry>
+        <catValu>37</catValu>
+        <labl>37</labl>
+      </catgry>
+      <catgry>
+        <catValu>38</catValu>
+        <labl>38</labl>
+      </catgry>
+      <catgry>
+        <catValu>39</catValu>
+        <labl>39</labl>
+      </catgry>
+      <catgry>
+        <catValu>40</catValu>
+        <labl>40</labl>
+      </catgry>
+      <catgry>
+        <catValu>41</catValu>
+        <labl>41</labl>
+      </catgry>
+      <catgry>
+        <catValu>42</catValu>
+        <labl>42</labl>
+      </catgry>
+      <catgry>
+        <catValu>43</catValu>
+        <labl>43</labl>
+      </catgry>
+      <catgry>
+        <catValu>44</catValu>
+        <labl>44</labl>
+      </catgry>
+      <catgry>
+        <catValu>45</catValu>
+        <labl>45</labl>
+      </catgry>
+      <catgry>
+        <catValu>46</catValu>
+        <labl>46</labl>
+      </catgry>
+      <catgry>
+        <catValu>47</catValu>
+        <labl>47</labl>
+      </catgry>
+      <catgry>
+        <catValu>48</catValu>
+        <labl>48</labl>
+      </catgry>
+      <catgry>
+        <catValu>49</catValu>
+        <labl>49</labl>
+      </catgry>
+      <catgry>
+        <catValu>50</catValu>
+        <labl>50</labl>
+      </catgry>
+      <catgry>
+        <catValu>51</catValu>
+        <labl>51</labl>
+      </catgry>
+      <catgry>
+        <catValu>52</catValu>
+        <labl>52</labl>
+      </catgry>
+      <catgry>
+        <catValu>53</catValu>
+        <labl>53</labl>
+      </catgry>
+      <catgry>
+        <catValu>54</catValu>
+        <labl>54</labl>
+      </catgry>
+      <catgry>
+        <catValu>55</catValu>
+        <labl>55</labl>
+      </catgry>
+      <catgry>
+        <catValu>56</catValu>
+        <labl>56</labl>
+      </catgry>
+      <catgry>
+        <catValu>57</catValu>
+        <labl>57</labl>
+      </catgry>
+      <catgry>
+        <catValu>58</catValu>
+        <labl>58</labl>
+      </catgry>
+      <catgry>
+        <catValu>59</catValu>
+        <labl>59</labl>
+      </catgry>
+      <catgry>
+        <catValu>60</catValu>
+        <labl>60</labl>
+      </catgry>
+      <catgry>
+        <catValu>61</catValu>
+        <labl>61</labl>
+      </catgry>
+      <catgry>
+        <catValu>62</catValu>
+        <labl>62</labl>
+      </catgry>
+      <catgry>
+        <catValu>63</catValu>
+        <labl>63</labl>
+      </catgry>
+      <catgry>
+        <catValu>64</catValu>
+        <labl>64</labl>
+      </catgry>
+      <catgry>
+        <catValu>65</catValu>
+        <labl>65</labl>
+      </catgry>
+      <catgry>
+        <catValu>66</catValu>
+        <labl>66</labl>
+      </catgry>
+      <catgry>
+        <catValu>67</catValu>
+        <labl>67</labl>
+      </catgry>
+      <catgry>
+        <catValu>68</catValu>
+        <labl>68</labl>
+      </catgry>
+      <catgry>
+        <catValu>69</catValu>
+        <labl>69</labl>
+      </catgry>
+      <catgry>
+        <catValu>70</catValu>
+        <labl>70</labl>
+      </catgry>
+      <catgry>
+        <catValu>71</catValu>
+        <labl>71</labl>
+      </catgry>
+      <catgry>
+        <catValu>72</catValu>
+        <labl>72</labl>
+      </catgry>
+      <catgry>
+        <catValu>73</catValu>
+        <labl>73</labl>
+      </catgry>
+      <catgry>
+        <catValu>74</catValu>
+        <labl>74</labl>
+      </catgry>
+      <catgry>
+        <catValu>75</catValu>
+        <labl>75</labl>
+      </catgry>
+      <catgry>
+        <catValu>76</catValu>
+        <labl>76</labl>
+      </catgry>
+      <catgry>
+        <catValu>77</catValu>
+        <labl>77</labl>
+      </catgry>
+      <catgry>
+        <catValu>78</catValu>
+        <labl>78</labl>
+      </catgry>
+      <catgry>
+        <catValu>79</catValu>
+        <labl>79</labl>
+      </catgry>
+      <catgry>
+        <catValu>80</catValu>
+        <labl>80</labl>
+      </catgry>
+      <catgry>
+        <catValu>81</catValu>
+        <labl>81</labl>
+      </catgry>
+      <catgry>
+        <catValu>82</catValu>
+        <labl>82</labl>
+      </catgry>
+      <catgry>
+        <catValu>83</catValu>
+        <labl>83</labl>
+      </catgry>
+      <catgry>
+        <catValu>84</catValu>
+        <labl>84</labl>
+      </catgry>
+      <catgry>
+        <catValu>85</catValu>
+        <labl>85</labl>
+      </catgry>
+      <catgry>
+        <catValu>86</catValu>
+        <labl>86</labl>
+      </catgry>
+      <catgry>
+        <catValu>87</catValu>
+        <labl>87</labl>
+      </catgry>
+      <catgry>
+        <catValu>88</catValu>
+        <labl>88</labl>
+      </catgry>
+      <catgry>
+        <catValu>89</catValu>
+        <labl>89</labl>
+      </catgry>
+      <catgry>
+        <catValu>90</catValu>
+        <labl>90 (90+, 1988-2002)</labl>
+      </catgry>
+      <catgry>
+        <catValu>91</catValu>
+        <labl>91</labl>
+      </catgry>
+      <catgry>
+        <catValu>92</catValu>
+        <labl>92</labl>
+      </catgry>
+      <catgry>
+        <catValu>93</catValu>
+        <labl>93</labl>
+      </catgry>
+      <catgry>
+        <catValu>94</catValu>
+        <labl>94</labl>
+      </catgry>
+      <catgry>
+        <catValu>95</catValu>
+        <labl>95</labl>
+      </catgry>
+      <catgry>
+        <catValu>96</catValu>
+        <labl>96</labl>
+      </catgry>
+      <catgry>
+        <catValu>97</catValu>
+        <labl>97</labl>
+      </catgry>
+      <catgry>
+        <catValu>98</catValu>
+        <labl>98</labl>
+      </catgry>
+      <catgry>
+        <catValu>99</catValu>
+        <labl>99+</labl>
+      </catgry>
+      <concept vocab="IPUMS">Demographics Variables -- PERSON</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="SEX" dcml="0" files="ExtractData" intrvl="discrete" name="SEX" rectype="P">
+      <location EndPos="43" StartPos="43" width="1"/>
+      <labl>Sex</labl>
+      <txt><![CDATA[SEX gives each person's sex.]]></txt>
+      <catgry>
+        <catValu>1</catValu>
+        <labl>Male</labl>
+      </catgry>
+      <catgry>
+        <catValu>2</catValu>
+        <labl>Female</labl>
+      </catgry>
+      <catgry>
+        <catValu>9</catValu>
+        <labl>NIU</labl>
+      </catgry>
+      <concept vocab="IPUMS">Demographics Variables -- PERSON</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+    <var ID="RACE" dcml="0" files="ExtractData" intrvl="discrete" name="RACE" rectype="P">
+      <location EndPos="46" StartPos="44" width="3"/>
+      <labl>Race</labl>
+      <txt><![CDATA[Racial categories in the CPS have been more consistent than racial categories in the census.  Up through 2002, the number of race categories ranged from 3 (white, negro, and other) to 5 (white, black, American Indian/Eskimo/Aleut, Asian or Pacific Islander, and other).   Beginning in 2003, respondents could report more than one race, and the number of codes rose to 21, and then up to 26 codes in 2013.]]></txt>
+      <catgry>
+        <catValu>100</catValu>
+        <labl>White</labl>
+      </catgry>
+      <catgry>
+        <catValu>200</catValu>
+        <labl>Black</labl>
+      </catgry>
+      <catgry>
+        <catValu>300</catValu>
+        <labl>American Indian/Aleut/Eskimo</labl>
+      </catgry>
+      <catgry>
+        <catValu>650</catValu>
+        <labl>Asian or Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>651</catValu>
+        <labl>Asian only</labl>
+      </catgry>
+      <catgry>
+        <catValu>652</catValu>
+        <labl>Hawaiian/Pacific Islander only</labl>
+      </catgry>
+      <catgry>
+        <catValu>700</catValu>
+        <labl>Other (single) race, n.e.c.</labl>
+      </catgry>
+      <catgry>
+        <catValu>801</catValu>
+        <labl>White-Black</labl>
+      </catgry>
+      <catgry>
+        <catValu>802</catValu>
+        <labl>White-American Indian</labl>
+      </catgry>
+      <catgry>
+        <catValu>803</catValu>
+        <labl>White-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>804</catValu>
+        <labl>White-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>805</catValu>
+        <labl>Black-American Indian</labl>
+      </catgry>
+      <catgry>
+        <catValu>806</catValu>
+        <labl>Black-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>807</catValu>
+        <labl>Black-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>808</catValu>
+        <labl>American Indian-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>809</catValu>
+        <labl>Asian-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>810</catValu>
+        <labl>White-Black-American Indian</labl>
+      </catgry>
+      <catgry>
+        <catValu>811</catValu>
+        <labl>White-Black-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>812</catValu>
+        <labl>White-American Indian-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>813</catValu>
+        <labl>White-Asian-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>814</catValu>
+        <labl>White-Black-American Indian-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>815</catValu>
+        <labl>American Indian-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>816</catValu>
+        <labl>White-Black--Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>817</catValu>
+        <labl>White-American Indian-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>818</catValu>
+        <labl>Black-American Indian-Asian</labl>
+      </catgry>
+      <catgry>
+        <catValu>819</catValu>
+        <labl>White-American Indian-Asian-Hawaiian/Pacific Islander</labl>
+      </catgry>
+      <catgry>
+        <catValu>820</catValu>
+        <labl>Two or three races, unspecified</labl>
+      </catgry>
+      <catgry>
+        <catValu>830</catValu>
+        <labl>Four or five races, unspecified</labl>
+      </catgry>
+      <catgry>
+        <catValu>999</catValu>
+        <labl>Blank</labl>
+      </catgry>
+      <concept vocab="IPUMS">Demographics Variables -- PERSON</concept>
+      <varFormat schema="other" type="numeric"/>
+    </var>
+  </dataDscr>
+</codeBook>

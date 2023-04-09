@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ipumspy"
-version = "0.2.2a1"
+version = "0.3.0"
 description = "A collection of tools for working with IPUMS data"
 authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
            "Renae Rodgers <rodge103@umn.edu>"]
@@ -14,7 +14,7 @@ python = "^3.8"
 pandas = "^1.5.2"
 click = "^8.0.0"
 pyarrow = "^10.0.0"
-requests = "^2.25.1"
+requests = {extras = ["use_chardet_on_py3"], version = "^2.26.0"}
 importlib-metadata = "^4.13.0"
 PyYAML = "^5.4.1"
 beautifulsoup4 = "^4.11.1"

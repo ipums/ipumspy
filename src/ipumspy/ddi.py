@@ -30,23 +30,24 @@ class VariableDescription:
     """variable id (this is the same as its name)"""
     name: str
     """variable name"""
+    rectype: str
+    """record type"""
     codes: Dict[str, Union[int, str]]
     """a dictionary of codes and value labels"""
-
     start: int
     """variable's starting column in the extract data file"""
     end: int
     """variable's final column in the extract data file"""
-
     label: str
     """variable label"""
     description: str
     """variable description"""
     concept: str
     """IPUMS variable group"""
-
     vartype: str
     """variable data type"""
+    notes: str
+    """notes about this variable from the ddi"""
     shift: Optional[int]
     """number of implied decimal places"""
 
@@ -123,10 +124,21 @@ class VariableDescription:
                 labels_dict[label] = int(value)
             else:
                 labels_dict[label] = value
-
+        # rectype attribute only exists for hierarchical extracts
+        try:
+            var_rectype = elt.attrib["rectype"]
+        # stick an empty string in this attribute for rectangular extracts
+        except KeyError:
+            var_rectype = ""
+        # if a variable has notes, capture those
+        try:
+            var_notes = elt.find("./ddi:notes", namespaces).text
+        except AttributeError:
+            var_notes = ""
         return cls(
             id=elt.attrib["ID"],
             name=elt.attrib["name"],
+            rectype=var_rectype,
             codes=labels_dict,
             start=int(elt.find("./ddi:location", namespaces).attrib["StartPos"])
             - 1,  # 0 based in python
@@ -137,6 +149,7 @@ class VariableDescription:
             description=elt.find("./ddi:txt", namespaces).text,
             concept=elt.find("./ddi:concept", namespaces).text,
             vartype=vartype,
+            notes=var_notes,
             shift=int(elt.attrib.get("dcml")) if "dcml" in elt.attrib else None,
         )
 
@@ -157,6 +170,21 @@ class FileDescription:
     IPUMS extract data file structure.
     Valid structures: rectangular, hierarchical
     """
+    rectypes: List
+    """
+    Record types included in the IPUMS extract.
+    This is an empty list for rectangular extracts.
+    """
+    rectype_idvar: str
+    """
+    The variable that identifies record types.
+    This is an empty string for rectangular extracts.
+    """
+    rectype_keyvar: str
+    """
+    The variable that uniquely identifies records across record types.
+    This is an empty string for rectangular extracts.
+    """
     encoding: str
     """IPUMS file encoding scheme"""
     format: str
@@ -176,10 +204,33 @@ class FileDescription:
             FileDescription object
         """
         namespaces = {"ddi": ddi_namespace}
+
+        # only hierarchical files have recGrp information
+        try:
+            file_rectypes = elt.findall("./ddi:fileStrc/ddi:recGrp", namespaces)
+            rts = [rectype.attrib["rectype"] for rectype in file_rectypes]
+        except KeyError:
+            rts = []
+        # rectype get rectype id var and rectype key var
+        # these should be the same across record types for all collections
+        # so we should be fine to just grab the first appearance of recidvar and keyvar
+        try:
+            rectype_idvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib[
+                "recidvar"
+            ]
+            rectype_keyvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib[
+                "keyvar"
+            ]
+        except AttributeError:
+            rectype_idvar = ""
+            rectype_keyvar = ""
         return cls(
             filename=elt.find("./ddi:fileName", namespaces).text,
             description=elt.find("./ddi:fileCont", namespaces).text,
             structure=elt.find("./ddi:fileStrc", namespaces).attrib["type"],
+            rectypes=rts,
+            rectype_idvar=rectype_idvar,
+            rectype_keyvar=rectype_keyvar,
             encoding=elt.find("./ddi:fileType", namespaces)
             .attrib.get("charset", "iso-8859-1")
             .lower(),

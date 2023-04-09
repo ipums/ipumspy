@@ -40,7 +40,7 @@ def test_submit_command(environment_variables, fixtures_path: Path, mock_api: st
             os.environ.get("IPUMS_API_KEY"),
             "--base-url",
             mock_api,
-            str(fixtures_path / "example_extract.yml"),
+            str(fixtures_path / "example_extract_v2.yml"),
         ],
     )
     assert (
