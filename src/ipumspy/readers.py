@@ -351,10 +351,17 @@ def read_microdata_chunked(
     Read in microdata in chunks as specified by the Codebook.
     As these files are often large, you may wish to filter or read in chunks.
     As an example of how you might do that, consider the following example that
-    filters only for rows in Rhode Island::
+    filters only for rows in Rhode Island:
 
         iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
         df = pd.concat([df[df['STATEFIP'] == 44]] for df in iter_microdata])
+
+    This method also works for large hierarchical files. When reading these files
+    in chunks, users will want to be sure to filter on the RECTYPE variable. For example,
+    the code below reads in only household records in Rhode Island:
+
+        iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
+        df = pd.concat([df[(df['RECTYPE'] == 'H') & (df['STATEFIP'] == 44)] for df in iter_microdata])
 
     Args:
         ddi: The codebook representing the data
