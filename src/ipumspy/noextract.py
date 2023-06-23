@@ -68,9 +68,6 @@ def read_noextract_codebook(collection: str) -> Codebook:
         )
 
 
-yrbss_codebook = read_noextract_codebook()
-
-
 def download_noextract_data(collection: str, filename: FilenameType):
     """
     A convenience function to download non-extractable IPUMS data directly from the IPUMS website

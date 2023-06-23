@@ -18,7 +18,7 @@ import pandas as pd
 import numpy as np
 import yaml
 
-from ipumspy import yrbss
+from ipumspy import noextract
 
 from . import ddi as ddi_definitions
 from . import fileutils
@@ -158,7 +158,9 @@ def _read_microdata(
             # NOTE(khw): The following line is for specifically handling YRBSS data,
             # which uses a different .dat format from all other files. This should
             # be resolved in the future by offering a `.parquet` version of the file
-            if ddi is yrbss.yrbss_codebook:
+            # NOTE(rr): Looking at the codebook, I don't _think_ there are similar variables
+            # in the NYTS data.
+            if ddi.ipums_collection == "yrbss":
                 for col in dtype:
                     if any(name in col for name in ["WEIGHT", "BMIPCTILE"]):
                         dtype[col] = pd.Float64Dtype()
