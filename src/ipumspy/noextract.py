@@ -11,6 +11,7 @@ from .ddi import Codebook, FileDescription, VariableDescription
 
 NOEXTRACT_COLLECTIONS = ["yrbss", "nyts"]
 
+
 def read_noextract_codebook(collection: str) -> Codebook:
     """
     A method to parse the codebooks for non-extractable IPUMS datasets that come with this package
@@ -25,8 +26,10 @@ def read_noextract_codebook(collection: str) -> Codebook:
         Codebook: an ipumspy Codebook object
     """
     if collection not in NOEXTRACT_COLLECTIONS:
-        raise ValueError(f"{collection} is not a non-extractable IPUMS data collection. "
-                         f"Non-extractable IPUMS data collections include {' '.join(NOEXTRACT_COLLECTIONS)}")
+        raise ValueError(
+            f"{collection} is not a non-extractable IPUMS data collection. "
+            f"Non-extractable IPUMS data collections include {' '.join(NOEXTRACT_COLLECTIONS)}"
+        )
     else:
         with pkg_resources.open_binary(data, f"{collection}.yml.gz") as infile:
             j = yaml.safe_load(gzip.decompress(infile.read()))
@@ -92,11 +95,14 @@ def download_noextract_data(collection: str, filename: FilenameType):
         ValueError: If an invalid or extractable IPUMS data collection is specified
     """
     if collection not in NOEXTRACT_COLLECTIONS:
-        raise ValueError(f"{collection} is not a non-extractable IPUMS data collection. "
-                         f"Non-extractable IPUMS data collections include {' '.join(NOEXTRACT_COLLECTIONS)}")
+        raise ValueError(
+            f"{collection} is not a non-extractable IPUMS data collection. "
+            f"Non-extractable IPUMS data collections include {' '.join(NOEXTRACT_COLLECTIONS)}"
+        )
 
     with requests.get(
-        f"https://assets.ipums.org/_files/fda/{collection}/ipums-{collection}.dat.gz", stream=True
+        f"https://assets.ipums.org/_files/fda/{collection}/ipums-{collection}.dat.gz",
+        stream=True,
     ) as resp:
 
         resp.raise_for_status()
