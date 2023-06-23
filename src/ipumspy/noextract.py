@@ -2,6 +2,7 @@ import gzip
 import importlib.resources as pkg_resources
 
 import requests
+from typing import Optional
 import yaml
 
 from ipumspy.types import FilenameType
@@ -71,7 +72,7 @@ def read_noextract_codebook(collection: str) -> Codebook:
         )
 
 
-def download_noextract_data(collection: str, filename: FilenameType):
+def download_noextract_data(collection: str, filename: Optional[FilenameType] = None):
     """
     A convenience function to download non-extractable IPUMS data directly from the IPUMS website
 
@@ -81,7 +82,7 @@ def download_noextract_data(collection: str, filename: FilenameType):
         >>> from ipumspy.noextract_collections import read_noextract_codebook, download_noextract_data
         >>>
         >>> yrbss_codebook = read_noextract_codebook("yrbss")
-        >>> download_noextract_data("yrbss.dat.gz")
+        >>> download_noextract_data("yrbss")
         >>> read_microdata(yrbss_codebook, "yrbss.dat.gz")
 
     N.B. You **must** use `read_noextract_codebook()` to parse the codebook provided in this package or else
@@ -89,7 +90,7 @@ def download_noextract_data(collection: str, filename: FilenameType):
 
     Args:
         collection (str): A valid non-extractable IPUMS data collection (yrbss or nyts)
-        filename: Where you would like do download the data to
+        filename (Optional, FilnameType): Files to download the data to. Defaults to ipums-<collection>.dat.gz
 
     Raises:
         ValueError: If an invalid or extractable IPUMS data collection is specified
@@ -100,6 +101,8 @@ def download_noextract_data(collection: str, filename: FilenameType):
             f"Non-extractable IPUMS data collections include {' '.join(NOEXTRACT_COLLECTIONS)}"
         )
 
+    if filename is None:
+        filename = f"ipums-{collection}.dat.gz"
     with requests.get(
         f"https://assets.ipums.org/_files/fda/{collection}/ipums-{collection}.dat.gz",
         stream=True,

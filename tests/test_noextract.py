@@ -4,9 +4,6 @@ import vcr
 
 from ipumspy import noextract
 
-# TODO
-# [] mock download of non-extractable data
-
 
 def test_read_noextract_codebook():
     codebook = noextract.read_noextract_codebook("yrbss")
