@@ -9,7 +9,7 @@ Utilities for working with IPUMS DDI formats
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Literal, Optional, Union
 from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element
 
@@ -165,12 +165,11 @@ class FileDescription:
     """IPUMS extract ddi file name"""
     description: str
     """IPUMS ddi file description"""
-    structure: str
+    structure: Literal["rectangular", "hierarchical"]
     """
     IPUMS extract data file structure.
-    Valid structures: rectangular, hierarchical
     """
-    rectypes: List
+    rectypes: List[str]
     """
     Record types included in the IPUMS extract.
     This is an empty list for rectangular extracts.
