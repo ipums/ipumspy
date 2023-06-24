@@ -10,13 +10,17 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
-0.3.1
+0.4.0
 -----
-2023-06-XX
+2023-06-24
 
 * Bug Fixes
 
   * A bug was fixed in :py:meth:`~ipumspy.readers.read_hierarchical_microdata()` that was causing data files to be read incompletely. 
+
+* New Features
+  
+  * New methods :py:meth:`~ipumspy.noextract.download_noextract_data()` and :py:meth:`~ipumspy.noextract.read_noextract_codebook()` were added to support working with `IPUMS YRBSS <https://www.ipums.org/projects/ipums-yrbss>`__ and `IPUMS NYTS <https://www.ipums.org/projects/ipums-nyts>`__ data collections.
 
 0.3.0
 -----

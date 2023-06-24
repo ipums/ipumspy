@@ -187,7 +187,13 @@ def _get_common_vars(ddi: ddi_definitions.Codebook, data_description: List):
     ]
     return common_vars
 
-def _get_rectype_vars(ddi: ddi_definitions.Codebook, rectype: str, common_vars: List, data_description: List):
+
+def _get_rectype_vars(
+    ddi: ddi_definitions.Codebook,
+    rectype: str,
+    common_vars: List,
+    data_description: List,
+):
     # NB: This might result in empty data frames for some rectypes
     # as the ddi contains all possible collection rectypes, even if only a few
     # are actually represented in the file.
@@ -288,15 +294,15 @@ def read_hierarchical_microdata(
     if subset is not None:
         if "RECTYPE" not in subset:
             raise ValueError(
-            "RECTYPE must be included in the subset list for hierarchical extracts."
-        )
+                "RECTYPE must be included in the subset list for hierarchical extracts."
+            )
         else:
             data_description = [
                 desc for desc in ddi.data_description if desc.name in subset
             ]
     else:
         data_description = ddi.data_description
-    
+
     # raise a warning if this is a rectantgular file
     if ddi.file_description.structure == "rectangular":
         raise NotImplementedError(
@@ -306,16 +312,32 @@ def read_hierarchical_microdata(
         df_dict = {}
         common_vars = _get_common_vars(ddi, data_description)
         for rectype in ddi.file_description.rectypes:
-            rectype_vars = _get_rectype_vars(ddi, rectype, common_vars, data_description)
+            rectype_vars = _get_rectype_vars(
+                ddi, rectype, common_vars, data_description
+            )
             # it feels like there should be a better way to do this bit...
-            rectype_df = pd.concat([df for df in _read_microdata(ddi, filename, encoding, rectype_vars, dtype, **kwargs)])
+            rectype_df = pd.concat(
+                [
+                    df
+                    for df in _read_microdata(
+                        ddi, filename, encoding, rectype_vars, dtype, **kwargs
+                    )
+                ]
+            )
             # filter out non-relevant rectype records
             df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype]
         if as_dict:
             return df_dict
         else:
             # read the hierarchical file
-            df = pd.concat([df for df in _read_microdata(ddi, filename, encoding, subset, dtype, **kwargs)])
+            df = pd.concat(
+                [
+                    df
+                    for df in _read_microdata(
+                        ddi, filename, encoding, subset, dtype, **kwargs
+                    )
+                ]
+            )
             # for each rectype, nullify variables that belong to other rectypes
             for rectype in df_dict.keys():
                 # create a list of variables that are for rectypes other than the current rectype
