@@ -14,6 +14,8 @@ API
      - Python objects representing the IPUMS XML DDI
    * - :ref:`readers <readers>`
      - Methods to read IPUMS extract XML DDI and Data files
+   * - :ref:`Non-Extractable Data Collections <noextract>`
+     - Methods to download and read IPUMS extract YAML codebooks and Data files for non-extractable datasets 
    * - :ref:`utilities <utilities>`
      - Convenience methods for working with IPUMS extract XML DDI and Data files
   
@@ -24,4 +26,6 @@ API
    api
    ddi
    readers
+   noextract
    utilities
+

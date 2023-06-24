@@ -175,24 +175,7 @@ def _read_microdata(
                 yield from (_fix_decimal_expansion(df) for df in data)
 
 
-def _read_hierarchical_microdata(
-    ddi: ddi_definitions.Codebook,
-    filename: Optional[fileutils.FileType] = None,
-    encoding: Optional[str] = None,
-    subset: Optional[List[str]] = None,
-    iterator: bool = False,
-    chunksize: Optional[int] = 100000,
-    dtype: Optional[dict] = None,
-    **kwargs,
-):
-    # TODO: try and speed this up
-    if subset is not None:
-        data_description = [
-            desc for desc in ddi.data_description if desc.name in subset
-        ]
-    else:
-        data_description = ddi.data_description
-
+def _get_common_vars(ddi: ddi_definitions.Codebook, data_description: List):
     # identify common variables
     # these variables have all rectypes listed in the variable-level rectype attribute
     # these are delimited by spaces within the string attribute
@@ -202,36 +185,25 @@ def _read_hierarchical_microdata(
         for desc in data_description
         if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
     ]
-    # seperate variables by rectype
-    rectypes = {}
+    return common_vars
+
+
+def _get_rectype_vars(
+    ddi: ddi_definitions.Codebook,
+    rectype: str,
+    common_vars: List,
+    data_description: List,
+):
     # NB: This might result in empty data frames for some rectypes
     # as the ddi contains all possible collection rectypes, even if only a few
     # are actually represented in the file.
     # TODO: prune empty rectype data frames
-    for rectype in ddi.file_description.rectypes:
-        rectype_vars = []
-        rectype_vars.extend(common_vars)
-        for desc in data_description:
-            if desc.rectype == rectype:
-                rectype_vars.append(desc.name)
-        # read microdata for the relevant rectype variables only
-        # and do it in chunks so it goes quicker
-        rectypes[rectype] = next(
-            read_microdata_chunked(
-                ddi,
-                filename,
-                encoding,
-                # rectype vars are the subset
-                rectype_vars,
-                chunksize,
-                dtype,
-                **kwargs,
-            )
-        )
-        # retain only records from the relevant record type
-        rt_df = rectypes[rectype]
-        rectypes[rectype] = rt_df[rt_df["RECTYPE"] == rectype]
-    return rectypes
+    rectype_vars = []
+    rectype_vars.extend(common_vars)
+    for desc in data_description:
+        if desc.rectype == rectype:
+            rectype_vars.append(desc.name)
+    return rectype_vars
 
 
 def read_microdata(
@@ -318,31 +290,54 @@ def read_hierarchical_microdata(
     Returns:
         pandas data frame or a dictionary of pandas data frames
     """
-    # hack for now just to have it in this method - make this a ddi.file_description attribute.
-    common_vars = [
-        desc.name
-        for desc in ddi.data_description
-        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
-    ]
     # RECTYPE must be included if subset list is specified
-    if subset is not None and "RECTYPE" not in subset:
-        raise ValueError(
-            "RECTYPE must be included in the subset list for hierarchical extracts."
-        )
+    if subset is not None:
+        if "RECTYPE" not in subset:
+            raise ValueError(
+                "RECTYPE must be included in the subset list for hierarchical extracts."
+            )
+        else:
+            data_description = [
+                desc for desc in ddi.data_description if desc.name in subset
+            ]
+    else:
+        data_description = ddi.data_description
+
     # raise a warning if this is a rectantgular file
     if ddi.file_description.structure == "rectangular":
         raise NotImplementedError(
             "Structure must be hierarchical. Use `read_microdata()` for rectangular extracts."
         )
     else:
-        df_dict = _read_hierarchical_microdata(
-            ddi, filename, encoding, subset, dtype, **kwargs
-        )
+        df_dict = {}
+        common_vars = _get_common_vars(ddi, data_description)
+        for rectype in ddi.file_description.rectypes:
+            rectype_vars = _get_rectype_vars(
+                ddi, rectype, common_vars, data_description
+            )
+            # it feels like there should be a better way to do this bit...
+            rectype_df = pd.concat(
+                [
+                    df
+                    for df in _read_microdata(
+                        ddi, filename, encoding, rectype_vars, dtype, **kwargs
+                    )
+                ]
+            )
+            # filter out non-relevant rectype records
+            df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype]
         if as_dict:
             return df_dict
         else:
             # read the hierarchical file
-            df = next(_read_microdata(ddi, filename, encoding, subset, dtype, **kwargs))
+            df = pd.concat(
+                [
+                    df
+                    for df in _read_microdata(
+                        ddi, filename, encoding, subset, dtype, **kwargs
+                    )
+                ]
+            )
             # for each rectype, nullify variables that belong to other rectypes
             for rectype in df_dict.keys():
                 # create a list of variables that are for rectypes other than the current rectype
@@ -386,10 +381,17 @@ def read_microdata_chunked(
     Read in microdata in chunks as specified by the Codebook.
     As these files are often large, you may wish to filter or read in chunks.
     As an example of how you might do that, consider the following example that
-    filters only for rows in Rhode Island::
+    filters only for rows in Rhode Island:
 
         iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
         df = pd.concat([df[df['STATEFIP'] == 44]] for df in iter_microdata])
+
+    This method also works for large hierarchical files. When reading these files
+    in chunks, users will want to be sure to filter on the RECTYPE variable. For example,
+    the code below reads in only household records in Rhode Island:
+
+        iter_microdata = read_microdata_chunked(ddi, chunksize=1000)
+        df = pd.concat([df[(df['RECTYPE'] == 'H') & (df['STATEFIP'] == 44)] for df in iter_microdata])
 
     Args:
         ddi: The codebook representing the data
