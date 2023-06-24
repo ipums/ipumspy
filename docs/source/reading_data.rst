@@ -5,6 +5,9 @@
 Reading IPUMS Data
 ==================
 
+Reading IPUMS Extracts
+----------------------
+
 Reading IPUMS data into a Pandas data frame using ``ipumspy`` requires a fixed-width or csv IPUMS extract data file and an IPUMS xml DDI file.
 
 To read a fixed-width rectangular IPUMS extract:
@@ -31,3 +34,8 @@ The :meth:`readers.read_hierarchical_microdata()` method is for reading hierarch
                                                        path/to/hierarhcical_file.dat.gz)
 
 To get a single data frame for a hierarchical extract, set the ``as_dict`` flag in :meth:`readers.read_hierarchical_microdata()` to ``False``.
+
+Reading Non-Extractable IPUMS Collections
+-----------------------------------------
+
+The `IPUMS YRBSS <https://www.ipums.org/projects/ipums-yrbss>`__ and `IPUMS NYTS <https://www.ipums.org/projects/ipums-nyts>`__ data collections are not accessed through the IPUMS extract system, but are available for download in their entirety. ``ipumspy`` has functionality to download these datasets (:py:meth:`~noextract.download_noextract_data()`) and parse the yml format codebooks that come packaged with the ``ipumspy`` library (:py:meth:`~noextract.read_noextract_codebook()`). This codebook object can then be used to read the downloaded dataset into a Pandas data frame using :py:meth:`~readers.read_microdata()` as with other IPUMS datasets retrieved via the IPUMS extract system.
