@@ -18,6 +18,8 @@ import pandas as pd
 import numpy as np
 import yaml
 
+from ipumspy import noextract
+
 from . import ddi as ddi_definitions
 from . import fileutils
 from .fileutils import open_or_yield
@@ -152,12 +154,17 @@ def _read_microdata(
             data = reader(infile, **kwargs)
 
         if dtype is None:
-            yield from (
-                _fix_decimal_expansion(df).astype(
-                    {desc.name: desc.pandas_type for desc in data_description}
-                )
-                for df in data
-            )
+            dtype = {desc.name: desc.pandas_type for desc in data_description}
+            # NOTE(khw): The following line is for specifically handling YRBSS data,
+            # which uses a different .dat format from all other files. This should
+            # be resolved in the future by offering a `.parquet` version of the file
+            # NOTE(rr): Looking at the codebook, I don't _think_ there are similar variables
+            # in the NYTS data.
+            if ddi.ipums_collection == "yrbss":
+                for col in dtype:
+                    if any(name in col for name in ["WEIGHT", "BMIPCTILE"]):
+                        dtype[col] = pd.Float64Dtype()
+            yield from (_fix_decimal_expansion(df).astype(dtype) for df in data)
         else:
             if ".dat" in filename.suffixes:
                 # convert variables from default numpy_type to corresponding type in dtype.
