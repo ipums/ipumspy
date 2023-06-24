@@ -10,6 +10,14 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+0.3.1
+-----
+2023-06-XX
+
+* Bug Fixes
+
+  * A bug was fixed in :py:meth:`~ipumspy.readers.read_hierarchical_microdata()` that was causing data files to be read incompletely. 
+
 0.3.0
 -----
 2023-04-08

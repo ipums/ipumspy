@@ -300,6 +300,7 @@ def read_hierarchical_microdata(
         common_vars = _get_common_vars(ddi, data_description)
         for rectype in ddi.file_description.rectypes:
             rectype_vars = _get_rectype_vars(ddi, rectype, common_vars, data_description)
+            # it feels like there should be a better way to do this bit...
             rectype_df = pd.concat([df for df in _read_microdata(ddi, filename, encoding, rectype_vars, dtype, **kwargs)])
             # filter out non-relevant rectype records
             df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype]
