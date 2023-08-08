@@ -10,6 +10,15 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+
+0.4.1
+-----
+2023-08-08
+
+* Bug Fixes
+
+  * Updated the minimum required version for pyYAML
+
 0.4.0
 -----
 2023-06-24
