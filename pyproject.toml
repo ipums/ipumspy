@@ -13,7 +13,7 @@ packages = [
 python = "^3.8"
 pandas = "^1.5.2"
 click = "^8.0.0"
-pyarrow = "^10.0.0"
+pyarrow = ">=10,<15"
 requests = {extras = ["use_chardet_on_py3"], version = "^2.26.0"}
 importlib-metadata = "^4.13.0"
 PyYAML = "^6.0.1"
