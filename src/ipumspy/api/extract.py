@@ -140,10 +140,10 @@ class BaseExtract:
         self._info: Optional[Dict[str, Any]] = None
         self.api_version: Optional[str] = None
 
-    # def __init_subclass__(cls, collection: str, **kwargs):
-    #     super().__init_subclass__(**kwargs)
-    #     cls.collection = collection
-    #     BaseExtract._collection_to_extract[collection] = cls
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        # cls.collection = collection
+        # BaseExtract._collection_to_extract[collection] = cls
 
     def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
         try:
@@ -371,7 +371,7 @@ class MicrodataExtract(BaseExtract):
         collection: str,
         samples: Union[List[str], List[Sample]],
         variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS extract",
+        description: str = "",
         data_format: str = "fixed_width",
         data_structure: Dict = {"rectangular": {"on": "P"}},
         **kwargs,
@@ -394,7 +394,10 @@ class MicrodataExtract(BaseExtract):
         self.collection = collection
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
+        if description == "":
+            self.description = f"My IPUMS {collection.upper()} extract"
+        else:
+            self.description = description
         self.data_format = data_format
         self.data_structure = data_structure
         self.api_version = (
@@ -403,213 +406,6 @@ class MicrodataExtract(BaseExtract):
             else self.api_version
         )
         """IPUMS API version number"""
-        # check kwargs for conflicts with defaults
-        self._kwarg_warning(kwargs)
-        # make the kwargs camelCase
-        self.kwargs = self._snake_to_camel(kwargs)
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return {
-            "description": self.description,
-            "dataFormat": self.data_format,
-            "dataStructure": self.data_structure,
-            "samples": {sample.id: {} for sample in self.samples},
-            "variables": {
-                variable.name.upper(): variable.build() for variable in self.variables
-            },
-            "collection": self.collection,
-            "version": self.api_version,
-            **self.kwargs,
-        }
-        
-    
-
-class OtherExtract(BaseExtract, collection="other"):
-    def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
-        """
-        A generic extract object for working with collections that are not
-        yet officially supported by this API library
-        """
-
-        super().__init__()
-        self.collection = collection
-        """Name of an IPUMS data collection"""
-        self.details = details
-        """dictionary containing variable names and sample IDs"""
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return self.details
-
-
-class UsaExtract(BaseExtract, collection="usa"):
-    def __init__(
-        self,
-        samples: Union[List[str], List[Sample]],
-        variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS USA extract",
-        data_format: str = "fixed_width",
-        data_structure: Dict = {"rectangular": {"on": "P"}},
-        **kwargs,
-    ):
-        """
-        Defining an IPUMS USA extract.
-
-        Args:
-            samples: list of IPUMS USA sample IDs
-            variables: list of IPUMS USA variable names
-            description: short description of your extract
-            data_format: fixed_width and csv supported
-            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
-                            "rectangular" extracts require further specification of "on" : <record type>.
-                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
-        """
-
-        super().__init__()
-        self.samples = self._validate_list_args(samples, Sample)
-        self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
-        self.data_format = data_format
-        self.data_structure = data_structure
-        self.collection = self.collection
-        """Name of an IPUMS data collection"""
-        self.api_version = (
-            self.extract_api_version(kwargs)
-            if len(kwargs.keys()) > 0
-            else self.api_version
-        )
-        """IPUMS API version number"""
-        # check kwargs for conflicts with defaults
-        self._kwarg_warning(kwargs)
-        # make the kwargs camelCase
-        self.kwargs = self._snake_to_camel(kwargs)
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return {
-            "description": self.description,
-            "dataFormat": self.data_format,
-            "dataStructure": self.data_structure,
-            "samples": {sample.id: {} for sample in self.samples},
-            "variables": {
-                variable.name.upper(): variable.build() for variable in self.variables
-            },
-            "collection": self.collection,
-            "version": self.api_version,
-            **self.kwargs,
-        }
-
-
-class CpsExtract(BaseExtract, collection="cps"):
-    def __init__(
-        self,
-        samples: Union[List[str], List[Sample]],
-        variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS CPS extract",
-        data_format: str = "fixed_width",
-        data_structure: Dict = {"rectangular": {"on": "P"}},
-        **kwargs,
-    ):
-        """
-        Defining an IPUMS CPS extract.
-
-        Args:
-            samples: list of IPUMS CPS sample IDs
-            variables: list of IPUMS CPS variable names
-            description: short description of your extract
-            data_format: fixed_width and csv supported
-            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
-                            "rectangular" extracts require further specification of "on" : <record type>.
-                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
-        """
-
-        super().__init__()
-        self.samples = self._validate_list_args(samples, Sample)
-        self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
-        self.data_format = data_format
-        self.data_structure = data_structure
-        self.collection = self.collection
-        """Name of an IPUMS data collection"""
-        self.api_version = (
-            self.extract_api_version(kwargs)
-            if len(kwargs.keys()) > 0
-            else self.api_version
-        )
-        """IPUMS API version number"""
-
-        # check kwargs for conflicts with defaults
-        self._kwarg_warning(kwargs)
-        # make the kwargs camelCase
-        self.kwargs = self._snake_to_camel(kwargs)
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return {
-            "description": self.description,
-            "dataFormat": self.data_format,
-            "dataStructure": self.data_structure,
-            "samples": {sample.id: {} for sample in self.samples},
-            "variables": {
-                variable.name.upper(): variable.build() for variable in self.variables
-            },
-            "collection": self.collection,
-            "version": self.api_version,
-            **self.kwargs,
-        }
-
-
-class IpumsiExtract(BaseExtract, collection="ipumsi"):
-    def __init__(
-        self,
-        samples: Union[List[str], List[Sample]],
-        variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS International extract",
-        data_format: str = "fixed_width",
-        data_structure: Dict = {"rectangular": {"on": "P"}},
-        **kwargs,
-    ):
-        """
-        Defining an IPUMS International extract.
-
-        Args:
-            samples: list of IPUMS International sample IDs
-            variables: list of IPUMS International variable names
-            description: short description of your extract
-            data_format: fixed_width and csv supported
-            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
-                            "rectangular" extracts require further specification of "on" : <record type>.
-                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
-        """
-
-        super().__init__()
-        self.samples = self._validate_list_args(samples, Sample)
-        self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
-        self.data_format = data_format
-        self.data_structure = data_structure
-        self.collection = self.collection
-        """Name of an IPUMS data collection"""
-        self.api_version = (
-            self.extract_api_version(kwargs)
-            if len(kwargs.keys()) > 0
-            else self.api_version
-        )
-        """IPUMS API version number"""
-
         # check kwargs for conflicts with defaults
         self._kwarg_warning(kwargs)
         # make the kwargs camelCase
@@ -665,7 +461,7 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
 
         return BaseExtract._collection_to_extract[dct["collection"]](**dct)
 
-    return OtherExtract(dct["collection"], dct)
+    return MicrodataExtract(**dct)
 
 
 def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:

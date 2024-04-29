@@ -24,7 +24,7 @@ from .exceptions import (
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
-from .extract import BaseExtract, OtherExtract
+from .extract import BaseExtract, MicrodataExtract
 
 
 class ModifiedIpumsExtract(Warning):
@@ -178,7 +178,8 @@ class IpumsApiClient:
                 extract_type = BaseExtract._collection_to_extract[collection]
                 extract = extract_type(**extract)
             else:
-                extract = OtherExtract(collection, extract)
+                extract = MicrodataExtract(extract)
+                pass
         # if no api version was provided on instantiation of extract object
         # or in extract definition dict, assign it to the default
         if extract.api_version is None:
@@ -465,7 +466,8 @@ class IpumsApiClient:
             extract_type = BaseExtract._collection_to_extract[collection]
             extract = extract_type(**extract_def["extractDefinition"])
         else:
-            extract = OtherExtract(collection, extract)
+            extract = MicrodataExtract(**extract_def["extractDefinition"])
+            pass
         return extract
 
     def extract_is_expired(

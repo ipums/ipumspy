@@ -15,10 +15,7 @@ import vcr
 from ipumspy import api, readers
 from ipumspy.api import (
     IpumsApiClient,
-    OtherExtract,
-    UsaExtract,
-    CpsExtract,
-    IpumsiExtract,
+    MicrodataExtract,
     extract_from_dict,
     extract_to_dict,
     define_extract_from_json,
@@ -71,7 +68,8 @@ def test_usa_build_extract():
     """
     Confirm that test extract formatted correctly
     """
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
@@ -104,7 +102,8 @@ def test_usa_attach_characteristics():
     """
     Confirm that attach_characteristics updates extract definition correctly
     """
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
@@ -142,7 +141,8 @@ def test_usa_add_data_quality_flags():
     """
     Confirm that attach_characteristics updates extract definition correctly
     """
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX", "RACE"],
     )
@@ -177,7 +177,8 @@ def test_usa_add_data_quality_flags():
     }
 
     # add a list of flags
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX", "RACE"],
     )
@@ -217,7 +218,8 @@ def test_usa_select_cases():
     """
     Confirm that attach_characteristics updates extract definition correctly
     """
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "RACE"],
     )
@@ -277,7 +279,8 @@ def test_select_cases_feature_errors(live_api_client: IpumsApiClient):
     Confirm that illegal select cases feature requests raise appropriate errors
     """
     # select an invalid value with the correct level of detail
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX", "RACE"],
     )
@@ -290,7 +293,8 @@ def test_select_cases_feature_errors(live_api_client: IpumsApiClient):
         == "Invalid general case selection of 200 for variable AGE"
     )
     # ask for detailed codes when  none are available
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX", "RACE"],
     )
@@ -302,7 +306,8 @@ def test_select_cases_feature_errors(live_api_client: IpumsApiClient):
         == "Detailed case selection made but detailed variable not found for SEX."
     )
     # Specify general codes when requesting detailed codes
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX", "RACE"],
     )
@@ -321,7 +326,8 @@ def test_attach_characteristics_feature_errors(live_api_client: IpumsApiClient):
     Confirm that illegal attach characteristics feature requests raise appropriate errors
     """
     # ask for nonexistent pointer from ipumsi
-    extract = IpumsiExtract(
+    extract = MicrodataExtract(
+        "ipumsi",
         ["am2011a"],
         ["AGE", "SEX"],
     )
@@ -339,7 +345,8 @@ def test_cps_build_extract():
     """
     Confirm that test extract formatted correctly
     """
-    extract = CpsExtract(
+    extract = MicrodataExtract(
+        "cps",
         ["cps2012_03b"],
         ["AGE", "SEX"],
     )
@@ -372,12 +379,13 @@ def test_ipumsi_build_extract():
     """
     Confirm that test extract formatted correctly
     """
-    extract = IpumsiExtract(
+    extract = MicrodataExtract(
+        "ipumsi",
         ["am2011a"],
         ["AGE", "SEX"],
     )
     assert extract.build() == {
-        "description": "My IPUMS International extract",
+        "description": "My IPUMS IPUMSI extract",
         "dataFormat": "fixed_width",
         "dataStructure": {"rectangular": {"on": "P"}},
         "samples": {"am2011a": {}},
@@ -404,24 +412,25 @@ def test_cps_hierarchical_build_extract():
     """
     Confirm that test extract formatted correctly when hierarchical structure specified
     """
-    extract = CpsExtract(
-        ["cps2012_03b"], ["AGE", "SEX"], data_structure={"hierarchical": {}}
+    extract = MicrodataExtract(
+        "usa", ["cps2012_03b"], ["AGE", "SEX"], data_structure={"hierarchical": {}}
     )
     assert extract.data_structure == {"hierarchical": {}}
 
 
-def test_other_build_extract():
-    details = {"some": [1, 2, 3], "other": ["a", "b", "c"]}
-    extract = OtherExtract("foo", details)
-    assert extract.build() == details
-    assert extract.collection == "foo"
+# def test_other_build_extract():
+#     details = {"some": [1, 2, 3], "other": ["a", "b", "c"]}
+#     extract = OtherExtract("foo", details)
+#     assert extract.build() == details
+#     assert extract.collection == "foo"
 
 
 def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
@@ -445,13 +454,13 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     BadIpumsApiRequest exception
     """
     # bad variable
-    bad_variable = UsaExtract(["us2012b"], ["AG"])
+    bad_variable = MicrodataExtract("usa", ["us2012b"], ["AG"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_variable)
     assert exc_info.value.args[0] == "Invalid variable name: AG"
 
     # unavailable variable
-    unavailable_variable = UsaExtract(["us2012b"], ["YRIMMIG"])
+    unavailable_variable = MicrodataExtract("usa", ["us2012b"], ["YRIMMIG"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(unavailable_variable)
     assert exc_info.value.args[0] == (
@@ -460,14 +469,14 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     )
 
     # bad sample
-    bad_sample = UsaExtract(["us2012x"], ["AGE"])
+    bad_sample = MicrodataExtract("usa", ["us2012x"], ["AGE"])
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_sample)
     assert exc_info.value.args[0] == "Invalid sample name: us2012x"
 
     # specify "on" w/ hierarchical structure
-    bad_structure = UsaExtract(
-        ["us2012b"], ["AGE"], data_structure={"hierarchical": {"on": "P"}}
+    bad_structure = MicrodataExtract(
+        "usa", ["us2012b"], ["AGE"], data_structure={"hierarchical": {"on": "P"}}
     )
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_structure)
@@ -477,8 +486,8 @@ def test_bad_api_request_exception(live_api_client: IpumsApiClient):
     )
 
     # specify illegal rectype to rectangularize on
-    bad_rectype = UsaExtract(
-        ["us2012b"], ["AGE"], data_structure={"rectangular": {"on": "Z"}}
+    bad_rectype = MicrodataExtract(
+        "usa", ["us2012b"], ["AGE"], data_structure={"rectangular": {"on": "Z"}}
     )
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_rectype)
@@ -525,7 +534,8 @@ def test_not_found_exception(live_api_client: IpumsApiClient):
 
 @pytest.mark.vcr
 def test_not_submitted_exception():
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
@@ -619,7 +629,8 @@ def test_submit_extract_live(live_api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
@@ -633,8 +644,8 @@ def test_submit_hierarchical_extract_live(live_api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
     """
-    extract = UsaExtract(
-        ["us2012b"], ["AGE", "SEX"], data_structure={"hierarchical": {}}
+    extract = MicrodataExtract(
+        "usa", ["us2012b"], ["AGE", "SEX"], data_structure={"hierarchical": {}}
     )
 
     live_api_client.submit_extract(extract)
@@ -826,7 +837,7 @@ def test_variable_update():
 
 
 def test_validate_list_args():
-    str_extract = IpumsiExtract(["ar2011a"], ["age", "age", "sex", "sex", "race"])
+    str_extract = MicrodataExtract("ipumsi", ["ar2011a"], ["age", "age", "sex", "sex", "race"])
 
     assert str_extract.variables == (
         [
@@ -855,7 +866,8 @@ def test_validate_list_args():
     )
 
     with pytest.raises(ValueError) as exc_info:
-        vars_extract = IpumsiExtract(
+        vars_extract = MicrodataExtract(
+            "ipumsi",
             ["ar2011a"],
             [
                 Variable("age", attached_characteristics=["father"]),
@@ -870,11 +882,12 @@ def test_validate_list_args():
         == "Duplicate Variable objects are not allowed in IPUMS Extract definitions."
     )
 
-    str_extract = CpsExtract(["cps2012_03s", "cps2012_03s", "cps2013_03s"], ["AGE"])
+    str_extract = MicrodataExtract("cps", ["cps2012_03s", "cps2012_03s", "cps2013_03s"], ["AGE"])
     assert str_extract.samples == ([Sample(id="cps2012_03s"), Sample(id="cps2013_03s")])
 
     with pytest.raises(ValueError) as exc_info:
-        samples_extract = CpsExtract(
+        samples_extract = MicrodataExtract(
+            "cps",
             [
                 Sample(id="cps2012_03s"),
                 Sample(id="cps2012_03s"),
@@ -894,7 +907,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
     Make sure extract can be retrieved with specific ID
     """
     cps_ext = live_api_client.get_extract_by_id(433, "cps")
-    assert isinstance(cps_ext, CpsExtract)
+    assert isinstance(cps_ext, MicrodataExtract)
     assert cps_ext.build() == {
         "description": "my extract",
         "dataFormat": "fixed_width",
@@ -973,7 +986,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
     }
 
     ipumsi_ext = live_api_client.get_extract_by_id(6, "ipumsi")
-    assert isinstance(ipumsi_ext, IpumsiExtract)
+    assert isinstance(ipumsi_ext, MicrodataExtract)
     assert ipumsi_ext.build() == {
         "description": "My IPUMS International extract",
         "dataFormat": "fixed_width",

@@ -14,7 +14,7 @@ import pandas as pd
 import pytest
 
 from ipumspy import readers
-from ipumspy.api.extract import BaseExtract, UsaExtract
+from ipumspy.api.extract import MicrodataExtract
 
 
 def _assert_cps_000006(data: pd.DataFrame):
@@ -410,25 +410,23 @@ def test_read_extract_description(fixtures_path: Path):
     }
 
     extract_description = yaml_extract["extracts"][0]
-    extract = BaseExtract._collection_to_extract[extract_description["collection"]](
+    extract = MicrodataExtract(
         **extract_description
     )
 
     extract_description = from_api_extract["extracts"][0]
-    api_extract = BaseExtract._collection_to_extract[extract_description["collection"]](
+    api_extract = MicrodataExtract(
         **extract_description
     )
 
-    assert isinstance(extract, UsaExtract)
-    assert isinstance(api_extract, UsaExtract)
+    assert isinstance(extract, MicrodataExtract)
+    assert isinstance(api_extract, MicrodataExtract)
 
     assert extract.build() == api_extract.build()
 
     # check that this can read fancier things as well
     extract_description_fancy = from_api_extract_fancy["extracts"][0]
-    api_extract_fancy = BaseExtract._collection_to_extract[
-        extract_description_fancy["collection"]
-    ](**extract_description_fancy)
+    api_extract_fancy = MicrodataExtract(**extract_description_fancy)
 
     # truncated test
     assert api_extract_fancy.build()["variables"]["AGE"] == {
