@@ -430,22 +430,12 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
-    # if dct["collection"] in BaseExtract._collection_to_extract:
-    #     # some fanciness to make sure sample and variable features
-    #     # are preserved
-    #     # make samples Sample objects
-    #     if isinstance(dct["samples"], dict):
-    #         dct["samples"] = _unpack_samples_dict(dct["samples"])
-    #     else:
-    #         dct["samples"] = [Sample(id=samp) for samp in dct["samples"]]
-    #     # make varibales Variable objects
-    #     if isinstance(dct["variables"], dict):
-    #         dct["variables"] = _unpack_variables_dict(dct["variables"])
-    #     else:
-    #         dct["variables"] = [Variable(name=var) for var in dct["variables"]]
-
-    #     return BaseExtract._collection_to_extract[dct["collection"]](**dct)
-
+    # XXX To Do: When MicrodataExtract is no longer the only extract class,
+    # this method will need to differentiate between the different collection types
+    # since this info isn't available from the api response and so won't be stored in any
+    # dict representation, there needs to be a way to know which collections are micro
+    # and which are not. Currently this is an attribute of the api client object,
+    # but that isn't helpful here.
     return MicrodataExtract(**dct)
 
 
