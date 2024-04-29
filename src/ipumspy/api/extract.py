@@ -16,10 +16,6 @@ from dataclasses import dataclass, field
 from .exceptions import IpumsExtractNotSubmitted
 
 
-class DefaultCollectionWarning(Warning):
-    pass
-
-
 class ApiVersionWarning(Warning):
     pass
 
@@ -146,21 +142,6 @@ class BaseExtract:
         # BaseExtract._collection_to_extract[collection] = cls
 
     def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
-        try:
-            if kwargs_dict["collection"] == self.collection:
-                # collection kwarg is same as default, nothing to do
-                pass
-            elif kwargs_dict["collection"] != self.collection:
-                warnings.warn(
-                    f"This extract object already has a default collection "
-                    f"{self.collection}. Collection Key Word Arguments "
-                    f"are ignored.",
-                    DefaultCollectionWarning,
-                )
-        except KeyError:
-            # if there collection isn't specified
-            # then nothing to warn about there
-            pass
         # raise kwarg warnings if they exist
         if "warnings" in kwargs_dict.keys():
             newline = "\n"
