@@ -289,64 +289,6 @@ class BaseExtract:
                 f"Expected a string or Variable object; {type(variable)} received."
             )
 
-    def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
-        """
-        A method to update existing IPUMS Extract Variable objects
-        with the IPUMS attach characteristics feature.
-
-        Args:
-            variable: a Variable object or a string variable name
-            of: a list of records for which to create a variable on the individual record.
-                Allowable values include "mother", "father", "spouse", "head". For IPUMS
-                collection that identify same sex couples can also accept "mother2" and "father2"
-                values in this list. If either "<parent>" or "<parent>2" values are included,
-                their same sex counterpart will automatically be included in the extract.
-        """
-        self._update_variable_feature(variable, "attached_characteristics", of)
-
-    def add_data_quality_flags(
-        self, variable: Union[Variable, str, List[Variable], List[str]]
-    ):
-        """
-        A method to update existing IPUMS Extract Variable objects to include that
-        variable's data quality flag in the extract if it exists.
-
-        Args:
-            variable: a Variable object or a string variable name
-
-        """
-        if isinstance(variable, list):
-            for v in variable:
-                self._update_variable_feature(v, "data_quality_flags", True)
-        else:
-            self._update_variable_feature(variable, "data_quality_flags", True)
-
-    def select_cases(
-        self,
-        variable: Union[Variable, str],
-        values: List[Union[int, str]],
-        general: bool = True,
-    ):
-        """
-        A method to update existing IPUMS Extract Variable objects to select cases
-        with the specified values of that IPUMS variable.
-
-        Args:
-            variable: a Variable object or a string variable name
-            values: a list of values for which to select records
-            general: set to False to select cases on detailed codes. Defaults to True.
-        """
-        # stringify values
-        values = [str(v) for v in values]
-        if general:
-            self._update_variable_feature(
-                variable, "case_selections", {"general": values}
-            )
-        else:
-            self._update_variable_feature(
-                variable, "case_selections", {"detailed": values}
-            )
-
 
 class MicrodataExtract(BaseExtract, collection_type="microdata"):
     def __init__(
@@ -412,6 +354,65 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             "version": self.api_version,
             **self.kwargs,
         }
+        
+    def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
+        """
+        A method to update existing IPUMS Extract Variable objects
+        with the IPUMS attach characteristics feature.
+
+        Args:
+            variable: a Variable object or a string variable name
+            of: a list of records for which to create a variable on the individual record.
+                Allowable values include "mother", "father", "spouse", "head". For IPUMS
+                collection that identify same sex couples can also accept "mother2" and "father2"
+                values in this list. If either "<parent>" or "<parent>2" values are included,
+                their same sex counterpart will automatically be included in the extract.
+        """
+        self._update_variable_feature(variable, "attached_characteristics", of)
+
+    def add_data_quality_flags(
+        self, variable: Union[Variable, str, List[Variable], List[str]]
+    ):
+        """
+        A method to update existing IPUMS Extract Variable objects to include that
+        variable's data quality flag in the extract if it exists.
+
+        Args:
+            variable: a Variable object or a string variable name
+
+        """
+        if isinstance(variable, list):
+            for v in variable:
+                self._update_variable_feature(v, "data_quality_flags", True)
+        else:
+            self._update_variable_feature(variable, "data_quality_flags", True)
+
+    def select_cases(
+        self,
+        variable: Union[Variable, str],
+        values: List[Union[int, str]],
+        general: bool = True,
+    ):
+        """
+        A method to update existing IPUMS Extract Variable objects to select cases
+        with the specified values of that IPUMS variable.
+
+        Args:
+            variable: a Variable object or a string variable name
+            values: a list of values for which to select records
+            general: set to False to select cases on detailed codes. Defaults to True.
+        """
+        # stringify values
+        values = [str(v) for v in values]
+        if general:
+            self._update_variable_feature(
+                variable, "case_selections", {"general": values}
+            )
+        else:
+            self._update_variable_feature(
+                variable, "case_selections", {"detailed": values}
+            )
+
 
 
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
