@@ -122,7 +122,7 @@ def _unpack_variables_dict(dct: dict) -> List[Variable]:
 
 
 class BaseExtract:
-    _collection_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
+    _collection_type_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
 
     def __init__(self):
         """
@@ -136,8 +136,10 @@ class BaseExtract:
         self._info: Optional[Dict[str, Any]] = None
         self.api_version: Optional[str] = None
 
-    def __init_subclass__(cls, **kwargs):
+    def __init_subclass__(cls, collection_type: str, **kwargs):
         super().__init_subclass__(**kwargs)
+        cls.collection_type = collection_type
+        BaseExtract._collection_type_to_extract[collection_type] = cls
         # cls.collection = collection
         # BaseExtract._collection_to_extract[collection] = cls
 
@@ -346,7 +348,7 @@ class BaseExtract:
             )
 
 
-class MicrodataExtract(BaseExtract):
+class MicrodataExtract(BaseExtract, collection_type="microdata"):
     def __init__(
         self,
         collection: str,
@@ -372,6 +374,7 @@ class MicrodataExtract(BaseExtract):
         """
 
         super().__init__()
+        self.collection_type = self.collection_type
         self.collection = collection
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)

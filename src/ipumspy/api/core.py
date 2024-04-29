@@ -104,6 +104,9 @@ class IpumsApiClient:
                 "Authorization": api_key,
             }
         )
+        self.supported_collections = {
+            "microdata": ["usa", "cps", "ipumsi"]
+        }
 
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
@@ -165,21 +168,9 @@ class IpumsApiClient:
             The number of the extract for the passed user account
         """
         # define extract collection
-        if not isinstance(extract, BaseExtract):
-            extract = copy.deepcopy(extract)
-            if "collection" in extract:
-                collection = collection or extract["collection"]
-                del extract["collection"]
-            else:
-                if not collection:
-                    ValueError("You must provide a collection")
+        if collection in self.supported_collections["microdata"]:
+            extract = MicrodataExtract(extract)
 
-            if collection in BaseExtract._collection_to_extract:
-                extract_type = BaseExtract._collection_to_extract[collection]
-                extract = extract_type(**extract)
-            else:
-                extract = MicrodataExtract(extract)
-                pass
         # if no api version was provided on instantiation of extract object
         # or in extract definition dict, assign it to the default
         if extract.api_version is None:
@@ -462,12 +453,14 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        if collection in BaseExtract._collection_to_extract:
-            extract_type = BaseExtract._collection_to_extract[collection]
-            extract = extract_type(**extract_def["extractDefinition"])
-        else:
+        if collection in self.supported_collections["microdata"]:
             extract = MicrodataExtract(**extract_def["extractDefinition"])
-            pass
+        # if collection in BaseExtract._collection_to_extract:
+        #     extract_type = BaseExtract._collection_to_extract[collection]
+        #     extract = extract_type(**extract_def["extractDefinition"])
+        # else:
+        #     extract = MicrodataExtract(**extract_def["extractDefinition"])
+
         return extract
 
     def extract_is_expired(
