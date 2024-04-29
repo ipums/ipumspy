@@ -426,21 +426,21 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
-    if dct["collection"] in BaseExtract._collection_to_extract:
-        # some fanciness to make sure sample and variable features
-        # are preserved
-        # make samples Sample objects
-        if isinstance(dct["samples"], dict):
-            dct["samples"] = _unpack_samples_dict(dct["samples"])
-        else:
-            dct["samples"] = [Sample(id=samp) for samp in dct["samples"]]
-        # make varibales Variable objects
-        if isinstance(dct["variables"], dict):
-            dct["variables"] = _unpack_variables_dict(dct["variables"])
-        else:
-            dct["variables"] = [Variable(name=var) for var in dct["variables"]]
+    # if dct["collection"] in BaseExtract._collection_to_extract:
+    #     # some fanciness to make sure sample and variable features
+    #     # are preserved
+    #     # make samples Sample objects
+    #     if isinstance(dct["samples"], dict):
+    #         dct["samples"] = _unpack_samples_dict(dct["samples"])
+    #     else:
+    #         dct["samples"] = [Sample(id=samp) for samp in dct["samples"]]
+    #     # make varibales Variable objects
+    #     if isinstance(dct["variables"], dict):
+    #         dct["variables"] = _unpack_variables_dict(dct["variables"])
+    #     else:
+    #         dct["variables"] = [Variable(name=var) for var in dct["variables"]]
 
-        return BaseExtract._collection_to_extract[dct["collection"]](**dct)
+    #     return BaseExtract._collection_to_extract[dct["collection"]](**dct)
 
     return MicrodataExtract(**dct)
 

@@ -591,6 +591,42 @@ def test_extract_from_dict(fixtures_path: Path):
         assert item.data_format == "fixed_width"
         assert item.api_version == 2
 
+
+    with open(fixtures_path / "example_extract_v2_complex.yml") as infile:
+        extract = extract_from_dict(yaml.safe_load(infile))
+        print(extract[0].build())
+
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == [Sample(id="us2012b")]
+        assert item.variables == [
+            Variable(
+                name="AGE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=["mother"],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="SEX",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="RACE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+        ]
+        # data structure not currently an extract attribute...
+        # assert item.data_structure == "rectangular"
+        assert item.data_format == "fixed_width"
+        assert item.api_version == 2
+        
     # if an unsupported api version is specified
     # make sure NotImplementedError is raised
     with pytest.raises(NotImplementedError) as exc_info:
@@ -733,6 +769,35 @@ def test_define_extract_from_json(fixtures_path: Path):
                 preselected=False,
                 case_selections={},
                 attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="SEX",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+            Variable(
+                name="RACE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=[],
+                data_quality_flags=False,
+            ),
+        ]
+        assert item.api_version == 2
+        
+    extract = define_extract_from_json(fixtures_path / "example_extract_v2_complex.json")
+    for item in extract:
+        assert item.collection == "usa"
+        assert item.samples == [Sample(id="us2012b")]
+        assert item.variables == [
+            Variable(
+                name="AGE",
+                preselected=False,
+                case_selections={},
+                attached_characteristics=["mother"],
                 data_quality_flags=False,
             ),
             Variable(
