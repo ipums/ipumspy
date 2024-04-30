@@ -75,7 +75,7 @@ class IpumsApiClient:
     def __init__(
         self,
         api_key: str,
-        base_url: str = "https://api.ipums.org/extracts",
+        base_url: str = "https://api.ipums.org",
         api_version: str = 2,
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
@@ -176,7 +176,7 @@ class IpumsApiClient:
         if extract.api_version is None:
             extract.api_version = self.api_version
         response = self.post(
-            self.base_url,
+            f"{self.base_url}/extracts",
             params={"collection": extract.collection, "version": extract.api_version},
             json=extract.build(),
         )
@@ -210,7 +210,7 @@ class IpumsApiClient:
 
         try:
             response = self.get(
-                f"{self.base_url}/{extract_id}",
+                f"{self.base_url}/extracts/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             )
         except IpumsNotFound:
@@ -277,7 +277,7 @@ class IpumsApiClient:
             )
 
         response = self.get(
-            f"{self.base_url}/{extract_id}",
+            f"{self.base_url}/extracts/{extract_id}",
             params={"collection": collection, "version": self.api_version},
         )
 
@@ -393,7 +393,7 @@ class IpumsApiClient:
         """
         # TODO: Wrap results in Extract objects.
         output = self.get(
-            self.base_url,
+            f"{self.base_url}/extracts",
             params={
                 "collection": collection,
                 "pageSize": limit,
@@ -425,7 +425,7 @@ class IpumsApiClient:
             return extract._info
         else:
             extract_info = self.get(
-                f"{self.base_url}/{extract_id}",
+                f"{self.base_url}/extracts/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             ).json()
             new_line = "\n"
@@ -500,7 +500,7 @@ class IpumsApiClient:
         # made this a private method looking forward to making this a more
         # general purpose generator for non-extract endpoints
         first_page = self.get(
-            self.base_url,
+            f"{self.base_url}/extracts",
             params={
                 "collection": collection,
                 "version": self.api_version,
