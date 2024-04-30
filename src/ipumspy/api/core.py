@@ -517,7 +517,7 @@ class IpumsApiClient:
             next_page = page["links"]["nextPage"]
 
     def get_extract_history(
-        self, collection: str, page_size: Optional[int] = 2500
+        self, collection: str, page_size: Optional[int] = 500
     ) -> Generator[Dict, None, None]:
         """
         Retrieve extract history for a specific collection.

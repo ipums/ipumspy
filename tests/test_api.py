@@ -1281,6 +1281,10 @@ def test_get_all_sample_info(live_api_client: IpumsApiClient):
         "us2021b": "2021 PRCS",
         "us2021c": "2017-2021, ACS 5-year",
         "us2021d": "2017-2021, PRCS 5-year",
+        "us2022a": "2022 ACS",
+        "us2022b": "2022 PRCS",
+        "us2022c": "2018-2022, ACS 5-year",
+        "us2022d": "2018-2022, PRCS 5-year",
     }
 
 
