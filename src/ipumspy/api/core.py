@@ -485,13 +485,14 @@ class IpumsApiClient:
             return False
 
     def _get_pages(
-        self, collection: str, page_size: Optional[int] = 2500
+        self, collection: str, endpoint: str, page_size: Optional[int] = 2500
     ) -> Generator[Dict, None, None]:
         """
         An IPUMS API pages generator.
 
         Args:
             collection: An IPUMS data collection
+            endpoint: An IPUMS API endpoint
             page_size: The number of items to return per page. Default to maximum page size, 2500.
 
         Yields:
@@ -500,7 +501,7 @@ class IpumsApiClient:
         # made this a private method looking forward to making this a more
         # general purpose generator for non-extract endpoints
         first_page = self.get(
-            f"{self.base_url}/extracts",
+            f"{self.base_url}/{endpoint}",
             params={
                 "collection": collection,
                 "version": self.api_version,
@@ -528,7 +529,7 @@ class IpumsApiClient:
         Yields:
             An iterator of extract history pages
         """
-        yield from self._get_pages(collection, page_size)
+        yield from self._get_pages(collection, "extracts", page_size)
 
     def get_all_sample_info(self, collection: str) -> Dict:
         """
@@ -541,9 +542,13 @@ class IpumsApiClient:
             A dictionary of IPUMS sample descriptions and IPUMS sample IDs; keys are
             sample ids, values are sample descriptions
         """
-        # shoehorn since this is the only metadata api endpoint avaialble
-        url = f"https://api.ipums.org/metadata/{collection}/samples"
-        samples = self.get(url, params={"version": self.api_version}).json()
+        samples = self.get(
+            f"{self.base_url}/metadata/samples", 
+            params={
+                "collection": collection, 
+                "pageSize": 2500,
+                "version": self.api_version}
+            ).json()
         # make it into the expected dict
         samples_dict = {}
         for item in samples["data"]:

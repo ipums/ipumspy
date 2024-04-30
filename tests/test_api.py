@@ -1289,5 +1289,5 @@ def test_get_pages(live_api_client: IpumsApiClient):
     """
     Test API pages generator.
     """
-    page1 = next(live_api_client._get_pages(collection="usa", page_size=5))
+    page1 = next(live_api_client._get_pages(collection="usa", endpoint="extracts", page_size=5))
     assert len(page1["data"]) == 5
