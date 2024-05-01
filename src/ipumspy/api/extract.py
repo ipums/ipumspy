@@ -113,7 +113,10 @@ class TimeUseVariable(IpumsObject):
         built_tuv.pop("name")
         # only include the owner field if one is specified
         if self.owner != "":
-            built_tuv["owner"] = built_tuv.pop("owner")
+            if "@" not in self.owner:
+                raise ValueError("'owner' must be the email address associated with your IPUMS user account.")
+            else:
+                built_tuv["owner"] = built_tuv.pop("owner")
         else:
             built_tuv.pop("owner")
         return built_tuv
