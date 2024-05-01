@@ -964,6 +964,35 @@ def test_validate_list_args():
         exc_info.value.args[0]
         == "Duplicate Sample objects are not allowed in IPUMS Extract definitions."
     )
+    
+    # make sure duplicate objects raise an error    
+    with pytest.raises(ValueError) as exc_info:
+        obj_extract = MicrodataExtract(
+            "cps",
+            [
+                Sample(id="cps2012_03s"),
+                Sample(id="cps2013_03s"),
+            ],
+            [Variable(name="AGE"), Variable(name="AGE", attached_characteristics=["mother"])],
+        )
+    assert (
+        exc_info.value.args[0]
+        == "Duplicate Variable objects are not allowed in IPUMS Extract definitions."
+    )
+    
+    with pytest.raises(TypeError) as exc_info:
+        mixed_extract = MicrodataExtract(
+            "cps",
+            [
+                Sample(id="cps2012_03s"),
+                Sample(id="cps2013_03s"),
+            ],
+            [Variable(name="AGE"), "SEX"],
+        )
+    assert (
+        exc_info.value.args[0]
+        == "The items in [Variable(name='AGE', preselected=False, case_selections={}, attached_characteristics=[], data_quality_flags=False), 'SEX'] must all be string type or <class 'ipumspy.api.extract.Variable'> type."
+    )
 
 
 @pytest.mark.vcr

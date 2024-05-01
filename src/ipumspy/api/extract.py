@@ -241,6 +241,11 @@ class BaseExtract:
         # this bit feels extra sketch, but it seems like a better solution
         # than just having the BaseExtract(**kwargs) method of instantiating
         # an extract object quietly leave out variable-level extract features
+        
+        # before diving into any duplicate validation, make sure the list argument the user provided 
+        # is only strings or only IPUMS objects. Raise a useful error and ask the user to fix themselves
+        if not all(isinstance(i, str) for i in list_arg) and not all(isinstance(i, IpumsObject) for i in list_arg):
+            raise TypeError(f"The items in {list_arg} must all be string type or {arg_obj} type.")
         if isinstance(list_arg, dict) and arg_obj is Variable:
             args = _unpack_variables_dict(list_arg)
             return args
@@ -278,6 +283,7 @@ class BaseExtract:
             # and return a list of the relevant objects
             unique_list = list(dict.fromkeys(list_arg))
             return [arg_obj(i) for i in unique_list]
+            
 
     def extract_api_version(self, kwargs_dict: Dict[str, Any]) -> str:
         # check to see if version is specified in kwargs_dict
