@@ -96,6 +96,7 @@ class Sample(IpumsObject):
     def build(self):
         raise NotImplementedError
 
+
 @dataclass
 class TimeUseVariable(IpumsObject):
     name: str
@@ -110,7 +111,12 @@ class TimeUseVariable(IpumsObject):
         built_tuv = self.__dict__.copy()
         # don't repeat the variable name
         built_tuv.pop("name")
-        built_tuv["owner"] = built_tuv.pop("owner")
+        # only include the owner field if one is specified
+        if self.owner != "":
+            built_tuv["owner"] = built_tuv.pop("owner")
+        else:
+            built_tuv.pop("owner")
+        return built_tuv
 
 
 def _unpack_samples_dict(dct: dict) -> List[Sample]:
