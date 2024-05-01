@@ -80,7 +80,7 @@ class Variable(IpumsObject):
 
 
 @dataclass
-class Sample:
+class Sample(IpumsObject):
     """
     IPUMS sample object to include in an IPUMS extract object.
     """
@@ -92,6 +92,25 @@ class Sample:
 
     def __post_init__(self):
         self.id = self.id.lower()
+
+    def build(self):
+        raise NotImplementedError
+
+@dataclass
+class TimeUseVariable(IpumsObject):
+    name: str
+    """IPUMS Time Use Variable name"""
+    owner: Optional[str] = ""
+    
+    def __post_init__(self):
+        self.name = self.name.lower()
+    
+    def build(self):
+        """Format Time Use Variable information for API Extract submission"""
+        built_tuv = self.__dict__.copy()
+        # don't repeat the variable name
+        built_tuv.pop("name")
+        built_tuv["owner"] = built_tuv.pop("owner")
 
 
 def _unpack_samples_dict(dct: dict) -> List[Sample]:
