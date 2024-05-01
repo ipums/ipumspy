@@ -143,6 +143,16 @@ def _unpack_variables_dict(dct: dict) -> List[Variable]:
     return vars
 
 
+def _unpack_tuv_dict(dct: dict) -> List[TimeUseVariable]:
+    tuvs = []
+    for i in dct.keys():
+        tuv_obj = TimeUseVariable(name=i)
+        if "owner" in dct[i]:
+            tuv_obj.update("owner", dct[i]["owner"])
+        tuvs.append(tuv_obj)
+    return tuvs
+
+
 class BaseExtract:
     _collection_type_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
 
@@ -233,6 +243,9 @@ class BaseExtract:
             return args
         elif isinstance(list_arg, dict) and arg_obj is Sample:
             args = _unpack_samples_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is TimeUseVariable:
+            args = _unpack_tuv_dict(list_arg)
             return args
         # Make sure extracts don't get built with duplicate variables or samples
         # if the argument is a list of objects, make sure there are not objects with duplicate names
