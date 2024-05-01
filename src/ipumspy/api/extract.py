@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, Type, Union
 import requests
 import json
 import inspect
+from abc import ABC, abstractmethod
 
 from ipumspy.ddi import Codebook
 
@@ -25,7 +26,28 @@ class ModifiedExtractWarning(Warning):
 
 
 @dataclass
-class Variable:
+class IpumsObject(ABC):
+    
+    def update(self, attribute: str, value: Any):
+        """
+        Update Variable features
+
+        Args:
+            attribute: name of the object attribute to update
+            value: values with which to update the `attribute`
+        """
+        if hasattr(self, attribute):
+            setattr(self, attribute, value)
+        else:
+            raise KeyError(f"{type(self).__name__} has no attribute '{attribute}'.")
+        
+    @abstractmethod
+    def build(self):
+        pass
+
+
+@dataclass
+class Variable(IpumsObject):
     """
     IPUMS variable object to include in an IPUMS extract object.
     """
@@ -44,18 +66,6 @@ class Variable:
     def __post_init__(self):
         self.name = self.name.upper()
 
-    def update(self, attribute: str, value: Any):
-        """
-        Update Variable features
-
-        Args:
-            attribute: name of the Variable attribute to update
-            value: values with which to update the `attribute`
-        """
-        if hasattr(self, attribute):
-            setattr(self, attribute, value)
-        else:
-            raise KeyError(f"Variable has no attribute '{attribute}'.")
 
     def build(self):
         """Format Variable information for API Extract submission"""
@@ -82,19 +92,6 @@ class Sample:
 
     def __post_init__(self):
         self.id = self.id.lower()
-
-    def update(self, attribute: str, value: Any):
-        """
-        Update Sample features
-
-        Args:
-            attribute: name of the Sample attribute to update
-            value: values with which to update the `attribute`
-        """
-        if hasattr(self, attribute):
-            setattr(self, attribute, value)
-        else:
-            raise KeyError(f"Sample has no attribute '{attribute}'.")
 
 
 def _unpack_samples_dict(dct: dict) -> List[Sample]:
