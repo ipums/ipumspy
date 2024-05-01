@@ -331,7 +331,6 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         collection: str,
         samples: Union[List[str], List[Sample]],
         variables: Union[List[str], List[Variable]],
-        time_use_variables: Optional[Union[List[str], List[TimeUseVariable]]],
         description: str = "",
         data_format: str = "fixed_width",
         data_structure: Dict = {"rectangular": {"on": "P"}},
@@ -356,10 +355,6 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         self.collection = collection
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)
-        # I don't love this, but it also seems overkill to make a seperate extract class
-        # just for these features
-        if collection in ["atus", "mtus", "ahtus"]:
-            self.time_use_variables = self._validate_list_args(time_use_variables, TimeUseVariable)
         if description == "":
             self.description = f"My IPUMS {collection.upper()} extract"
         else:
@@ -376,6 +371,11 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         self._kwarg_warning(kwargs)
         # make the kwargs camelCase
         self.kwargs = self._snake_to_camel(kwargs)
+        
+        # I don't love this, but it also seems overkill to make a seperate extract class
+        # just for these features
+        if "timeUseVariables" in self.kwargs.keys():
+            self.time_use_variables = self._validate_list_args(self.kwargs["timeUseVariables"], TimeUseVariable)
 
     def build(self) -> Dict[str, Any]:
         """
@@ -395,8 +395,10 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             **self.kwargs,
         }
 
-        if self.time_use_variables:
+        try:
             built["timeUseVariables"] = {tuv.name.upper(): tuv.build() for tuv in self.time_use_variables}
+        except AttributeError:
+            pass
             
         return built
         
