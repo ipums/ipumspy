@@ -224,6 +224,10 @@ class BaseExtract:
 
     def _snake_to_camel(self, kwarg_dict):
         for key in list(kwarg_dict.keys()):
+            # if the value of the kwarg is also a dict
+            if isinstance(kwarg_dict[key], dict):
+                # apply this same logic to camel-ize it
+                self._snake_to_camel(kwarg_dict[key])
             # create camelCase equivalent
             key_list = key.split("_")
             # join capitalized versions of all parts except the first
@@ -234,7 +238,6 @@ class BaseExtract:
             kwarg_dict[camel_key] = kwarg_dict[key]
             # pop the snake_case key
             kwarg_dict.pop(key)
-
         return kwarg_dict
 
     def _validate_list_args(self, list_arg, arg_obj):
