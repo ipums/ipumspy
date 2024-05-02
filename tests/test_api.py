@@ -22,6 +22,7 @@ from ipumspy.api import (
     save_extract_as_json,
     Variable,
     Sample,
+    TimeUseVariable,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
@@ -406,6 +407,52 @@ def test_ipumsi_build_extract():
         "collection": "ipumsi",
         "version": None,
     }
+    
+
+def test_atus_build_extract():
+    """
+    Confirm that test extract formatted correctly
+    """
+    extract = MicrodataExtract(
+        "atus",
+        ["at2016"],
+        ["AGE", "SEX"],
+        time_use_variables = ["BLS_PCARE"]
+    )
+    assert extract.build() == {
+        "description": "My IPUMS ATUS extract",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"at2016": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "timeUseVariables": {
+            "BLS_PCARE": {}
+        },
+        "collection": "atus",
+        "version": None,
+    }
+    
+    with pytest.raises(TypeError) as exc_info:
+        extract = MicrodataExtract(
+            "atus",
+            ["at2016"],
+            ["AGE", "SEX"],
+            time_use_variables = ["BLS_PCARE", TimeUseVariable(name="user_TUV", owner="newuser@gmail.com")]
+        )
+    assert exc_info.value.args[0] == "The items in ['BLS_PCARE', TimeUseVariable(name='user_tuv', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."  
 
 
 def test_cps_hierarchical_build_extract():

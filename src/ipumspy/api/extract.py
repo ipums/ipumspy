@@ -387,7 +387,13 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         # I don't love this, but it also seems overkill to make a seperate extract class
         # just for these features
         if "timeUseVariables" in self.kwargs.keys():
-            self.time_use_variables = self._validate_list_args(self.kwargs["timeUseVariables"], TimeUseVariable)
+            # XXX also don't love this, but can remove when the server-side error messaging is improved
+            if self.collection in ["atus", "mtus", "ahtus"]:
+                # maybe better to just instantiate this to None by default
+                # double check if an empty TUV field will error out in a non-timeuse collection extract
+                self.time_use_variables = self._validate_list_args(self.kwargs["timeUseVariables"], TimeUseVariable)
+            else:
+                raise ValueError(f"Time use variables are unavailable for the {self.collection.upper()} data collection")
 
     def build(self) -> Dict[str, Any]:
         """
