@@ -445,6 +445,42 @@ def test_atus_build_extract():
         "version": None,
     }
     
+    extract = MicrodataExtract(
+        "atus",
+        ["at2016"],
+        ["AGE", "SEX"],
+        time_use_variables = ["BLS_PCARE"],
+        sample_members = {"include_non_respondents": True}
+    )
+    assert extract.build() == {
+        "description": "My IPUMS ATUS extract",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"at2016": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "timeUseVariables": {
+            "BLS_PCARE": {}
+        },
+        "sampleMembers":{
+            "includeNonRespondents": True
+        },
+        "collection": "atus",
+        "version": None,
+    }
+    
     with pytest.raises(TypeError) as exc_info:
         extract = MicrodataExtract(
             "atus",
@@ -641,7 +677,6 @@ def test_extract_from_dict(fixtures_path: Path):
 
     with open(fixtures_path / "example_extract_v2_complex.yml") as infile:
         extract = extract_from_dict(yaml.safe_load(infile))
-        print(extract[0].build())
 
     for item in extract:
         assert item.collection == "usa"
