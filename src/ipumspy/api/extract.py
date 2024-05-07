@@ -360,6 +360,14 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             data_structure: nested dict with "rectangular", "hierarchical", or "household-only" as first-level key.
                             "rectangular" extracts require further specification of "on" : <record type>.
                             Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
+                            
+        Keword Args:
+            time_use_variables: a list of IPUMS Time Use Variable names or Objects. This argument is only valid for IPUMS ATUS, 
+                                MTUS, and AHTUS data collections. If the list contains user-created Time Use Variables, these 
+                                must be passed as a list of TimeUseVariable objects with the 'owner' field specified.
+            sample_members: a dictionary of non-default sample members to include for Time Use collections where keys are strings
+                            indicating sample member type and values are boolean. This argument is only valid for IPUMS ATUS, 
+                            MTUS, and AHTUS data collections. Valid keys include 'include_non_respondents' and 'include_household_members'.
         """
 
         super().__init__()
