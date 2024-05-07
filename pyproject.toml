@@ -37,6 +37,7 @@ vcrpy = "^4.2.1"
 optional=true
 
 [tool.poetry.group.docs.dependencies]
+beautifulsoup4 = "^4.12.3"
 Sphinx = "^6.1.3"
 sphinx-autodoc-typehints = "^1.22.0"
 sphinx-copybutton = "^0.5.0"
@@ -45,6 +46,7 @@ furo = "^2022.12.7"
 
 [tool.poetry.extras]
 docs = [
+    "beautifulsoup4",
     "Sphinx",
     "sphinx-autodoc-typehints",
     "sphinx-copybutton",
