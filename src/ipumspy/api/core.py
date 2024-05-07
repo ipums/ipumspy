@@ -104,9 +104,6 @@ class IpumsApiClient:
                 "Authorization": api_key,
             }
         )
-        self.supported_collections = {
-            "microdata": ["usa", "cps", "ipumsi"]
-        }
 
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
@@ -167,9 +164,11 @@ class IpumsApiClient:
         Returns:
             The number of the extract for the passed user account
         """
-        # define extract collection
-        if collection in self.supported_collections["microdata"]:
-            extract = MicrodataExtract(extract)
+        
+        if not isinstance(extract, BaseExtract):
+            extract = copy.deepcopy(extract)
+            if "microdata" in BaseExtract._collection_type_to_extract:
+                extract = MicrodataExtract(extract)
 
         # if no api version was provided on instantiation of extract object
         # or in extract definition dict, assign it to the default
@@ -453,13 +452,8 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        if collection in self.supported_collections["microdata"]:
+        if "microdata" in BaseExtract._collection_type_to_extract:
             extract = MicrodataExtract(**extract_def["extractDefinition"])
-        # if collection in BaseExtract._collection_to_extract:
-        #     extract_type = BaseExtract._collection_to_extract[collection]
-        #     extract = extract_type(**extract_def["extractDefinition"])
-        # else:
-        #     extract = MicrodataExtract(**extract_def["extractDefinition"])
 
         return extract
 
