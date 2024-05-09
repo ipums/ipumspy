@@ -226,8 +226,8 @@ class BaseExtract:
         for key in list(kwarg_dict.keys()):
             # if the value of the kwarg is also a dict
             if isinstance(kwarg_dict[key], dict):
-                # apply this same logic to camel-ize it
                 self._snake_to_camel(kwarg_dict[key])
+                    
             # create camelCase equivalent
             key_list = key.split("_")
             # join capitalized versions of all parts except the first
@@ -346,6 +346,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         description: str = "",
         data_format: str = "fixed_width",
         data_structure: Dict = {"rectangular": {"on": "P"}},
+        time_use_variables: Union[List[str], List[TimeUseVariable]] = None,
         **kwargs,
     ):
         """
@@ -394,12 +395,13 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         
         # I don't love this, but it also seems overkill to make a seperate extract class
         # just for these features
-        if "timeUseVariables" in self.kwargs.keys():
+        self.time_use_variables = time_use_variables
+        if self.time_use_variables is not None:
             # XXX also don't love this, but can remove when the server-side error messaging is improved
             if self.collection in ["atus", "mtus", "ahtus"]:
                 # maybe better to just instantiate this to None by default
                 # double check if an empty TUV field will error out in a non-timeuse collection extract
-                self.time_use_variables = self._validate_list_args(self.kwargs["timeUseVariables"], TimeUseVariable)
+                self.time_use_variables = self._validate_list_args(self.time_use_variables, TimeUseVariable)
             else:
                 raise ValueError(f"Time use variables are unavailable for the {self.collection.upper()} data collection")
 
@@ -421,10 +423,12 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             **self.kwargs,
         }
 
-        try:
+        # try:
+        #     built["timeUseVariables"] = {tuv.name.upper(): tuv.build() for tuv in self.time_use_variables}
+        # except AttributeError:
+        #     pass
+        if self.time_use_variables is not None:
             built["timeUseVariables"] = {tuv.name.upper(): tuv.build() for tuv in self.time_use_variables}
-        except AttributeError:
-            pass
             
         return built
         
@@ -503,13 +507,30 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
+    
+    def _camel_to_snake(key):
+        # don't mess with case for boolean values
+        if isinstance(key, bool):
+            return key
+        cap_idx = [0] + [key.index(i) for i in key if i.isupper()]
+        parts_list = [key[i:j].lower() for i,j in zip(cap_idx, cap_idx[1:]+[None])]
+        snake = "_".join(parts_list)
+        return snake
+
+    def _make_snake_ext(ext_dict):
+        for key in ext_dict.keys():
+            if isinstance(ext_dict[key], dict):
+                if key not in ["variables", "samples", "timeUseVariables"]:
+                    ext_dict[key] = _make_snake_ext(ext_dict[key])
+        return {_camel_to_snake(k):v for k,v in ext_dict.items()}
+    
+    ext_dict = _make_snake_ext(dct)
     # XXX To Do: When MicrodataExtract is no longer the only extract class,
     # this method will need to differentiate between the different collection types
     # since this info isn't available from the api response and so won't be stored in any
     # dict representation, there needs to be a way to know which collections are micro
-    # and which are not. Currently this is an attribute of the api client object,
-    # but that isn't helpful here.
-    return MicrodataExtract(**dct)
+    # and which are not.
+    return MicrodataExtract(**ext_dict)
 
 
 def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:

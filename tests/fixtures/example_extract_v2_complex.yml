@@ -8,5 +8,5 @@ extracts:
       AGE: {attachedCharacteristics: [mother]}
       SEX: {}
       RACE: {}
-    dataStructure: rectangular
+    dataStructure: {rectangular: {"on": "P"}}
     dataFormat: fixed_width

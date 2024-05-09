@@ -403,7 +403,7 @@ def test_read_extract_description(fixtures_path: Path):
                 "version": 2,
                 "samples": ["us2012b"],
                 "variables": ["AGE", "SEX", "RACE"],
-                "dataStructure": "rectangular",
+                "dataStructure": {"rectangular": {"on": "P"}},
                 "dataFormat": "fixed_width",
             }
         ],

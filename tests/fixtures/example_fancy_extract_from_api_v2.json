@@ -18,7 +18,7 @@
                                              "father2",
                                              "spouse"]}
       },
-      "dataStructure": "rectangular",
+      "dataStructure": {"rectangular": {"on": "P"}},
       "dataFormat": "fixed_width"
     }
   ]

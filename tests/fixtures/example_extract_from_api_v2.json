@@ -12,7 +12,7 @@
         "SEX": {},
         "RACE": {}
       },
-      "dataStructure": "rectangular",
+      "dataStructure": {"rectangular": {"on": "P"}},
       "dataFormat": "fixed_width"
     }
   ]

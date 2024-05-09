@@ -959,6 +959,29 @@ def test_extract_from_api_response_json(fixtures_path: Path):
         assert item.api_version == 2
 
 
+def test_tuv_extract_from_api_response_json(fixtures_path: Path):
+    """
+    Ensure extract object can be created from a dict that contains
+    variable-level and time use variable features as nested dicts
+    """
+    extract = define_extract_from_json(
+        fixtures_path / "example_tuv_extract_v2.json"
+    )
+    
+    assert extract.collection == "atus"
+    assert extract.time_use_variables == [
+        TimeUseVariable(name = "BLS_PCARE")
+    ]
+    assert extract.kwargs["sampleMembers"] == {
+        "includeHouseholdMembers": False, 
+        "includeNonRespondents": True
+    }
+    assert extract.build()["sampleMembers"] == {
+        "includeHouseholdMembers": False, 
+        "includeNonRespondents": True
+    }
+
+
 def test_save_extract_as_json(fixtures_path: Path):
     # remove the test saved extract if it exists
     if Path(fixtures_path / "test_saved_extract.json").exists():
