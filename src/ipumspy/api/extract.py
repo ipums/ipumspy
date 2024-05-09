@@ -397,7 +397,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         # just for these features
         self.time_use_variables = time_use_variables
         if self.time_use_variables is not None:
-            # XXX also don't love this, but can remove when the server-side error messaging is improved
+            # XXX remove when the server-side error messaging is improved
             if self.collection in ["atus", "mtus", "ahtus"]:
                 # maybe better to just instantiate this to None by default
                 # double check if an empty TUV field will error out in a non-timeuse collection extract
@@ -423,10 +423,6 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             **self.kwargs,
         }
 
-        # try:
-        #     built["timeUseVariables"] = {tuv.name.upper(): tuv.build() for tuv in self.time_use_variables}
-        # except AttributeError:
-        #     pass
         if self.time_use_variables is not None:
             built["timeUseVariables"] = {tuv.name.upper(): tuv.build() for tuv in self.time_use_variables}
             
