@@ -403,7 +403,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
                 # double check if an empty TUV field will error out in a non-timeuse collection extract
                 self.time_use_variables = self._validate_list_args(self.time_use_variables, TimeUseVariable)
             else:
-                raise ValueError(f"Time use variables are unavailable for the {self.collection.upper()} data collection")
+                raise ValueError(f"Time use variables are unavailable for the IPUMS {self.collection.upper()} data collection")
 
     def build(self) -> Dict[str, Any]:
         """

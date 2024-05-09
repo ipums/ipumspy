@@ -481,6 +481,44 @@ def test_atus_build_extract():
         "version": None,
     }
     
+    extract = MicrodataExtract(
+        "atus",
+        ["at2016"],
+        ["AGE", "SEX"],
+        time_use_variables = [TimeUseVariable(name="BLS_PCARE"), TimeUseVariable(name="USER_TUV", owner="newuser@gmail.com")],
+        sample_members = {"include_non_respondents": True}
+    )
+    
+    assert extract.build() == {
+        "description": "My IPUMS ATUS extract",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"at2016": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+            },
+        },
+        "timeUseVariables": {
+            "BLS_PCARE": {},
+            "USER_TUV": {"owner": "newuser@gmail.com"}
+        },
+        "sampleMembers":{
+            "includeNonRespondents": True
+        },
+        "collection": "atus",
+        "version": None,
+    }
+    
     with pytest.raises(TypeError) as exc_info:
         extract = MicrodataExtract(
             "atus",
@@ -490,6 +528,18 @@ def test_atus_build_extract():
         )
     assert exc_info.value.args[0] == "The items in ['BLS_PCARE', TimeUseVariable(name='user_tuv', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."  
 
+    with pytest.raises(ValueError) as exc_info:
+        extract = MicrodataExtract(
+            "cps",
+            ["cps2016_03b"],
+            ["AGE", "SEX"],
+            time_use_variables = ["BLS_PCARE"]
+        )
+        
+    assert exc_info.value.args[0] == "Time use variables are unavailable for the IPUMS CPS data collection"
+    
+    
+    
 
 def test_cps_hierarchical_build_extract():
     """
@@ -1004,6 +1054,13 @@ def test_variable_update():
     with pytest.raises(KeyError) as exc_info:
         age.update("fake_attribute", "fake_value")
     assert exc_info.value.args[0] == "Variable has no attribute 'fake_attribute'."
+    
+    
+def test_tuv_update():
+    tuv = TimeUseVariable("USER_TUV")
+    tuv.update("owner", "newuser@gmail.com")
+    assert tuv.owner == "newuser@gmail.com"
+    
 
 
 def test_validate_list_args():
