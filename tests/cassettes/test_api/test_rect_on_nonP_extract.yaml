@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: '{"description": "My IPUMS NHIS extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "Y"}}, "samples": {"ih2016": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false}, "SEX": {"preselected": false, "caseSelections":
+      {}, "attachedCharacteristics": [], "dataQualityFlags": false}, "IRCAUSE": {"preselected":
+      false, "caseSelections": {}, "attachedCharacteristics": [], "dataQualityFlags":
+      false}}, "collection": "nhis", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '531'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.4.1.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=nhis&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Focal Record Type is not valid"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '121'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 May 2024 23:01:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 8b58906b-6082-4416-8f9f-3e3ccae82efd
+      X-Runtime:
+      - '0.439716'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+version: 1

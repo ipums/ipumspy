@@ -539,6 +539,17 @@ def test_atus_build_extract():
     assert exc_info.value.args[0] == "Time use variables are unavailable for the IPUMS CPS data collection"
     
     
+@pytest.mark.vcr
+def test_rect_on_nonP_extract(live_api_client: IpumsApiClient):
+    bad_hs_ext = MicrodataExtract(
+        collection = "nhis",
+        samples = ["ih2016"],
+        variables = ["AGE", "SEX", "IRCAUSE"],
+        data_structure={"rectangular": {"on": "Y"}}
+    )
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(bad_hs_ext)
+    assert exc_info.value.args[0] == "Focal Record Type is not valid"
     
 
 def test_cps_hierarchical_build_extract():
