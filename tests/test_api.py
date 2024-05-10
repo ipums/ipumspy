@@ -562,13 +562,6 @@ def test_cps_hierarchical_build_extract():
     assert extract.data_structure == {"hierarchical": {}}
 
 
-# def test_other_build_extract():
-#     details = {"some": [1, 2, 3], "other": ["a", "b", "c"]}
-#     extract = OtherExtract("foo", details)
-#     assert extract.build() == details
-#     assert extract.collection == "foo"
-
-
 def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
