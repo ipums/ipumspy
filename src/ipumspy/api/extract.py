@@ -399,8 +399,6 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         if self.time_use_variables is not None:
             # XXX remove when the server-side error messaging is improved
             if self.collection in ["atus", "mtus", "ahtus"]:
-                # maybe better to just instantiate this to None by default
-                # double check if an empty TUV field will error out in a non-timeuse collection extract
                 self.time_use_variables = self._validate_list_args(self.time_use_variables, TimeUseVariable)
             else:
                 raise ValueError(f"Time use variables are unavailable for the IPUMS {self.collection.upper()} data collection")
@@ -425,6 +423,11 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
 
         if self.time_use_variables is not None:
             built["timeUseVariables"] = {tuv.name.upper(): tuv.build() for tuv in self.time_use_variables}
+            
+        # XXX shoehorn fix until server-side bug is fixed
+        if self.collection == "meps":
+            for variable in built["variables"].keys():
+                built["variables"][variable].pop("attachedCharacteristics")
             
         return built
         
