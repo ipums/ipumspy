@@ -266,6 +266,51 @@ def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
             seen += len(df)
     assert total_length == 7668
 
+def test_read_microdata_doubles(fixtures_path):
+    """
+    Make sure that fw extracts with float data can be read
+    """
+    # Checking default behaviour
+    pandas_types = {
+        'YEAR': pd.Int64Dtype(),
+        'CASEID': pd.Int64Dtype(),
+        'SERIAL': pd.Int64Dtype(),
+        'STATEFIP': pd.Int64Dtype(),
+        'PERNUM': pd.Int64Dtype(),
+        'LINENO': pd.Int64Dtype(),
+        'WT06': pd.Float64Dtype(),
+        'AGE': pd.Int64Dtype(),
+        'SEX': pd.Int64Dtype(),
+        'ACTIVITY': pd.Int64Dtype(),
+        'START': pd.StringDtype(), 
+        'STOP': pd.StringDtype(),
+        'BLS_PCARE': pd.Int64Dtype()
+    }
+    
+    ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
+    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz")
+    assert data.dtypes.to_dict() == pandas_types
+    
+    pandas_types_other = {
+        'YEAR': pd.Int64Dtype(),
+        'CASEID': pd.Int64Dtype(),
+        'SERIAL': pd.Int64Dtype(),
+        'STATEFIP': pd.Int64Dtype(),
+        'PERNUM': pd.Int64Dtype(),
+        'LINENO': pd.Int64Dtype(),
+        'WT06': pd.Float64Dtype(),
+        'AGE': pd.Int64Dtype(),
+        'SEX': pd.Int64Dtype(),
+        'ACTIVITY': pd.Int64Dtype(),
+        'START': pd.StringDtype(storage="pyarrow"), 
+        'STOP': pd.StringDtype(storage="pyarrow"),
+        'BLS_PCARE': pd.Int64Dtype()
+    }
+    
+    ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
+    dtype = ddi.get_all_types(type_format="pandas_type", string_pyarrow=True)
+    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
+    assert data.dtypes.to_dict() == pandas_types_other
 
 def test_read_microdata_custom_dtype(fixtures_path):
     """
