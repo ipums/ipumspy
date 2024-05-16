@@ -153,22 +153,35 @@ def _read_microdata(
             kwargs.update({"iterator": True, "chunksize": chunksize})
             data = reader(infile, **kwargs)
 
+        def _fix_float_dtypes(dtype, df):
+                # XXX: it would be great to not have to inspect the data at this stage, 
+                # as it might make reading quite slow for extracts with many variables.
+                # However, currently the IPUMS DDI makes no distinction between floating point and integer
+                # numeric variables and looking at the data is the only option for fwf extracts. 
+                # The alternative would be to just make all numeric variables floats, 
+                # but that doesn't seem ideal either. 
+                for col in df.columns:
+                    if dtype[col] == pd.Int64Dtype():
+                        try:
+                            df[col] = df[col].astype(pd.Int64Dtype())
+                        except TypeError:
+                            # if a variable is hitting this exception,
+                            # it is a float in the actual data that is designated as
+                            # an integer due to the 'numeric' typing of all non-character
+                            # variables in the IPUMS ddi files
+                            dtype[col] = pd.Float64Dtype()
+                return dtype
+
         if dtype is None:
             dtype = {desc.name: desc.pandas_type for desc in data_description}
-            # NOTE(khw): The following line is for specifically handling YRBSS data,
-            # which uses a different .dat format from all other files. This should
-            # be resolved in the future by offering a `.parquet` version of the file
-            # NOTE(rr): Looking at the codebook, I don't _think_ there are similar variables
-            # in the NYTS data.
-            if ddi.ipums_collection == "yrbss":
-                for col in dtype:
-                    if any(name in col for name in ["WEIGHT", "BMIPCTILE"]):
-                        dtype[col] = pd.Float64Dtype()
-            yield from (_fix_decimal_expansion(df).astype(dtype) for df in data)
+            # XXX this is inefficient as _fix_float_dtypes is being called for each df
+            # when it should really only need to be called once. This could slow reading of
+            # extracts that include many variables
+            yield from (_fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df)) for df in data)
         else:
             if ".dat" in filename.suffixes:
                 # convert variables from default numpy_type to corresponding type in dtype.
-                yield from (_fix_decimal_expansion(df).astype(dtype) for df in data)
+                yield from (_fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df)) for df in data)
             else:
                 # In contrary to counter condition, df already has right dtype. It would be expensive to call astype for
                 # nothing.
