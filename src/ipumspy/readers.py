@@ -30,6 +30,34 @@ class CitationWarning(Warning):
     pass
 
 
+def _fix_float_dtypes(dtype, df):
+    # XXX: it would be great to not have to inspect the data at this stage, 
+    # as it might make reading quite slow for extracts with many variables.
+    # However, currently the IPUMS DDI makes no distinction between floating point and integer
+    # numeric variables and looking at the data is the only option for fwf extracts. 
+    # The alternative would be to just make all numeric variables floats, 
+    # but that doesn't seem ideal either. 
+    for col in df.columns:
+        print(col)
+        if dtype[col] == pd.Int64Dtype():
+            print("this is specified as int")
+            try:
+                df[col] = df[col].astype(pd.Int64Dtype())
+                print(df[col].head())
+                print("this should be failing....")
+            # except (TypeError, ValueError) as e:
+            except (TypeError, ValueError) as e:
+                print("I should be making WT06 a double...")
+                print(col, dtype[col])
+                # if a variable is hitting this exception,
+                # it is a float in the actual data that is designated as
+                # an integer due to the 'numeric' typing of all non-character
+                # variables in the IPUMS ddi files
+                dtype[col] = pd.Float64Dtype()
+                print(col, dtype[col])
+    return dtype
+
+
 def read_ipums_ddi(ddi_file: fileutils.FileType) -> ddi_definitions.Codebook:
     """
     Read a DDI from a IPUMS XML file
@@ -86,15 +114,19 @@ def _read_microdata(
     kwargs = copy.deepcopy(kwargs)
     if ".dat" in filename.suffixes:
         # This is a fixed width file
-
+        print("this should not be None")
+        print(dtype)
+        if dtype is None:
+            # numpy_type since _fix_decimal_expansion call will convert any shiftable integer columns to float anyway.
+            dtype = {desc.name: desc.numpy_type for desc in data_description}
         kwargs.update(
             {
                 "colspecs": [(desc.start, desc.end) for desc in data_description],
                 "names": [desc.name for desc in data_description],
-                # numpy_type since _fix_decimal_expansion call will convert any shiftable integer columns to float anyway.
-                "dtype": {desc.name: desc.numpy_type for desc in data_description},
+                "dtype": dtype,
             }
         )
+        print(dtype)
 
         reader = pd.read_fwf
         mode = "rt"
@@ -102,9 +134,11 @@ def _read_microdata(
         # Fixed width files also require fixing decimal expansions
         def _fix_decimal_expansion(df):
             for desc in data_description:
-                if desc.shift:
+                if desc.shift is not None and desc.shift > 0:
+                    print(desc.name, dtype[desc.name])
                     shift = 10**desc.shift
-                    df[desc.name] /= shift
+                    # df[desc.name] /= shift
+                    df[desc.name] = df[desc.name].astype(int) / shift
             return df
 
     elif ".csv" in filename.suffixes:
@@ -146,43 +180,80 @@ def _read_microdata(
     else:
         raise ValueError("Only CSV and .dat files are supported")
 
+    def _data_types_hack(dtype):
+        dtype_orig = dtype
+        if not iterator:
+            try:
+                data = [reader(infile, **kwargs)]
+            except TypeError:
+                print("user-specified dtypes don't work, revert to numpy type and re-cast")
+                # dtype = {desc.name: desc.numpy_type for desc in data_description}
+                kwargs.update({"dtype": {desc.name: desc.numpy_type for desc in data_description}})
+                data = [reader(infile, **kwargs)]
+                print(data)
+        else:
+            kwargs.update({"iterator": True, "chunksize": chunksize})
+            try:
+                data = reader(infile, **kwargs)
+            except TypeError:
+                print("user-specified dtypes don't work, revert to numpy type and re-cast")
+                # dtype = {desc.name: desc.numpy_type for desc in data_description}
+                kwargs.update({"dtype": {desc.name: desc.numpy_type for desc in data_description}})
+                data = [reader(infile, **kwargs)]
+                print(data)
+        dtype = dtype_orig
+        return data
+    
     with fileutils.data_opener(filename, encoding=encoding, mode=mode) as infile:
         if not iterator:
-            data = [reader(infile, **kwargs)]
+            try:
+                data = [reader(infile, **kwargs)]
+                print(data)
+            except TypeError:
+                print("THIS IS RAISED BY READING DATA (now reading w/out dtypes)")
+                if infile.closed:
+                    print("FILE CLOSED!")
+                print(reader)
+                print(infile)
+                print(kwargs)
+                # read everything as a string
+                kwargs.update({"dtype": {desc.name: pd.StringDtype() for desc in data_description}})
+                # data = [reader(infile, **kwargs)]
+                print(kwargs)
+                # revert kwargs?
+                # print(data)
+                # removing the dtype kwarg isn't helping because
+                # there is something up with the reading the data period in
+                # the except block. I am not sure why as this type error
+                # is definitely being caught here...
+                # the reader, the infile, and the kwargs still exist
+                # but it seems like it is just falling out of this except
+                # and hitting the next else.. which is still within the context 
+                # manager     
+                       
         else:
             kwargs.update({"iterator": True, "chunksize": chunksize})
             data = reader(infile, **kwargs)
-
-        def _fix_float_dtypes(dtype, df):
-                # XXX: it would be great to not have to inspect the data at this stage, 
-                # as it might make reading quite slow for extracts with many variables.
-                # However, currently the IPUMS DDI makes no distinction between floating point and integer
-                # numeric variables and looking at the data is the only option for fwf extracts. 
-                # The alternative would be to just make all numeric variables floats, 
-                # but that doesn't seem ideal either. 
-                for col in df.columns:
-                    if dtype[col] == pd.Int64Dtype():
-                        try:
-                            df[col] = df[col].astype(pd.Int64Dtype())
-                        except TypeError:
-                            # if a variable is hitting this exception,
-                            # it is a float in the actual data that is designated as
-                            # an integer due to the 'numeric' typing of all non-character
-                            # variables in the IPUMS ddi files
-                            dtype[col] = pd.Float64Dtype()
-                return dtype
+        # print("before", dtype)
+        # data = _data_types_hack(dtype)
+        # print("after", dtype)
 
         if dtype is None:
+            print("should be here")
             dtype = {desc.name: desc.pandas_type for desc in data_description}
+            print(dtype)
             # XXX this is inefficient as _fix_float_dtypes is being called for each df
             # when it should really only need to be called once. This could slow reading of
             # extracts that include many variables
             yield from (_fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df)) for df in data)
         else:
+            print("nope, I'm here")
+            print(dtype)
             if ".dat" in filename.suffixes:
                 # convert variables from default numpy_type to corresponding type in dtype.
                 yield from (_fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df)) for df in data)
             else:
+                print("...here???!")
                 # In contrary to counter condition, df already has right dtype. It would be expensive to call astype for
                 # nothing.
                 yield from (_fix_decimal_expansion(df) for df in data)
@@ -328,17 +399,51 @@ def read_hierarchical_microdata(
             rectype_vars = _get_rectype_vars(
                 ddi, rectype, common_vars, data_description
             )
+
+            # if there are no non-common vars, this can be skipped?
+            if rectype_vars == common_vars:
+                continue
             # it feels like there should be a better way to do this bit...
+            # read all variables as strings to avoid TypeErrors when non `rectype`
+            # rows contain data that cannot be cast to variable's data type
+            dtype_str = {v: pd.StringDtype() for v in rectype_vars}
+
             rectype_df = pd.concat(
                 [
                     df
                     for df in _read_microdata(
-                        ddi, filename, encoding, rectype_vars, dtype, **kwargs
+                        ddi=ddi, 
+                        filename=filename, 
+                        encoding=encoding, 
+                        subset=rectype_vars, 
+                        dtype=dtype_str, 
+                        **kwargs
                     )
                 ]
             )
+            print("is there ever any data???")
+            print(rectype_df.head())
             # filter out non-relevant rectype records
-            df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype]
+            df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype].copy()
+            print("is it gone now?")
+            print(df_dict[rectype].head())
+
+            # Now that the non-relevant rows have been dropped, make data types correct
+            if dtype is None:
+                # this fix means that _fix_float_dtypes is actually being called both from within
+                # _read_microdata() and this method, which is not ideal, but is also the least disruptive
+                # solution I have found so far.
+                dtype_rt = {desc.name: desc.pandas_type for desc in data_description if desc.name in rectype_vars}
+                print("is this happening???")
+                dtype_rt = _fix_float_dtypes(dtype_rt, df_dict[rectype])
+            else:
+                dtype_rt = {k:v for k,v in dtype.items() if k in rectype_vars}
+                print("dtype_rt")
+                print(dtype_rt)
+
+            # assign float-fixed pandas data types to record type df
+            df_dict[rectype] = df_dict[rectype].astype(dtype_rt)
+
         if as_dict:
             return df_dict
         else:

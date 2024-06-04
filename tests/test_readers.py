@@ -266,11 +266,36 @@ def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
             seen += len(df)
     assert total_length == 7668
 
-def test_read_microdata_doubles(fixtures_path):
+def test_read_microdata_doubles_numpy(fixtures_path):
     """
     Make sure that fw extracts with float data can be read
     """
     # Checking default behaviour
+    numpy_types = {
+        'YEAR': np.float64,
+        'CASEID': np.float64,
+        'SERIAL': np.float64,
+        'STATEFIP': np.float64,
+        'PERNUM': np.float64,
+        'LINENO': np.float64,
+        'WT06': np.float64,
+        'AGE': np.float64,
+        'SEX': np.float64,
+        'ACTIVITY': np.float64,
+        'START': object, 
+        'STOP': object,
+        'BLS_PCARE': np.float64
+    }
+    
+    ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
+    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz")
+    assert data.dtypes.to_dict() == numpy_types
+    
+    
+def test_read_microdata_doubles_pandas(fixtures_path):
+    """
+    Make sure that fw extracts with float data can be read
+    """
     pandas_types = {
         'YEAR': pd.Int64Dtype(),
         'CASEID': pd.Int64Dtype(),
@@ -288,8 +313,15 @@ def test_read_microdata_doubles(fixtures_path):
     }
     
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
-    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz")
+    dtype = ddi.get_all_types(type_format="pandas_type")
+    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
     assert data.dtypes.to_dict() == pandas_types
+    
+    
+def test_read_microdata_doubles_other(fixtures_path):
+    """
+    Make sure that fw extracts with float data can be read
+    """
     
     pandas_types_other = {
         'YEAR': pd.Int64Dtype(),
@@ -312,6 +344,7 @@ def test_read_microdata_doubles(fixtures_path):
     data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
     assert data.dtypes.to_dict() == pandas_types_other
 
+
 def test_read_microdata_custom_dtype(fixtures_path):
     """
     Make sure use can choose custom dtype in microdata reader.
@@ -333,7 +366,7 @@ def test_read_microdata_custom_dtype(fixtures_path):
     }
 
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
-    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz")
+    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types)
     assert data.dtypes.to_dict() == pandas_types
 
     # custom dtype
@@ -354,7 +387,7 @@ def test_read_microdata_custom_dtype(fixtures_path):
 
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
     dtype = ddi.get_all_types(type_format="pandas_type_efficient", string_pyarrow=True)
-    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz", dtype=dtype)
+    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types_efficient)
     assert data.dtypes.to_dict() == pandas_types_efficient
 
     with pytest.raises(ValueError):
@@ -383,7 +416,7 @@ def test_read_microdata_chunked_custom_dtype(fixtures_path):
     }
 
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
-    data = readers.read_microdata_chunked(ddi, fixtures_path / "cps_00361.dat.gz")
+    data = readers.read_microdata_chunked(ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types)
     assert next(data).dtypes.to_dict() == pandas_types
 
     # custom dtype
