@@ -118,7 +118,7 @@ def _read_microdata(
         print(dtype)
         if dtype is None:
             # numpy_type since _fix_decimal_expansion call will convert any shiftable integer columns to float anyway.
-            dtype = {desc.name: desc.numpy_type for desc in data_description}
+            dtype = {desc.name: desc.pandas_type for desc in data_description}
         kwargs.update(
             {
                 "colspecs": [(desc.start, desc.end) for desc in data_description],
