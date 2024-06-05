@@ -30,41 +30,63 @@ filled in as new IPUMS data collections become accessible via API.
       - collection IDs
       - sample IDs
       - variable names
-    * - IPUMS USA
+    * - `IPUMS USA <https://usa.ipums.org/usa/>`__
       - usa
       - `usa samples <https://usa.ipums.org/usa-action/samples/sample_ids>`__
       - `usa variables <https://usa.ipums.org/usa-action/variables/group>`__
-    * - IPUMS CPS
+    * - `IPUMS CPS <https://cps.ipums.org/cps/>`__
       - cps
       - `cps samples <https://cps.ipums.org/cps-action/samples/sample_ids>`__
       - `cps variables <https://cps.ipums.org/cps-action/variables/group>`__
-    * - IPUMS International
+    * - `IPUMS International <https://international.ipums.org/international/>`__
       - ipumsi
       - `ipumsi samples <https://international.ipums.org/international-action/samples/sample_ids>`__
       - `ipumsi variables <https://international.ipums.org/international-action/variables/group>`__
+    * - `IPUMS ATUS https://www.atusdata.org/atus/`__
+      - atus
+      - `atus samples <https://www.atusdata.org/atus-action/samples/sample_ids>`__
+      - `atus variables <https://www.atusdata.org/atus-action/variables/group>`__
+    * - `IPUMS AHTUS <https://www.ahtusdata.org/ahtus/>`__
+      - ahtus
+      - `ahtus samples <https://www.ahtusdata.org/ahtus-action/samples/sample_ids>`__
+      - `ahtus variables <https://www.ahtusdata.org/ahtus-action/variables/group>`__
+    * - `IPUMS MTUS <https://www.mtusdata.org/mtus/>`__
+      - mtus
+      - `ahtus samples <https://www.mtusdata.org/mtus-action/samples/sample_ids>`__
+      - `ahtus variables <https://www.mtusdata.org/mtus-action/variables/group>`__
+    * - `IPUMS NHIS <https://nhis.ipums.org/nhis/>`__
+      - nhis
+      - `nhis samples <https://nhis.ipums.org/nhis-action/samples/sample_ids>`__
+      - `nhis variables <https://nhis.ipums.org/nhis-action/variables/group>`__
+    * - `IPUMS MEPS https://meps.ipums.org/meps/`__
+      - meps
+      - `meps samples <https://meps.ipums.org/meps-action/samples/sample_ids>`__
+      - `meps variables <https://meps.ipums.org/meps-action/variables/group>`__
 
 
 Extract Objects
 ---------------
 
-Each IPUMS data collection that is accessible via API has its own extract class. Using this class to create your extract object obviates the need to specify a data collection.
+All IPUMS data collection currently supported by `ipumspy` are microdata collections; extracts for these data collections can be constructed and submitted to the IPUMS API using the `MicrodataExtract` class. The minimum required arguments are 1) an IPUMS collection id, 2) a list of sample ids, and 3) a list of variable names.
 
 For example:
 
 .. code:: python
 
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
 
-instantiates a UsaExtract object for the IPUMS USA data collection that includes the us2012b (2012 PRCS) sample, and the variables AGE and SEX.
+instantiates a MicrodataExtract object for the IPUMS USA data collection that includes the us2012b (2012 PRCS) sample, and the variables AGE and SEX.
 
 IPUMS extracts can be requested as rectangular or hierarchical files. The ``data_structure`` argument defaults to ``{"rectangular": {"on": "P"}}`` to request a rectangular, person-level extract. The code snippet below requests a hierarchical USA extract.
 
 .. code:: python
 
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
         data_structure={"hierarchical": {}}
@@ -74,7 +96,8 @@ Users also have the option to specify a data format and an extract description w
 
 .. code:: python
 
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
         data_format="csv",
@@ -87,7 +110,7 @@ Once an extract object has been created, the extract must be submitted to the AP
 
 .. code:: python
 
-    from ipumspy import IpumsApiClient, UsaExtract
+    from ipumspy import IpumsApiClient, MicrodataExtract
 
     IPUMS_API_KEY = your_api_key
     DOWNLOAD_DIR = Path(your_download_dir)
@@ -95,7 +118,8 @@ Once an extract object has been created, the extract must be submitted to the AP
     ipums = IpumsApiClient(IPUMS_API_KEY)
 
     # define your extract
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2012b"],
         ["AGE", "SEX"],
     )
@@ -184,7 +208,8 @@ IPUMS Extract features can be added or updated before an extract request is subm
 
 .. code:: python
 
-    extract = CPSExtract(
+    extract = MicrodataExtract(
+        "cps",
         ["cps2022_03s"],
         ["AGE", "SEX", "RACE"],
     )
@@ -217,7 +242,8 @@ The :meth:`.select_cases()` method defaults to using "general" codes to select c
 
 .. code:: python
 
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2021a"],
         ["AGE", "SEX", "RACE"]
     )
@@ -240,7 +266,8 @@ By default, case selection includes only individuals with the specified values f
 
 .. code:: python
 
-    extract = UsaExtract(
+    extract = MicrodataExtract(
+        "usa",
         ["us2021a"],
         ["AGE", "SEX", "RACE"],
         case_select_who = "households"
@@ -258,7 +285,8 @@ Data quality flags can be added to an extract on a per-variable basis or for the
 
 .. code:: python
 
-    extract = CpsExtract(
+    extract = MicrodataExtract(
+        "cps",
         ["cps2022_03s"],
         ["AGE", "SEX", "RACE"],
         data_quality_flags=True
@@ -285,7 +313,8 @@ It is also possible to define all variable-level extract features when the IPUMS
 
 .. code:: python
 
-    fancy_extract = CpsExtract(
+    fancy_extract = MicrodataExtract(
+        "cps",
         ["cps2022_03s"],
         [
             Variable(name="AGE",
@@ -301,7 +330,7 @@ Unsupported Features
 --------------------
 
 Not all features available through the IPUMS extract web UI are currently supported for extracts made via API. 
-For a list of currently unsupported features, see `the developer documentation <https://beta.developer.ipums.org/docs/apiprogram/apis/>`__.
+For a list of supported and unsupported features for each IPUMS data collection, see `the developer documentation <https://developer.ipums.org/docs/v2/apiprogram/apis/microdata/>`__.
 This list will be updated as more features become available.
 
 Extract Histories
@@ -322,7 +351,7 @@ Extract Histories
     # get my 20 most-recent CPS extracts
     more_recent_extracts = ipums.get_previous_extracts("cps", limit=20)
 
-The :meth:`.get_extract_history()` generator makes it easy to filter your extract history to pull out extracts with certain variables, samples, features, file formats, etc. By default, this generator returns pages extract definitions of the maximum possible size, 2500. Page size can be set to a lower number using the ``page_size`` argument.
+The :meth:`.get_extract_history()` generator makes it easy to filter your extract history to pull out extracts with certain variables, samples, features, file formats, etc. By default, this generator returns pages extract definitions of the maximum possible size, 500. Page size can be set to a lower number using the ``page_size`` argument.
 
 .. code:: python
 
@@ -331,7 +360,7 @@ The :meth:`.get_extract_history()` generator makes it easy to filter your extrac
     # get pages with 50 CPS extracts per page
     for page in ipums.get_extract_history("cps", page_size=100):
         for ext in page["data"]:
-            extract_obj = CpsExtract(**ext["extractDefinition"])
+            extract_obj = MicrodataExtract(**ext["extractDefinition"])
             if "STATEFIP" in [var.name for var in extract_obj.variables]:
                 extracts_with_state.append(extract_obj)
 
