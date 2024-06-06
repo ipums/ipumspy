@@ -42,7 +42,7 @@ filled in as new IPUMS data collections become accessible via API.
       - ipumsi
       - `ipumsi samples <https://international.ipums.org/international-action/samples/sample_ids>`__
       - `ipumsi variables <https://international.ipums.org/international-action/variables/group>`__
-    * - `IPUMS ATUS https://www.atusdata.org/atus/`__
+    * - `IPUMS ATUS <https://www.atusdata.org/atus/>`__
       - atus
       - `atus samples <https://www.atusdata.org/atus-action/samples/sample_ids>`__
       - `atus variables <https://www.atusdata.org/atus-action/variables/group>`__
@@ -52,13 +52,13 @@ filled in as new IPUMS data collections become accessible via API.
       - `ahtus variables <https://www.ahtusdata.org/ahtus-action/variables/group>`__
     * - `IPUMS MTUS <https://www.mtusdata.org/mtus/>`__
       - mtus
-      - `ahtus samples <https://www.mtusdata.org/mtus-action/samples/sample_ids>`__
-      - `ahtus variables <https://www.mtusdata.org/mtus-action/variables/group>`__
+      - `mtus samples <https://www.mtusdata.org/mtus-action/samples/sample_ids>`__
+      - `mtus variables <https://www.mtusdata.org/mtus-action/variables/group>`__
     * - `IPUMS NHIS <https://nhis.ipums.org/nhis/>`__
       - nhis
       - `nhis samples <https://nhis.ipums.org/nhis-action/samples/sample_ids>`__
       - `nhis variables <https://nhis.ipums.org/nhis-action/variables/group>`__
-    * - `IPUMS MEPS https://meps.ipums.org/meps/`__
+    * - `IPUMS MEPS <https://meps.ipums.org/meps/>`__
       - meps
       - `meps samples <https://meps.ipums.org/meps-action/samples/sample_ids>`__
       - `meps variables <https://meps.ipums.org/meps-action/variables/group>`__
@@ -67,7 +67,7 @@ filled in as new IPUMS data collections become accessible via API.
 Extract Objects
 ---------------
 
-All IPUMS data collection currently supported by `ipumspy` are microdata collections; extracts for these data collections can be constructed and submitted to the IPUMS API using the `MicrodataExtract` class. The minimum required arguments are 1) an IPUMS collection id, 2) a list of sample ids, and 3) a list of variable names.
+All IPUMS data collection currently supported by `ipumspy` are microdata collections; extracts for these data collections can be constructed and submitted to the IPUMS API using the :class:`ipumspy.api.extract.MicrodataExtract` class. The minimum required arguments are 1) an IPUMS collection id, 2) a list of sample ids, and 3) a list of variable names.
 
 For example:
 
@@ -92,6 +92,48 @@ IPUMS extracts can be requested as rectangular or hierarchical files. The ``data
         data_structure={"hierarchical": {}}
     )
 
+
+Some IPUMS data collections offer rectangular files on non-person record types. For example, IPUMS ATUS offers rectangular files at the activity level and IPUMS MEPS offers rectangular files at the round level. Below is an example of an IPUMS MEPS extract object that is rectanularized on round.
+
+.. code:: python
+
+    extract = MicrodataExtract(
+        "meps",
+        ["mp2016"],
+        ["AGE", "SEX", "PREGNTRD"],
+        data_structure={"rectangular": {"on": "R"}}
+    )
+
+The table below shows the available data structures and the IPUMS data collections for which each is valid.
+
+.. _collection data structures table:
+
+.. list-table:: IPUMS data structures
+    :widths: 23 40 18
+    :header-rows: 1
+    :align: center
+
+    * - data structure
+      - syntax
+      - collections 
+    * - rectangular on Person (default)
+      - ``data_structure={"rectangular": {"on": "P"}}``
+      - all IPUMS microdata collections
+    * - hierarchical
+      - ``data_structure={"hierarchical": {}}``
+      - all IPUMS microdata collections
+    * - rectangular on Activity
+      - ``data_structure={"rectangular": {"on": "A"}}``
+      - atus, ahtus, mtus
+    * - rectangular on Round
+      - ``data_structure={"rectangular": {"on": "R"}}``
+      - meps
+    * - rectangular on Injury
+      - ``data_structure={"rectangular": {"on": "R"}}``
+      - nhis
+    
+Note that some types of records are only available as part of hierarchical extracts. This is true of IPUMS ATUS "Who" and "Eldercare" [*]_ records and of IPUMS MEPS "Event", "Condition", and "Prescription Medications" record types.
+    
 Users also have the option to specify a data format and an extract description when creating an extract object.
 
 .. code:: python
@@ -326,8 +368,69 @@ It is also possible to define all variable-level extract features when the IPUMS
          ]
     )
 
-Unsupported Features
---------------------
+Time Use Variables
+------------------
+The IPUMS Time Use collections (ATUS, AHTUS, and MTUS) offer a special type of variable called time use variables. These variables correspond to the number of minutes a respondent spent during the 24-hour reference period on activities that match specific criteria. Within time use variables, there are two different variable types: "system" time use variables that IPUMS offers pre-made for users based on common definitions of activities and "user-defined" time use variables that users can construct based on their own criteria using the IPUMS web interface for these collections. Currently time use variable creation is not supported via the IPUMS API. However, users can request system time use variables as well as their own custom user-defined time use variables that they have previously created in the IPUMS web interface and saved to their user account via the IPUMS API.
+
+Because time use variables are a special type of variable, they need to be requested as time use variables specifically and cannot be added to the `varibles` argument list with non-time use variables. Below is an example of an IPUMS ATUS extract that contains variables AGE and SEX as well as the system time use variable BLS_PCARE.
+
+.. code:: python
+
+    atus_extract = MicrodataExtract(
+        collection="atus",
+        samples=["at2016"],
+        variables=["AGE", "SEX"],
+        time_use_variables=["BLS_PCARE"]
+    )
+
+Like other variables, time use variables can also be passed to `MicrodataExtract` as a list of `TimeUseVariable` objects.
+
+.. code:: python
+
+    atus_extract = MicrodataExtract(
+        collection="atus",
+        samples=["at2016"],
+        variables=["AGE", "SEX"],
+        time_use_variables=[TimeUseVariable(name="BLS_PCARE")]
+    )
+
+This approach may be simpler when including user-defined timeuse variables in your extract, as user-defined time use variables also have an owner attribute that must be specified. The owner field contains the email address associated with your IPUMS account.
+
+.. code:: python
+
+    atus_extract = MicrodataExtract(
+        collection="atus",
+        samples=["at2016"],
+        variables=["AGE", "SEX"],
+        time_use_variables=[
+            TimeUseVariable(name="BLS_PCARE"), 
+            TimeUseVariable(name="MY_CUSTOM_TUV", owner="newipumsuser@gmail.com")
+        ]
+    )
+
+IPUMS ATUS Sample Members
+-------------------------
+
+Though time use information is only available for designated respondents in IPUMS ATUS, users may also wish to include household members of these respondents and/or non-respondents in their IPUMS ATUS extracts. These "sample members" can be included by using the ``sample_members`` key word argument. The example below includes both household members of ATUS respondents and non-respondents alongside ATUS respondents (included by default).
+
+.. code:: python
+
+    atus_extract = MicrodataExtract(
+        collection="atus",
+        samples=["at2016"],
+        variables=["AGE", "SEX"],
+        time_use_variables=[
+            TimeUseVariable(name="BLS_PCARE"), 
+            TimeUseVariable(name="MY_CUSTOM_TUV", owner="newipumsuser@gmail.com")
+        ],
+        sample_members={
+            "include_non_respondents": True,
+            "include_household_members": True
+        }
+    )
+
+Unsupported Extract Features
+----------------------------
 
 Not all features available through the IPUMS extract web UI are currently supported for extracts made via API. 
 For a list of supported and unsupported features for each IPUMS data collection, see `the developer documentation <https://developer.ipums.org/docs/v2/apiprogram/apis/microdata/>`__.
@@ -364,3 +467,5 @@ The :meth:`.get_extract_history()` generator makes it easy to filter your extrac
             if "STATEFIP" in [var.name for var in extract_obj.variables]:
                 extracts_with_state.append(extract_obj)
 
+
+.. [*] Note that IPUMS ATUS Eldercare records will be included in a hierarchical extract automatically if Eldercare variables are selected. There is no API equivalent to the "include eldercare" checkbox in the Extract Data Structure menue in the IPUMS ATUS web interface.

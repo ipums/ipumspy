@@ -28,10 +28,7 @@ extract class.
    :nosignatures:
 
    ipumspy.api.BaseExtract
-   ipumspy.api.OtherExtract
-   ipumspy.api.UsaExtract
-   ipumspy.api.CpsExtract
-   ipumspy.api.IpumsiExtract
+   ipumspy.api.MicrodataExtract
 
 Other IPUMS Objects
 -------------------
