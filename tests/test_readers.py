@@ -136,6 +136,87 @@ def _assert_cps_00421_dict(data: Dict):
             ]
         )
     ).all()
+    
+    
+def _assert_atus_00035_dict(data: Dict):
+    """Run all the checks for the data frame returned by our readers for hierarchical files
+    when a dictionary of data frames is requested"""
+    h_data = data["1"]
+    p_data = data["2"]
+    a_data = data["3"]
+
+    assert len(data.keys()) == 3
+
+    assert len(h_data) == 24336
+    assert len(h_data.columns) == 10
+    assert (h_data["YEAR"].iloc[:5] == 2016).all()
+    assert (
+        h_data["STATEFIP"].iloc[:5]
+        == np.array([13, 51, 11, 26, 29])
+    ).all()
+    assert (h_data["RECTYPE"].iloc[:5] == np.array(["1", "1", "1", "1", "1"])).all()
+    assert (
+        h_data.dtypes.values
+        == np.array(
+            [
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+
+    assert len(p_data) == 24336
+    assert len(p_data.columns) == 10
+    assert (p_data["YEAR"].iloc[:5] == 2016).all()
+    assert (
+        p_data["WT06"].iloc[:5]
+        == np.array([24588650.161504, 5445941.065425, 8782621.982064, 3035909.94892, 6978586.369092])
+    ).all()
+    assert (p_data["RECTYPE"].iloc[:5] == np.array(["2", "2", "2", "2", "2"])).all()
+    assert (
+        p_data.dtypes.values
+        == np.array(
+            [
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Float64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+    
+    assert len(a_data) == 207213
+    assert len(a_data.columns) == 8
+    assert (a_data["YEAR"].iloc[:5] == 2016).all()
+    assert (
+        a_data["ACTIVITY"].iloc[:5]
+        == np.array([10101, 20201, 110101, 20203, 20101])
+    ).all()
+    assert (a_data["RECTYPE"].iloc[:5] == np.array(["3", "3", "3", "3", "3"])).all()
+    assert (
+        a_data.dtypes.values
+        == np.array(
+            [
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                str,
+                str,
+            ]
+        )
+    ).all()
+    
 
 
 def _assert_cps_rectantular_subset(data: pd.DataFrame):
@@ -174,6 +255,8 @@ def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
     data = readers.read_hierarchical_microdata(ddi, fixtures_path / "cps_00421.dat.gz")
 
     _assert_cps_00421_df
+    
+    
 
 
 def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
@@ -187,6 +270,13 @@ def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
     )
 
     _assert_cps_00421_dict
+    
+    ddi = readers.read_ipums_ddi(fixtures_path / "atus_00035.xml")
+    data = readers.read_hierarchical_microdata(
+        ddi, fixtures_path / "atus_00035.dat.gz", as_dict=True
+    )
+
+    _assert_atus_00035_dict
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
@@ -288,7 +378,8 @@ def test_read_microdata_doubles_numpy(fixtures_path):
     }
     
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
-    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz")
+    dtype = ddi.get_all_types(type_format="numpy_type")
+    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
     assert data.dtypes.to_dict() == numpy_types
     
     
@@ -313,8 +404,7 @@ def test_read_microdata_doubles_pandas(fixtures_path):
     }
     
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
-    dtype = ddi.get_all_types(type_format="pandas_type")
-    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
+    data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz")
     assert data.dtypes.to_dict() == pandas_types
     
     
