@@ -11,6 +11,27 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+
+0.5.0
+-----
+2024-06-??
+
+* Breaking Changes
+
+  * ``UsaExtract``, ``CpsExtract``, and ``IpumsiExtract`` have been consolidated into a single :py:class:`~ipumspy.api.extract.MicrodataExtract` class that requires an IPUMS collection id as its first positional argument.
+
+* New Features
+
+  * Support for new IPUMS API features added in the `Version 2, May 2024 Update <https://developer.ipums.org/docs/v2/apiprogram/changelog/>`_.
+
+    * Added :py:class:`~ipumspy.api.extract.TimeUseVariable` to support adding IPUMS ATUS, AHTUS, and MTUS time use variables to extracts
+    * ``sample_members`` is now a valid key word argument in :py:class:`~ipumspy.api.extract.MicrodataExtract` for IPUMS ATUS extracts to request non-respondents and household members of respondents be included in an IPUMS ATUS extract.
+    * ``{"rectangular": {"on": "A"}}`` is now a supported data structure for IPUMS ATUS, AHTUS, and MTUS data collections
+    * ``{"rectangular": {"on": "R"}}`` is now a supported data structure for IPUMS MEPS
+    * ``{"rectangular": {"on": "I"}}`` is now a supported data structure for IPUMS IHIS
+
+* Bug Fixes
+
 0.4.1
 -----
 2023-08-08
