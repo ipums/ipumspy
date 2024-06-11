@@ -358,12 +358,9 @@ def read_hierarchical_microdata(
                     )
                 ]
             )
-            print("is there ever any data???")
-            print(rectype_df.head())
+
             # filter out non-relevant rectype records
             df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype].copy()
-            print("is it gone now?")
-            print(df_dict[rectype].head())
 
             # Now that the non-relevant rows have been dropped, make data types correct
             if dtype is None:
@@ -371,12 +368,9 @@ def read_hierarchical_microdata(
                 # _read_microdata() and this method, which is not ideal, but is also the least disruptive
                 # solution I have found so far.
                 dtype_rt = {desc.name: desc.pandas_type for desc in data_description if desc.name in rectype_vars}
-                print("is this happening???")
                 dtype_rt = _fix_float_dtypes(dtype_rt, df_dict[rectype])
             else:
                 dtype_rt = {k:v for k,v in dtype.items() if k in rectype_vars}
-                print("dtype_rt")
-                print(dtype_rt)
 
             # assign float-fixed pandas data types to record type df
             df_dict[rectype] = df_dict[rectype].astype(dtype_rt)
