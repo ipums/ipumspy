@@ -131,6 +131,9 @@ The table below shows the available data structures and the IPUMS data collectio
     * - rectangular on Injury
       - ``data_structure={"rectangular": {"on": "R"}}``
       - nhis
+    * - household only
+      - ``data_structure={"householdOnly": {}}``
+      - usa
     
 Note that some types of records are only available as part of hierarchical extracts. This is true of IPUMS ATUS "Who" and "Eldercare" [*]_ records and of IPUMS MEPS "Event", "Condition", and "Prescription Medications" record types.
     
