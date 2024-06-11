@@ -17,7 +17,7 @@ def test_read_noextract_codebook():
     assert codebook.data_description[0].rectype == "P"
     assert codebook.data_description[0].codes == {}
     assert codebook.data_description[0].start == 0
-    assert codebook.data_description[0].end == 2
+    assert codebook.data_description[0].end == 1
     assert codebook.data_description[0].label == "Record type"
 
     assert len(codebook.samples_description) == 0

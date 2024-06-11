@@ -54,7 +54,7 @@ def read_noextract_codebook(collection: str) -> Codebook:
                     val["record_type"],
                     {v["label"]: v["value"] for v in val["values"]},
                     val["start_column"] - 1,
-                    val["start_column"] + val["width"],
+                    val["start_column"] + val["width"] - 1,
                     val["label"],
                     val["label"],
                     "",  # No concept tracked
@@ -79,11 +79,11 @@ def download_noextract_data(collection: str, filename: Optional[FilenameType] = 
     Suggested usage to retrieve YRBSS data:
 
         >>> from ipumspy.readers import read_microdata
-        >>> from ipumspy.noextract_collections import read_noextract_codebook, download_noextract_data
+        >>> from ipumspy.noextract import read_noextract_codebook, download_noextract_data
         >>>
         >>> yrbss_codebook = read_noextract_codebook("yrbss")
         >>> download_noextract_data("yrbss")
-        >>> read_microdata(yrbss_codebook, "yrbss.dat.gz")
+        >>> read_microdata(yrbss_codebook, "ipums-yrbss.dat.gz")
 
     N.B. You **must** use `read_noextract_codebook()` to parse the codebook provided in this package or else
     `read_microdata` will fail.
