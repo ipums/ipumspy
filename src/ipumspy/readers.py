@@ -378,15 +378,22 @@ def read_hierarchical_microdata(
         if as_dict:
             return df_dict
         else:
+            dtype_str = {desc.name: pd.StringDtype() for desc in data_description}
             # read the hierarchical file
             df = pd.concat(
                 [
                     df
                     for df in _read_microdata(
-                        ddi, filename, encoding, subset, dtype, **kwargs
+                        ddi=ddi, 
+                        filename=filename, 
+                        encoding=encoding, 
+                        dtype=dtype_str, 
+                        subset=subset,
+                        **kwargs
                     )
                 ]
             )
+
             # for each rectype, nullify variables that belong to other rectypes
             for rectype in df_dict.keys():
                 # create a list of variables that are for rectypes other than the current rectype
@@ -397,23 +404,35 @@ def read_hierarchical_microdata(
                     for cols in df_dict[rt].columns
                     if rt != rectype and cols not in common_vars
                 ]
+                dtype_rt = dtype
+                if dtype_rt is None:
+                    # this fix means that _fix_float_dtypes is actually being called both from within
+                    # _read_microdata() and this method, which is not ideal, but is also the least disruptive
+                    # solution I have found so far.
+                    dtype_rt = {desc.name: desc.pandas_type for desc in data_description if desc.name in non_rt_cols}
+                
                 for col in non_rt_cols:
                     # maintain data type when "nullifying" variables from other record types
-                    if df[col].dtype == pd.Int64Dtype():
+                    if dtype_rt[col] == pd.Int64Dtype():
                         df[col] = np.where(df["RECTYPE"] == rectype, pd.NA, df[col])
-                        df[col] = df[col].astype(pd.Int64Dtype())
-                    elif df[col].dtype == pd.StringDtype():
+                        df[col] = df[col].astype(_fix_float_dtypes({col: dtype_rt[col]}, df[[col]].copy()))
+                    elif dtype_rt[col] == pd.StringDtype():
                         df[col] = np.where(df["RECTYPE"] == rectype, "", df[col])
                         df[col] = df[col].astype(pd.StringDtype())
-                    elif df[col].dtype == float:
+                    elif dtype_rt[col].dtype == float or dtype_rt[col] == pd.Float64Dtype():
                         df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
-                        df[col] = df[col].astype(float)
+                        df[col] = df[col].astype(dtype_rt[col])
                     # this should (theoretically) never be hit... unless someone specifies an illegal data type
                     # themselves, but that should also be caught before this stage.
                     else:
                         raise TypeError(
                             f"Data type {df[col].dtype} for {col} is not an allowed type."
                         )
+            # XXX common vars are defaulting to pandas. This is probably fine, but could be more flexible.
+            common_dtype = {desc.name: desc.pandas_type for desc in data_description if desc.name in common_vars}
+            for col in common_vars:
+                df[col] = df[col].astype(common_dtype[col])
+                
             return df
 
 

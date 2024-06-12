@@ -218,6 +218,41 @@ def _assert_atus_00035_dict(data: Dict):
     ).all()
     
 
+def _assert_atus_00035_df(data: pd.DataFrame):
+    """Run all the checks for the data frame returned by our readers for hierarchical files"""
+    assert len(data) == 255885
+    assert len(data.columns) == 15
+    assert (data["YEAR"].iloc[:5] == 2016).all()
+    # again, gotta be a better way to do this
+    assert (data["WT06"].iloc[:2] == np.array([np.nan, 24588650.161504])).all()
+    assert data["WT06"].iloc[2:5].isna().all()
+    assert (data["RECTYPE"].iloc[:5] == np.array(["1", "2", "3", "3", "3"])).all()
+    assert (data["STATEFIP"].iloc[:5] == np.array([13, pd.NA, pd.NA, pd.NA, pd.NA])).all()
+    assert (data["ACTLINE"].iloc[:5] == np.array([pd.NA, pd.NA, 1, 2, 3])).all()
+    assert (data["START"].iloc[:5] == np.array(["", "", "04:00:00", "11:00:00", "11:20:00"])).all()
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Float64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                str,
+                str,
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+
 
 def _assert_cps_rectantular_subset(data: pd.DataFrame):
     """Tests subset functionality on rectangular extracts"""
@@ -256,8 +291,11 @@ def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
 
     _assert_cps_00421_df
     
-    
+    ddi = readers.read_ipums_ddi(fixtures_path / "atus_00035.xml")
+    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "atus_00035.dat.gz")
 
+    _assert_atus_00035_df
+    
 
 def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
     """
