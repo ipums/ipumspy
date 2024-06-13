@@ -56,11 +56,14 @@ class VariableDescription:
         """
         The Python type of this variable.
         """
-        if self.vartype == "numeric":
+        if self.vartype == "numeric" or self.vartype == "integer":
             if (self.shift is None) or (self.shift == 0):
                 return int
             return float
-        return str
+        elif self.vartype == "float":
+            return float
+        else:
+            return str
 
     @property
     def numpy_type(self) -> type:
@@ -68,9 +71,8 @@ class VariableDescription:
         The Numpy type of this variable. Note that this type must support nullability,
         and hence even for integers it is "float64".
         """
-        if self.vartype == "numeric":
-            if (self.shift is None) or (self.shift == 0):
-                return np.float64
+        # always return a numpy float if it isn't a character var
+        if self.vartype == "numeric" or self.vartype == "integer" or self.vartype == "float":
             return np.float64
         return str
 
@@ -81,11 +83,15 @@ class VariableDescription:
         pandas dtypes, and so the integer type is "Int64" and the string type is
         "string" (instead of "object")
         """
-        if self.vartype == "numeric":
+        if self.vartype == "numeric" or self.vartype == "integer":
             if (self.shift is None) or (self.shift == 0):
                 return pd.Int64Dtype()
+            # this should probably actually return pd.Float64Dtype()
             return np.float64
-        return pd.StringDtype()
+        elif self.vartype == "float":
+            return np.float64
+        else:
+            return pd.StringDtype()
 
     @property
     def pandas_type_efficient(self) -> type:
@@ -95,9 +101,7 @@ class VariableDescription:
         https://pandas-docs.github.io/pandas-docs-travis/user_guide/integer_na.html
         It can be considered as a mix between `self.pandas_type` and `self.numpy_type`
         """
-        if self.vartype == "numeric":
-            if (self.shift is None) or (self.shift == 0):
-                return np.float64
+        if self.vartype == "numeric" or self.vartype == "integer" or self.vartype == "float":
             return np.float64
         return pd.StringDtype()
 
@@ -115,12 +119,21 @@ class VariableDescription:
         namespaces = {"ddi": ddi_namespace}
 
         vartype = elt.find("./ddi:varFormat", namespaces).attrib["type"]
+        # for DDI where no distinction is made between integer and float:
+        intvl = elt.attrib["intrvl"]
+        wid = int(elt.find("./ddi:location", namespaces).attrib["width"])
+        if vartype == "numeric":
+            if intvl == "contin" and wid > 10:
+                vartype == "float"
+            else:
+                vartype = "integer"
+        
         labels_dict = {}
         for cat in elt.findall("./ddi:catgry", namespaces):
             label = cat.find("./ddi:labl", namespaces).text
             value = cat.find("./ddi:catValu", namespaces).text
             # make values integers when possible
-            if vartype == "numeric":
+            if vartype == "numeric" or vartype == "integer":
                 labels_dict[label] = int(value)
             else:
                 labels_dict[label] = value

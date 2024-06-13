@@ -279,14 +279,14 @@ def test_ddi_codebook_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
 def test_get_all_types(cps_ddi: ddi.Codebook, cps_df: pd.DataFrame):
 
     var_types = {
-        "YEAR": "numeric",
-        "SERIAL": "numeric",
-        "HWTSUPP": "numeric",
-        "STATEFIP": "numeric",
-        "MONTH": "numeric",
-        "PERNUM": "numeric",
-        "WTSUPP": "numeric",
-        "INCTOT": "numeric",
+        "YEAR": "integer",
+        "SERIAL": "integer",
+        "HWTSUPP": "integer",
+        "STATEFIP": "integer",
+        "MONTH": "integer",
+        "PERNUM": "integer",
+        "WTSUPP": "integer",
+        "INCTOT": "integer",
     }
 
     assert cps_ddi.get_all_types(type_format="vartype") == var_types
