@@ -138,6 +138,47 @@ def _assert_cps_00421_dict(data: Dict):
     ).all()
     
     
+def _assert_meps_000019(data: pd.DataFrame):
+    """Run all the checks for the data frame returned by our readers for rectangular on R rectangular files"""
+    assert len(data) == 103965
+    assert len(data.columns) == 23
+    assert (data["YEAR"].iloc[:5] == 2016).all()
+    assert (
+        data["SAQWEIGHT"].iloc[:5]
+        == np.array([14398.747070, 14398.747070, 14398.747070, 13439.433593	, 13439.433593])
+    ).all()
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                float,
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                pd.Int64Dtype(),
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+
+    
 def _assert_atus_00035_dict(data: Dict):
     """Run all the checks for the data frame returned by our readers for hierarchical files
     when a dictionary of data frames is requested"""
@@ -326,6 +367,19 @@ def test_can_read_rectangular_dat_gz(fixtures_path: Path):
     data = readers.read_microdata(ddi, fixtures_path / "cps_00006.dat.gz")
 
     _assert_cps_000006(data)
+    
+    
+def test_can_read_rectangular_R_dat_gz(fixtures_path: Path):
+    """
+    Confirm that we can read rectangular on R MEPS microdata in .dat format
+    when it is gzipped
+    """
+    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00019.xml")
+    data = readers.read_microdata(ddi, fixtures_path / "meps_00019.dat.gz")
+    
+    print(data.dtypes.values)
+
+    _assert_meps_000019(data)
 
 
 def test_can_read_rectangular_csv_gz(fixtures_path: Path):
