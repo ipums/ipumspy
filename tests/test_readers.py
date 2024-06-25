@@ -177,6 +177,182 @@ def _assert_meps_000019(data: pd.DataFrame):
             ]
         )
     ).all()
+    
+    
+def _assert_meps_00020_dict(data: pd.DataFrame):
+    """Run all the checks for the data frame returned by our readers for hierarchical MEPS files"""
+    # P df
+    assert len(data) == 34655
+    assert len(data.columns) == 19
+    assert (data["YEAR"].iloc[:5] == 2016).all()
+    assert (
+        data["SAQWEIGHT"].iloc[:5]
+        == np.array([14398.747070, 13439.433593, 0.000000, 0.000000, 5559.980468])
+    ).all()
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                float,
+                float,
+                float,
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+    
+    # M df
+    assert len(data) == 137548
+    assert len(data.columns) == 13
+    assert (data["YEARM"].iloc[:5] == 2016).all()
+    assert (
+        data["NREFILLS"].iloc[:5]
+        == np.array([1, 1, 2, 1, 1])
+    ).all()
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                pd.Int64Dtype(),
+            ]
+        )
+    ).all()
+    
+    # F df
+    assert len(data) == 319685
+    assert len(data.columns) == 17
+    assert (data["YEARF"].iloc[:5] == 2016).all()
+    assert (
+        data["RXDRGNAM"].iloc[:5]
+        == np.array(
+            [
+                "METRONIDAZOLE",
+                "PROMETHAZINE",
+                "RIFAXIMIN",
+                "RIFAXIMIN",
+                "HYDROCHLOROTHIAZIDE-LOSARTAN",
+            ]
+        )
+    ).all()
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+            ]
+        )
+    ).all()
+    
+    
+def _assert_meps_00020_df(data: pd.DataFrame):
+    """Run all the checks for the data frame returned by our readers for hierarchical files"""
+    assert len(data) == 595853
+    assert len(data.columns) == 51
+    assert (data["SERIAL"].iloc[:5] == 1).all()
+    # again, gotta be a better way to do this
+    assert (data["SAQWEIGHT"].iloc[:1] == np.array([14398.747070])).all()
+    assert data["SAQWEIGHT"].iloc[1:5].isna().all()
+    assert (data["RECTYPE"].iloc[:6] == np.array(["P", "R", "R", "R", "M", "F"])).all()
+    assert (data["PREGNTRD"].iloc[:5] == np.array([pd.NA, 1, 1, 1, pd.NA])).all()
+    assert (data["RXDRGNAM"].iloc[:5] == np.array(["", "", "", "", "", "METRONIDAZOLE"])).all()
+    assert (data["MEPSIDM"].iloc[:5] == np.array(["", "", "", "", "2110001101", ""])).all()
+    assert (
+        data.dtypes.values
+        == np.array(
+            [
+                "string[python]", 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(),
+                pd.Int64Dtype(), 
+                "string[python]", 
+                "string[python]", 
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(),
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                float,
+                float,
+                float,
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(),
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                "string[python]", 
+                pd.Int64Dtype(),
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]", 
+                pd.Int64Dtype(), 
+                "string[python]", 
+                pd.Int64Dtype(),
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(), 
+                pd.Int64Dtype(),
+                "string[python]", 
+                pd.Int64Dtype(), 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+                "string[python]", 
+            ]
+        )
+    ).all()
 
     
 def _assert_atus_00035_dict(data: Dict):
@@ -322,7 +498,7 @@ def _assert_cps_hierarchical_subset_dict(data: Dict):
     assert (p_data["AGE"].iloc[:5] == np.array([36, 41, 5, 7, 50])).all()
 
 
-def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
+def test_can_read_hierarchical_df_dat_gz(fixtures_path: Path):
     """
     Confirm that we can read hierarchical microdata ino a single data frame
     in .dat format when it is gzipped
@@ -337,8 +513,13 @@ def test_can_read_herarchical_df_dat_gz(fixtures_path: Path):
 
     _assert_atus_00035_df
     
+    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00020.xml")
+    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "meps_00020.dat.gz")
 
-def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
+    _assert_meps_00020_df
+    
+
+def test_can_read_hierarchical_dict_dat_gz(fixtures_path: Path):
     """
     Confirm that we can read hierarchical microdata ino a dictionary of data frames
     in .dat format when it is gzipped
@@ -356,6 +537,13 @@ def test_can_read_herarchical_dict_dat_gz(fixtures_path: Path):
     )
 
     _assert_atus_00035_dict
+    
+    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00020.xml")
+    data = readers.read_hierarchical_microdata(
+        ddi, fixtures_path / "meps_00020.dat.gz", as_dict=True
+    )
+
+    _assert_meps_00020_dict
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):

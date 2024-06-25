@@ -129,7 +129,12 @@ def _read_microdata(
             for desc in data_description:
                 if desc.shift is not None and desc.shift > 0:
                     shift = 10**desc.shift
-                    df[desc.name] = df[desc.name].astype(int) / shift
+                    try:
+                        df[desc.name] = df[desc.name].astype(int) / shift
+                    except TypeError:
+                        # XXX: maybe this should just be the only way this gets done
+                        df[desc.name] = pd.to_numeric(df[desc.name], errors="coerce").fillna(0).astype(int)
+                        df[desc.name] = df[desc.name] / shift
             return df
 
     elif ".csv" in filename.suffixes:
@@ -201,11 +206,19 @@ def _get_common_vars(ddi: ddi_definitions.Codebook, data_description: List):
     # these variables have all rectypes listed in the variable-level rectype attribute
     # these are delimited by spaces within the string attribute
     # this list would probably be a useful thing to have as a file-level attribute...
+    
+    # XXX: this is to work around an issue with the Health Surveys DDI specifically. 
+    # Revert to previous method of using the file_description rectypes once this
+    # DDI issue is fixed
+    rectype_desc = [desc for desc in data_description if desc.name == "RECTYPE"][0]
+    all_rectypes = rectype_desc.rectype.split(" ")
     common_vars = [
         desc.name
         for desc in data_description
-        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+        # if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+        if sorted(desc.rectype.split(" ")) == sorted(all_rectypes)
     ]
+
     return common_vars
 
 
@@ -332,11 +345,17 @@ def read_hierarchical_microdata(
     else:
         df_dict = {}
         common_vars = _get_common_vars(ddi, data_description)
-        for rectype in ddi.file_description.rectypes:
+        # XXX: this is to work around an issue with the Health Surveys DDI specifically. 
+        # Revert to previous method of using the file_description rectypes once this
+        # DDI issue is fixed
+        rectype_desc = [desc for desc in data_description if desc.name == "RECTYPE"][0]
+        all_rectypes = rectype_desc.rectype.split(" ")
+        
+        # for rectype in ddi.file_description.rectypes:
+        for rectype in all_rectypes:
             rectype_vars = _get_rectype_vars(
                 ddi, rectype, common_vars, data_description
             )
-
             # if there are no non-common vars, this can be skipped?
             if rectype_vars == common_vars:
                 continue
@@ -416,10 +435,10 @@ def read_hierarchical_microdata(
                     if dtype_rt[col] == pd.Int64Dtype():
                         df[col] = np.where(df["RECTYPE"] == rectype, pd.NA, df[col])
                         df[col] = df[col].astype(_fix_float_dtypes({col: dtype_rt[col]}, df[[col]].copy()))
-                    elif dtype_rt[col] == pd.StringDtype():
+                    elif dtype_rt[col] == pd.StringDtype() or dtype_rt[col] == str or dtype_rt[col] == "string":
                         df[col] = np.where(df["RECTYPE"] == rectype, "", df[col])
                         df[col] = df[col].astype(pd.StringDtype())
-                    elif dtype_rt[col].dtype == float or dtype_rt[col] == pd.Float64Dtype():
+                    elif dtype_rt[col].dtype == float or dtype_rt[col] == pd.Float64Dtype() or dtype_rt[col] == np.float64:
                         df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
                         df[col] = df[col].astype(dtype_rt[col])
                     # this should (theoretically) never be hit... unless someone specifies an illegal data type
