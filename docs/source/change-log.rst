@@ -14,7 +14,7 @@ This project adheres to `Semantic Versioning`_.
 
 0.5.0
 -----
-2024-06-??
+2024-06-26
 
 * Breaking Changes
 
@@ -34,7 +34,7 @@ This project adheres to `Semantic Versioning`_.
 * Bug Fixes
 
   * An off-by-one error that was causing variables read using the :py:meth:`~ipumspy.noextract.read_noextract_codebook()` method to be one digit too wide has bee fixed.
-  * :py:meth:`~ipumspy.readers.read_microdata()` and :py:meth:`~ipumspy.readers.read_hierarchical_microdata()` are now handle floating point data in IPUMS extract files correctly.
+  * :py:meth:`~ipumspy.readers.read_microdata()` and :py:meth:`~ipumspy.readers.read_hierarchical_microdata()` now handle floating point data in IPUMS extract files correctly.
   * :py:meth:`~ipumspy.api.extract.define_extract_from_json()` and :py:meth:`~ipumspy.api.extract.extract_from_dict()` now correctly read the keyword argument elements of the extract definition dictionaries rather than using default values.
   * If a list containing both string variable names or time use variable names and :py:class:`~ipumspy.api.Variable` or :py:class:`~ipumspy.api.TimeUseVariable` objects, a TypeError is raised.
 

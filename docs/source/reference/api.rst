@@ -42,6 +42,7 @@ Helpful data classes for defining IPUMS Extract objects.
 
    ipumspy.api.Variable
    ipumspy.api.Sample
+   ipumspy.api.TimeUseVariable
 
 Importing or Exporting Extract Definitions
 ------------------------------------------

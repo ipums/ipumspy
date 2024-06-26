@@ -386,7 +386,7 @@ Because time use variables are a special type of variable, they need to be reque
         time_use_variables=["BLS_PCARE"]
     )
 
-Like other variables, time use variables can also be passed to `MicrodataExtract` as a list of `TimeUseVariable` objects.
+Like other variables, time use variables can also be passed to :class:`ipumspy.api.extract.MicrodataExtract` as a list of :class:`ipumspy.api.extract.TimeUseVariable` objects.
 
 .. code:: python
 
@@ -457,13 +457,13 @@ Extract Histories
     # get my 20 most-recent CPS extracts
     more_recent_extracts = ipums.get_previous_extracts("cps", limit=20)
 
-The :meth:`.get_extract_history()` generator makes it easy to filter your extract history to pull out extracts with certain variables, samples, features, file formats, etc. By default, this generator returns pages extract definitions of the maximum possible size, 500. Page size can be set to a lower number using the ``page_size`` argument.
+The :meth:`.get_extract_history()` generator makes it easy to filter your extract history to pull out extracts with certain variables, samples, features, file formats, etc. By default, this generator returns pages of extract definitions of the maximum possible size of 500 extract definitions per page. Page size can be set to a lower number using the ``page_size`` argument.
 
 .. code:: python
 
     # make a list of all of my extracts from IPUMS CPS that include the variable STATEFIP
     extracts_with_state = []
-    # get pages with 50 CPS extracts per page
+    # get pages with 100 CPS extracts per page
     for page in ipums.get_extract_history("cps", page_size=100):
         for ext in page["data"]:
             extract_obj = MicrodataExtract(**ext["extractDefinition"])
@@ -471,4 +471,4 @@ The :meth:`.get_extract_history()` generator makes it easy to filter your extrac
                 extracts_with_state.append(extract_obj)
 
 
-.. [*] Note that IPUMS ATUS Eldercare records will be included in a hierarchical extract automatically if Eldercare variables are selected. There is no API equivalent to the "include eldercare" checkbox in the Extract Data Structure menue in the IPUMS ATUS web interface.
+.. [*] Note that IPUMS ATUS Eldercare records will be included in a hierarchical extract automatically if Eldercare variables are selected. There is no API equivalent to the "include eldercare" checkbox in the Extract Data Structure menu in the IPUMS ATUS web interface.
