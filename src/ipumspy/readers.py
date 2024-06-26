@@ -31,12 +31,12 @@ class CitationWarning(Warning):
 
 
 def _fix_float_dtypes(dtype, df):
-    # XXX: it would be great to not have to inspect the data at this stage, 
+    # XXX: it would be great to not have to inspect the data at this stage,
     # as it might make reading quite slow for extracts with many variables.
     # However, currently the IPUMS DDI makes no distinction between floating point and integer
-    # numeric variables and looking at the data is the only option for fwf extracts. 
-    # The alternative would be to just make all numeric variables floats, 
-    # but that doesn't seem ideal either. 
+    # numeric variables and looking at the data is the only option for fwf extracts.
+    # The alternative would be to just make all numeric variables floats,
+    # but that doesn't seem ideal either.
     for col in df.columns:
         if dtype[col] == pd.Int64Dtype():
             try:
@@ -116,8 +116,8 @@ def _read_microdata(
                 # "dtype": dtype,
                 # XXX until DDI can differentiate between integer and float types,
                 # force everything to be a string for reading to ensure that the data
-                # is read successfully. `dtype` will be assigned after reading. 
-                "dtype": {desc.name: pd.StringDtype() for desc in data_description}
+                # is read successfully. `dtype` will be assigned after reading.
+                "dtype": {desc.name: pd.StringDtype() for desc in data_description},
             }
         )
 
@@ -133,7 +133,11 @@ def _read_microdata(
                         df[desc.name] = df[desc.name].astype(int) / shift
                     except TypeError:
                         # XXX: maybe this should just be the only way this gets done
-                        df[desc.name] = pd.to_numeric(df[desc.name], errors="coerce").fillna(0).astype(int)
+                        df[desc.name] = (
+                            pd.to_numeric(df[desc.name], errors="coerce")
+                            .fillna(0)
+                            .astype(int)
+                        )
                         df[desc.name] = df[desc.name] / shift
             return df
 
@@ -179,7 +183,7 @@ def _read_microdata(
     with fileutils.data_opener(filename, encoding=encoding, mode=mode) as infile:
         if not iterator:
             data = [reader(infile, **kwargs)]
-                
+
         else:
             kwargs.update({"iterator": True, "chunksize": chunksize})
             data = reader(infile, **kwargs)
@@ -190,13 +194,19 @@ def _read_microdata(
             # XXX this is inefficient as _fix_float_dtypes is being called for each df
             # when it should really only need to be called once. This could slow reading of
             # extracts that include many variables
-            yield from (_fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df)) for df in data)
+            yield from (
+                _fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df))
+                for df in data
+            )
         else:
             if ".dat" in filename.suffixes:
                 # convert variables from default numpy_type to corresponding type in dtype.
-                yield from (_fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df)) for df in data)
+                yield from (
+                    _fix_decimal_expansion(df).astype(_fix_float_dtypes(dtype, df))
+                    for df in data
+                )
             else:
-                # In contrary to counter condition, df already has right dtype. 
+                # In contrary to counter condition, df already has right dtype.
                 # It would be expensive to call astype for nothing.
                 yield from (_fix_decimal_expansion(df) for df in data)
 
@@ -206,8 +216,8 @@ def _get_common_vars(ddi: ddi_definitions.Codebook, data_description: List):
     # these variables have all rectypes listed in the variable-level rectype attribute
     # these are delimited by spaces within the string attribute
     # this list would probably be a useful thing to have as a file-level attribute...
-    
-    # XXX: this is to work around an issue with the Health Surveys DDI specifically. 
+
+    # XXX: this is to work around an issue with the Health Surveys DDI specifically.
     # Revert to previous method of using the file_description rectypes once this
     # DDI issue is fixed
     rectype_desc = [desc for desc in data_description if desc.name == "RECTYPE"][0]
@@ -345,12 +355,12 @@ def read_hierarchical_microdata(
     else:
         df_dict = {}
         common_vars = _get_common_vars(ddi, data_description)
-        # XXX: this is to work around an issue with the Health Surveys DDI specifically. 
+        # XXX: this is to work around an issue with the Health Surveys DDI specifically.
         # Revert to previous method of using the file_description rectypes once this
         # DDI issue is fixed
         rectype_desc = [desc for desc in data_description if desc.name == "RECTYPE"][0]
         all_rectypes = rectype_desc.rectype.split(" ")
-        
+
         # for rectype in ddi.file_description.rectypes:
         for rectype in all_rectypes:
             rectype_vars = _get_rectype_vars(
@@ -368,12 +378,12 @@ def read_hierarchical_microdata(
                 [
                     df
                     for df in _read_microdata(
-                        ddi=ddi, 
-                        filename=filename, 
-                        encoding=encoding, 
-                        subset=rectype_vars, 
-                        dtype=dtype_str, 
-                        **kwargs
+                        ddi=ddi,
+                        filename=filename,
+                        encoding=encoding,
+                        subset=rectype_vars,
+                        dtype=dtype_str,
+                        **kwargs,
                     )
                 ]
             )
@@ -386,10 +396,14 @@ def read_hierarchical_microdata(
                 # this fix means that _fix_float_dtypes is actually being called both from within
                 # _read_microdata() and this method, which is not ideal, but is also the least disruptive
                 # solution I have found so far.
-                dtype_rt = {desc.name: desc.pandas_type for desc in data_description if desc.name in rectype_vars}
+                dtype_rt = {
+                    desc.name: desc.pandas_type
+                    for desc in data_description
+                    if desc.name in rectype_vars
+                }
                 dtype_rt = _fix_float_dtypes(dtype_rt, df_dict[rectype])
             else:
-                dtype_rt = {k:v for k,v in dtype.items() if k in rectype_vars}
+                dtype_rt = {k: v for k, v in dtype.items() if k in rectype_vars}
 
             # assign float-fixed pandas data types to record type df
             df_dict[rectype] = df_dict[rectype].astype(dtype_rt)
@@ -403,12 +417,12 @@ def read_hierarchical_microdata(
                 [
                     df
                     for df in _read_microdata(
-                        ddi=ddi, 
-                        filename=filename, 
-                        encoding=encoding, 
-                        dtype=dtype_str, 
+                        ddi=ddi,
+                        filename=filename,
+                        encoding=encoding,
+                        dtype=dtype_str,
                         subset=subset,
-                        **kwargs
+                        **kwargs,
                     )
                 ]
             )
@@ -428,17 +442,31 @@ def read_hierarchical_microdata(
                     # this fix means that _fix_float_dtypes is actually being called both from within
                     # _read_microdata() and this method, which is not ideal, but is also the least disruptive
                     # solution I have found so far.
-                    dtype_rt = {desc.name: desc.pandas_type for desc in data_description if desc.name in non_rt_cols}
-                
+                    dtype_rt = {
+                        desc.name: desc.pandas_type
+                        for desc in data_description
+                        if desc.name in non_rt_cols
+                    }
+
                 for col in non_rt_cols:
                     # maintain data type when "nullifying" variables from other record types
                     if dtype_rt[col] == pd.Int64Dtype():
                         df[col] = np.where(df["RECTYPE"] == rectype, pd.NA, df[col])
-                        df[col] = df[col].astype(_fix_float_dtypes({col: dtype_rt[col]}, df[[col]].copy()))
-                    elif dtype_rt[col] == pd.StringDtype() or dtype_rt[col] == str or dtype_rt[col] == "string":
+                        df[col] = df[col].astype(
+                            _fix_float_dtypes({col: dtype_rt[col]}, df[[col]].copy())
+                        )
+                    elif (
+                        dtype_rt[col] == pd.StringDtype()
+                        or dtype_rt[col] == str
+                        or dtype_rt[col] == "string"
+                    ):
                         df[col] = np.where(df["RECTYPE"] == rectype, "", df[col])
                         df[col] = df[col].astype(pd.StringDtype())
-                    elif dtype_rt[col].dtype == float or dtype_rt[col] == pd.Float64Dtype() or dtype_rt[col] == np.float64:
+                    elif (
+                        dtype_rt[col].dtype == float
+                        or dtype_rt[col] == pd.Float64Dtype()
+                        or dtype_rt[col] == np.float64
+                    ):
                         df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
                         df[col] = df[col].astype(dtype_rt[col])
                     # this should (theoretically) never be hit... unless someone specifies an illegal data type
@@ -448,10 +476,14 @@ def read_hierarchical_microdata(
                             f"Data type {df[col].dtype} for {col} is not an allowed type."
                         )
             # XXX common vars are defaulting to pandas. This is probably fine, but could be more flexible.
-            common_dtype = {desc.name: desc.pandas_type for desc in data_description if desc.name in common_vars}
+            common_dtype = {
+                desc.name: desc.pandas_type
+                for desc in data_description
+                if desc.name in common_vars
+            }
             for col in common_vars:
                 df[col] = df[col].astype(common_dtype[col])
-                
+
             return df
 
 

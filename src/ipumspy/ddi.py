@@ -72,7 +72,11 @@ class VariableDescription:
         and hence even for integers it is "float64".
         """
         # always return a numpy float if it isn't a character var
-        if self.vartype == "numeric" or self.vartype == "integer" or self.vartype == "float":
+        if (
+            self.vartype == "numeric"
+            or self.vartype == "integer"
+            or self.vartype == "float"
+        ):
             return np.float64
         return str
 
@@ -101,7 +105,11 @@ class VariableDescription:
         https://pandas-docs.github.io/pandas-docs-travis/user_guide/integer_na.html
         It can be considered as a mix between `self.pandas_type` and `self.numpy_type`
         """
-        if self.vartype == "numeric" or self.vartype == "integer" or self.vartype == "float":
+        if (
+            self.vartype == "numeric"
+            or self.vartype == "integer"
+            or self.vartype == "float"
+        ):
             return np.float64
         return pd.StringDtype()
 
@@ -127,7 +135,7 @@ class VariableDescription:
                 vartype == "float"
             else:
                 vartype = "integer"
-        
+
         labels_dict = {}
         for cat in elt.findall("./ddi:catgry", namespaces):
             label = cat.find("./ddi:labl", namespaces).text

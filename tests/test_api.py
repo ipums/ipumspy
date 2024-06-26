@@ -407,17 +407,14 @@ def test_ipumsi_build_extract():
         "collection": "ipumsi",
         "version": None,
     }
-    
+
 
 def test_atus_build_extract():
     """
     Confirm that test extract formatted correctly
     """
     extract = MicrodataExtract(
-        "atus",
-        ["at2016"],
-        ["AGE", "SEX"],
-        time_use_variables = ["BLS_PCARE"]
+        "atus", ["at2016"], ["AGE", "SEX"], time_use_variables=["BLS_PCARE"]
     )
     assert extract.build() == {
         "description": "My IPUMS ATUS extract",
@@ -438,19 +435,17 @@ def test_atus_build_extract():
                 "dataQualityFlags": False,
             },
         },
-        "timeUseVariables": {
-            "BLS_PCARE": {}
-        },
+        "timeUseVariables": {"BLS_PCARE": {}},
         "collection": "atus",
         "version": None,
     }
-    
+
     extract = MicrodataExtract(
         "atus",
         ["at2016"],
         ["AGE", "SEX"],
-        time_use_variables = ["BLS_PCARE"],
-        sample_members = {"include_non_respondents": True}
+        time_use_variables=["BLS_PCARE"],
+        sample_members={"include_non_respondents": True},
     )
     assert extract.build() == {
         "description": "My IPUMS ATUS extract",
@@ -471,24 +466,23 @@ def test_atus_build_extract():
                 "dataQualityFlags": False,
             },
         },
-        "timeUseVariables": {
-            "BLS_PCARE": {}
-        },
-        "sampleMembers":{
-            "includeNonRespondents": True
-        },
+        "timeUseVariables": {"BLS_PCARE": {}},
+        "sampleMembers": {"includeNonRespondents": True},
         "collection": "atus",
         "version": None,
     }
-    
+
     extract = MicrodataExtract(
         "atus",
         ["at2016"],
         ["AGE", "SEX"],
-        time_use_variables = [TimeUseVariable(name="BLS_PCARE"), TimeUseVariable(name="USER_TUV", owner="newuser@gmail.com")],
-        sample_members = {"include_non_respondents": True}
+        time_use_variables=[
+            TimeUseVariable(name="BLS_PCARE"),
+            TimeUseVariable(name="USER_TUV", owner="newuser@gmail.com"),
+        ],
+        sample_members={"include_non_respondents": True},
     )
-    
+
     assert extract.build() == {
         "description": "My IPUMS ATUS extract",
         "dataFormat": "fixed_width",
@@ -510,47 +504,51 @@ def test_atus_build_extract():
         },
         "timeUseVariables": {
             "BLS_PCARE": {},
-            "USER_TUV": {"owner": "newuser@gmail.com"}
+            "USER_TUV": {"owner": "newuser@gmail.com"},
         },
-        "sampleMembers":{
-            "includeNonRespondents": True
-        },
+        "sampleMembers": {"includeNonRespondents": True},
         "collection": "atus",
         "version": None,
     }
-    
+
     with pytest.raises(TypeError) as exc_info:
         extract = MicrodataExtract(
             "atus",
             ["at2016"],
             ["AGE", "SEX"],
-            time_use_variables = ["BLS_PCARE", TimeUseVariable(name="user_TUV", owner="newuser@gmail.com")]
+            time_use_variables=[
+                "BLS_PCARE",
+                TimeUseVariable(name="user_TUV", owner="newuser@gmail.com"),
+            ],
         )
-    assert exc_info.value.args[0] == "The items in ['BLS_PCARE', TimeUseVariable(name='user_tuv', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."  
+    assert (
+        exc_info.value.args[0]
+        == "The items in ['BLS_PCARE', TimeUseVariable(name='user_tuv', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."
+    )
 
     with pytest.raises(ValueError) as exc_info:
         extract = MicrodataExtract(
-            "cps",
-            ["cps2016_03b"],
-            ["AGE", "SEX"],
-            time_use_variables = ["BLS_PCARE"]
+            "cps", ["cps2016_03b"], ["AGE", "SEX"], time_use_variables=["BLS_PCARE"]
         )
-        
-    assert exc_info.value.args[0] == "Time use variables are unavailable for the IPUMS CPS data collection"
-    
-    
+
+    assert (
+        exc_info.value.args[0]
+        == "Time use variables are unavailable for the IPUMS CPS data collection"
+    )
+
+
 @pytest.mark.vcr
 def test_rect_on_nonP_extract(live_api_client: IpumsApiClient):
     bad_hs_ext = MicrodataExtract(
-        collection = "nhis",
-        samples = ["ih2016"],
-        variables = ["AGE", "SEX", "IRCAUSE"],
-        data_structure={"rectangular": {"on": "Y"}}
+        collection="nhis",
+        samples=["ih2016"],
+        variables=["AGE", "SEX", "IRCAUSE"],
+        data_structure={"rectangular": {"on": "Y"}},
     )
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(bad_hs_ext)
     assert exc_info.value.args[0] == "Focal Record Type is not valid"
-    
+
 
 def test_cps_hierarchical_build_extract():
     """
@@ -728,7 +726,6 @@ def test_extract_from_dict(fixtures_path: Path):
         assert item.data_format == "fixed_width"
         assert item.api_version == 2
 
-
     with open(fixtures_path / "example_extract_v2_complex.yml") as infile:
         extract = extract_from_dict(yaml.safe_load(infile))
 
@@ -762,7 +759,7 @@ def test_extract_from_dict(fixtures_path: Path):
         # assert item.data_structure == "rectangular"
         assert item.data_format == "fixed_width"
         assert item.api_version == 2
-        
+
     # if an unsupported api version is specified
     # make sure NotImplementedError is raised
     with pytest.raises(NotImplementedError) as exc_info:
@@ -923,8 +920,10 @@ def test_define_extract_from_json(fixtures_path: Path):
             ),
         ]
         assert item.api_version == 2
-        
-    extract = define_extract_from_json(fixtures_path / "example_extract_v2_complex.json")
+
+    extract = define_extract_from_json(
+        fixtures_path / "example_extract_v2_complex.json"
+    )
     for item in extract:
         assert item.collection == "usa"
         assert item.samples == [Sample(id="us2012b")]
@@ -1018,21 +1017,17 @@ def test_tuv_extract_from_api_response_json(fixtures_path: Path):
     Ensure extract object can be created from a dict that contains
     variable-level and time use variable features as nested dicts
     """
-    extract = define_extract_from_json(
-        fixtures_path / "example_tuv_extract_v2.json"
-    )
-    
+    extract = define_extract_from_json(fixtures_path / "example_tuv_extract_v2.json")
+
     assert extract.collection == "atus"
-    assert extract.time_use_variables == [
-        TimeUseVariable(name = "BLS_PCARE")
-    ]
+    assert extract.time_use_variables == [TimeUseVariable(name="BLS_PCARE")]
     assert extract.kwargs["sampleMembers"] == {
-        "includeHouseholdMembers": False, 
-        "includeNonRespondents": True
+        "includeHouseholdMembers": False,
+        "includeNonRespondents": True,
     }
     assert extract.build()["sampleMembers"] == {
-        "includeHouseholdMembers": False, 
-        "includeNonRespondents": True
+        "includeHouseholdMembers": False,
+        "includeNonRespondents": True,
     }
 
 
@@ -1058,17 +1053,18 @@ def test_variable_update():
     with pytest.raises(KeyError) as exc_info:
         age.update("fake_attribute", "fake_value")
     assert exc_info.value.args[0] == "Variable has no attribute 'fake_attribute'."
-    
-    
+
+
 def test_tuv_update():
     tuv = TimeUseVariable("USER_TUV")
     tuv.update("owner", "newuser@gmail.com")
     assert tuv.owner == "newuser@gmail.com"
-    
 
 
 def test_validate_list_args():
-    str_extract = MicrodataExtract("ipumsi", ["ar2011a"], ["age", "age", "sex", "sex", "race"])
+    str_extract = MicrodataExtract(
+        "ipumsi", ["ar2011a"], ["age", "age", "sex", "sex", "race"]
+    )
 
     assert str_extract.variables == (
         [
@@ -1113,7 +1109,9 @@ def test_validate_list_args():
         == "Duplicate Variable objects are not allowed in IPUMS Extract definitions."
     )
 
-    str_extract = MicrodataExtract("cps", ["cps2012_03s", "cps2012_03s", "cps2013_03s"], ["AGE"])
+    str_extract = MicrodataExtract(
+        "cps", ["cps2012_03s", "cps2012_03s", "cps2013_03s"], ["AGE"]
+    )
     assert str_extract.samples == ([Sample(id="cps2012_03s"), Sample(id="cps2013_03s")])
 
     with pytest.raises(ValueError) as exc_info:
@@ -1130,8 +1128,8 @@ def test_validate_list_args():
         exc_info.value.args[0]
         == "Duplicate Sample objects are not allowed in IPUMS Extract definitions."
     )
-    
-    # make sure duplicate objects raise an error    
+
+    # make sure duplicate objects raise an error
     with pytest.raises(ValueError) as exc_info:
         obj_extract = MicrodataExtract(
             "cps",
@@ -1139,13 +1137,16 @@ def test_validate_list_args():
                 Sample(id="cps2012_03s"),
                 Sample(id="cps2013_03s"),
             ],
-            [Variable(name="AGE"), Variable(name="AGE", attached_characteristics=["mother"])],
+            [
+                Variable(name="AGE"),
+                Variable(name="AGE", attached_characteristics=["mother"]),
+            ],
         )
     assert (
         exc_info.value.args[0]
         == "Duplicate Variable objects are not allowed in IPUMS Extract definitions."
     )
-    
+
     with pytest.raises(TypeError) as exc_info:
         mixed_extract = MicrodataExtract(
             "cps",
@@ -1480,5 +1481,7 @@ def test_get_pages(live_api_client: IpumsApiClient):
     """
     Test API pages generator.
     """
-    page1 = next(live_api_client._get_pages(collection="usa", endpoint="extracts", page_size=5))
+    page1 = next(
+        live_api_client._get_pages(collection="usa", endpoint="extracts", page_size=5)
+    )
     assert len(page1["data"]) == 5

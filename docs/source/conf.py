@@ -179,6 +179,7 @@ intersphinx_mapping = {
 copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
 copybutton_prompt_is_regexp = True
 
+
 # this is a workaround to filter out forward reference issue in
 # sphinx_autodoc_typehints
 class FilterPandasTypeAnnotationWarning(pylogging.Filter):
@@ -195,6 +196,7 @@ class FilterPandasTypeAnnotationWarning(pylogging.Filter):
 logging.getLogger("sphinx_autodoc_typehints").logger.addFilter(
     FilterPandasTypeAnnotationWarning()
 )
+
 
 # based on pandas/doc/source/conf.py
 def linkcode_resolve(domain, info):

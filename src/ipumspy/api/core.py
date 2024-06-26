@@ -1,6 +1,7 @@
 """
 Core utilities for interacting with the IPUMS API
 """
+
 import copy
 import time
 import warnings
@@ -164,7 +165,7 @@ class IpumsApiClient:
         Returns:
             The number of the extract for the passed user account
         """
-        
+
         if not isinstance(extract, BaseExtract):
             extract = copy.deepcopy(extract)
             if "microdata" in BaseExtract._collection_type_to_extract:
@@ -537,12 +538,13 @@ class IpumsApiClient:
             sample ids, values are sample descriptions
         """
         samples = self.get(
-            f"{self.base_url}/metadata/samples", 
+            f"{self.base_url}/metadata/samples",
             params={
-                "collection": collection, 
+                "collection": collection,
                 "pageSize": 2500,
-                "version": self.api_version}
-            ).json()
+                "version": self.api_version,
+            },
+        ).json()
         # make it into the expected dict
         samples_dict = {}
         for item in samples["data"]:

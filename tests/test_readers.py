@@ -136,8 +136,8 @@ def _assert_cps_00421_dict(data: Dict):
             ]
         )
     ).all()
-    
-    
+
+
 def _assert_meps_000019(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for rectangular on R rectangular files"""
     assert len(data) == 103965
@@ -145,7 +145,9 @@ def _assert_meps_000019(data: pd.DataFrame):
     assert (data["YEAR"].iloc[:5] == 2016).all()
     assert (
         data["SAQWEIGHT"].iloc[:5]
-        == np.array([14398.747070, 14398.747070, 14398.747070, 13439.433593	, 13439.433593])
+        == np.array(
+            [14398.747070, 14398.747070, 14398.747070, 13439.433593, 13439.433593]
+        )
     ).all()
     assert (
         data.dtypes.values
@@ -177,8 +179,8 @@ def _assert_meps_000019(data: pd.DataFrame):
             ]
         )
     ).all()
-    
-    
+
+
 def _assert_meps_00020_dict(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for hierarchical MEPS files"""
     # P df
@@ -215,15 +217,12 @@ def _assert_meps_00020_dict(data: pd.DataFrame):
             ]
         )
     ).all()
-    
+
     # M df
     assert len(data) == 137548
     assert len(data.columns) == 13
     assert (data["YEARM"].iloc[:5] == 2016).all()
-    assert (
-        data["NREFILLS"].iloc[:5]
-        == np.array([1, 1, 2, 1, 1])
-    ).all()
+    assert (data["NREFILLS"].iloc[:5] == np.array([1, 1, 2, 1, 1])).all()
     assert (
         data.dtypes.values
         == np.array(
@@ -242,7 +241,7 @@ def _assert_meps_00020_dict(data: pd.DataFrame):
             ]
         )
     ).all()
-    
+
     # F df
     assert len(data) == 319685
     assert len(data.columns) == 17
@@ -281,8 +280,8 @@ def _assert_meps_00020_dict(data: pd.DataFrame):
             ]
         )
     ).all()
-    
-    
+
+
 def _assert_meps_00020_df(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for hierarchical files"""
     assert len(data) == 595853
@@ -293,68 +292,72 @@ def _assert_meps_00020_df(data: pd.DataFrame):
     assert data["SAQWEIGHT"].iloc[1:5].isna().all()
     assert (data["RECTYPE"].iloc[:6] == np.array(["P", "R", "R", "R", "M", "F"])).all()
     assert (data["PREGNTRD"].iloc[:5] == np.array([pd.NA, 1, 1, 1, pd.NA])).all()
-    assert (data["RXDRGNAM"].iloc[:5] == np.array(["", "", "", "", "", "METRONIDAZOLE"])).all()
-    assert (data["MEPSIDM"].iloc[:5] == np.array(["", "", "", "", "2110001101", ""])).all()
+    assert (
+        data["RXDRGNAM"].iloc[:5] == np.array(["", "", "", "", "", "METRONIDAZOLE"])
+    ).all()
+    assert (
+        data["MEPSIDM"].iloc[:5] == np.array(["", "", "", "", "2110001101", ""])
+    ).all()
     assert (
         data.dtypes.values
         == np.array(
             [
-                "string[python]", 
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(),
-                pd.Int64Dtype(), 
-                "string[python]", 
-                "string[python]", 
+                "string[python]",
                 pd.Int64Dtype(),
                 pd.Int64Dtype(),
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
                 pd.Int64Dtype(),
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
                 float,
                 float,
                 float,
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(),
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
-                "string[python]", 
-                pd.Int64Dtype(),
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
                 pd.Int64Dtype(),
                 pd.Int64Dtype(),
-                "string[python]", 
-                pd.Int64Dtype(), 
-                "string[python]", 
                 pd.Int64Dtype(),
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
-                pd.Int64Dtype(), 
                 pd.Int64Dtype(),
-                "string[python]", 
-                pd.Int64Dtype(), 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
-                "string[python]", 
+                pd.Int64Dtype(),
+                "string[python]",
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                pd.Int64Dtype(),
+                "string[python]",
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                pd.Int64Dtype(),
+                "string[python]",
+                pd.Int64Dtype(),
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
+                "string[python]",
             ]
         )
     ).all()
 
-    
+
 def _assert_atus_00035_dict(data: Dict):
     """Run all the checks for the data frame returned by our readers for hierarchical files
     when a dictionary of data frames is requested"""
@@ -367,10 +370,7 @@ def _assert_atus_00035_dict(data: Dict):
     assert len(h_data) == 24336
     assert len(h_data.columns) == 10
     assert (h_data["YEAR"].iloc[:5] == 2016).all()
-    assert (
-        h_data["STATEFIP"].iloc[:5]
-        == np.array([13, 51, 11, 26, 29])
-    ).all()
+    assert (h_data["STATEFIP"].iloc[:5] == np.array([13, 51, 11, 26, 29])).all()
     assert (h_data["RECTYPE"].iloc[:5] == np.array(["1", "1", "1", "1", "1"])).all()
     assert (
         h_data.dtypes.values
@@ -390,7 +390,15 @@ def _assert_atus_00035_dict(data: Dict):
     assert (p_data["YEAR"].iloc[:5] == 2016).all()
     assert (
         p_data["WT06"].iloc[:5]
-        == np.array([24588650.161504, 5445941.065425, 8782621.982064, 3035909.94892, 6978586.369092])
+        == np.array(
+            [
+                24588650.161504,
+                5445941.065425,
+                8782621.982064,
+                3035909.94892,
+                6978586.369092,
+            ]
+        )
     ).all()
     assert (p_data["RECTYPE"].iloc[:5] == np.array(["2", "2", "2", "2", "2"])).all()
     assert (
@@ -409,13 +417,12 @@ def _assert_atus_00035_dict(data: Dict):
             ]
         )
     ).all()
-    
+
     assert len(a_data) == 207213
     assert len(a_data.columns) == 8
     assert (a_data["YEAR"].iloc[:5] == 2016).all()
     assert (
-        a_data["ACTIVITY"].iloc[:5]
-        == np.array([10101, 20201, 110101, 20203, 20101])
+        a_data["ACTIVITY"].iloc[:5] == np.array([10101, 20201, 110101, 20203, 20101])
     ).all()
     assert (a_data["RECTYPE"].iloc[:5] == np.array(["3", "3", "3", "3", "3"])).all()
     assert (
@@ -433,7 +440,7 @@ def _assert_atus_00035_dict(data: Dict):
             ]
         )
     ).all()
-    
+
 
 def _assert_atus_00035_df(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for hierarchical files"""
@@ -444,9 +451,13 @@ def _assert_atus_00035_df(data: pd.DataFrame):
     assert (data["WT06"].iloc[:2] == np.array([np.nan, 24588650.161504])).all()
     assert data["WT06"].iloc[2:5].isna().all()
     assert (data["RECTYPE"].iloc[:5] == np.array(["1", "2", "3", "3", "3"])).all()
-    assert (data["STATEFIP"].iloc[:5] == np.array([13, pd.NA, pd.NA, pd.NA, pd.NA])).all()
+    assert (
+        data["STATEFIP"].iloc[:5] == np.array([13, pd.NA, pd.NA, pd.NA, pd.NA])
+    ).all()
     assert (data["ACTLINE"].iloc[:5] == np.array([pd.NA, pd.NA, 1, 2, 3])).all()
-    assert (data["START"].iloc[:5] == np.array(["", "", "04:00:00", "11:00:00", "11:20:00"])).all()
+    assert (
+        data["START"].iloc[:5] == np.array(["", "", "04:00:00", "11:00:00", "11:20:00"])
+    ).all()
     assert (
         data.dtypes.values
         == np.array(
@@ -507,17 +518,17 @@ def test_can_read_hierarchical_df_dat_gz(fixtures_path: Path):
     data = readers.read_hierarchical_microdata(ddi, fixtures_path / "cps_00421.dat.gz")
 
     _assert_cps_00421_df
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00035.xml")
     data = readers.read_hierarchical_microdata(ddi, fixtures_path / "atus_00035.dat.gz")
 
     _assert_atus_00035_df
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "meps_00020.xml")
     data = readers.read_hierarchical_microdata(ddi, fixtures_path / "meps_00020.dat.gz")
 
     _assert_meps_00020_df
-    
+
 
 def test_can_read_hierarchical_dict_dat_gz(fixtures_path: Path):
     """
@@ -530,14 +541,14 @@ def test_can_read_hierarchical_dict_dat_gz(fixtures_path: Path):
     )
 
     _assert_cps_00421_dict
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00035.xml")
     data = readers.read_hierarchical_microdata(
         ddi, fixtures_path / "atus_00035.dat.gz", as_dict=True
     )
 
     _assert_atus_00035_dict
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "meps_00020.xml")
     data = readers.read_hierarchical_microdata(
         ddi, fixtures_path / "meps_00020.dat.gz", as_dict=True
@@ -555,8 +566,8 @@ def test_can_read_rectangular_dat_gz(fixtures_path: Path):
     data = readers.read_microdata(ddi, fixtures_path / "cps_00006.dat.gz")
 
     _assert_cps_000006(data)
-    
-    
+
+
 def test_can_read_rectangular_R_dat_gz(fixtures_path: Path):
     """
     Confirm that we can read rectangular on R MEPS microdata in .dat format
@@ -564,7 +575,7 @@ def test_can_read_rectangular_R_dat_gz(fixtures_path: Path):
     """
     ddi = readers.read_ipums_ddi(fixtures_path / "meps_00019.xml")
     data = readers.read_microdata(ddi, fixtures_path / "meps_00019.dat.gz")
-    
+
     print(data.dtypes.values)
 
     _assert_meps_000019(data)
@@ -636,79 +647,80 @@ def test_can_read_rectangular_dat_gz_chunked(fixtures_path: Path):
             seen += len(df)
     assert total_length == 7668
 
+
 def test_read_microdata_doubles_numpy(fixtures_path):
     """
     Make sure that fw extracts with float data can be read
     """
     # Checking default behaviour
     numpy_types = {
-        'YEAR': np.float64,
-        'CASEID': np.float64,
-        'SERIAL': np.float64,
-        'STATEFIP': np.float64,
-        'PERNUM': np.float64,
-        'LINENO': np.float64,
-        'WT06': np.float64,
-        'AGE': np.float64,
-        'SEX': np.float64,
-        'ACTIVITY': np.float64,
-        'START': object, 
-        'STOP': object,
-        'BLS_PCARE': np.float64
+        "YEAR": np.float64,
+        "CASEID": np.float64,
+        "SERIAL": np.float64,
+        "STATEFIP": np.float64,
+        "PERNUM": np.float64,
+        "LINENO": np.float64,
+        "WT06": np.float64,
+        "AGE": np.float64,
+        "SEX": np.float64,
+        "ACTIVITY": np.float64,
+        "START": object,
+        "STOP": object,
+        "BLS_PCARE": np.float64,
     }
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
     dtype = ddi.get_all_types(type_format="numpy_type")
     data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
     assert data.dtypes.to_dict() == numpy_types
-    
-    
+
+
 def test_read_microdata_doubles_pandas(fixtures_path):
     """
     Make sure that fw extracts with float data can be read
     """
     pandas_types = {
-        'YEAR': pd.Int64Dtype(),
-        'CASEID': pd.Int64Dtype(),
-        'SERIAL': pd.Int64Dtype(),
-        'STATEFIP': pd.Int64Dtype(),
-        'PERNUM': pd.Int64Dtype(),
-        'LINENO': pd.Int64Dtype(),
-        'WT06': pd.Float64Dtype(),
-        'AGE': pd.Int64Dtype(),
-        'SEX': pd.Int64Dtype(),
-        'ACTIVITY': pd.Int64Dtype(),
-        'START': pd.StringDtype(), 
-        'STOP': pd.StringDtype(),
-        'BLS_PCARE': pd.Int64Dtype()
+        "YEAR": pd.Int64Dtype(),
+        "CASEID": pd.Int64Dtype(),
+        "SERIAL": pd.Int64Dtype(),
+        "STATEFIP": pd.Int64Dtype(),
+        "PERNUM": pd.Int64Dtype(),
+        "LINENO": pd.Int64Dtype(),
+        "WT06": pd.Float64Dtype(),
+        "AGE": pd.Int64Dtype(),
+        "SEX": pd.Int64Dtype(),
+        "ACTIVITY": pd.Int64Dtype(),
+        "START": pd.StringDtype(),
+        "STOP": pd.StringDtype(),
+        "BLS_PCARE": pd.Int64Dtype(),
     }
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
     data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz")
     assert data.dtypes.to_dict() == pandas_types
-    
-    
+
+
 def test_read_microdata_doubles_other(fixtures_path):
     """
     Make sure that fw extracts with float data can be read
     """
-    
+
     pandas_types_other = {
-        'YEAR': pd.Int64Dtype(),
-        'CASEID': pd.Int64Dtype(),
-        'SERIAL': pd.Int64Dtype(),
-        'STATEFIP': pd.Int64Dtype(),
-        'PERNUM': pd.Int64Dtype(),
-        'LINENO': pd.Int64Dtype(),
-        'WT06': pd.Float64Dtype(),
-        'AGE': pd.Int64Dtype(),
-        'SEX': pd.Int64Dtype(),
-        'ACTIVITY': pd.Int64Dtype(),
-        'START': pd.StringDtype(storage="pyarrow"), 
-        'STOP': pd.StringDtype(storage="pyarrow"),
-        'BLS_PCARE': pd.Int64Dtype()
+        "YEAR": pd.Int64Dtype(),
+        "CASEID": pd.Int64Dtype(),
+        "SERIAL": pd.Int64Dtype(),
+        "STATEFIP": pd.Int64Dtype(),
+        "PERNUM": pd.Int64Dtype(),
+        "LINENO": pd.Int64Dtype(),
+        "WT06": pd.Float64Dtype(),
+        "AGE": pd.Int64Dtype(),
+        "SEX": pd.Int64Dtype(),
+        "ACTIVITY": pd.Int64Dtype(),
+        "START": pd.StringDtype(storage="pyarrow"),
+        "STOP": pd.StringDtype(storage="pyarrow"),
+        "BLS_PCARE": pd.Int64Dtype(),
     }
-    
+
     ddi = readers.read_ipums_ddi(fixtures_path / "atus_00034.xml")
     dtype = ddi.get_all_types(type_format="pandas_type", string_pyarrow=True)
     data = readers.read_microdata(ddi, fixtures_path / "atus_00034.dat.gz", dtype=dtype)
@@ -736,7 +748,9 @@ def test_read_microdata_custom_dtype(fixtures_path):
     }
 
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
-    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types)
+    data = readers.read_microdata(
+        ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types
+    )
     assert data.dtypes.to_dict() == pandas_types
 
     # custom dtype
@@ -757,7 +771,9 @@ def test_read_microdata_custom_dtype(fixtures_path):
 
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
     dtype = ddi.get_all_types(type_format="pandas_type_efficient", string_pyarrow=True)
-    data = readers.read_microdata(ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types_efficient)
+    data = readers.read_microdata(
+        ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types_efficient
+    )
     assert data.dtypes.to_dict() == pandas_types_efficient
 
     with pytest.raises(ValueError):
@@ -786,7 +802,9 @@ def test_read_microdata_chunked_custom_dtype(fixtures_path):
     }
 
     ddi = readers.read_ipums_ddi(fixtures_path / "cps_00361.xml")
-    data = readers.read_microdata_chunked(ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types)
+    data = readers.read_microdata_chunked(
+        ddi, fixtures_path / "cps_00361.dat.gz", dtype=pandas_types
+    )
     assert next(data).dtypes.to_dict() == pandas_types
 
     # custom dtype
@@ -858,14 +876,10 @@ def test_read_extract_description(fixtures_path: Path):
     }
 
     extract_description = yaml_extract["extracts"][0]
-    extract = MicrodataExtract(
-        **extract_description
-    )
+    extract = MicrodataExtract(**extract_description)
 
     extract_description = from_api_extract["extracts"][0]
-    api_extract = MicrodataExtract(
-        **extract_description
-    )
+    api_extract = MicrodataExtract(**extract_description)
 
     assert isinstance(extract, MicrodataExtract)
     assert isinstance(api_extract, MicrodataExtract)

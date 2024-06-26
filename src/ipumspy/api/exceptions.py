@@ -1,6 +1,7 @@
 """
 Exceptions which can arise in calls to the IPUMS API
 """
+
 __all__ = ["IpumsApiException", "TransientIpumsApiException"]
 
 
