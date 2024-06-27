@@ -1,0 +1,1518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ipums-ddi-xslt.xsl"?>
+<codeBook ID="ddi2-27363a39-8e14-11e5-8c97-b82a72e0b782-meps_00020.dat-www.meps.ipums.org" version="2.5" xmlns="ddi:codebook:2_5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ddi:codebook:2_5 http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd">
+  <docDscr>
+    <citation>
+      <titlStmt>
+        <titl>Codebook for an for an IPUMS Health Surveys: Medical Expenditure Panel Survey Data Extract</titl>
+        <subTitl>DDI 2.5 metadata describing the extract file  'meps_00020.dat'</subTitl>
+        <IDNo>ddi2-27363a39-8e14-11e5-8c97-b82a72e0b782-meps_00020.dat-www.meps.ipums.org</IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="University of Minnesota">IPUMS</AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="IPUMS" affiliation="University of Minnesota" role="Documentation">IPUMS</producer>
+        <prodDate date="2024-06-24">June 24, 2024</prodDate>
+        <prodPlac>IPUMS, 50 Willey Hall, 225 - 19th Avenue South, Minneapolis, MN 55455</prodPlac>
+      </prodStmt>
+      <distStmt>
+        <contact URI="https://ipums.org" affiliation="University of Minnesota">IPUMS</contact>
+      </distStmt>
+    </citation>
+  </docDscr>
+  <stdyDscr>
+    <citation>
+      <titlStmt>
+        <titl>User Extract meps_00020.dat</titl>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="University of Minnesota">IPUMS</AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="IPUMS" affiliation="University of Minnesota" role="Documentation">IPUMS</producer>
+        <prodDate date="2024-06-24">June 24, 2024</prodDate>
+        <prodPlac>IPUMS, 50 Willey Hall, 225 - 19th Avenue South, Minneapolis, MN 55455</prodPlac>
+      </prodStmt>
+      <distStmt>
+        <contact URI="https://ipums.org" affiliation="University of Minnesota">IPUMS</contact>
+      </distStmt>
+      <serStmt>
+        <serName abbr="meps">IPUMS MEPS</serName>
+        <serInfo>DOI:10.18128/D071.V2.3</serInfo>
+      </serStmt>
+      <verStmt>
+        <version date="2024-06-24"/>
+      </verStmt>
+    </citation>
+    <stdyInfo>
+      <subject>
+        <topcClas vocab="IPUMS">Technical Variables -- PERSON</topcClas>
+        <topcClas vocab="IPUMS">Core Demographic Variables -- PERSON</topcClas>
+        <topcClas vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</topcClas>
+        <topcClas vocab="IPUMS">Technical Variables -- ROUND</topcClas>
+        <topcClas vocab="IPUMS">Conditions Variables -- ROUND</topcClas>
+        <topcClas vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</topcClas>
+      </subject>
+      <sumDscr ID="sdatref-21">
+        <timePrd date="2016" event="single">2016</timePrd>
+        <nation abbr="us">United States</nation>
+      </sumDscr>
+      <notes><![CDATA[Additional notes on a sample that is part of this study:  2016 MEPS
+]]></notes>
+    </stdyInfo>
+    <dataAccs>
+      <useStmt>
+        <confDec required="yes"><![CDATA[The Public Health Service Act (Section 308 (d)) provides that the data collected by the National Center for Health Statistics (NCHS), Centers for Disease Control and Prevention (CDC), may be used only for the purpose of health statistical reporting and analysis. Any effort to determine the identity of any reported case is prohibited by this law. NCHS does all it can to assure that the identity of data subjects cannot be disclosed. All direct identifiers, as well as any characteristics that might lead to identification, are omitted from the data files. Any intentional identification or disclosure of a person or establishment violates the assurances of confidentiality given to the providers of the information. 
+
+Therefore, users will: 
+
+Use the data in these data files for statistical reporting and analysis only. 
+
+Make no use of the identity of any person or establishment discovered inadvertently and advise the Director, NCHS, of any such discovery (301-458-4500). 
+
+Not link these data files with individually identifiable data from other NCHS or non-NCHS data files. 
+
+By using these data, you signify your agreement to comply with the above-stated statutorily-based requirements. ]]></confDec>
+        <contact URI="http://www.meps.ipums.org/" affiliation="IPUMS">IPUMS Health Surveys: Medical Expenditure Panel Survey</contact>
+        <citReq><![CDATA[Publications and research reports based on the MEPS database must cite it appropriately.  The citation is as follows:
+
+Lynn A. Blewett, Julia A. Rivera Drew, Daniel Backman, Annie Chen, Grace Cooper, Megan Schouweiler, Stephanie Richards, and Michael Westberry. IPUMS Health Surveys: Medical Expenditure Panel Survey, Version 2.3 [dataset]. Minneapolis, MN: IPUMS, 2023. https://doi.org/10.18128/D071.V2.3
+
+Please see http://www.meps.ipums.org/meps/citation.shtml for precise formatting of the citation.]]></citReq>
+        <conditions><![CDATA[The Public Health Service Act (Section 308 (d)) provides that the data collected by the National Center for Health Statistics (NCHS), Centers for Disease Control and Prevention (CDC), may be used only for the purpose of health statistical reporting and analysis. Any effort to determine the identity of any reported case is prohibited by this law. NCHS does all it can to assure that the identity of data subjects cannot be disclosed. All direct identifiers, as well as any characteristics that might lead to identification, are omitted from the data files. Any intentional identification or disclosure of a person or establishment violates the assurances of confidentiality given to the providers of the information. 
+
+Therefore, users must: 
+
+Use the data in these data files for statistical reporting and analysis only. 
+
+Make no use of the identity of any person or establishment discovered inadvertently and advise the Director, NCHS, of any such discovery (301-458-4500). 
+
+Not link these data files with individually identifiable data from other NCHS or non-NCHS data files. 
+
+By using these data, you signify your agreement to comply with the above-stated statutorily-based requirements. 
+
+Furthermore, users of MEPS data must agree to abide by the conditions of use. Users must agree to the following conditions:
+  
+  
+(1) Use the data in these data files for statistical reporting and analysis only 
+
+(2) Make no use of the identity of any person or establishment discovered inadvertently and advise the Director of NCHS of any such discovery (301-458-4500) 
+
+(3) Do not link these data with individually-identifiable data from NCHS or non-NCHS data files 
+
+(4) No fees may be charged for use or distribution of the data.  All persons are granted a limited license to use and distribute these data, but you may not charge a fee for the data if you distribute them to others. 
+
+(5) Cite the MEPS appropriately.  Publications and research reports based on the database must cite it appropriately.  Please see http://www.meps.ipums.org/meps/citation.shtml
+
+(6) MEPS cannot be used to study small geographic areas.  The smallest geographical areas identified in the MEPS are regions (groups of states) and a limited number of metropolitan areas.
+
+(7) This system provides individual-level data only.  The MEPS Data Extraction System will not produce tables. You will need to use a statistical software package, such as Stata, SAS, or SPSS, to analyze the downloaded data.  Alternatively, you may use the MEPS-SDA tabulator to produce tables online, without making a data extract.]]></conditions>
+        <disclaimer>The user of the data acknowledges that the original collector of the data, the authorized distributor of the data, and the relevant funding agency bear no responsibility for use of the data or for interpretations or inferences based upon such uses.</disclaimer>
+      </useStmt>
+    </dataAccs>
+    <notes><![CDATA[User-provided description:  meps hierarchical (ipumspy)]]></notes>
+  </stdyDscr>
+  <fileDscr ID="ExtractData">
+    <fileTxt>
+      <fileName>meps_00020.dat</fileName>
+      <fileCont>Microdata records</fileCont>
+      <fileStrc type="hierarchical">
+        <recGrp keyvar="YEAR SERIAL PERNUM" recidvar="RECTYPE" rectype="R">
+          <labl>Round Record</labl>
+        </recGrp>
+        <recGrp keyvar="YEAR SERIAL PERNUM" recidvar="RECTYPE" rectype="E">
+          <labl>Event Record</labl>
+        </recGrp>
+        <recGrp keyvar="YEAR SERIAL PERNUM" recidvar="RECTYPE" rectype="M">
+          <labl>Prescribed Medicine Record</labl>
+        </recGrp>
+        <recGrp keyvar="YEAR SERIAL PERNUM" recidvar="RECTYPE" rectype="X">
+          <labl>Condition Record</labl>
+        </recGrp>
+        <recGrp keyvar="YEAR SERIAL" recidvar="RECTYPE" rectype="P">
+          <labl>Person Record</labl>
+        </recGrp>
+      </fileStrc>
+      <fileType charset="ISO-8859-1">ISO-8859-1 data file</fileType>
+      <format>fixed length fields</format>
+      <filePlac>IPUMS, 50 Willey Hall, 225 - 19th Avenue South, Minneapolis, MN 55455</filePlac>
+    </fileTxt>
+  </fileDscr>
+  <dataDscr><var ID="RECTYPE" dcml="0" files="ExtractData" intrvl="contin" name="RECTYPE" rectype="P R M F">
+  <location EndPos="1" StartPos="1" width="1"/>
+  <labl>Record type</labl>
+  <txt><![CDATA[RECTYPE is an IPUMS MEPS-constructed variable that allows users to discriminate between the different record types in the data. For non-vacant households, each household record is followed by one or more person records. Data at the household level pertain to each person in the household.
+
+Round level records indicate information that is collected during one or more of the five interview rounds that each respondent participates in.
+
+Event, medication-round, and medication-round fill records indicate information that is collected for a specific medical event. Condition level records indicate information that is collected about a specific medical condition. Please see our  overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.
+
+Event-medication-round link records indicate information that can be used to link event records to medication-round and medication-round fill records. Condition-event link records indicate information that can be used to link condition records to event, medication-round, and medication-round fill records.]]></txt>
+  <catgry>
+    <catValu>P</catValu>
+    <labl>Person</labl>
+  </catgry>
+  <catgry>
+    <catValu>R</catValu>
+    <labl>Round</labl>
+  </catgry>
+  <catgry>
+    <catValu>M</catValu>
+    <labl>Prescribed medicine</labl>
+  </catgry>
+  <catgry>
+    <catValu>F</catValu>
+    <labl>Rx medicines</labl>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="YEAR" dcml="0" files="ExtractData" intrvl="contin" name="YEAR" rectype="P">
+  <location EndPos="5" StartPos="2" width="4"/>
+  <labl>Survey year</labl>
+  <txt><![CDATA[YEAR is a four-digit variable reporting the calendar year (e.g., 2003) the survey was conducted and the data were collected. YEAR indicates the survey year on the person record.]]></txt>
+  <codInstr><![CDATA[This is a 4-digit numeric variable with 0 implied decimal places]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="SERIAL" dcml="0" files="ExtractData" intrvl="contin" name="SERIAL" rectype="P R M F">
+  <location EndPos="11" StartPos="6" width="6"/>
+  <labl>Sequential serial number, person record</labl>
+  <txt><![CDATA[SERIAL is an IPUMS MEPS-constructed value that is an identifying number unique to each household in a given survey year. The combination of YEAR and SERIAL provides a unique identifier for every household in the IPUMS MEPS database.]]></txt>
+  <codInstr><![CDATA[CodesSERIAL is a 6-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PERNUM" dcml="0" files="ExtractData" intrvl="contin" name="PERNUM" rectype="P R M F">
+  <location EndPos="13" StartPos="12" width="2"/>
+  <labl>Person number within family/household (from reformatting)</labl>
+  <txt><![CDATA[PERNUM is an IPUMS MEPS-constructed variable that numbers all persons within each  household consecutively (starting with "1") in the order in which they appear in the original MEPS data.  PERNUM was created by IPUMS MEPS during the process of reformatting the original MEPS public use files.]]></txt>
+  <codInstr><![CDATA[CodesPERNUM is a 2-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DUID" dcml="0" files="ExtractData" intrvl="contin" name="DUID" rectype="P">
+  <location EndPos="20" StartPos="14" width="7"/>
+  <labl>Dwelling unit ID</labl>
+  <txt><![CDATA[For all persons, DUID reports the identifier assigned by MEPS to the person's Dwelling Unit (DU), sampled for MEPS data collection. DUID is a random ID number assigned after the DU was sampled for MEPS and does not change once assigned. The MEPS sample is a subset of the households that participated in the National Health Interview Survey (NHIS). 
+
+DU definitions are generally consistent with NHIS definitions of households. For example, the 2018 NHIS Survey Description document describes households as "occupied housing units" (p. 10) that exclude "long-term care institutions (for example, nursing homes for the elderly, hospitals for the chronically ill or physically or intellectually disabled, and wards for abused or neglected children), correctional facilities (for example, prisons or jails, juvenile detention centers, and halfway houses)." (p. 8). Additionally, "unless one other family member is a civilian eligible for the survey (for example, a child whose parents are both active-duty military)" (p. 8), housing units occupied by active-duty Armed Forces personnel are also excluded from the survey. 
+
+From 1996-2017, DUID is unique within panel, but must be combined with PANEL to be unique across panels. Starting in 2018, DUID begins with the 2-digit variable PANEL, making DUID unique across panels. DUID can be combined with PID to uniquely identify each person within the Dwelling Unit. Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[DUID is a numeric variable ranging in width from 1 to 7 digits.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PID" dcml="0" files="ExtractData" intrvl="contin" name="PID" rectype="P">
+  <location EndPos="23" StartPos="21" width="3"/>
+  <labl>Person number</labl>
+  <txt><![CDATA[For all persons, PID is a within-Dwelling Unit (DU) person identifier assigned in sampling or by the computer-assisted personal interviewing (CAPI) instrument. PID must be combined with DUID and PANEL to uniquely identify persons across all MEPS data. IPUMS MEPS offers the constructed variable MEPSID, created by concatenating the values of DUID, PID, and PANEL. 
+
+Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[CodesPID is a 3-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSID" dcml="0" files="ExtractData" intrvl="contin" name="MEPSID" rectype="P">
+  <location EndPos="33" StartPos="24" width="10"/>
+  <labl>MEPS unique identifier (IPUMS generated)</labl>
+  <txt><![CDATA[For all persons, MEPSID is a variable that uniquely identifies respondents across MEPS panels. It is created by combining PANEL, DUID, and PID. IPUMS MEPS staff create MEPSID for the 1996-2017 samples to provide a single, universal linking key for MEPS persons. Beginning in 2018, AHRQ modified the identifiers DUID and DUPERSID (which combines DUID with PID) on the original MEPS data files to append information about PANEL to the first two columns. This update makes DUPERSID identical to MEPSID in the IPUMS MEPS extract system for 2018-forward.
+
+In earlier versions of IPUMS MEPS, IPUMS MEPS staff created a slightly different version of MEPSID, equivalent to combining DUID, PID, and PANEL. This version has been renamed to MEPSID2 and is only available for 1996-2017.]]></txt>
+  <codInstr><![CDATA[This is a 10-digit numeric variable with 0 implied decimal places]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="PANEL" dcml="0" files="ExtractData" intrvl="discrete" name="PANEL" rectype="P">
+  <location EndPos="35" StartPos="34" width="2"/>
+  <labl>Panel</labl>
+  <txt><![CDATA[For all persons, PANEL reports the number of the panel of which the person was a member. MEPS began in 1996 with Panel number 1 and the panel number for persons entering the MEPS in each subsequent year increases by 1, so that 1997 had Panels 1 (the panel that entered in 1996, in their second year in 1997) and 2 (the panel newly entering MEPS in 1997), 1998 had Panels 2 and 3, 1999 had Panels 3 and 4, and so on. PANEL can be combined with DUID and PID to uniquely identify individuals across panels. IPUMS MEPS offers the constructed variable MEPSID that is equal to the concatenated values of DUID, PID, and PANEL.
+
+For more information on the relationship between calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>00</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>01</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>02</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>03</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>04</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>05</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>06</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>07</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>08</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>09</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>10</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>11</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>12</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>13</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>14</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>15</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>16</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>17</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>18</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>19</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>20</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>21</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>22</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>23</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>24</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>25</catValu>
+    <labl/>
+  </catgry>
+  <catgry>
+    <catValu>26</catValu>
+    <labl/>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PSUANN" dcml="0" files="ExtractData" intrvl="contin" name="PSUANN" rectype="P">
+  <location EndPos="38" StartPos="36" width="3"/>
+  <labl>Annual primary sampling unit (PSU) for variance estimation</labl>
+  <txt><![CDATA[PSUANN is the annual primary sampling unit variable that represents the impact of sample design clustering on the estimates of variance and standard errors. It is appropriate to use PSUANN to generate annual estimates for all years. For pooled analyses including years before 2002 or after 2018, analysts should instead use the pooled primary sampling unit variable, PSUPLD. For analyses limited to years 2002-2018, PSUANN is suitable for use in annual and pooled analyses.
+
+PSUANN is constant within a sample design period and changes between sample design periods. For analysis, researchers need to use PSUANN in conjunction with STRATANN to account for stratification and clustering when computing variance estimates with IPUMS MEPS data.]]></txt>
+  <codInstr><![CDATA[CodesPSUANN is a 3-digit numeric variable.
+
+000:	Not in Universe]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="STRATANN" dcml="0" files="ExtractData" intrvl="contin" name="STRATANN" rectype="P">
+  <location EndPos="46" StartPos="39" width="8"/>
+  <labl>Annual stratum for variance estimation</labl>
+  <txt><![CDATA[STRATANN is an IPUMS MEPS-constructed variable based on the annual variance estimation strata variable in the public use files. STRATANN represents the impact of sample design stratification on estimates of variance and standard errors. IPUMS staff generate STRATANN by concatenating YEAR and the original AHRQ-provided variance estimation strata variable, VARSTR. It is appropriate to use STRATANN to generate annual estimates for all years. For pooled analyses including years before and after 2002 or before and after 2019, analysts should instead use the pooled variance sampling strata variable, STRATAPLD. For analyses limited to the years 2002-2018 or 2019-forward, STRATANN is suitable for use in annual and pooled analyses. 
+
+From 1996-2001, values of STRATANN were statistically independent from year to year. Between 2002-2018 and for 2019-forward, values of STRATANN are constant within sample design period. For analysis, researchers need to use STRATANN in conjunction with PSUANN to account for stratification and clustering when computing variance estimates with MEPS data using a Taylor-series Linearization approach. For more information, please see our user note on variance estimation using IPUMS MEPS data.]]></txt>
+  <codInstr><![CDATA[CodesSTRATANN is an 8-digit numeric variable, where the first four digits are the same as the YEAR value.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PSUPLD" dcml="0" files="ExtractData" intrvl="contin" name="PSUPLD" rectype="P">
+  <location EndPos="47" StartPos="47" width="1"/>
+  <labl>Pooled primary sampling unit (PSU) for variance estimation</labl>
+  <txt><![CDATA[PSUPLD is the pooled variance primary sampling unit variable that represents the impact of the sample design clustering on the estimates of variance and standard errors. It is appropriate to use PSUPLD instead of the annual primary sampling unit (PSUANN) if the years included in a pooled analysis include survey years 1996-2001 or 2019-forward. When pooling data from only 2002-2018, it is appropriate to use the variable PSUANN, the annual stratum variable for each survey year.
+
+For analysis, researchers need to use PSUPLD in conjunction with STRATAPLD to account for stratification and clustering when computing variance estimates with IPUMS MEPS data. 
+&nbsp;PSUPLD should be used when analysts wish to pool together (aka combine) more than one year of MEPS annual data including any years before 2002 or after 2018. In most years, MEPS samples are not completely independent from one another, both because each panel is in the MEPS for two consecutive years and because households are sampled from the same geographic areas in multiple years. However, because MEPS is designed to be nationally representative in every year, multiple sample years can still be pooled. The use of PSUPLD and STRAPLD is necessary to obtain appropriate standard errors by specifying a common variance structure.]]></txt>
+  <codInstr><![CDATA[CodesPSUPLD is a 1-digit numeric variable.
+
+0:	Not in Universe]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="STRATAPLD" dcml="0" files="ExtractData" intrvl="contin" name="STRATAPLD" rectype="P">
+  <location EndPos="51" StartPos="48" width="4"/>
+  <labl>Pooled variance stratum</labl>
+  <txt><![CDATA[STRATAPLD is the pooled variance sampling strata variable that represents the impact of the sample design stratification on the estimates of variance and standard errors. It is appropriate to use STRATAPLD instead of the annual strata variable (STRATANN) if the years included in a pooled analysis include survey years 1996-2001 or 2019-forward. For pooling data from only 2002-2018, it is appropriate to use the variable STRATANN. 
+
+For analysis, researchers need to use STRATAPLD in conjunction with PSUPLD to account for stratification and clustering when computing variance estimates with IPUMS MEPS data.
+&nbsp;STRATAPLD should be used when users wish to pool together (aka combine) more than one year of MEPS annual data including any years before 2002 or after 2018. In most years, MEPS samples are not completely independent from one another, both because each panel is in the MEPS for two consecutive years and because households are sampled from the same geographic areas in multiple years. However, because MEPS is designed to be nationally representative in every year, multiple sample years can still be pooled. The use of STRATAPLD and PSUPLD is necessary to obtain appropriate standard errors by specifying a common variance structure.]]></txt>
+  <codInstr><![CDATA[CodesSTRATAPLD is a 4-digit numeric variable.
+
+0000:	Not in Universe]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PANELYR" dcml="0" files="ExtractData" intrvl="discrete" name="PANELYR" rectype="P">
+  <location EndPos="55" StartPos="52" width="4"/>
+  <labl>Year entered MEPS</labl>
+  <txt><![CDATA[For all persons, PANELYR reports the year that the person started to participate in the MEPS Household Component interviews. PANELYR is identical to YEAR if the person is in their first year of MEPS participation ("relative year 1," captured in RELYR), or the year previous to the one recorded in YEAR if the person is in relative year 2 of the MEPS PANEL.  For more information on the relationship between relative year, calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>1996</catValu>
+    <labl>1996</labl>
+  </catgry>
+  <catgry>
+    <catValu>1997</catValu>
+    <labl>1997</labl>
+  </catgry>
+  <catgry>
+    <catValu>1998</catValu>
+    <labl>1998</labl>
+  </catgry>
+  <catgry>
+    <catValu>1999</catValu>
+    <labl>1999</labl>
+  </catgry>
+  <catgry>
+    <catValu>2000</catValu>
+    <labl>2000</labl>
+  </catgry>
+  <catgry>
+    <catValu>2001</catValu>
+    <labl>2001</labl>
+  </catgry>
+  <catgry>
+    <catValu>2002</catValu>
+    <labl>2002</labl>
+  </catgry>
+  <catgry>
+    <catValu>2003</catValu>
+    <labl>2003</labl>
+  </catgry>
+  <catgry>
+    <catValu>2004</catValu>
+    <labl>2004</labl>
+  </catgry>
+  <catgry>
+    <catValu>2005</catValu>
+    <labl>2005</labl>
+  </catgry>
+  <catgry>
+    <catValu>2006</catValu>
+    <labl>2006</labl>
+  </catgry>
+  <catgry>
+    <catValu>2007</catValu>
+    <labl>2007</labl>
+  </catgry>
+  <catgry>
+    <catValu>2008</catValu>
+    <labl>2008</labl>
+  </catgry>
+  <catgry>
+    <catValu>2009</catValu>
+    <labl>2009</labl>
+  </catgry>
+  <catgry>
+    <catValu>2010</catValu>
+    <labl>2010</labl>
+  </catgry>
+  <catgry>
+    <catValu>2011</catValu>
+    <labl>2011</labl>
+  </catgry>
+  <catgry>
+    <catValu>2012</catValu>
+    <labl>2012</labl>
+  </catgry>
+  <catgry>
+    <catValu>2013</catValu>
+    <labl>2013</labl>
+  </catgry>
+  <catgry>
+    <catValu>2014</catValu>
+    <labl>2014</labl>
+  </catgry>
+  <catgry>
+    <catValu>2015</catValu>
+    <labl>2015</labl>
+  </catgry>
+  <catgry>
+    <catValu>2016</catValu>
+    <labl>2016</labl>
+  </catgry>
+  <catgry>
+    <catValu>2017</catValu>
+    <labl>2017</labl>
+  </catgry>
+  <catgry>
+    <catValu>2018</catValu>
+    <labl>2018</labl>
+  </catgry>
+  <catgry>
+    <catValu>2019</catValu>
+    <labl>2019</labl>
+  </catgry>
+  <catgry>
+    <catValu>2020</catValu>
+    <labl>2020</labl>
+  </catgry>
+  <catgry>
+    <catValu>2021</catValu>
+    <labl>2021</labl>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="RELYR" dcml="0" files="ExtractData" intrvl="discrete" name="RELYR" rectype="P">
+  <location EndPos="56" StartPos="56" width="1"/>
+  <labl>Relative year 1 or 2 in panel</labl>
+  <txt><![CDATA[For all persons, RELYR indicates whether they are in their first or second year of participation in the MEPS household component panel. The MEPS panel involves five rounds of interviews over a period of about two years.  For more information on the relationship between relative year, calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>1</catValu>
+    <labl>Relative year 1</labl>
+  </catgry>
+  <catgry>
+    <catValu>2</catValu>
+    <labl>Relative year 2</labl>
+  </catgry>
+  <catgry>
+    <catValu>3</catValu>
+    <labl>Relative year 3</labl>
+  </catgry>
+  <catgry>
+    <catValu>4</catValu>
+    <labl>Relative year 4</labl>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PERWEIGHT" dcml="6" files="ExtractData" intrvl="contin" name="PERWEIGHT" rectype="P">
+  <location EndPos="68" StartPos="57" width="12"/>
+  <labl>Final basic annual weight</labl>
+  <txt><![CDATA[PERWEIGHT is an IPUMS MEPS-constructed variable based on the Final Person Weight in the original MEPS annual full-year consolidated files.  This weight should be used for many cross-sectional analyses at the person level, particularly with variables for which information was collected about all family members. PERWEIGHT represents the inverse probability of selection into the sample, adjusted for non-response with post-stratification adjustments for age, race/ethnicity, and sex using the Census Bureau's population control totals. For each year, the sum of these weights is equal to that year's civilian, non-institutionalized U.S. population. 
+
+There are instances, however, when the researcher should use a different person-level weight, particularly when analyzing variables from the Self-Administered Questionnaire or the Diabetes Care Survey, or when conducting longitudinal analyses with the MEPS data. For example, researchers analyzing variables from the Self-Administered Questionnaire from 2000 forward should use SAQWEIGHT rather than PERWEIGHT. 
+
+Users should review the documentation for extracted variables--most notably the "Weights" section toward the top of each variable description--to ascertain which weight is the appropriate choice for a given survey year.]]></txt>
+  <codInstr><![CDATA[CodesPERWEIGHT is a 12-digit numeric variable with 6 implied decimals.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="SAQWEIGHT" dcml="6" files="ExtractData" intrvl="contin" name="SAQWEIGHT" rectype="P">
+  <location EndPos="80" StartPos="69" width="12"/>
+  <labl>Self-Administered Questionnaire weight</labl>
+  <txt><![CDATA[SAQWEIGHT is an IPUMS MEPS-constructed variable based on the Final SAQ Weight in the original MEPS annual full-year consolidated files. This weight should be used for many cross-sectional analyses at the person level, particularly with variables for which information was collected about persons selected for the Self-Administered Questionnaire (SAQ) (see SAQELIG for the person's SAQ eligibility status). For each year, the sum of these weights is equal to that year's civilian, non-institutionalized U.S. population aged 18 and older. SAQWEIGHT adjusts for SAQ non-response.
+
+In 2000, SAQWEIGHT also includes weighting information for children under the age of 18 whose parent or guardian completed the Parent Administered Questionnaire (PAQ). For 2000 only, the sum of SAQWEIGHT is equal to the full civilian, non-institutionalized U.S. population. SAQWEIGHT does differ from PERWEIGHT in 2000 because the poststratification age group of 15-19 was partitioned into two groups, 15-17 and 18-19, for SAQWEIGHT to account for the target populations of the SAQ and PAQ.
+
+Users should review the documentation for extracted variables, most notably the "Weights" section toward the top of each variable description, to ascertain which weight is the appropriate choice for a given survey year.
+
+See the User Notes on the use of sampling weights for additional information.]]></txt>
+  <codInstr><![CDATA[CodesSAQWEIGHT is a 12-digit numeric variable with 6 implied decimal places. That is, values of 012345678912 should be interpreted as 12345.678912. The command files delivered with IPUMS extracts automatically divide SAQWEIGHT by 1,000,000, so no further adjustment is needed.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DIABWEIGHT" dcml="6" files="ExtractData" intrvl="contin" name="DIABWEIGHT" rectype="P">
+  <location EndPos="92" StartPos="81" width="12"/>
+  <labl>Diabetes care weight</labl>
+  <txt><![CDATA[For all persons, DIABWEIGHT is an IPUMS MEPS-constructed variable based on the Final Diabetes Care Supplement Weight in the original MEPS annual full-year consolidated files.  This weight should be used for many cross-sectional analyses at the person level, particularly with variables for which information was collected about persons selected for the self-administered Diabetes Care Survey (DCS) (individuals who reported that they had ever been told by a health care professional that they had diabetes). DIABWEIGHT adjusts for DCS non-response. For each year, the sum of these weights is equal to that year's estimated U.S. population of civilian, non-institutionalized diabetics aged 18 and older. Only persons who answer "yes" to DCSDIABDX have a positive value for DIABWEIGHT. For more information about the DCS, please see the Diabetes Care Survey user note.
+
+Users should review the documentation for extracted variables--most notably the "Weights" section toward the top of each variable description--to ascertain which weight is the appropriate choice for a given survey year.]]></txt>
+  <codInstr><![CDATA[CodesDIABWEIGHT is a 12-digit numeric variable with 6 implied decimal places. That is, a value of 012345678912 should be interpreted as 12345.678912. The command files delivered with IPUMS extracts automatically divide DIABWEIGHT by 1,000,000, so no further adjustment is needed.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="AGE" dcml="0" files="ExtractData" intrvl="contin" name="AGE" rectype="P">
+  <location EndPos="95" StartPos="93" width="3"/>
+  <labl>Age</labl>
+  <txt><![CDATA[AGE reports the individual's exact age, calculated from date of birth, as of the last day (12/31) of the survey year. 
+&nbsp;Date of birth and age were asked for each reporting unit member, and then exact age was calculated from date of birth. Where the calculated age and the age provided did not match, inconsistencies were reviewed and resolved. When date of birth was not provided, but age was provided, the month and year of birth were assigned randomly from among the possible valid options. For any cases still not accounted, age was imputed using:
+(1) the mean age difference between MEPS participants with certain family relationships (where available) or  
+(2) the mean age value for MEPS participants.]]></txt>
+  <codInstr><![CDATA[CodesAGE is a 3-digit-numeric variable.
+
+085:	Top code for 85 years or older (2001-forward)
+090:	Top code for 90 years or older (1996-2000)
+996:	Missing]]></codInstr>
+  <concept vocab="IPUMS">Core Demographic Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="SEX" dcml="0" files="ExtractData" intrvl="discrete" name="SEX" rectype="P">
+  <location EndPos="96" StartPos="96" width="1"/>
+  <labl>Sex</labl>
+  <txt><![CDATA[SEX indicates whether the person was male or female.  
+
+Collection of information on SEX in MEPS&nbsp;Data on the sex of each reporting unit (RU) member was determined during the NHIS interview, and was then verified, and, if necessary, corrected during each MEPS interview.
+
+If the respondent was a new RU member or their sex was not ascertained in the NHIS interview, MEPS initially used the first name of the respondent to assign their sex. If the first name gave no clear indication of sex, the reported family relationships were used to assign sex. If the sex of the respondent was still unclear, sex was randomly assigned. 
+
+The NHIS method of ascertaining the sex of the respondent, which primarily informs the MEPS version of SEX, is similar to the MEPS method. First, sex of the respondent was inferred from the individual's first name or family relationships. If the sex of the respondent was unclear, the interviewer was instructed to explicitly ask the person's sex. Beginning in 1998, interviewers were told to "enter your best guess" when the respondent either did not know or refused to answer the direct question that was asked about the person's sex.]]></txt>
+  <catgry>
+    <catValu>1</catValu>
+    <labl>Male</labl>
+  </catgry>
+  <catgry>
+    <catValu>2</catValu>
+    <labl>Female</labl>
+  </catgry>
+  <catgry>
+    <catValu>7</catValu>
+    <labl>Unknown-refused</labl>
+  </catgry>
+  <catgry>
+    <catValu>8</catValu>
+    <labl>Unknown-not ascertained</labl>
+  </catgry>
+  <catgry>
+    <catValu>9</catValu>
+    <labl>Unknown-don't know</labl>
+  </catgry>
+  <concept vocab="IPUMS">Core Demographic Variables -- PERSON</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="YEARM" dcml="0" files="ExtractData" intrvl="contin" name="YEARM" rectype="M">
+  <location EndPos="5" StartPos="2" width="4"/>
+  <labl>Survey year</labl>
+  <txt><![CDATA[YEARM is a four-digit variable reporting the calendar year (e.g., 2003) the survey was conducted and the data were collected. YEARM indicates the survey year on the medication-round record. A complementary variable, YEAR indicates the survey year on the person record.]]></txt>
+  <codInstr><![CDATA[This is a 4-digit numeric variable with 0 implied decimal places]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="SERIALM" dcml="0" files="ExtractData" intrvl="contin" name="SERIALM" rectype="M">
+  <location EndPos="11" StartPos="6" width="6"/>
+  <labl>Sequential household serial number, medication-round record</labl>
+  <txt><![CDATA[SERIALM is an IPUMS MEPS-constructed value that is an identifying number unique to each household in a given survey year. The combination of YEAR and SERIAL provides a unique identifier for every household in the IPUMS MEPS database. The values for SERIALM are identical to those for SERIAL for a given person; SERIALM simply restates the person's unique identifying number at the medication-round level.]]></txt>
+  <codInstr><![CDATA[CodesSERIALM is a 6-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DUIDM" dcml="0" files="ExtractData" intrvl="contin" name="DUIDM" rectype="M">
+  <location EndPos="20" StartPos="14" width="7"/>
+  <labl>Dwelling unit ID, medication-round record</labl>
+  <txt><![CDATA[For all medication-round records, DUIDM reports the identifier assigned by MEPS to the person's Dwelling Unit (DU), sampled for MEPS data collection. DUIDM is a random ID number assigned after the DU was sampled for MEPS and does not change once assigned. The MEPS sample is a subset of households that participated in the National Health Interview Survey (NHIS). 
+
+DU definitions are generally consistent with NHIS definitions of households. For example, the 2018 NHIS Survey Description document describes households as "occupied housing units" (p. 10) that exclude "long-term care institutions (for example, nursing homes for the elderly, hospitals for the chronically ill or physically or intellectually disabled, and wards for abused or neglected children), correctional facilities (for example, prisons or jails, juvenile detention centers, and halfway houses)." (p. 8). Additionally, "unless one other family member is a civilian eligible for the survey (for example, a child whose parents are both active-duty military)" (p. 8), housing units occupied by active-duty Armed Forces personnel are also excluded from the survey.
+
+From 1996-2017, DUIDM is unique within panel, but must be combined with PANELM to be unique across panels. Starting in 2018, DUIDM begins with the 2-digit variable PANELM, making DUIDM unique across panels. DUIDM can be combined with PIDM to uniquely identify each person within the Dwelling Unit. Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[CodesDUIDM is a numeric variable ranging in width from 1 to 7 digits.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PIDM" dcml="0" files="ExtractData" intrvl="contin" name="PIDM" rectype="M">
+  <location EndPos="23" StartPos="21" width="3"/>
+  <labl>Person number, medication-round record</labl>
+  <txt><![CDATA[For all medication-round records, PIDM is a within-Dwelling Unit (DU) person identifier assigned in sampling or by the computer-assisted personal interviewing (CAPI) instrument on the medication-round record. PIDM must be combined with DUIDM and PANELM to uniquely identify persons across all MEPS data. IPUMS MEPS offers the constructed variable MEPSIDM, created by concatenating the values of PANELM, DUIDM, and PIDM.
+
+Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[CodesPIDM is a 3-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="PANELM" dcml="0" files="ExtractData" intrvl="discrete" name="PANELM" rectype="M">
+  <location EndPos="25" StartPos="24" width="2"/>
+  <labl>Panel, medication-round record</labl>
+  <txt><![CDATA[For all medication-round records, PANELM reports the number of the panel of which the participant was a member on the medication-round record. MEPS began in 1996 with Panel number 1 and the panel number for persons entering the MEPS in each subsequent year increases by 1, so that 1997 had Panels 1 (the panel that entered in 1996, in their second year in 1997) and 2 (the panel newly entering MEPS in 1997), 1998 had Panels 2 and 3, 1999 had Panels 3 and 4, and so on. PANELM can be combined with DUIDM and PIDM to uniquely identify individuals across panels on medication-round records. IPUMS MEPS offers the constructed variable MEPSIDM that is equal to the concatenated values of PANELM, DUIDM, and PIDM. Beginning in 2018, DUIDM begins with PANELM and so concatenating PANELM with DUIDM and PIDM is no longer necessary.
+
+For more information on the relationship between calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>01</catValu>
+    <labl>1</labl>
+  </catgry>
+  <catgry>
+    <catValu>02</catValu>
+    <labl>2</labl>
+  </catgry>
+  <catgry>
+    <catValu>03</catValu>
+    <labl>3</labl>
+  </catgry>
+  <catgry>
+    <catValu>04</catValu>
+    <labl>4</labl>
+  </catgry>
+  <catgry>
+    <catValu>05</catValu>
+    <labl>5</labl>
+  </catgry>
+  <catgry>
+    <catValu>06</catValu>
+    <labl>6</labl>
+  </catgry>
+  <catgry>
+    <catValu>07</catValu>
+    <labl>7</labl>
+  </catgry>
+  <catgry>
+    <catValu>08</catValu>
+    <labl>8</labl>
+  </catgry>
+  <catgry>
+    <catValu>09</catValu>
+    <labl>9</labl>
+  </catgry>
+  <catgry>
+    <catValu>10</catValu>
+    <labl>10</labl>
+  </catgry>
+  <catgry>
+    <catValu>11</catValu>
+    <labl>11</labl>
+  </catgry>
+  <catgry>
+    <catValu>12</catValu>
+    <labl>12</labl>
+  </catgry>
+  <catgry>
+    <catValu>13</catValu>
+    <labl>13</labl>
+  </catgry>
+  <catgry>
+    <catValu>14</catValu>
+    <labl>14</labl>
+  </catgry>
+  <catgry>
+    <catValu>15</catValu>
+    <labl>15</labl>
+  </catgry>
+  <catgry>
+    <catValu>16</catValu>
+    <labl>16</labl>
+  </catgry>
+  <catgry>
+    <catValu>17</catValu>
+    <labl>17</labl>
+  </catgry>
+  <catgry>
+    <catValu>18</catValu>
+    <labl>18</labl>
+  </catgry>
+  <catgry>
+    <catValu>19</catValu>
+    <labl>19</labl>
+  </catgry>
+  <catgry>
+    <catValu>20</catValu>
+    <labl>20</labl>
+  </catgry>
+  <catgry>
+    <catValu>21</catValu>
+    <labl>21</labl>
+  </catgry>
+  <catgry>
+    <catValu>22</catValu>
+    <labl>22</labl>
+  </catgry>
+  <catgry>
+    <catValu>23</catValu>
+    <labl>23</labl>
+  </catgry>
+  <catgry>
+    <catValu>24</catValu>
+    <labl>24</labl>
+  </catgry>
+  <catgry>
+    <catValu>25</catValu>
+    <labl>25</labl>
+  </catgry>
+  <catgry>
+    <catValu>26</catValu>
+    <labl>26</labl>
+  </catgry>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DUPERSIDM" dcml="0" files="ExtractData" intrvl="contin" name="DUPERSIDM" rectype="M">
+  <location EndPos="35" StartPos="26" width="10"/>
+  <labl>MEPS unique identifier (AHRQ generated), M record</labl>
+  <txt><![CDATA[For all medication-round records, DUPERSIDM is an AHRQ-generated identifier created by combining DUIDM and PIDM. From 1996-2017, DUPERSIDM uniquely identifies records within a panel. To uniquely identify records across all MEPS panels, please see the variable description for MEPSIDM. Beginning in 2018, DUPERSIDM uniquely identifies records across panels due to changes in the construction of DUIDM to add PANELM to the first two digits of the DUIDM identifier.]]></txt>
+  <codInstr><![CDATA[CodesFrom 1996-2017, DUPERSIDM is an 8-digit numeric variable. Beginning in 2018, DUPERSIDM is a 10-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSIDM" dcml="0" files="ExtractData" intrvl="contin" name="MEPSIDM" rectype="M">
+  <location EndPos="45" StartPos="36" width="10"/>
+  <labl>MEPS unique identifier (IPUMS generated), M record</labl>
+  <txt><![CDATA[For medication-round records, MEPSIDM is a variable that uniquely identifies respondents across MEPS panels. It is created by combining PANELM, DUIDM, and PIDM. IPUMS MEPS staff created MEPSIDM for the 1996-2017 samples to provide a single, universal linking key for MEPS persons. Beginning in 2018, AHRQ modified the identifiers DUIDM and DUPERSIDM (which combines DUIDM with PIDM) on the original MEPS data files to append information about PANELM to the first two columns. This update makes DUPERSIDM identical to MEPSIDM in the IPUMS MEPS extract system for 2018-forward.]]></txt>
+  <codInstr><![CDATA[This is a 10-digit numeric variable with 0 implied decimal places]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="LINKIDM" dcml="0" files="ExtractData" intrvl="contin" name="LINKIDM" rectype="M">
+  <location EndPos="61" StartPos="46" width="16"/>
+  <labl>Medication-round record identifier (AHRQ generated)</labl>
+  <txt><![CDATA[For all medication-round records, LINKIDM is an AHRQ-generated identifier that uniquely identifies medication-round records. LINKIDM is created by combining DUPERSIDM with a numeric value that is the same for each fill of a medication within a given round. LINKIDM differs for the same medication across rounds (see MEPSDRUGID for a unique drug identifier across rounds). From 1996-2017, LINKIDM uniquely identifies medication-round records within a panel. To uniquely identify records across all MEPS panels, please see MEPSLINKIDM. Beginning in 2018, LINKIDM uniquely identifies medication-round records across panels due to changes in the construction of DUPERSIDM to add PANELM to the first two digits of the DUPERSIDM identifier and the addition of a 2-digit event type number.
+
+Event-Medication-Round Record Linking
+The event, medication-round, and medication-round fill records can be joined together by using the event-medication-round link records. LINKIDM is on the medication-round record and is the same as LINKIDK on the event-medication-round link record and LINKIDF on the medication-round fill record. The event-medication-round link records (K rectype) and medication-round fill records (F rectype) can be linked to the medication-round records (M rectype) using LINKIDK, LINKIDF, and LINKIDM, respectively. However, due to changes in how LINKIDM is constructed over time, IPUMS MEPS recommends using MEPSLINKIDK, MEPSLINKIDM, and MEPSLINKIDF to join the event-medication-round link, medication-round, and medication-round fill records.
+
+See our user note for more details on how to join the different record types and an overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesFrom 1996-2017, LINKIDM is a 12-character string variable. Beginning in 2018, LINKIDM is a 16-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSLINKIDM" dcml="0" files="ExtractData" intrvl="contin" name="MEPSLINKIDM" rectype="M">
+  <location EndPos="77" StartPos="62" width="16"/>
+  <labl>Medication-round record identifier (IPUMS generated)</labl>
+  <txt><![CDATA[For all medication-round records, MEPSLINKIDM uniquely identifies medication-round records across MEPS panels. MEPSLINKIDM is created for 1996-2017 by combining PANELM, LINKIDM, and a 2-digit event type number ("03" for prescribed medicines, "02" for other medical expenses, and "01" for all other event types). IPUMS MEPS staff create MEPSLINKIDM to provide a single, universal linking key for linking across MEPS event and medication-round records.
+
+Beginning in 2018, AHRQ modified the identifiers DUIDM and DUPERSIDM (which combines DUIDM with PIDM) on the original MEPS data files to append information about PANELM to the first two columns. AHRQ also added a 2-digit event type number beginning in 2018. MEPSLINKIDM is the same as LINKIDM for 2018 forward.
+
+Event-Medication-Round Record Linking&nbsp;The event, medication-round, and medication-round fill records can be joined together by using the event-medication-round link records. MEPSLINKIDM is on the medication-round record and is the same as MEPSLINKIDK on the event-medication-round link record and MEPSLINKIDF on the medication-round fill record.Condition-Event Record Linking&nbsp;The medication-round and condition records can be joined together by using the condition-event link records. MEPSEVNTIDJ is on the condition-event link record and is the same as MEPSLINKIDM on the medication-round record.See our user note for more details on how to join the different record types and an overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesMEPSLINKIDM is a 16-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="NREFILLS" dcml="0" files="ExtractData" intrvl="contin" name="NREFILLS" rectype="M">
+  <location EndPos="80" StartPos="78" width="3"/>
+  <labl>Number of fill records</labl>
+  <txt><![CDATA[For each medication-round record, NREFILLS is an IPUMS-created variable that reports the number of fills of a specific medication that were reported for a given round for a given person.
+NREFILLS is on the prescription medication-round record (see RECTYPE for more details on the different record types in IPUMS MEPS). Variables offered on the medication-round record through IPUMS MEPS are derived from the prescribed medicines file provided by AHRQ. Please see our overview of the event, medical conditions, and prescribed medicines variables, including how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesNREFILLS is a 3-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Variables -- PRESCRIBED MEDICINE</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="YEARR" dcml="0" files="ExtractData" intrvl="discrete" name="YEARR" rectype="R">
+  <location EndPos="5" StartPos="2" width="4"/>
+  <labl>Survey year</labl>
+  <txt><![CDATA[YEARR is a four-digit variable reporting the calendar year (e.g., 2003) the survey was conducted and the data were collected.  YEARR indicates the survey year on the round record. 
+
+A complementary variable, YEAR indicates the survey year on the person record.]]></txt>
+  <catgry>
+    <catValu>1996</catValu>
+    <labl>1996</labl>
+  </catgry>
+  <catgry>
+    <catValu>1997</catValu>
+    <labl>1997</labl>
+  </catgry>
+  <catgry>
+    <catValu>1998</catValu>
+    <labl>1998</labl>
+  </catgry>
+  <catgry>
+    <catValu>1999</catValu>
+    <labl>1999</labl>
+  </catgry>
+  <catgry>
+    <catValu>2000</catValu>
+    <labl>2000</labl>
+  </catgry>
+  <catgry>
+    <catValu>2001</catValu>
+    <labl>2001</labl>
+  </catgry>
+  <catgry>
+    <catValu>2002</catValu>
+    <labl>2002</labl>
+  </catgry>
+  <catgry>
+    <catValu>2003</catValu>
+    <labl>2003</labl>
+  </catgry>
+  <catgry>
+    <catValu>2004</catValu>
+    <labl>2004</labl>
+  </catgry>
+  <catgry>
+    <catValu>2005</catValu>
+    <labl>2005</labl>
+  </catgry>
+  <catgry>
+    <catValu>2006</catValu>
+    <labl>2006</labl>
+  </catgry>
+  <catgry>
+    <catValu>2007</catValu>
+    <labl>2007</labl>
+  </catgry>
+  <catgry>
+    <catValu>2008</catValu>
+    <labl>2008</labl>
+  </catgry>
+  <catgry>
+    <catValu>2009</catValu>
+    <labl>2009</labl>
+  </catgry>
+  <catgry>
+    <catValu>2010</catValu>
+    <labl>2010</labl>
+  </catgry>
+  <catgry>
+    <catValu>2011</catValu>
+    <labl>2011</labl>
+  </catgry>
+  <catgry>
+    <catValu>2012</catValu>
+    <labl>2012</labl>
+  </catgry>
+  <catgry>
+    <catValu>2013</catValu>
+    <labl>2013</labl>
+  </catgry>
+  <catgry>
+    <catValu>2014</catValu>
+    <labl>2014</labl>
+  </catgry>
+  <catgry>
+    <catValu>2015</catValu>
+    <labl>2015</labl>
+  </catgry>
+  <catgry>
+    <catValu>2016</catValu>
+    <labl>2016</labl>
+  </catgry>
+  <catgry>
+    <catValu>2017</catValu>
+    <labl>2017</labl>
+  </catgry>
+  <catgry>
+    <catValu>2018</catValu>
+    <labl>2018</labl>
+  </catgry>
+  <catgry>
+    <catValu>2019</catValu>
+    <labl>2019</labl>
+  </catgry>
+  <catgry>
+    <catValu>2020</catValu>
+    <labl>2020</labl>
+  </catgry>
+  <catgry>
+    <catValu>2021</catValu>
+    <labl>2021</labl>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="SERIALR" dcml="0" files="ExtractData" intrvl="contin" name="SERIALR" rectype="R">
+  <location EndPos="11" StartPos="6" width="6"/>
+  <labl>Sequential Serial Number, Household Record</labl>
+  <txt><![CDATA[SERIALP is an IPUMS Health Surveys-constructed value that is an identifying serial number unique to each household in a given survey year, which has been attached to each person record in the household. The values for SERIALR are identical to those for SERIAL for a given person; SERIALR simply restates the person's unique identifying number at the round level.]]></txt>
+  <codInstr><![CDATA[CodesSERIALR is a 6-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DUIDRD" dcml="0" files="ExtractData" intrvl="contin" name="DUIDRD" rectype="R">
+  <location EndPos="20" StartPos="14" width="7"/>
+  <labl>Dwelling unit ID, round record</labl>
+  <txt><![CDATA[For all persons, DUIDRD reports the identifier assigned by MEPS to the person's Dwelling Unit (DU), sampled for MEPS data collection. DUIDRD is a random ID number assigned after the DU was sampled for MEPS and does not change once assigned. The MEPS sample  is a subset of households that participated in the National Health Interview Survey (NHIS). 
+
+DU definitions are generally consistent with NHIS definitions of households. For example, the 2018 NHIS Survey Description document describes households as "occupied housing units" (p. 10) that exclude "long-term care institutions (for example, nursing homes for the elderly, hospitals for the chronically ill or physically or intellectually disabled, and wards for abused or neglected children), correctional facilities (for example, prisons or jails, juvenile detention centers, and halfway houses)." (p. 8). Additionally, "unless one other family member is a civilian eligible for the survey (for example, a child whose parents are both active-duty military)" (p. 8), housing units occupied by active-duty Armed Forces personnel are also excluded from the survey.
+
+From 1996-2017, DUIDRD is unique within panel, but must be combined with PANELRD to be unique across panels. Starting in 2018, DUIDRD begins with the 2-digit variable PANEL, making DUID unique across panels. DUIDRD can be combined with PIDRD to uniquely identify each person within the Dwelling Unit. Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[DUID is a numeric variable ranging in width from 1 to 7 digits.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PIDRD" dcml="0" files="ExtractData" intrvl="contin" name="PIDRD" rectype="R">
+  <location EndPos="23" StartPos="21" width="3"/>
+  <labl>Person number, round record</labl>
+  <txt><![CDATA[For all persons, PIDRD is a within-Dwelling Unit (DU) person identifier assigned in sampling or by the computer-assisted personal interviewing (CAPI) instrument on the round record. PIDRD must be combined with DUIDRD and PANELRD to uniquely identify persons across all MEPS data. IPUMS MEPS offers the constructed variable MEPSIDRD, created by concatenating the values of DUIDRD, PIDRD, and PANELRD.
+
+Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[CodesPIDRD is a 3-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="PANELRD" dcml="0" files="ExtractData" intrvl="discrete" name="PANELRD" rectype="R">
+  <location EndPos="25" StartPos="24" width="2"/>
+  <labl>Panel, round record</labl>
+  <txt><![CDATA[For all persons, PANELRD reports the number of the panel of which the participant was a member on the round record. MEPS began in 1996 with Panel number 1 and the panel number for persons entering the MEPS in each subsequent year increases by 1, so that 1997 had Panels 1 (the panel that entered in 1996, in their second year in 1997) and 2 (the panel newly entering MEPS in 1997), 1998 had Panels 2 and 3, 1999 had Panels 3 and 4, and so on. PANELRD can be combined with DUIDRD and PIDRD to uniquely identify individuals across panels on round records. IPUMS MEPS offers the constructed variable MEPSIDRD that is equal to the concatenated values of DUIDRD, PIDRD, and PANELRD.
+
+For more information on the relationship between calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>01</catValu>
+    <labl>1</labl>
+  </catgry>
+  <catgry>
+    <catValu>02</catValu>
+    <labl>2</labl>
+  </catgry>
+  <catgry>
+    <catValu>03</catValu>
+    <labl>3</labl>
+  </catgry>
+  <catgry>
+    <catValu>04</catValu>
+    <labl>4</labl>
+  </catgry>
+  <catgry>
+    <catValu>05</catValu>
+    <labl>5</labl>
+  </catgry>
+  <catgry>
+    <catValu>06</catValu>
+    <labl>6</labl>
+  </catgry>
+  <catgry>
+    <catValu>07</catValu>
+    <labl>7</labl>
+  </catgry>
+  <catgry>
+    <catValu>08</catValu>
+    <labl>8</labl>
+  </catgry>
+  <catgry>
+    <catValu>09</catValu>
+    <labl>9</labl>
+  </catgry>
+  <catgry>
+    <catValu>10</catValu>
+    <labl>10</labl>
+  </catgry>
+  <catgry>
+    <catValu>11</catValu>
+    <labl>11</labl>
+  </catgry>
+  <catgry>
+    <catValu>12</catValu>
+    <labl>12</labl>
+  </catgry>
+  <catgry>
+    <catValu>13</catValu>
+    <labl>13</labl>
+  </catgry>
+  <catgry>
+    <catValu>14</catValu>
+    <labl>14</labl>
+  </catgry>
+  <catgry>
+    <catValu>15</catValu>
+    <labl>15</labl>
+  </catgry>
+  <catgry>
+    <catValu>16</catValu>
+    <labl>16</labl>
+  </catgry>
+  <catgry>
+    <catValu>17</catValu>
+    <labl>17</labl>
+  </catgry>
+  <catgry>
+    <catValu>18</catValu>
+    <labl>18</labl>
+  </catgry>
+  <catgry>
+    <catValu>19</catValu>
+    <labl>19</labl>
+  </catgry>
+  <catgry>
+    <catValu>20</catValu>
+    <labl>20</labl>
+  </catgry>
+  <catgry>
+    <catValu>21</catValu>
+    <labl>21</labl>
+  </catgry>
+  <catgry>
+    <catValu>22</catValu>
+    <labl>22</labl>
+  </catgry>
+  <catgry>
+    <catValu>23</catValu>
+    <labl>23</labl>
+  </catgry>
+  <catgry>
+    <catValu>24</catValu>
+    <labl>24</labl>
+  </catgry>
+  <catgry>
+    <catValu>25</catValu>
+    <labl>25</labl>
+  </catgry>
+  <catgry>
+    <catValu>26</catValu>
+    <labl>26</labl>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="MEPSIDRD" dcml="0" files="ExtractData" intrvl="contin" name="MEPSIDRD" rectype="R">
+  <location EndPos="35" StartPos="26" width="10"/>
+  <labl>MEPS unique identifier (IPUMS generated)</labl>
+  <txt><![CDATA[For all persons, MEPSIDRD is a variable that uniquely identifies respondents across MEPS panels. It is created by combining PANELRD, DUIDRD, and PIDRD. IPUMS MEPS staff create MEPSID for the 1996-2017 samples to provide a single, universal linking key for MEPS persons. Beginning in 2018, AHRQ modified the identifiers DUIDRD and DUPERSIDRD (which combines DUIDRD with PIDRD) on the original MEPS data files to append information about PANELRD to the first two columns. This update makes DUPERSIDRD identical to MEPSIDRD in the IPUMS MEPS extract system for 2018-forward.
+
+In earlier versions of IPUMS MEPS, IPUMS MEPS staff created a slightly different version of MEPSIDRD, equivalent to combining DUIDRD, PIDRD, and PANELRD. This version has been renamed to MEPSID2RD and is only available for 1996-2017.]]></txt>
+  <codInstr><![CDATA[This is a 10-digit numeric variable with 0 implied decimal places]]></codInstr>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="ROUNDRD" dcml="0" files="ExtractData" intrvl="discrete" name="ROUNDRD" rectype="R">
+  <location EndPos="36" StartPos="36" width="1"/>
+  <labl>Survey round number, round record</labl>
+  <txt><![CDATA[For all persons, ROUNDRD reports the round in which the data were collected. MEPS interviews persons five times, once per round. Analysts may wish to combine ROUNDRD with MEPSIDRD, to uniquely identify round-level records. 
+
+Persons with data for both calendar years in which their Panel participated have two Round 3 records. This is because, although the Round 3 interview occurs in the second calendar year, the Round 3 reference period spans both calendar years. Therefore, the individual's Round 3 record is written to both the first calendar year data file and the second calendar year data file. For more information on the relationship between calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>1</catValu>
+    <labl>Round 1</labl>
+  </catgry>
+  <catgry>
+    <catValu>2</catValu>
+    <labl>Round 2</labl>
+  </catgry>
+  <catgry>
+    <catValu>3</catValu>
+    <labl>Round 3</labl>
+  </catgry>
+  <catgry>
+    <catValu>4</catValu>
+    <labl>Round 4</labl>
+  </catgry>
+  <catgry>
+    <catValu>5</catValu>
+    <labl>Round 5</labl>
+  </catgry>
+  <catgry>
+    <catValu>6</catValu>
+    <labl>Round 6</labl>
+  </catgry>
+  <catgry>
+    <catValu>7</catValu>
+    <labl>Round 7</labl>
+  </catgry>
+  <catgry>
+    <catValu>8</catValu>
+    <labl>Round 8</labl>
+  </catgry>
+  <catgry>
+    <catValu>9</catValu>
+    <labl>Round 9</labl>
+  </catgry>
+  <concept vocab="IPUMS">Technical Variables -- ROUND</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PREGNTRD" dcml="0" files="ExtractData" intrvl="discrete" name="PREGNTRD" rectype="R">
+  <location EndPos="37" StartPos="37" width="1"/>
+  <labl>Pregnant during the round</labl>
+  <txt><![CDATA[For women between the ages of 16 and 44 (AGERD), PREGNTRD reports whether they were pregnant during the round.]]></txt>
+  <catgry>
+    <catValu>0</catValu>
+    <labl>NIU</labl>
+  </catgry>
+  <catgry>
+    <catValu>1</catValu>
+    <labl>No</labl>
+  </catgry>
+  <catgry>
+    <catValu>2</catValu>
+    <labl>Yes</labl>
+  </catgry>
+  <catgry>
+    <catValu>7</catValu>
+    <labl>Unknown-refused</labl>
+  </catgry>
+  <catgry>
+    <catValu>8</catValu>
+    <labl>Unknown-not ascertained</labl>
+  </catgry>
+  <catgry>
+    <catValu>9</catValu>
+    <labl>Unknown-don't know</labl>
+  </catgry>
+  <concept vocab="IPUMS">Conditions Variables -- ROUND</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="YEARF" dcml="0" files="ExtractData" intrvl="discrete" name="YEARF" rectype="F">
+  <location EndPos="5" StartPos="2" width="4"/>
+  <labl>Survey year</labl>
+  <txt><![CDATA[YEARF is a four-digit variable reporting the calendar year (e.g., 2003) the survey was conducted and the data were collected. YEARF indicates the survey year on the medication-round fill record. A complementary variable, YEAR indicates the survey year on the person record.]]></txt>
+  <catgry>
+    <catValu>1996</catValu>
+    <labl>1996</labl>
+  </catgry>
+  <catgry>
+    <catValu>1997</catValu>
+    <labl>1997</labl>
+  </catgry>
+  <catgry>
+    <catValu>1998</catValu>
+    <labl>1998</labl>
+  </catgry>
+  <catgry>
+    <catValu>1999</catValu>
+    <labl>1999</labl>
+  </catgry>
+  <catgry>
+    <catValu>2000</catValu>
+    <labl>2000</labl>
+  </catgry>
+  <catgry>
+    <catValu>2001</catValu>
+    <labl>2001</labl>
+  </catgry>
+  <catgry>
+    <catValu>2002</catValu>
+    <labl>2002</labl>
+  </catgry>
+  <catgry>
+    <catValu>2003</catValu>
+    <labl>2003</labl>
+  </catgry>
+  <catgry>
+    <catValu>2004</catValu>
+    <labl>2004</labl>
+  </catgry>
+  <catgry>
+    <catValu>2005</catValu>
+    <labl>2005</labl>
+  </catgry>
+  <catgry>
+    <catValu>2006</catValu>
+    <labl>2006</labl>
+  </catgry>
+  <catgry>
+    <catValu>2007</catValu>
+    <labl>2007</labl>
+  </catgry>
+  <catgry>
+    <catValu>2008</catValu>
+    <labl>2008</labl>
+  </catgry>
+  <catgry>
+    <catValu>2009</catValu>
+    <labl>2009</labl>
+  </catgry>
+  <catgry>
+    <catValu>2010</catValu>
+    <labl>2010</labl>
+  </catgry>
+  <catgry>
+    <catValu>2011</catValu>
+    <labl>2011</labl>
+  </catgry>
+  <catgry>
+    <catValu>2012</catValu>
+    <labl>2012</labl>
+  </catgry>
+  <catgry>
+    <catValu>2013</catValu>
+    <labl>2013</labl>
+  </catgry>
+  <catgry>
+    <catValu>2014</catValu>
+    <labl>2014</labl>
+  </catgry>
+  <catgry>
+    <catValu>2015</catValu>
+    <labl>2015</labl>
+  </catgry>
+  <catgry>
+    <catValu>2016</catValu>
+    <labl>2016</labl>
+  </catgry>
+  <catgry>
+    <catValu>2017</catValu>
+    <labl>2017</labl>
+  </catgry>
+  <catgry>
+    <catValu>2018</catValu>
+    <labl>2018</labl>
+  </catgry>
+  <catgry>
+    <catValu>2019</catValu>
+    <labl>2019</labl>
+  </catgry>
+  <catgry>
+    <catValu>2020</catValu>
+    <labl>2020</labl>
+  </catgry>
+  <catgry>
+    <catValu>2021</catValu>
+    <labl>2021</labl>
+  </catgry>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="SERIALF" dcml="0" files="ExtractData" intrvl="discrete" name="SERIALF" rectype="F">
+  <location EndPos="11" StartPos="6" width="6"/>
+  <labl>Sequential household serial number, F record</labl>
+  <txt><![CDATA[SERIALF is an IPUMS MEPS-constructed value that is an identifying number unique to each household in a given survey year. The combination of YEAR and SERIAL provides a unique identifier for every household in the IPUMS MEPS database. The values for SERIALF are identical to those for SERIAL for a given person; SERIALF simply restates the person's unique identifying number at the medication-round fill level.]]></txt>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DUIDF" dcml="0" files="ExtractData" intrvl="contin" name="DUIDF" rectype="F">
+  <location EndPos="20" StartPos="14" width="7"/>
+  <labl>Dwelling unit ID, medication-round fill record</labl>
+  <txt><![CDATA[For all medication-round fills, DUIDF reports the identifier assigned by MEPS to the person's Dwelling Unit (DU), sampled for MEPS data collection. DUIDF is a random ID number assigned after the DU was sampled for MEPS and does not change once assigned. The MEPS sample  is a subset of households that participated in the National Health Interview Survey (NHIS). 
+
+DU definitions are generally consistent with NHIS definitions of households. For example, the 2018 NHIS Survey Description document describes households as "occupied housing units" (p. 10) that exclude "long-term care institutions (for example, nursing homes for the elderly, hospitals for the chronically ill or physically or intellectually disabled, and wards for abused or neglected children), correctional facilities (for example, prisons or jails, juvenile detention centers, and halfway houses)." (p. 8). Additionally, "unless one other family member is a civilian eligible for the survey (for example, a child whose parents are both active-duty military)" (p. 8), housing units occupied by active-duty Armed Forces personnel are also excluded from the survey.
+
+From 1996-2017, DUIDF is unique within panel, but must be combined with PANELF to be unique across panels. Starting in 2018, DUIDF begins with the 2-digit variable PANELF, making DUIDF unique across panels. DUIDF can be combined with PIDF to uniquely identify each person within the Dwelling Unit. Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[CodesDUIDF is a numeric variable ranging in width from 1 to 7 digits.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="PIDF" dcml="0" files="ExtractData" intrvl="contin" name="PIDF" rectype="F">
+  <location EndPos="23" StartPos="21" width="3"/>
+  <labl>Person number, medication-round fill record</labl>
+  <txt><![CDATA[For all medication-round fills, PIDF is a within-Dwelling Unit (DU) person identifier assigned in sampling or by the computer-assisted personal interviewing (CAPI) instrument on the medication-round fill record. PIDF must be combined with DUIDF and PANELF to uniquely identify persons across all MEPS data. IPUMS MEPS offers the constructed variable MEPSIDF, created by concatenating the values of PANELF, DUIDF, and PIDF.
+
+Please see the user note for more information on the relationship between Dwelling Units, families, Reporting Units, and persons.]]></txt>
+  <codInstr><![CDATA[CodesPIDF is a 3-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="PANELF" dcml="0" files="ExtractData" intrvl="discrete" name="PANELF" rectype="F">
+  <location EndPos="25" StartPos="24" width="2"/>
+  <labl>Panel, medication-round fill record</labl>
+  <txt><![CDATA[For all medication-round fills, PANELF reports the number of the panel of which the participant was a member on the medication-round fill record. MEPS began in 1996 with Panel number 1 and the panel number for persons entering the MEPS in each subsequent year increases by 1, so that 1997 had Panels 1 (the panel that entered in 1996, in their second year in 1997) and 2 (the panel newly entering MEPS in 1997), 1998 had Panels 2 and 3, 1999 had Panels 3 and 4, and so on. PANELF can be combined with DUIDF and PIDF to uniquely identify individuals across panels on the medication-round fill records. IPUMS MEPS offers the constructed variable MEPSIDF that is equal to the concatenated values of PANELF, DUIDF, and PIDF. Beginning in 2018, DUIDF begins with PANELF and so concatenating PANELF with DUIDF and PIDF is no longer necessary.
+
+For more information on the relationship between calendar year, panel, and round data, please see the IPUMS MEPS Panel Design Documentation.]]></txt>
+  <catgry>
+    <catValu>01</catValu>
+    <labl>1</labl>
+  </catgry>
+  <catgry>
+    <catValu>02</catValu>
+    <labl>2</labl>
+  </catgry>
+  <catgry>
+    <catValu>03</catValu>
+    <labl>3</labl>
+  </catgry>
+  <catgry>
+    <catValu>04</catValu>
+    <labl>4</labl>
+  </catgry>
+  <catgry>
+    <catValu>05</catValu>
+    <labl>5</labl>
+  </catgry>
+  <catgry>
+    <catValu>06</catValu>
+    <labl>6</labl>
+  </catgry>
+  <catgry>
+    <catValu>07</catValu>
+    <labl>7</labl>
+  </catgry>
+  <catgry>
+    <catValu>08</catValu>
+    <labl>8</labl>
+  </catgry>
+  <catgry>
+    <catValu>09</catValu>
+    <labl>9</labl>
+  </catgry>
+  <catgry>
+    <catValu>10</catValu>
+    <labl>10</labl>
+  </catgry>
+  <catgry>
+    <catValu>11</catValu>
+    <labl>11</labl>
+  </catgry>
+  <catgry>
+    <catValu>12</catValu>
+    <labl>12</labl>
+  </catgry>
+  <catgry>
+    <catValu>13</catValu>
+    <labl>13</labl>
+  </catgry>
+  <catgry>
+    <catValu>14</catValu>
+    <labl>14</labl>
+  </catgry>
+  <catgry>
+    <catValu>15</catValu>
+    <labl>15</labl>
+  </catgry>
+  <catgry>
+    <catValu>16</catValu>
+    <labl>16</labl>
+  </catgry>
+  <catgry>
+    <catValu>17</catValu>
+    <labl>17</labl>
+  </catgry>
+  <catgry>
+    <catValu>18</catValu>
+    <labl>18</labl>
+  </catgry>
+  <catgry>
+    <catValu>19</catValu>
+    <labl>19</labl>
+  </catgry>
+  <catgry>
+    <catValu>20</catValu>
+    <labl>20</labl>
+  </catgry>
+  <catgry>
+    <catValu>21</catValu>
+    <labl>21</labl>
+  </catgry>
+  <catgry>
+    <catValu>22</catValu>
+    <labl>22</labl>
+  </catgry>
+  <catgry>
+    <catValu>23</catValu>
+    <labl>23</labl>
+  </catgry>
+  <catgry>
+    <catValu>24</catValu>
+    <labl>24</labl>
+  </catgry>
+  <catgry>
+    <catValu>25</catValu>
+    <labl>25</labl>
+  </catgry>
+  <catgry>
+    <catValu>26</catValu>
+    <labl>26</labl>
+  </catgry>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="numeric"/>
+</var>
+<var ID="DUPERSIDF" dcml="0" files="ExtractData" intrvl="contin" name="DUPERSIDF" rectype="F">
+  <location EndPos="35" StartPos="26" width="10"/>
+  <labl>MEPS unique identifier (AHRQ generated), F record</labl>
+  <txt><![CDATA[For all medication-round fills, DUPERSIDF is an AHRQ-generated identifier created by combining DUIDF and PIDF. From 1996-2017, DUPERSIDF uniquely identifies records within a panel. To uniquely identify records across all MEPS panels, please see the variable description for MEPSIDF. Beginning in 2018, DUPERSIDF uniquely identifies records across panels due to changes in the construction of DUIDF to add PANELF to the first two digits of the DUIDF identifier.]]></txt>
+  <codInstr><![CDATA[CodesFrom 1996-2017, DUPERSIDF is an 8-digit numeric variable. Beginning in 2018, DUPERSIDF is a 10-digit numeric variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSIDF" dcml="0" files="ExtractData" intrvl="contin" name="MEPSIDF" rectype="F">
+  <location EndPos="45" StartPos="36" width="10"/>
+  <labl>MEPS unique identifier (IPUMS generated), F record</labl>
+  <txt><![CDATA[For all medication-round fills, MEPSIDF is a variable that uniquely identifies respondents across MEPS panels. It is created by combining PANELF, DUIDF, and PIDF. IPUMS MEPS staff created MEPSIDF for the 1996-2017 samples to provide a single, universal linking key for MEPS persons. Beginning in 2018, AHRQ modified the identifiers DUIDF and DUPERSIDF (which combines DUIDF with PIDF) on the original MEPS data files to append information about PANELF to the first two columns. This update makes DUPERSIDF identical to MEPSIDF in the IPUMS MEPS extract system for 2018-forward.]]></txt>
+  <codInstr><![CDATA[This is a 10-digit numeric variable with 0 implied decimal places]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="DRUGID" dcml="0" files="ExtractData" intrvl="contin" name="DRUGID" rectype="F">
+  <location EndPos="58" StartPos="46" width="13"/>
+  <labl>Medication identifier (AHRQ generated)</labl>
+  <txt><![CDATA[For all medication-round fills, DRUGID is an AHRQ-generated identifier that can be used to link drugs across rounds for a given person and is described as the "prescribed medicine drug-level ID." That is, DRUGID will have the same value for a given person across rounds for the same medication. This contrasts to LINKIDF that will have a new value in each round for the same medication. DRUGID is available beginning in 2009; from 1996 to 2008 RXNDC can be used to link drugs across rounds in most cases. Users should keep in mind that in some cases, RXNDC is not a perfect replacement for DRUGID because a respondent may have reported a slightly different drug name (the basis for assigning DRUGID) that was assigned the same drug fill information from the pharmacy (the basis for assigning RXNDC). Starting in 2008, drug fills with the same LINKIDF value may have different RXNDC values due to different manufacturers.  
+
+Construction of DRUGID&nbsp;DRUGID uniquely identifies prescribed medicines across rounds. DRUGID is created by combining DUPERSIDF with a numeric value that is the same for each fill of a medication within and across rounds. From 2009-2017, DRUGID uniquely identifies medications within a panel. To uniquely identify medications across all MEPS panels, please see MEPSDRUGID. Beginning in 2018, DRUGID uniquely identifies medications across panels due to changes in the construction of DUPERSIDF to add PANELF to the first two digits of the DUPERSIDF identifier.DRUGID is on the medication-round fill record (see RECTYPE for more details on the different record types in IPUMS MEPS). Variables offered on the medication-round fill record are derived from the prescribed medicines file provided by AHRQ. Please see our overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesFrom 2009-2017, DRUGID is an 11-character string variable. Beginning in 2018, DRUGID is a 13-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSDRUGID" dcml="0" files="ExtractData" intrvl="contin" name="MEPSDRUGID" rectype="F">
+  <location EndPos="71" StartPos="59" width="13"/>
+  <labl>Medication identifier (IPUMS generated)</labl>
+  <txt><![CDATA[For all medication-round fills, MEPSDRUGID is an IPUMS-generated identifier that can be used to link drugs across rounds. AHRQ describes the original variable used to construct MEPSDRUGID as the "prescribed medicine drug-level ID." That is, MEPSDRUGID will have the same value for a given person across rounds for the same medication. This contrasts to MEPSLINKIDF that will have a new value in each round for the same medication. MEPSDRUGID is available beginning in 2009; from 1996 to 2008 RXNDC can be used to link drugs across rounds in most cases. Users should keep in mind that in some cases, RXNDC is not a perfect replacement for MEPSDRUGID because a respondent may have reported a slightly different drug name (the basis for assigning MEPSDRUGID) that was assigned the same drug fill information from the pharmacy (the basis for assigning RXNDC). Starting in 2008, drug fills with the same MEPSLINKIDF value may have different RXNDC values due to different manufacturers.  
+
+Construction of MEPSDRUGID&nbsp;MEPSDRUGID uniquely identifies prescribed medicines across MEPS panels. For 2009-2017, MEPSDRUGID is created by combining PANELF and DRUGID (DRUGID = DUPERSIDF + unique drug identifier). IPUMS MEPS staff create MESPDRUGID to provide a single, universal linking key for a person’s prescribed medicines across MEPS panels.
+
+Beginning in 2018, AHRQ modified the identifiers DUIDF and DUPERSIDF (which combines DUIDF with PIDF) on the original MEPS data files to append information about PANELF to the first two columns. That change makes DRUGID the same as MEPSDRUGID for 2018 forward.MEPSDRUGID is on the medication-round fill record (see RECTYPE for more details on the different record types in IPUMS MEPS). Variables offered on the medication-round fill record through IPUMS MEPS are derived from the prescribed medicines file provided by AHRQ. Please see our overview of the event, medical conditions, and prescribed medicines variables, including how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesMEPSDRUGID is a 13-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="RXRECID" dcml="0" files="ExtractData" intrvl="contin" name="RXRECID" rectype="F">
+  <location EndPos="90" StartPos="72" width="19"/>
+  <labl>Medication-round fill unique identifier (AHRQ generated)</labl>
+  <txt><![CDATA[For all medication-round fills, RXRECID is an AHRQ-generated identifier that uniquely identifies medication-round fill records. From 1996-2017, RXRECID begins with DUPERSIDF and uniquely identifies medication-round fill records within a panel. To uniquely identify records across all MEPS panels, please see MEPSRXRECID. Beginning in 2018, RXRECID uniquely identifies records across panels due to changes in the construction of DUPERSIDF to add PANELF to the first two digits of the DUPERSIDF identifier.
+
+RXRECID is on the medication-round fill record (see RECTYPE for more details on the different record types in IPUMS MEPS). Variables offered on the medication-round fill record are derived from the prescribed medicines file provided by AHRQ. Please see our overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesFrom 1996-2017, RXRECID is a 15-character string variable. Beginning in 2018, RXRECID is a 19-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSRXRECID" dcml="0" files="ExtractData" intrvl="contin" name="MEPSRXRECID" rectype="F">
+  <location EndPos="113" StartPos="91" width="23"/>
+  <labl>Medication-round fill unique identifier (IPUMS generated)</labl>
+  <txt><![CDATA[MEPSRXRECID uniquely identifies medication-round fill records across MEPS panels. MEPSRXRECID is created for 1996-2017 by combining PANELF, RXRECID, and a 2-digit event type number ("03" for prescribed medicines, "02" for other medical expenses, and "01" for all other event types). 
+
+Beginning in 2018, AHRQ modified the identifiers DUIDF and DUPERSIDF (which combines DUIDF with PIDF) on the original MEPS data files to append information about PANELF to the first two columns. AHRQ also added a 2-digit event type number beginning in 2018. MEPSRXRECID is the same as RXRECID for 2018 forward.
+
+MEPSRXRECID is on the medication-round fill record (see RECTYPE for more details on the different record types in IPUMS MEPS). Variables offered on the medication-round fill record through IPUMS MEPS are derived from the prescribed medicines file provided by AHRQ. Please see our overview of the event, medical conditions, and prescribed medicines variables, including how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesMEPSRXRECID is a 23-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="LINKIDF" dcml="0" files="ExtractData" intrvl="contin" name="LINKIDF" rectype="F">
+  <location EndPos="129" StartPos="114" width="16"/>
+  <labl>Medication-round record identifier (AHRQ generated)</labl>
+  <txt><![CDATA[For all medication-round fills, LINKIDF is an AHRQ-generated identifier that uniquely identifies medication-round records. LINKIDF is created by combining DUPERSIDF with a numeric value that is the same for each fill of a medication within a given round. LINKIDF differs for the same medication across rounds (see MEPSDRUGID for a unique drug identifier across rounds). From 1996-2017, LINKIDF uniquely identifies medication-round records within a panel. To uniquely identify records across all MEPS panels, please see MEPSLINKIDF. Beginning in 2018, LINKIDF uniquely identifies medication-round records across panels due to changes in the construction of DUPERSIDF to add PANELF to the first two digits of the DUPERSIDF identifier and the addition of a 2-digit event type number.  
+
+Event-Medication-Round Record Linking
+The event, medication-round, and medication-round fill records can be joined together by using the event-medication-round link records. LINKIDF is on the medication-round fill record and is the same as LINKIDM on the medication-round record and LINKIDK on the event-medication-round link record. The event-medication-round link records (K rectype) and medication-round fill records (F rectype) can be linked to the medication-round records (M rectype) using LINKIDK, LINKIDF, and LINKIDM, respectively. However, due to changes in how LINKIDF is constructed over time, IPUMS MEPS recommends using MEPSLINKIDK, MEPSLINKIDM, and MEPSLINKIDF to join the event-medication-round link, medication-round, and medication-round fill records.
+
+See our user note for more details on how to join the different record types and an overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesFrom 1996-2017, LINKIDF is a 12-character string variable. Beginning in 2018, LINKIDF is a 16-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="MEPSLINKIDF" dcml="0" files="ExtractData" intrvl="contin" name="MEPSLINKIDF" rectype="F">
+  <location EndPos="145" StartPos="130" width="16"/>
+  <labl>Medication-round record identifier (IPUMS generated)</labl>
+  <txt><![CDATA[For all medication-round fill records, MEPSLINKIDF uniquely identifies medication-round records across MEPS panels. MEPSLINKIDF is created for 1996-2017 by combining PANELF, LINKIDF, and a 2-digit event type number ("03" for prescribed medicines, "02" for other medical expenses, and "01" for all other event types). IPUMS MEPS staff create MEPSLINKIDF to provide a single, universal linking key for linking across MEPS event and medication-round records.
+
+Beginning in 2018, AHRQ modified the identifiers DUIDF and DUPERSIDF (which combines DUIDF with PIDF) on the original MEPS data files to append information about PANELF to the first two columns. AHRQ also added a 2-digit event type number beginning in 2018. MEPSLINKIDF is the same as LINKIDF for 2018 forward.
+
+Event-Medication-Round Record Linking&nbsp;The event, medication-round, and medication-round fill records can be joined together by using the event-medication-round link records. MEPSLINKIDF is on the medication-round fill record and is the same as MEPSLINKIDK on the event-medication-round link record and MEPSLINKIDM on the medication-round record.Condition-Event Record Linking&nbsp;The medication-round fill and condition records can be joined together by using the condition-event link records. MEPSEVNTIDJ is on the condition-event link record and is the same as MEPSLINKIDF on the medication-round fill record.See our user note for more details on how to join the different record types and an overview of the event, medical conditions, and prescribed medicines variables, how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.]]></txt>
+  <codInstr><![CDATA[CodesMEPSLINKIDF is a 16-character string variable.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+<var ID="RXDRGNAM" dcml="0" files="ExtractData" intrvl="contin" name="RXDRGNAM" rectype="F">
+  <location EndPos="205" StartPos="146" width="60"/>
+  <labl>Multum medicine name, imputed</labl>
+  <txt><![CDATA[For all medication-round fills, except diabetic equipment and supplies (see RXNAME) and drugs determined to be a confidentiality risk, RXDRGNAM reports the generic name most commonly used by prescribing physicians for the medication. The drug classification system used to assign RXDRGNAM has remained consistent over time, making it well-suited for trend analyses or pooling years or panels together. RXDRGNAM is assigned using the Multum Lexicon database (for more information about the Multum Lexicon database, see the following section). See also RXNAME and RXNDC for additional information about prescribed medication-round fill attributes. 
+
+A drug can pose a confidentiality risk for several reasons. Examples include orphan drugs, drugs that are estimated to be used by fewer than 200,00 people, or drug names that provide identifying information about the pharmacy or respondent. An orphan drug is a drug that treats a rare disease or condition but has been discontinued because there is little or no economic incentive to continue development or production. See Rare Diseases at the FDA for more information about how these drugs are designated and the effort to financially support their development and production under the Orphan Drug Act. See the codes tab for more detailed information about how these cases are handled in the data. 
+
+RXDRGNAM is on the prescribed medication-round fill record (or "medication-round fill record," see RECTYPE for more details on the different record types in IPUMS MEPS). Variables offered on the medication-round fill record through IPUMS MEPS are derived from the prescribed medicines file provided by AHRQ. Please see our overview of the event, medical conditions, and prescribed medicines variables, including how those variables are offered through IPUMS MEPS, and general considerations to keep in mind when conducting analyses using these variables.
+
+IPUMS MEPS reports the universe for each variable based on a thorough review of the original MEPS documentation. Investigating the data may reveal cases that do not meet the stated universe. Users are encouraged to validate universes for their analyses.
+
+Multum Lexicon Variables
+
+Cerner Multum, Inc. develops the Multum Lexicon database that MEPS uses to classify drugs reported by respondents in the MEPS-HC. Each drug is assigned a Multum drug name (RXDRGNAM), a pregnancy category (PREGCAT), and to one or more therapeutic class, sub-class, and sub-sub-class designations (see MULTC1 for more information about the Multum Lexicon variables). 
+
+Users of the Multum Lexicon variables should cite Multum Lexicon, AHRQ, and IPUMS MEPS as the data sources.]]></txt>
+  <codInstr><![CDATA[CodesRXDRGNAM is a 60-character string variable. 
+
+In 2014-onward samples, in the case that a prescription drug name was determined to be a confidentiality risk, the most detailed Multum Lexicon therapeutic classification value available (see MULTC1) replaced RXDRGNAM (Multum drug name). The most detailed classification value available means that if a medication fill has a sub-sub-class value assigned, such as “SSRI antidepressants,” this is the value used for RXDRGNAM in the case that the drug name was determined to be a confidentiality risk. If a medication fill has a sub-class value, such as “antidepressants,” but no sub-sub-class value assigned, then the sub-class value is the value used for RXDRGNAM. If a medication fill has a class value, such as “psychotherapeutic agents,” but no sub-class or sub-sub-class value assigned, then the class value is the value used for RXDRGNAM. 
+
+In 1996-2013 samples, in the case that a prescription drug name was determined to be a confidentiality risk, RXDRGNAM is assigned a value of 8 – “Unknown-not ascertained.”
+
+Additionally, diabetic equipment and supplies (see RXNAME) are also assigned a RXDRGNAM value of 8 – “Unknown-not ascertained” for all years.]]></codInstr>
+  <concept vocab="IPUMS">Prescribed Medicine Fills Variables -- RX MEDICINES</concept>
+  <varFormat schema="other" type="character"/>
+</var>
+</dataDscr>
+</codeBook>

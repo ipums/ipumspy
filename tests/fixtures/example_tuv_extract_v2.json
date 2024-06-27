@@ -1,0 +1,12 @@
+{
+    "version": 2, 
+    "dataStructure": {"hierarchical": {}}, 
+    "dataFormat": "fixed_width", 
+    "caseSelectWho": "individuals", 
+    "description": "atus test (ipumspy)", 
+    "samples": {"at2016": {}}, 
+    "variables": {"RECTYPE": {}, "YEAR": {"preselected": true}, "CASEID": {"preselected": true}, "SERIAL": {"preselected": true}, "STATEFIP": {}, "PERNUM": {"preselected": true}, "LINENO": {"preselected": true}, "WT06": {"preselected": true}, "AGE": {}, "SEX": {}}, 
+    "timeUseVariables": {"BLS_PCARE": {}}, 
+    "sampleMembers": {"includeNonRespondents": true, "includeHouseholdMembers": false}, 
+    "collection": "atus"
+}

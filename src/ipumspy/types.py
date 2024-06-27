@@ -1,6 +1,7 @@
 """
 Some standard types used throughout the library
 """
+
 import io
 from pathlib import Path
 from typing import Union

@@ -25,7 +25,7 @@ def mock_api() -> str:
     )
     time.sleep(1)  # Give it enough time to warm up
     try:
-        yield "http://127.0.0.1:9898/extracts"
+        yield "http://127.0.0.1:9898"
     finally:
         p.kill()
 

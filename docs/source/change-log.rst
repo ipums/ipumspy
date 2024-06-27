@@ -11,6 +11,33 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+
+0.5.0
+-----
+2024-06-27
+
+* Breaking Changes
+
+  * ``UsaExtract``, ``CpsExtract``, and ``IpumsiExtract`` have been consolidated into a single :py:class:`~ipumspy.api.extract.MicrodataExtract` class that requires an IPUMS collection id as its first positional argument.
+
+* New Features
+
+  * Support for new IPUMS API features added in the `Version 2, May 2024 Update <https://developer.ipums.org/docs/v2/apiprogram/changelog/>`_.
+
+    * Added :py:class:`~ipumspy.api.extract.TimeUseVariable` to support adding IPUMS ATUS, AHTUS, and MTUS time use variables to extracts
+    * ``sample_members`` is now a valid key word argument in :py:class:`~ipumspy.api.extract.MicrodataExtract` for IPUMS ATUS extracts to request non-respondents and household members of respondents be included in an IPUMS ATUS extract
+    * Rectangular on activity (``{"rectangular": {"on": "A"}}``) is now a supported data structure for IPUMS ATUS, AHTUS, and MTUS data collections
+    * Rectangular on round (``{"rectangular": {"on": "R"}}``) is now a supported data structure for IPUMS MEPS
+    * Rectangular on injury (``{"rectangular": {"on": "I"}}``) is now a supported data structure for IPUMS IHIS
+    * Household-only extracts (``{"householdOnly": {}``) is now a supported data structure for IPUMS USA
+
+* Bug Fixes
+
+  * An off-by-one error that was causing variables read using the :py:meth:`~ipumspy.noextract.read_noextract_codebook()` method to be one digit too wide has bee fixed.
+  * :py:meth:`~ipumspy.readers.read_microdata()` and :py:meth:`~ipumspy.readers.read_hierarchical_microdata()` now handle floating point data in IPUMS extract files correctly.
+  * :py:meth:`~ipumspy.api.extract.define_extract_from_json()` and :py:meth:`~ipumspy.api.extract.extract_from_dict()` now correctly read the keyword argument elements of the extract definition dictionaries rather than using default values.
+  * If a list containing both string variable names or time use variable names and :py:class:`~ipumspy.api.Variable` or :py:class:`~ipumspy.api.TimeUseVariable` objects, a TypeError is raised.
+
 0.4.1
 -----
 2023-08-08

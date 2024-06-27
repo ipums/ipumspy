@@ -1,6 +1,7 @@
 """
 Wrappers for payloads to ship to the IPUMS API
 """
+
 from __future__ import annotations
 
 import warnings
@@ -9,15 +10,12 @@ from typing import Any, Dict, List, Optional, Type, Union
 import requests
 import json
 import inspect
+from abc import ABC, abstractmethod
 
 from ipumspy.ddi import Codebook
 
 from dataclasses import dataclass, field
 from .exceptions import IpumsExtractNotSubmitted
-
-
-class DefaultCollectionWarning(Warning):
-    pass
 
 
 class ApiVersionWarning(Warning):
@@ -29,7 +27,28 @@ class ModifiedExtractWarning(Warning):
 
 
 @dataclass
-class Variable:
+class IpumsObject(ABC):
+
+    def update(self, attribute: str, value: Any):
+        """
+        Update Variable features
+
+        Args:
+            attribute: name of the object attribute to update
+            value: values with which to update the `attribute`
+        """
+        if hasattr(self, attribute):
+            setattr(self, attribute, value)
+        else:
+            raise KeyError(f"{type(self).__name__} has no attribute '{attribute}'.")
+
+    @abstractmethod
+    def build(self):
+        pass
+
+
+@dataclass
+class Variable(IpumsObject):
     """
     IPUMS variable object to include in an IPUMS extract object.
     """
@@ -48,19 +67,6 @@ class Variable:
     def __post_init__(self):
         self.name = self.name.upper()
 
-    def update(self, attribute: str, value: Any):
-        """
-        Update Variable features
-
-        Args:
-            attribute: name of the Variable attribute to update
-            value: values with which to update the `attribute`
-        """
-        if hasattr(self, attribute):
-            setattr(self, attribute, value)
-        else:
-            raise KeyError(f"Variable has no attribute '{attribute}'.")
-
     def build(self):
         """Format Variable information for API Extract submission"""
         built_var = self.__dict__.copy()
@@ -74,7 +80,7 @@ class Variable:
 
 
 @dataclass
-class Sample:
+class Sample(IpumsObject):
     """
     IPUMS sample object to include in an IPUMS extract object.
     """
@@ -87,18 +93,36 @@ class Sample:
     def __post_init__(self):
         self.id = self.id.lower()
 
-    def update(self, attribute: str, value: Any):
-        """
-        Update Sample features
+    def build(self):
+        raise NotImplementedError
 
-        Args:
-            attribute: name of the Sample attribute to update
-            value: values with which to update the `attribute`
-        """
-        if hasattr(self, attribute):
-            setattr(self, attribute, value)
+
+@dataclass
+class TimeUseVariable(IpumsObject):
+    name: str
+    """IPUMS Time Use Variable name"""
+    owner: Optional[str] = ""
+    """email address associated with your IPUMS account. Only required for user-defined Time Use Variables."""
+
+    def __post_init__(self):
+        self.name = self.name.lower()
+
+    def build(self):
+        """Format Time Use Variable information for API Extract submission"""
+        built_tuv = self.__dict__.copy()
+        # don't repeat the variable name
+        built_tuv.pop("name")
+        # only include the owner field if one is specified
+        if self.owner != "":
+            if "@" not in self.owner:
+                raise ValueError(
+                    "'owner' must be the email address associated with your IPUMS user account."
+                )
+            else:
+                built_tuv["owner"] = built_tuv.pop("owner")
         else:
-            raise KeyError(f"Sample has no attribute '{attribute}'.")
+            built_tuv.pop("owner")
+        return built_tuv
 
 
 def _unpack_samples_dict(dct: dict) -> List[Sample]:
@@ -125,8 +149,18 @@ def _unpack_variables_dict(dct: dict) -> List[Variable]:
     return vars
 
 
+def _unpack_tuv_dict(dct: dict) -> List[TimeUseVariable]:
+    tuvs = []
+    for i in dct.keys():
+        tuv_obj = TimeUseVariable(name=i)
+        if "owner" in dct[i]:
+            tuv_obj.update("owner", dct[i]["owner"])
+        tuvs.append(tuv_obj)
+    return tuvs
+
+
 class BaseExtract:
-    _collection_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
+    _collection_type_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
 
     def __init__(self):
         """
@@ -140,27 +174,14 @@ class BaseExtract:
         self._info: Optional[Dict[str, Any]] = None
         self.api_version: Optional[str] = None
 
-    def __init_subclass__(cls, collection: str, **kwargs):
+    def __init_subclass__(cls, collection_type: str, **kwargs):
         super().__init_subclass__(**kwargs)
-        cls.collection = collection
-        BaseExtract._collection_to_extract[collection] = cls
+        cls.collection_type = collection_type
+        BaseExtract._collection_type_to_extract[collection_type] = cls
+        # cls.collection = collection
+        # BaseExtract._collection_to_extract[collection] = cls
 
     def _kwarg_warning(self, kwargs_dict: Dict[str, Any]):
-        try:
-            if kwargs_dict["collection"] == self.collection:
-                # collection kwarg is same as default, nothing to do
-                pass
-            elif kwargs_dict["collection"] != self.collection:
-                warnings.warn(
-                    f"This extract object already has a default collection "
-                    f"{self.collection}. Collection Key Word Arguments "
-                    f"are ignored.",
-                    DefaultCollectionWarning,
-                )
-        except KeyError:
-            # if there collection isn't specified
-            # then nothing to warn about there
-            pass
         # raise kwarg warnings if they exist
         if "warnings" in kwargs_dict.keys():
             newline = "\n"
@@ -206,6 +227,10 @@ class BaseExtract:
 
     def _snake_to_camel(self, kwarg_dict):
         for key in list(kwarg_dict.keys()):
+            # if the value of the kwarg is also a dict
+            if isinstance(kwarg_dict[key], dict):
+                self._snake_to_camel(kwarg_dict[key])
+
             # create camelCase equivalent
             key_list = key.split("_")
             # join capitalized versions of all parts except the first
@@ -216,18 +241,29 @@ class BaseExtract:
             kwarg_dict[camel_key] = kwarg_dict[key]
             # pop the snake_case key
             kwarg_dict.pop(key)
-
         return kwarg_dict
 
     def _validate_list_args(self, list_arg, arg_obj):
         # this bit feels extra sketch, but it seems like a better solution
         # than just having the BaseExtract(**kwargs) method of instantiating
         # an extract object quietly leave out variable-level extract features
+
+        # before diving into any duplicate validation, make sure the list argument the user provided
+        # is only strings or only IPUMS objects. Raise a useful error and ask the user to fix themselves
+        if not all(isinstance(i, str) for i in list_arg) and not all(
+            isinstance(i, IpumsObject) for i in list_arg
+        ):
+            raise TypeError(
+                f"The items in {list_arg} must all be string type or {arg_obj} type."
+            )
         if isinstance(list_arg, dict) and arg_obj is Variable:
             args = _unpack_variables_dict(list_arg)
             return args
         elif isinstance(list_arg, dict) and arg_obj is Sample:
             args = _unpack_samples_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is TimeUseVariable:
+            args = _unpack_tuv_dict(list_arg)
             return args
         # Make sure extracts don't get built with duplicate variables or samples
         # if the argument is a list of objects, make sure there are not objects with duplicate names
@@ -306,6 +342,110 @@ class BaseExtract:
                 f"Expected a string or Variable object; {type(variable)} received."
             )
 
+
+class MicrodataExtract(BaseExtract, collection_type="microdata"):
+    def __init__(
+        self,
+        collection: str,
+        samples: Union[List[str], List[Sample]],
+        variables: Union[List[str], List[Variable]],
+        description: str = "",
+        data_format: str = "fixed_width",
+        data_structure: Dict = {"rectangular": {"on": "P"}},
+        time_use_variables: Union[List[str], List[TimeUseVariable]] = None,
+        **kwargs,
+    ):
+        """
+        Class for defining an extract for an IPUMS microdata collection.
+
+        Args:
+            collection: name of an IPUMS data collection
+            samples: list of sample IDs from an IPUMS microdata collection
+            variables: list of variable names from an IPUMS microdata collection
+            description: short description of your extract
+            data_format: fixed_width and csv supported
+            data_structure: nested dict with "rectangular", "hierarchical", or "household-only" as first-level key.
+                            "rectangular" extracts require further specification of "on" : <record type>.
+                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
+            time_use_variables: a list of IPUMS Time Use Variable names or Objects. This argument is only valid for IPUMS ATUS,
+                                MTUS, and AHTUS data collections. If the list contains user-created Time Use Variables, these
+                                must be passed as a list of TimeUseVariable objects with the 'owner' field specified.
+
+        Keyword Args:
+            data_quality_flags: a boolean value which, if True, adds the data quality flags for each variable included in the `variables` list
+                                if a data quality flag exists for that variable.
+            sample_members: a dictionary of non-default sample members to include for Time Use collections where keys are strings
+                            indicating sample member type and values are boolean. This argument is only valid for IPUMS ATUS,
+                            MTUS, and AHTUS data collections. Valid keys include 'include_non_respondents' and 'include_household_members'.
+        """
+
+        super().__init__()
+        self.collection_type = self.collection_type
+        """IPUMS Collection type (microdata currently the only valid value)"""
+        self.collection = collection
+        self.samples = self._validate_list_args(samples, Sample)
+        self.variables = self._validate_list_args(variables, Variable)
+        if description == "":
+            self.description = f"My IPUMS {collection.upper()} extract"
+        else:
+            self.description = description
+        self.data_format = data_format
+        self.data_structure = data_structure
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
+        """IPUMS API version number"""
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
+
+        # I don't love this, but it also seems overkill to make a seperate extract class
+        # just for these features
+        self.time_use_variables = time_use_variables
+        if self.time_use_variables is not None:
+            # XXX remove when the server-side error messaging is improved
+            if self.collection in ["atus", "mtus", "ahtus"]:
+                self.time_use_variables = self._validate_list_args(
+                    self.time_use_variables, TimeUseVariable
+                )
+            else:
+                raise ValueError(
+                    f"Time use variables are unavailable for the IPUMS {self.collection.upper()} data collection"
+                )
+
+    def build(self) -> Dict[str, Any]:
+        """
+        Convert the object into a dictionary to be passed to the IPUMS API
+        as a JSON string
+        """
+        built = {
+            "description": self.description,
+            "dataFormat": self.data_format,
+            "dataStructure": self.data_structure,
+            "samples": {sample.id: {} for sample in self.samples},
+            "variables": {
+                variable.name.upper(): variable.build() for variable in self.variables
+            },
+            "collection": self.collection,
+            "version": self.api_version,
+            **self.kwargs,
+        }
+
+        if self.time_use_variables is not None:
+            built["timeUseVariables"] = {
+                tuv.name.upper(): tuv.build() for tuv in self.time_use_variables
+            }
+
+        # XXX shoehorn fix until server-side bug is fixed
+        if self.collection == "meps":
+            for variable in built["variables"].keys():
+                built["variables"][variable].pop("attachedCharacteristics")
+
+        return built
+
     def attach_characteristics(self, variable: Union[Variable, str], of: List[str]):
         """
         A method to update existing IPUMS Extract Variable objects
@@ -365,212 +505,6 @@ class BaseExtract:
             )
 
 
-class OtherExtract(BaseExtract, collection="other"):
-    def __init__(self, collection: str, details: Optional[Dict[str, Any]]):
-        """
-        A generic extract object for working with collections that are not
-        yet officially supported by this API library
-        """
-
-        super().__init__()
-        self.collection = collection
-        """Name of an IPUMS data collection"""
-        self.details = details
-        """dictionary containing variable names and sample IDs"""
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return self.details
-
-
-class UsaExtract(BaseExtract, collection="usa"):
-    def __init__(
-        self,
-        samples: Union[List[str], List[Sample]],
-        variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS USA extract",
-        data_format: str = "fixed_width",
-        data_structure: Dict = {"rectangular": {"on": "P"}},
-        **kwargs,
-    ):
-        """
-        Defining an IPUMS USA extract.
-
-        Args:
-            samples: list of IPUMS USA sample IDs
-            variables: list of IPUMS USA variable names
-            description: short description of your extract
-            data_format: fixed_width and csv supported
-            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
-                            "rectangular" extracts require further specification of "on" : <record type>.
-                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
-        """
-
-        super().__init__()
-        self.samples = self._validate_list_args(samples, Sample)
-        self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
-        self.data_format = data_format
-        self.data_structure = data_structure
-        self.collection = self.collection
-        """Name of an IPUMS data collection"""
-        self.api_version = (
-            self.extract_api_version(kwargs)
-            if len(kwargs.keys()) > 0
-            else self.api_version
-        )
-        """IPUMS API version number"""
-        # check kwargs for conflicts with defaults
-        self._kwarg_warning(kwargs)
-        # make the kwargs camelCase
-        self.kwargs = self._snake_to_camel(kwargs)
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return {
-            "description": self.description,
-            "dataFormat": self.data_format,
-            "dataStructure": self.data_structure,
-            "samples": {sample.id: {} for sample in self.samples},
-            "variables": {
-                variable.name.upper(): variable.build() for variable in self.variables
-            },
-            "collection": self.collection,
-            "version": self.api_version,
-            **self.kwargs,
-        }
-
-
-class CpsExtract(BaseExtract, collection="cps"):
-    def __init__(
-        self,
-        samples: Union[List[str], List[Sample]],
-        variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS CPS extract",
-        data_format: str = "fixed_width",
-        data_structure: Dict = {"rectangular": {"on": "P"}},
-        **kwargs,
-    ):
-        """
-        Defining an IPUMS CPS extract.
-
-        Args:
-            samples: list of IPUMS CPS sample IDs
-            variables: list of IPUMS CPS variable names
-            description: short description of your extract
-            data_format: fixed_width and csv supported
-            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
-                            "rectangular" extracts require further specification of "on" : <record type>.
-                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
-        """
-
-        super().__init__()
-        self.samples = self._validate_list_args(samples, Sample)
-        self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
-        self.data_format = data_format
-        self.data_structure = data_structure
-        self.collection = self.collection
-        """Name of an IPUMS data collection"""
-        self.api_version = (
-            self.extract_api_version(kwargs)
-            if len(kwargs.keys()) > 0
-            else self.api_version
-        )
-        """IPUMS API version number"""
-
-        # check kwargs for conflicts with defaults
-        self._kwarg_warning(kwargs)
-        # make the kwargs camelCase
-        self.kwargs = self._snake_to_camel(kwargs)
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return {
-            "description": self.description,
-            "dataFormat": self.data_format,
-            "dataStructure": self.data_structure,
-            "samples": {sample.id: {} for sample in self.samples},
-            "variables": {
-                variable.name.upper(): variable.build() for variable in self.variables
-            },
-            "collection": self.collection,
-            "version": self.api_version,
-            **self.kwargs,
-        }
-
-
-class IpumsiExtract(BaseExtract, collection="ipumsi"):
-    def __init__(
-        self,
-        samples: Union[List[str], List[Sample]],
-        variables: Union[List[str], List[Variable]],
-        description: str = "My IPUMS International extract",
-        data_format: str = "fixed_width",
-        data_structure: Dict = {"rectangular": {"on": "P"}},
-        **kwargs,
-    ):
-        """
-        Defining an IPUMS International extract.
-
-        Args:
-            samples: list of IPUMS International sample IDs
-            variables: list of IPUMS International variable names
-            description: short description of your extract
-            data_format: fixed_width and csv supported
-            data_structure: nested dict with "rectangular" or "hierarchical" as first-level key.
-                            "rectangular" extracts require further specification of "on" : <record type>.
-                            Default {"rectangular": "on": "P"} requests an extract rectangularized on the "P" record.
-        """
-
-        super().__init__()
-        self.samples = self._validate_list_args(samples, Sample)
-        self.variables = self._validate_list_args(variables, Variable)
-        self.description = description
-        self.data_format = data_format
-        self.data_structure = data_structure
-        self.collection = self.collection
-        """Name of an IPUMS data collection"""
-        self.api_version = (
-            self.extract_api_version(kwargs)
-            if len(kwargs.keys()) > 0
-            else self.api_version
-        )
-        """IPUMS API version number"""
-
-        # check kwargs for conflicts with defaults
-        self._kwarg_warning(kwargs)
-        # make the kwargs camelCase
-        self.kwargs = self._snake_to_camel(kwargs)
-
-    def build(self) -> Dict[str, Any]:
-        """
-        Convert the object into a dictionary to be passed to the IPUMS API
-        as a JSON string
-        """
-        return {
-            "description": self.description,
-            "dataFormat": self.data_format,
-            "dataStructure": self.data_structure,
-            "samples": {sample.id: {} for sample in self.samples},
-            "variables": {
-                variable.name.upper(): variable.build() for variable in self.variables
-            },
-            "collection": self.collection,
-            "version": self.api_version,
-            **self.kwargs,
-        }
-
-
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
     Convert an extract that is currently specified as a dictionary (usually from a file)
@@ -586,23 +520,30 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
-    if dct["collection"] in BaseExtract._collection_to_extract:
-        # some fanciness to make sure sample and variable features
-        # are preserved
-        # make samples Sample objects
-        if isinstance(dct["samples"], dict):
-            dct["samples"] = _unpack_samples_dict(dct["samples"])
-        else:
-            dct["samples"] = [Sample(id=samp) for samp in dct["samples"]]
-        # make varibales Variable objects
-        if isinstance(dct["variables"], dict):
-            dct["variables"] = _unpack_variables_dict(dct["variables"])
-        else:
-            dct["variables"] = [Variable(name=var) for var in dct["variables"]]
 
-        return BaseExtract._collection_to_extract[dct["collection"]](**dct)
+    def _camel_to_snake(key):
+        # don't mess with case for boolean values
+        if isinstance(key, bool):
+            return key
+        cap_idx = [0] + [key.index(i) for i in key if i.isupper()]
+        parts_list = [key[i:j].lower() for i, j in zip(cap_idx, cap_idx[1:] + [None])]
+        snake = "_".join(parts_list)
+        return snake
 
-    return OtherExtract(dct["collection"], dct)
+    def _make_snake_ext(ext_dict):
+        for key in ext_dict.keys():
+            if isinstance(ext_dict[key], dict):
+                if key not in ["variables", "samples", "timeUseVariables"]:
+                    ext_dict[key] = _make_snake_ext(ext_dict[key])
+        return {_camel_to_snake(k): v for k, v in ext_dict.items()}
+
+    ext_dict = _make_snake_ext(dct)
+    # XXX To Do: When MicrodataExtract is no longer the only extract class,
+    # this method will need to differentiate between the different collection types
+    # since this info isn't available from the api response and so won't be stored in any
+    # dict representation, there needs to be a way to know which collections are micro
+    # and which are not.
+    return MicrodataExtract(**ext_dict)
 
 
 def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:

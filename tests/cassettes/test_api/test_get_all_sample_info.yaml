@@ -9,49 +9,44 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+      - python-ipumspy:0.4.1.github.com/ipums/ipumspy
     method: GET
-    uri: https://api.ipums.org/metadata/usa/samples?version=2
+    uri: https://api.ipums.org/metadata/samples?collection=usa&pageSize=2500&version=2
   response:
     body:
-      string: '{"data":[{"name":"us1850a","description":"1850 1%"},{"name":"us1850b","description":"1850
-        100% sample (July 2015)"},{"name":"us1850c","description":"1850 100% sample
-        (Revised December 2017)"},{"name":"us1860a","description":"1860 1%"},{"name":"us1860b","description":"1860
-        1% sample with black oversample"},{"name":"us1860c","description":"1860 100%
-        sample (Jan 2019)"},{"name":"us1870a","description":"1870 1%"},{"name":"us1870b","description":"1870
-        1% sample with black oversample"},{"name":"us1870c","description":"1870 100%
-        sample (Jan 2019)"},{"name":"us1880a","description":"1880 1%"},{"name":"us1880b","description":"1880
-        5% sample (preliminary release)"},{"name":"us1880c","description":"1880 100%
-        database (limited variables)"},{"name":"us1880d","description":"1880 10%"},{"name":"us1880e","description":"1880
-        100% database (January 2010 expanded version)"},{"name":"us1900f","description":"1900
-        1%"},{"name":"us1900g","description":"1900 1% sample with oversamples"},{"name":"us1900h","description":"1900
-        2.5% sample (preliminary release)"},{"name":"us1900i","description":"1900
-        5% sample (pre-May 2011 version)"},{"name":"us1900k","description":"1900 1%"},{"name":"us1900j","description":"1900
-        5%"},{"name":"us1900l","description":"1900 1% sample with oversamples"},{"name":"us1900m","description":"1900
-        100% database"},{"name":"us1910h","description":"1910 Puerto Rico"},{"name":"us1910i","description":"1910
-        1%"},{"name":"us1910j","description":"1910 1.4% sample with oversamples"},{"name":"us1910k","description":"1910
-        1%"},{"name":"us1910l","description":"1910 1.4% sample with oversamples"},{"name":"us1910m","description":"1910
-        100% database"},{"name":"us1920a","description":"1920 1%"},{"name":"us1920b","description":"1920
+      string: '{"data":[{"name":"us1850a","description":"1850 1%"},{"name":"us1850c","description":"1850
+        100% sample (Revised November 2023)"},{"name":"us1860a","description":"1860
+        1%"},{"name":"us1860b","description":"1860 1% sample with black oversample"},{"name":"us1860c","description":"1860
+        100% sample (Revised November 2023)"},{"name":"us1870a","description":"1870
+        1%"},{"name":"us1870b","description":"1870 1% sample with black oversample"},{"name":"us1870c","description":"1870
+        100% sample (Revised November 2023)"},{"name":"us1880a","description":"1880
+        1%"},{"name":"us1880d","description":"1880 10%"},{"name":"us1880e","description":"1880
+        100% database (Revised November 2023)"},{"name":"us1900k","description":"1900
+        1%"},{"name":"us1900j","description":"1900 5%"},{"name":"us1900l","description":"1900
+        1% sample with oversamples"},{"name":"us1900m","description":"1900 100% database"},{"name":"us1910h","description":"1910
+        Puerto Rico"},{"name":"us1910k","description":"1910 1%"},{"name":"us1910l","description":"1910
+        1.4% sample with oversamples"},{"name":"us1910m","description":"1910 100%
+        database"},{"name":"us1920a","description":"1920 1%"},{"name":"us1920b","description":"1920
         Puerto Rico sample"},{"name":"us1920c","description":"1920 100% database"},{"name":"us1930a","description":"1930
         1%"},{"name":"us1930b","description":"1930 5%"},{"name":"us1930c","description":"1930
         Puerto Rico"},{"name":"us1930d","description":"1930 100% database"},{"name":"us1940a","description":"1940
         1%"},{"name":"us1940b","description":"1940 100% database"},{"name":"us1950a","description":"1950
-        1%"},{"name":"us1960a","description":"1960 1%"},{"name":"us1960b","description":"1960
-        5%"},{"name":"us1970a","description":"1970 Form 1 State"},{"name":"us1970b","description":"1970
-        Form 2 State"},{"name":"us1970c","description":"1970 Form 1 Metro"},{"name":"us1970d","description":"1970
-        Form 2 Metro"},{"name":"us1970e","description":"1970 Form 1 Neighborhood"},{"name":"us1970f","description":"1970
-        Form 2 Neighborhood"},{"name":"us1970h","description":"1970 Puerto Rico State"},{"name":"us1970i","description":"1970
-        Puerto Rico Municipio"},{"name":"us1970j","description":"1970 Puerto Rico
-        Neighborhood"},{"name":"us1980a","description":"1980 5%"},{"name":"us1980b","description":"1980
+        1%"},{"name":"us1950b","description":"1950 100% database"},{"name":"us1960a","description":"1960
+        1%"},{"name":"us1960b","description":"1960 5%"},{"name":"us1970a","description":"1970
+        Form 1 State"},{"name":"us1970b","description":"1970 Form 2 State"},{"name":"us1970c","description":"1970
+        Form 1 Metro"},{"name":"us1970d","description":"1970 Form 2 Metro"},{"name":"us1970e","description":"1970
+        Form 1 Neighborhood"},{"name":"us1970f","description":"1970 Form 2 Neighborhood"},{"name":"us1970h","description":"1970
+        Puerto Rico State"},{"name":"us1970i","description":"1970 Puerto Rico Municipio"},{"name":"us1970j","description":"1970
+        Puerto Rico Neighborhood"},{"name":"us1980a","description":"1980 5%"},{"name":"us1980b","description":"1980
         1%"},{"name":"us1980c","description":"1980 Urban/Rural"},{"name":"us1980d","description":"1980
         Labor Market Area"},{"name":"us1980e","description":"1980 Detailed metro/non-metro"},{"name":"us1980f","description":"1980
         Puerto Rico 5%"},{"name":"us1980g","description":"1980 Puerto Rico 1%"},{"name":"us1990a","description":"1990
         5%"},{"name":"us1990b","description":"1990 1%"},{"name":"us1990c","description":"1990
         Unweighted 1%"},{"name":"us1990d","description":"1990 Elderly"},{"name":"us1990e","description":"1990
         Labor Market Area"},{"name":"us1990f","description":"1990 Puerto Rico 5%"},{"name":"us1990g","description":"1990
-        Puerto Rico 1%"},{"name":"us2000d","description":"2000 ACS"},{"name":"us2000b","description":"2000
+        Puerto Rico 1%"},{"name":"us2000a","description":"2000 5%"},{"name":"us2000b","description":"2000
         1% sample (old version)"},{"name":"us2000c","description":"2000 Unweighted
-        1%"},{"name":"us2000a","description":"2000 5%"},{"name":"us2000e","description":"2000
+        1%"},{"name":"us2000d","description":"2000 ACS"},{"name":"us2000e","description":"2000
         Puerto Rico 5%"},{"name":"us2000f","description":"2000 Puerto Rico 1% sample
         (old version)"},{"name":"us2000g","description":"2000 1%"},{"name":"us2000h","description":"2000
         Puerto Rico 1%"},{"name":"us2001a","description":"2001 ACS"},{"name":"us2002a","description":"2002
@@ -93,22 +88,24 @@ interactions:
         PRCS 5-year"},{"name":"us2020a","description":"2020 ACS"},{"name":"us2020c","description":"2016-2020,
         ACS 5-year"},{"name":"us2020d","description":"2016-2020, PRCS 5-year"},{"name":"us2021a","description":"2021
         ACS"},{"name":"us2021b","description":"2021 PRCS"},{"name":"us2021c","description":"2017-2021,
-        ACS 5-year"},{"name":"us2021d","description":"2017-2021, PRCS 5-year"}],"pageNumber":1,"pageSize":500,"totalCount":150,"links":{"previousPage":null,"nextPage":null}}'
+        ACS 5-year"},{"name":"us2021d","description":"2017-2021, PRCS 5-year"},{"name":"us2022a","description":"2022
+        ACS"},{"name":"us2022b","description":"2022 PRCS"},{"name":"us2022c","description":"2018-2022,
+        ACS 5-year"},{"name":"us2022d","description":"2018-2022, PRCS 5-year"}],"pageNumber":1,"pageSize":2500,"totalCount":146,"links":{"previousPage":null,"nextPage":null}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Content-Length:
-      - '8051'
+      - '7749'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 31 Mar 2023 20:14:38 GMT
+      - Thu, 02 May 2024 19:35:30 GMT
       Etag:
-      - W/"ba8258ece56e7423b2e97a9519da4d4c"
+      - W/"a160a8ecdb1f8e7aea07945f03b0cc38"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0
+      - nginx/1.22.1
       Vary:
       - Origin
       X-Content-Type-Options:
@@ -126,9 +123,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - dc979ea5-ae1f-4d2a-bbd0-de6393a8b1df
+      - 4d93bfcf-d4d2-4959-a3c3-11995dff2a49
       X-Runtime:
-      - '0.003452'
+      - '0.134752'
       X-Xss-Protection:
       - '0'
     status:

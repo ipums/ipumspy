@@ -1,6 +1,7 @@
 """
 Core utilities for interacting with the IPUMS API
 """
+
 import copy
 import time
 import warnings
@@ -24,7 +25,7 @@ from .exceptions import (
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
-from .extract import BaseExtract, OtherExtract
+from .extract import BaseExtract, MicrodataExtract
 
 
 class ModifiedIpumsExtract(Warning):
@@ -75,7 +76,7 @@ class IpumsApiClient:
     def __init__(
         self,
         api_key: str,
-        base_url: str = "https://api.ipums.org/extracts",
+        base_url: str = "https://api.ipums.org",
         api_version: str = 2,
         num_retries: int = 3,
         session: Optional[requests.Session] = None,
@@ -164,27 +165,18 @@ class IpumsApiClient:
         Returns:
             The number of the extract for the passed user account
         """
-        # define extract collection
+
         if not isinstance(extract, BaseExtract):
             extract = copy.deepcopy(extract)
-            if "collection" in extract:
-                collection = collection or extract["collection"]
-                del extract["collection"]
-            else:
-                if not collection:
-                    ValueError("You must provide a collection")
+            if "microdata" in BaseExtract._collection_type_to_extract:
+                extract = MicrodataExtract(extract)
 
-            if collection in BaseExtract._collection_to_extract:
-                extract_type = BaseExtract._collection_to_extract[collection]
-                extract = extract_type(**extract)
-            else:
-                extract = OtherExtract(collection, extract)
         # if no api version was provided on instantiation of extract object
         # or in extract definition dict, assign it to the default
         if extract.api_version is None:
             extract.api_version = self.api_version
         response = self.post(
-            self.base_url,
+            f"{self.base_url}/extracts",
             params={"collection": extract.collection, "version": extract.api_version},
             json=extract.build(),
         )
@@ -218,7 +210,7 @@ class IpumsApiClient:
 
         try:
             response = self.get(
-                f"{self.base_url}/{extract_id}",
+                f"{self.base_url}/extracts/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             )
         except IpumsNotFound:
@@ -285,7 +277,7 @@ class IpumsApiClient:
             )
 
         response = self.get(
-            f"{self.base_url}/{extract_id}",
+            f"{self.base_url}/extracts/{extract_id}",
             params={"collection": collection, "version": self.api_version},
         )
 
@@ -401,7 +393,7 @@ class IpumsApiClient:
         """
         # TODO: Wrap results in Extract objects.
         output = self.get(
-            self.base_url,
+            f"{self.base_url}/extracts",
             params={
                 "collection": collection,
                 "pageSize": limit,
@@ -433,7 +425,7 @@ class IpumsApiClient:
             return extract._info
         else:
             extract_info = self.get(
-                f"{self.base_url}/{extract_id}",
+                f"{self.base_url}/extracts/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             ).json()
             new_line = "\n"
@@ -461,11 +453,9 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        if collection in BaseExtract._collection_to_extract:
-            extract_type = BaseExtract._collection_to_extract[collection]
-            extract = extract_type(**extract_def["extractDefinition"])
-        else:
-            extract = OtherExtract(collection, extract)
+        if "microdata" in BaseExtract._collection_type_to_extract:
+            extract = MicrodataExtract(**extract_def["extractDefinition"])
+
         return extract
 
     def extract_is_expired(
@@ -490,13 +480,14 @@ class IpumsApiClient:
             return False
 
     def _get_pages(
-        self, collection: str, page_size: Optional[int] = 2500
+        self, collection: str, endpoint: str, page_size: Optional[int] = 2500
     ) -> Generator[Dict, None, None]:
         """
         An IPUMS API pages generator.
 
         Args:
             collection: An IPUMS data collection
+            endpoint: An IPUMS API endpoint
             page_size: The number of items to return per page. Default to maximum page size, 2500.
 
         Yields:
@@ -505,7 +496,7 @@ class IpumsApiClient:
         # made this a private method looking forward to making this a more
         # general purpose generator for non-extract endpoints
         first_page = self.get(
-            self.base_url,
+            f"{self.base_url}/{endpoint}",
             params={
                 "collection": collection,
                 "version": self.api_version,
@@ -521,7 +512,7 @@ class IpumsApiClient:
             next_page = page["links"]["nextPage"]
 
     def get_extract_history(
-        self, collection: str, page_size: Optional[int] = 2500
+        self, collection: str, page_size: Optional[int] = 500
     ) -> Generator[Dict, None, None]:
         """
         Retrieve extract history for a specific collection.
@@ -533,7 +524,7 @@ class IpumsApiClient:
         Yields:
             An iterator of extract history pages
         """
-        yield from self._get_pages(collection, page_size)
+        yield from self._get_pages(collection, "extracts", page_size)
 
     def get_all_sample_info(self, collection: str) -> Dict:
         """
@@ -546,9 +537,14 @@ class IpumsApiClient:
             A dictionary of IPUMS sample descriptions and IPUMS sample IDs; keys are
             sample ids, values are sample descriptions
         """
-        # shoehorn since this is the only metadata api endpoint avaialble
-        url = f"https://api.ipums.org/metadata/{collection}/samples"
-        samples = self.get(url, params={"version": self.api_version}).json()
+        samples = self.get(
+            f"{self.base_url}/metadata/samples",
+            params={
+                "collection": collection,
+                "pageSize": 2500,
+                "version": self.api_version,
+            },
+        ).json()
         # make it into the expected dict
         samples_dict = {}
         for item in samples["data"]:

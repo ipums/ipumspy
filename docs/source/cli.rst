@@ -24,7 +24,7 @@ as described in the :doc:`getting started guide <getting_started>`.
 
     description: Simple IPUMS extract
     collection: usa
-    api_version: beta
+    api_version: 2
     samples:
       - us2012b
     variables:
@@ -58,7 +58,7 @@ which contains the following:
 
     description: Another extract
     collection: usa
-    api_version: beta
+    api_version: 2
     samples:
       - us2012b
     variables:
@@ -80,7 +80,7 @@ extracts simultaneously. To do so, specify the ``ipums_multiple.yml`` file as fo
     extracts:
     - description: Simple IPUMS extract
       collection: usa
-      api_version: beta
+      api_version: 2
       samples:
         - us2012b
       variables:
@@ -88,7 +88,7 @@ extracts simultaneously. To do so, specify the ``ipums_multiple.yml`` file as fo
         - SEX
     - description: Another extract
       collection: usa
-      api_version: beta
+      api_version: 2
       samples:
         - us2012b
       variables:

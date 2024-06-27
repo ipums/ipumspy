@@ -1,6 +1,7 @@
 """
 Simple version wrapper
 """
+
 try:
     import importlib.metadata as metadata
 except ImportError:

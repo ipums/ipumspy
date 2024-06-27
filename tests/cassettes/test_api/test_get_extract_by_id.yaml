@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+      - python-ipumspy:0.4.1.github.com/ipums/ipumspy
     method: GET
     uri: https://api.ipums.org/extracts/433?collection=cps&version=2
   response:
@@ -24,13 +24,13 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 30 Mar 2023 19:49:04 GMT
+      - Mon, 29 Apr 2024 20:18:47 GMT
       Etag:
       - W/"2fd406cc439cb9f107408fd5ebd22c10"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0
+      - nginx/1.22.1
       Vary:
       - Origin
       - Accept
@@ -49,9 +49,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 9aa1fbae-b3fb-4922-adfc-4ba9a2df8b19
+      - 16b53115-e251-433f-80bf-93a6c7b2dfc1
       X-Runtime:
-      - '0.306242'
+      - '0.597869'
       X-Xss-Protection:
       - '0'
     status:
@@ -67,28 +67,28 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+      - python-ipumspy:0.4.1.github.com/ipums/ipumspy
     method: GET
     uri: https://api.ipums.org/extracts/6?collection=ipumsi&version=2
   response:
     body:
-      string: '{"number":6,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{"sasCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.sas","bytes":23115,"sha256":"bdf46ba893db954b87e28fd12a38b1995b9fd19893ec0e96bbcfb924bc579661"},"ddiCodebook":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.xml","bytes":100032,"sha256":"fb7fc7c14bae6f5e4fedeb283cdbd7c7c70d9039d582b8aeaa0b5dd21909d099"},"stataCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.do","bytes":45247,"sha256":"8156ad38b83a5885861e3585a1e8696a5684f192647675b197b489932fba0484"},"data":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.dat.gz","bytes":1427444,"sha256":"a8b44aae5ea39b836031b0343e495754ff8ddc2d3b1386a450e83bd4d3216eee"},"rCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.R","bytes":409,"sha256":"40ce6c97838a6b35e74d12d46bd1971b912df93feac79cd5c78a6f56c677cd9c"},"basicCodebook":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.cbk","bytes":28151,"sha256":"b8aacd66da07f5ee3e067ba1938558bfca8fc3e94bce21137df2f8e28417462a"},"spssCommandFile":{"url":"https://api.ipums.org/downloads/ipumsi/api/v1/extracts/1995121/ipumsi_00006.sps","bytes":24384,"sha256":"98d40bf325c43e8609a9ba5a21f6ef266be53325efd2acdab00e5b34a5f1469b"}},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+      string: '{"number":6,"status":"completed","email":"rodge103@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"rectangular":{"on":"P"}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
         IPUMS International extract","samples":{"am2011a":{}},"variables":{"COUNTRY":{"preselected":true},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"HHWT":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"AGE":{},"SEX":{}},"collection":"ipumsi"}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Content-Length:
-      - '1911'
+      - '545'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 30 Mar 2023 19:49:04 GMT
+      - Mon, 29 Apr 2024 20:18:48 GMT
       Etag:
-      - W/"068a3a2d6591e523a16ac6b3b8e25de1"
+      - W/"b2949c626d23a65e8103bbf47b48ce16"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0
+      - nginx/1.22.1
       Vary:
       - Origin
       - Accept
@@ -107,9 +107,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - e05b8b59-ac65-4748-b13d-e12e9942b454
+      - 643b364b-d0de-493e-81ac-8511494c87fc
       X-Runtime:
-      - '0.422595'
+      - '0.723123'
       X-Xss-Protection:
       - '0'
     status:
@@ -125,7 +125,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-ipumspy:0.2.2a1.github.com/ipums/ipumspy
+      - python-ipumspy:0.4.1.github.com/ipums/ipumspy
     method: GET
     uri: https://api.ipums.org/extracts/95?collection=cps&version=2
   response:
@@ -143,13 +143,13 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 30 Mar 2023 19:49:05 GMT
+      - Mon, 29 Apr 2024 20:18:49 GMT
       Etag:
       - W/"b35b767d32fbcd5787654ca9ea3770dc"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
-      - nginx/1.18.0
+      - nginx/1.22.1
       Vary:
       - Origin
       - Accept
@@ -168,9 +168,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 333d1214-d8c6-4426-b6c7-5e5dbbcc62c2
+      - 31c3a4b9-e47e-4f7f-9787-c64bc3a15df0
       X-Runtime:
-      - '0.526995'
+      - '1.378029'
       X-Xss-Protection:
       - '0'
     status:

@@ -18,7 +18,7 @@ pip install ipumspy
 
 ## Getting Started
 
-Documentation found [here](https://ipumspy.readthedocs.io/en/latest/index.html).
+Documentation and usage information found [here](https://ipumspy.readthedocs.io/en/latest/index.html).
 
 ## Development
 

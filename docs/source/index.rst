@@ -10,12 +10,12 @@ What is ipumspy?
 
 ``ipumspy`` is a collection of python tools for working with data from `IPUMS <https://ipums.org>`_ and for accessing that data via API.
 
-Currently only IPUMS microdata are supported; we hope to add support for working with spatial data in the future.
+Currently only IPUMS microdata collections are supported; we hope to add support for working with spatial data in the future.
 
-IPUMS USA, IPUMS CPS, and IPUMS International are currently the only IPUMS microdata collection available via the IPUMS API. Support for other IPUMS data collections will be added as they become available via API.
+``ipumspy`` can only be used to make extract requests for IPUMS data collections that are available via API. These collections are listed in the :ref:`collection availability table` table. Support for other IPUMS data collections will be added as they become available via API.
 For more information about the IPUMS API program, IPUMS account registration, and API keys, see the `IPUMS developer portal <https://developer.ipums.org/docs/apiprogram/>`_.
 
-``ipumspy`` can also be used to analyze microdata extracts made through the IPUMS website for collections unavailable via API.
+``ipumspy`` can also be used to read and analyze microdata extracts made through the IPUMS website for collections unavailable via API.
 
 
 Releases
