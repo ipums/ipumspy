@@ -28,7 +28,7 @@ This project adheres to `Semantic Versioning`_.
     * ``sample_members`` is now a valid key word argument in :py:class:`~ipumspy.api.extract.MicrodataExtract` for IPUMS ATUS extracts to request non-respondents and household members of respondents be included in an IPUMS ATUS extract
     * Rectangular on activity (``{"rectangular": {"on": "A"}}``) is now a supported data structure for IPUMS ATUS, AHTUS, and MTUS data collections
     * Rectangular on round (``{"rectangular": {"on": "R"}}``) is now a supported data structure for IPUMS MEPS
-    * Rectangular on injury (``{"rectangular": {"on": "I"}}``) is now a supported data structure for IPUMS IHIS
+    * Rectangular on injury (``{"rectangular": {"on": "I"}}``) is now a supported data structure for IPUMS NHIS
     * Household-only extracts (``{"householdOnly": {}``) is now a supported data structure for IPUMS USA
 
 * Bug Fixes
