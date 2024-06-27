@@ -45,7 +45,7 @@ def mock_api() -> str:
     p = subprocess.Popen(
         ["uvicorn", "tests.mock_api:app", "--host", "127.0.0.1", "--port", "8989"]
     )
-    time.sleep(1)  # Give it enough time to warm up
+    time.sleep(3)  # Give it enough time to warm up
     try:
         yield "http://127.0.0.1:8989"
     finally:
