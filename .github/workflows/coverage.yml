@@ -1,5 +1,9 @@
 name: CodeCov
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master, test_actions ]
+  pull_request:
+    branches: [ master ]
 jobs:
   run_tests:
     runs-on: ubuntu-20.04
