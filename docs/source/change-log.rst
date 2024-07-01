@@ -11,6 +11,13 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.5.1
+-----
+2024-07-01
+
+* Bug Fixes
+
+  * Pinned a minimum required version for ``numpy`` to avoid v2.0.0 incompatability with ``pandas``.
 
 0.5.0
 -----
