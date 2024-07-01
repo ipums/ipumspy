@@ -17,7 +17,7 @@ This project adheres to `Semantic Versioning`_.
 
 * Bug Fixes
 
-  * Pinned a minimum required version for ``numpy`` to avoid v2.0.0 incompatability with ``pandas``.
+  * Pinned a minimum required version for ``numpy`` to avoid v2.0.0 incompatability with earlier versions of ``pandas`` when installing with pip.
 
 0.5.0
 -----
