@@ -264,6 +264,7 @@ class IpumsApiClient:
                 extract data file.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
+        collection_type = _get_collection_type(collection)
 
         # if download_dir specified check if it exists
         download_dir = Path(download_dir or Path.cwd())
@@ -296,25 +297,44 @@ class IpumsApiClient:
         )
 
         download_links = response.json()["downloadLinks"]
-        try:
-            # if the extract has been expired, the download_links element will be
-            # an empty dict
-            data_url = download_links["data"]["url"]
-            ddi_url = download_links["ddiCodebook"]["url"]
-            download_urls = [data_url, ddi_url]
 
-            if stata_command_file:
-                _url = download_links["stataCommandFile"]["url"]
-                download_urls.append(_url)
-            if spss_command_file:
-                _url = download_links["spssCommandFile"]["url"]
-                download_urls.append(_url)
-            if sas_command_file:
-                _url = download_links["sasCommandFile"]["url"]
-                download_urls.append(_url)
-            if r_command_file:
-                _url = download_links["rCommandFile"]["url"]
-                download_urls.append(_url)
+        try:
+            if collection_type == "aggregate_data":
+                # Aggregate data links will include a tableData url, gisData url, or both
+                download_urls = []
+
+                # If neither tableData nor gisData in download links, extract has likely expired
+                valid_links = [link in ["tableData", "gisData"] for link in download_links]
+
+                if not any(valid_links):
+                    raise KeyError() # Trigger exception to get consistent error message for aggregate data and microdata
+                
+                if "tableData" in download_links:
+                    tabledata_url = download_links["tableData"]["url"]
+                    download_urls.append(tabledata_url)
+
+                if "gisData" in download_links:
+                    gisData_url = download_links["gisData"]["url"]
+                    download_urls.append(gisData_url)
+            else:
+                # if the extract has been expired, the download_links element will be
+                # an empty dict
+                data_url = download_links["data"]["url"]
+                ddi_url = download_links["ddiCodebook"]["url"]
+                download_urls = [data_url, ddi_url]
+
+                if stata_command_file:
+                    _url = download_links["stataCommandFile"]["url"]
+                    download_urls.append(_url)
+                if spss_command_file:
+                    _url = download_links["spssCommandFile"]["url"]
+                    download_urls.append(_url)
+                if sas_command_file:
+                    _url = download_links["sasCommandFile"]["url"]
+                    download_urls.append(_url)
+                if r_command_file:
+                    _url = download_links["rCommandFile"]["url"]
+                    download_urls.append(_url)
 
         except KeyError:
             if isinstance(extract, BaseExtract):
@@ -327,6 +347,7 @@ class IpumsApiClient:
                     f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
                     f"Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
                 )
+                
         for url in download_urls:
             file_name = url.split("/")[-1]
             download_path = download_dir / file_name
