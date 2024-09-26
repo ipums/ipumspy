@@ -125,6 +125,71 @@ class TimeUseVariable(IpumsObject):
         return built_tuv
 
 
+@dataclass
+class Dataset(IpumsObject):
+    """
+    IPUMS Dataset object to include in an AggregateDataExtract object.
+    """
+
+    name: str
+    """IPUMS NHGIS dataset name/id"""
+    data_tables: List[str]
+    """IPUMS NHGIS data tables to extract from this dataset"""
+    geog_levels: List[str]
+    """Geographic level(s) at which to obtain data for this dataset"""
+    years: Optional[List[str]] = field(default_factory=list)
+    """Years for which to obtain data for this dataset"""
+    breakdown_values: Optional[List[str]] = field(default_factory=list)
+    """Breakdown values to apply to this dataset"""
+
+    def build(self):
+        built_dataset = self.__dict__.copy()
+        # don't repeat the dataset name
+        built_dataset.pop("name")
+        # adhere to API schema camelCase convention
+        built_dataset["dataTables"] = built_dataset.pop("data_tables")
+        built_dataset["geogLevels"] = built_dataset.pop("geog_levels")
+        built_dataset["years"] = built_dataset.pop("years")
+        built_dataset["breakdownValues"] = built_dataset.pop("breakdown_values")
+
+        return built_dataset
+
+@dataclass
+class TimeSeriesTable(IpumsObject):
+    """
+    IPUMS TimeSeriesTable object to include in an AggregateDataExtract object.
+    """
+    
+    name: str
+    """IPUMS NHGIS time series table name/id"""
+    geog_levels: List[str] # required parameter
+    """Geographic level(s) at which to obtain data for this time series table"""
+    years: Optional[List[str]] = field(default_factory=list)
+    """Years for which to obtain data for this time series table"""
+
+    def build(self):
+        built_tst = self.__dict__.copy()
+        # don't repeat the time series table name
+        built_tst.pop("name")
+        # adhere to API schema camelCase convention
+        built_tst["geogLevels"] = built_tst.pop("geog_levels")
+        built_tst["years"] = built_tst.pop("years")
+
+        return built_tst
+    
+@dataclass
+class Shapefile(IpumsObject):
+    """
+    IPUMS Shapefile object to include in an AggregateDataExtract object.
+    """
+
+    name: str
+    """IPUMS NHGIS shapefile name/id"""
+
+    def build(self):
+        raise NotImplementedError
+
+
 def _unpack_samples_dict(dct: dict) -> List[Sample]:
     return [Sample(id=samp) for samp in dct.keys()]
 
@@ -158,6 +223,30 @@ def _unpack_tuv_dict(dct: dict) -> List[TimeUseVariable]:
         tuvs.append(tuv_obj)
     return tuvs
 
+
+def _unpack_dataset_dict(dct: dict) -> List[Dataset]:
+    datasets = []
+    for dataset in dct.keys():
+        dataset_obj = Dataset(name=dataset, data_tables=dct[dataset]["dataTables"], geog_levels=dct[dataset]["geogLevels"])
+        if "years" in dct[dataset]:
+            dataset_obj.update("years", dct[dataset]["years"])
+        if "breakdownValues" in dct[dataset]:
+            dataset_obj.update("breakdown_values", dct[dataset]["breakdownValues"])
+        datasets.append(dataset_obj)
+    return datasets
+
+def _unpack_tst_dict(dct: dict) -> List[TimeSeriesTable]:
+    time_series_tables = []
+    for time_series_table in dct.keys():
+        time_series_table_obj = TimeSeriesTable(name=time_series_table, geog_levels=dct[time_series_table]["geogLevels"])
+        if "years" in dct[time_series_table]:
+            time_series_table_obj.update("years", dct[time_series_table]["years"])
+        time_series_tables.append(time_series_table_obj)
+    
+    return time_series_tables
+
+def _unpack_shapefiles_dict(dct: dict) -> List[Shapefile]:
+    return [Shapefile(name=shapefile) for shapefile in dct.keys()]
 
 class BaseExtract:
     _collection_type_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
@@ -265,6 +354,16 @@ class BaseExtract:
         elif isinstance(list_arg, dict) and arg_obj is TimeUseVariable:
             args = _unpack_tuv_dict(list_arg)
             return args
+        elif isinstance(list_arg, dict) and arg_obj is Dataset:
+            args = _unpack_dataset_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is TimeSeriesTable:
+            args = _unpack_tst_dict(list_arg)
+            return(args)
+        elif isinstance(list_arg, dict) and arg_obj is Shapefile:
+            args = _unpack_shapefiles_dict(list_arg)
+            return(args)
+        
         # Make sure extracts don't get built with duplicate variables or samples
         # if the argument is a list of objects, make sure there are not objects with duplicate names
         elif all(isinstance(i, arg_obj) for i in list_arg):
@@ -504,6 +603,94 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
                 variable, "case_selections", {"detailed": values}
             )
 
+class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
+    def __init__(
+        self,
+        collection: str,
+        datasets: Optional[Union[List[str], List[Dataset]]] = [],
+        timeSeriesTables: Optional[Union[List[str], List[TimeSeriesTable]]] = [],
+        shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
+        description: str = "",
+        data_format: str = "csv_no_header",
+        # geographic_extents: Optional[List[str]] = None,
+        tst_layout: str = "time_by_column_layout",
+        breakdown_and_data_type_layout: str = "single_file",
+        **kwargs
+    ):
+        """
+        Class for defining an IPUMS NHGIS extract request.
+
+        Args:
+            datasets: list of ``Dataset`` objects
+            time_series_tables: list of ``TimeSeriesTable`` objects
+            shapefiles: list of shapefile IDs from IPUMS NHGIS
+            description: short description of your extract
+            data_format: desired format of the extract data file. One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
+            breakdown_and_data_type_layout: desired layout of any `datasets` that have multiple data types or breakdown values. Either
+                                            ``"single_file"`` (default) or ``"separate files"``
+            time_series_table_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
+                                      One of ``"time_by_column_layout"``, ``"time_by_row_layout"``, or ``"time_by_file_layout"``.
+        """
+
+        super().__init__()
+
+        self.collection = collection
+        self.collection_type = self.collection_type
+
+        self.datasets = self._validate_list_args(datasets, Dataset)
+        self.time_series_tables = self._validate_list_args(timeSeriesTables, TimeSeriesTable)
+        self.shapefiles =  self._validate_list_args(shapefiles, Shapefile)
+
+        if len(self.datasets) == 0 and len(self.time_series_tables) == 0 and len(self.shapefiles) == 0:
+            raise ValueError("At least one dataset, time series table, or shapefile must be specified.")
+        
+        self.description = description
+        self.data_format = data_format
+        self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
+        self.time_series_table_layout = tst_layout
+
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
+        """IPUMS API version number"""
+
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
+
+    def build(self) -> Dict[str, Any]:
+        """
+        Convert the object into a dictionary to be passed to the IPUMS API
+        as a JSON string
+        """
+
+        built = {
+            "description": self.description,
+            "dataFormat": self.data_format,
+            "collection": self.collection,
+            "version": self.api_version,
+            **self.kwargs,
+        }
+
+        if self.datasets is not None:
+            built["datasets"] = {
+                dataset.name: dataset.build() for dataset in self.datasets
+            }
+            built["breakdownAndDataTypeLayout"] = self.breakdown_and_data_type_layout
+
+        if self.time_series_tables is not None:
+            built["timeSeriesTables"] = {
+                tst.name.upper(): tst.build() for tst in self.time_series_tables
+            }
+            built["timeSeriesTableLayout"] = self.time_series_table_layout
+            
+        if self.shapefiles is not None:
+            built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
+
+        return built
 
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
