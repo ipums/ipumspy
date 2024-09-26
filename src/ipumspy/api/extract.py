@@ -480,7 +480,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
 
         super().__init__()
         self.collection_type = self.collection_type
-        """IPUMS Collection type (microdata currently the only valid value)"""
+        """IPUMS Collection type"""
         self.collection = collection
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)

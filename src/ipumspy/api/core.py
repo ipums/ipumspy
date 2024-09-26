@@ -64,6 +64,20 @@ def _extract_and_collection(
             )
     return extract_id, collection
 
+def _get_collection_type(collection: str) -> str:
+    collection_types = {
+        "usa": "microdata",
+        "cps": "microdata",
+        "ipumsi": "microdata",
+        "atus": "microdata",
+        "ahtus": "microdata",
+        "mtus": "microdata",
+        "nhis": "microdata",
+        "meps:": "microdata",
+        "nhgis": "aggregate_data"
+    }
+
+    return collection_types[collection]
 
 def _prettify_message(response_message: Union[str, List[str]]) -> str:
     if isinstance(response_message, list):
@@ -453,9 +467,11 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        if "microdata" in BaseExtract._collection_type_to_extract:
-            extract = MicrodataExtract(**extract_def["extractDefinition"])
+        collection_type = _get_collection_type(extract_def["extractDefinition"]["collection"])
 
+        extract_class = BaseExtract._collection_type_to_extract[collection_type]
+        extract = extract_class(**extract_def["extractDefinition"])
+        
         return extract
 
     def extract_is_expired(
