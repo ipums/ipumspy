@@ -64,6 +64,7 @@ def _extract_and_collection(
             )
     return extract_id, collection
 
+
 def _get_collection_type(collection: str) -> str:
     collection_types = {
         "usa": "microdata",
@@ -74,10 +75,11 @@ def _get_collection_type(collection: str) -> str:
         "mtus": "microdata",
         "nhis": "microdata",
         "meps:": "microdata",
-        "nhgis": "aggregate_data"
+        "nhgis": "aggregate_data",
     }
 
     return collection_types[collection]
+
 
 def _prettify_message(response_message: Union[str, List[str]]) -> str:
     if isinstance(response_message, list):
@@ -304,11 +306,13 @@ class IpumsApiClient:
                 download_urls = []
 
                 # If neither tableData nor gisData in download links, extract has likely expired
-                valid_links = [link in ["tableData", "gisData"] for link in download_links]
+                valid_links = [
+                    link in ["tableData", "gisData"] for link in download_links
+                ]
 
                 if not any(valid_links):
-                    raise KeyError() # Trigger exception to get consistent error message for aggregate data and microdata
-                
+                    raise KeyError()  # Trigger exception to get consistent error message for aggregate data and microdata
+
                 if "tableData" in download_links:
                     tabledata_url = download_links["tableData"]["url"]
                     download_urls.append(tabledata_url)
@@ -347,7 +351,7 @@ class IpumsApiClient:
                     f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
                     f"Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
                 )
-                
+
         for url in download_urls:
             file_name = url.split("/")[-1]
             download_path = download_dir / file_name
@@ -488,11 +492,13 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        collection_type = _get_collection_type(extract_def["extractDefinition"]["collection"])
+        collection_type = _get_collection_type(
+            extract_def["extractDefinition"]["collection"]
+        )
 
         extract_class = BaseExtract._collection_type_to_extract[collection_type]
         extract = extract_class(**extract_def["extractDefinition"])
-        
+
         return extract
 
     def extract_is_expired(
