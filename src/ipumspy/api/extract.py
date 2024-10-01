@@ -620,7 +620,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         self,
         collection: str,
         datasets: Optional[Union[List[str], List[Dataset]]] = [],
-        timeSeriesTables: Optional[Union[List[str], List[TimeSeriesTable]]] = [],
+        time_series_tables: Optional[Union[List[str], List[TimeSeriesTable]]] = [],
         shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
         description: str = "",
         data_format: str = "csv_no_header",
@@ -651,7 +651,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 
         self.datasets = self._validate_list_args(datasets, Dataset)
         self.time_series_tables = self._validate_list_args(
-            timeSeriesTables, TimeSeriesTable
+            time_series_tables, TimeSeriesTable
         )
         self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
 
