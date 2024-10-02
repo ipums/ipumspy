@@ -624,7 +624,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
         description: str = "",
         data_format: str = "csv_no_header",
-        # geographic_extents: Optional[List[str]] = None,
+        geographic_extents: Optional[List[str]] = None,
         tst_layout: str = "time_by_column_layout",
         breakdown_and_data_type_layout: str = "single_file",
         **kwargs,
@@ -638,6 +638,9 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             shapefiles: list of shapefile IDs from IPUMS NHGIS
             description: short description of your extract
             data_format: desired format of the extract data file. One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
+            geographic_extents: Geographic extents to use for all ``datasets`` in the extract definition (for instance, to
+                                to obtain data within a particular state). Use ``*`` to select all available extents. Note that
+                                not all geographic levels support extent selection.
             breakdown_and_data_type_layout: desired layout of any `datasets` that have multiple data types or breakdown values. Either
                                             ``"single_file"`` (default) or ``"separate files"``
             time_series_table_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
@@ -666,6 +669,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 
         self.description = description
         self.data_format = data_format
+        self.geographic_extents = geographic_extents
         self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
         self.time_series_table_layout = tst_layout
 
@@ -700,6 +704,9 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
                 dataset.name: dataset.build() for dataset in self.datasets
             }
             built["breakdownAndDataTypeLayout"] = self.breakdown_and_data_type_layout
+
+            if self.geographic_extents is not None:
+                built["geographicExtents"] = self.geographic_extents
 
         if self.time_series_tables is not None:
             built["timeSeriesTables"] = {
