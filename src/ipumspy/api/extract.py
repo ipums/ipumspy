@@ -641,10 +641,10 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             geographic_extents: Geographic extents to use for all ``datasets`` in the extract definition (for instance, to
                                 to obtain data within a particular state). Use ``*`` to select all available extents. Note that
                                 not all geographic levels support extent selection.
+            tst_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
+                        One of ``"time_by_column_layout"``, ``"time_by_row_layout"``, or ``"time_by_file_layout"``
             breakdown_and_data_type_layout: desired layout of any `datasets` that have multiple data types or breakdown values. Either
                                             ``"single_file"`` (default) or ``"separate files"``
-            time_series_table_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
-                                      One of ``"time_by_column_layout"``, ``"time_by_row_layout"``, or ``"time_by_file_layout"``.
         """
 
         super().__init__()
@@ -671,8 +671,8 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         self.data_format = data_format
         self.geographic_extents = geographic_extents
         self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
-        self.time_series_table_layout = tst_layout
-
+        self.tst_layout = tst_layout
+        
         self.api_version = (
             self.extract_api_version(kwargs)
             if len(kwargs.keys()) > 0
@@ -712,7 +712,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             built["timeSeriesTables"] = {
                 tst.name.upper(): tst.build() for tst in self.time_series_tables
             }
-            built["timeSeriesTableLayout"] = self.time_series_table_layout
+            built["timeSeriesTableLayout"] = self.tst_layout
 
         if self.shapefiles is not None:
             built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
