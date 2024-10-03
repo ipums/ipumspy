@@ -51,9 +51,7 @@ Indices and tables
    :hidden:
 
    getting_started
-   extracts
-   variables
-   reading_data
+   ipums_api/index
    cli
 
 .. toctree::
