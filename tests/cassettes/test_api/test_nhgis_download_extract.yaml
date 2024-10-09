@@ -1,0 +1,254 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1383?collection=nhgis&version=2
+  response:
+    body:
+      string: '{"number":1383,"status":"completed","email":"robe2037@umn.edu","downloadLinks":{"codebookPreview":{"url":"https://api.ipums.org/downloads/nhgis/api/v1/extracts/2366084/nhgis1383_csv_PREVIEW.zip","bytes":2216,"sha256":null},"tableData":{"url":"https://api.ipums.org/downloads/nhgis/api/v1/extracts/2366084/nhgis1383_csv.zip","bytes":5253,"sha256":null}},"extractDefinition":{"dataFormat":"csv_no_header","description":"Simple
+        extract for ipumspy unit testing","datasets":{"1990_STF1":{"dataTables":["NP1"],"geogLevels":["state"],"breakdownValues":["bs09.ge00"]}},"timeSeriesTableLayout":"time_by_column_layout","version":2,"collection":"nhgis"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '644'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 04 Oct 2024 19:36:04 GMT
+      Etag:
+      - W/"d175682a29fda3a5ae67d95e7c98e5c6"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 8a3e7af2-b244-42c6-a884-d152d052dc09
+      X-Runtime:
+      - '0.718477'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1383?collection=nhgis&version=2
+  response:
+    body:
+      string: '{"number":1383,"status":"completed","email":"robe2037@umn.edu","downloadLinks":{"codebookPreview":{"url":"https://api.ipums.org/downloads/nhgis/api/v1/extracts/2366084/nhgis1383_csv_PREVIEW.zip","bytes":2216,"sha256":null},"tableData":{"url":"https://api.ipums.org/downloads/nhgis/api/v1/extracts/2366084/nhgis1383_csv.zip","bytes":5253,"sha256":null}},"extractDefinition":{"dataFormat":"csv_no_header","description":"Simple
+        extract for ipumspy unit testing","datasets":{"1990_STF1":{"dataTables":["NP1"],"geogLevels":["state"],"breakdownValues":["bs09.ge00"]}},"timeSeriesTableLayout":"time_by_column_layout","version":2,"collection":"nhgis"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '644'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 04 Oct 2024 19:36:05 GMT
+      Etag:
+      - W/"d175682a29fda3a5ae67d95e7c98e5c6"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 9f25de13-a938-4305-8fca-5085cb4a2c7a
+      X-Runtime:
+      - '0.706547'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/downloads/nhgis/api/v1/extracts/2366084/nhgis1383_csv.zip
+  response:
+    body:
+      string: !!binary |
+        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
+        AAAAshMAAAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-cache
+      Content-Disposition:
+      - attachment; filename="nhgis1383_csv.zip"; filename*=UTF-8''nhgis1383_csv.zip
+      Content-Length:
+      - '5253'
+      Content-Type:
+      - application/zip
+      Date:
+      - Fri, 04 Oct 2024 19:36:05 GMT
+      Etag:
+      - '"670043a0-1485"'
+      Last-Modified:
+      - Fri, 04 Oct 2024 19:36:00 GMT
+      Server:
+      - nginx/1.18.0
+      Set-Cookie:
+      - _session_id=80MgBNGNoEsl4d0755ew5sjpGYmAIp2u6zpvy0crOCO8IEqgmXakHaOvrivx9SUiZREbdmTE9dtXoYJxptVvEucw9aOUvwVsyDkg0T2hFNEnvPTM7jVLV9ofEKJM%2BUgq4mNYM0kYpcWcmXjmZaQTzyCW6kfgmxMpEOP%2FtWPS6JKTkR01LMetkDuwodqw2lZKMOREBP%2BfISRBRhvFoTgwkCVb2sBBml7lM%2FBq646uo2w6V8rhvPR%2FnULe6pFEykM%3D--OTyrjzU2JiYcFvtL--e0z4GR7m2xcW4RixkZDNdg%3D%3D;
+        path=/; secure; HttpOnly; SameSite=None
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

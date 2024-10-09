@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: '{"description": "", "dataFormat": "csv_no_header", "collection": "nhgis",
+      "version": 2, "datasets": {"a": {"dataTables": "b", "geogLevels": "c", "years":
+      "d", "breakdownValues": []}}, "breakdownAndDataTypeLayout": "single_file", "timeSeriesTables":
+      {"A": {"geogLevels": "b", "years": []}}, "timeSeriesTableLayout": "time_by_column_layout",
+      "shapefiles": []}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '357'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=nhgis&version=2
+  response:
+    body:
+      string: '{"type":"SchemaValidationError","status":{"code":400,"name":"Bad Request"},"detail":["The
+        property ''#/datasets/a/dataTables'' of type string did not match the following
+        type: array.","The property ''#/datasets/a/geogLevels'' of type string did
+        not match the following type: array.","The property ''#/datasets/a/years''
+        of type string did not match the following type: array.","The property ''#/timeSeriesTables/A/geogLevels''
+        of type string did not match the following type: array."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '477'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 04 Oct 2024 15:35:49 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 24ab0402-56cf-4691-a45a-050c64cedffa
+      X-Runtime:
+      - '0.129516'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+version: 1

@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: '{"description": "Simple extract for ipumspy unit testing", "dataFormat":
+      "csv_no_header", "collection": "nhgis", "version": 2, "datasets": {"1990_STF1":
+      {"dataTables": ["NP1"], "geogLevels": ["state"], "years": [], "breakdownValues":
+      []}}, "breakdownAndDataTypeLayout": "single_file", "timeSeriesTables": {}, "timeSeriesTableLayout":
+      "time_by_column_layout", "shapefiles": []}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '376'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=nhgis&version=2
+  response:
+    body:
+      string: '{"number":1383,"status":"queued","email":"robe2037@umn.edu","downloadLinks":{},"extractDefinition":{"dataFormat":"csv_no_header","description":"Simple
+        extract for ipumspy unit testing","datasets":{"1990_STF1":{"dataTables":["NP1"],"geogLevels":["state"],"years":[],"breakdownValues":[]}},"timeSeriesTables":{},"timeSeriesTableLayout":"time_by_column_layout","shapefiles":[],"breakdownAndDataTypeLayout":"single_file","version":2,"collection":"nhgis"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '451'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 04 Oct 2024 19:35:40 GMT
+      Etag:
+      - W/"877bff7543fd0c0437f90315b1b649dd"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - b2ff72dd-693d-4516-a3ea-4ed25a152fd2
+      X-Runtime:
+      - '0.441034'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/extracts/1383?collection=nhgis&version=2
+  response:
+    body:
+      string: '{"number":1383,"status":"started","email":"robe2037@umn.edu","downloadLinks":{},"extractDefinition":{"dataFormat":"csv_no_header","description":"Simple
+        extract for ipumspy unit testing","datasets":{"1990_STF1":{"dataTables":["NP1"],"geogLevels":["state"],"breakdownValues":["bs09.ge00"]}},"timeSeriesTableLayout":"time_by_column_layout","version":2,"collection":"nhgis"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '371'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 04 Oct 2024 19:35:40 GMT
+      Etag:
+      - W/"3ba17ec59179f904d9507cb8141caec5"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - fcb99e9b-720b-413d-9dac-ccc4c3c4d07e
+      X-Runtime:
+      - '0.748620'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
