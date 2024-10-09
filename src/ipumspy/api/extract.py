@@ -773,12 +773,8 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     ext_dct = _make_snake_ext(dct)
     collection_type = _get_collection_type(dct["collection"])
 
-    if collection_type == "microdata":
-        extract = MicrodataExtract(**ext_dct)
-    elif collection_type == "aggregate_data":
-        extract = AggregateDataExtract(**ext_dct)
-    else:
-        raise NotImplementedError("Unrecognized IPUMS collection")
+    extract_class = BaseExtract._collection_type_to_extract[collection_type]
+    extract = extract_class(**ext_dct)
 
     return extract
 

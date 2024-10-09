@@ -25,7 +25,7 @@ from .exceptions import (
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
-from .extract import BaseExtract, MicrodataExtract, _get_collection_type
+from .extract import BaseExtract, MicrodataExtract, _get_collection_type, extract_from_dict
 
 
 class ModifiedIpumsExtract(Warning):
@@ -476,12 +476,7 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        collection_type = _get_collection_type(
-            extract_def["extractDefinition"]["collection"]
-        )
-
-        extract_class = BaseExtract._collection_type_to_extract[collection_type]
-        extract = extract_class(**extract_def["extractDefinition"])
+        extract = extract_from_dict(extract_def["extractDefinition"])
 
         return extract
 

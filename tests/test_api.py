@@ -1248,6 +1248,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         },
         "collection": "cps",
         "version": 2,
+        "caseSelectWho": "individuals",
     }
 
     ipumsi_ext = live_api_client.get_extract_by_id(6, "ipumsi")
@@ -1315,6 +1316,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         },
         "collection": "ipumsi",
         "version": 2,
+        "caseSelectWho": "individuals",
     }
 
     # extract with warnings
