@@ -259,6 +259,22 @@ def _unpack_shapefiles_dict(dct: dict) -> List[Shapefile]:
     return [Shapefile(name=shapefile) for shapefile in dct.keys()]
 
 
+def _get_collection_type(collection: str) -> str:
+    collection_types = {
+        "usa": "microdata",
+        "cps": "microdata",
+        "ipumsi": "microdata",
+        "atus": "microdata",
+        "ahtus": "microdata",
+        "mtus": "microdata",
+        "nhis": "microdata",
+        "meps:": "microdata",
+        "nhgis": "aggregate_data",
+    }
+
+    return collection_types[collection]
+
+
 class BaseExtract:
     _collection_type_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
 
@@ -746,19 +762,25 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
         return snake
 
     def _make_snake_ext(ext_dict):
+        obj_keys = ["variables", "samples", "timeUseVariables", "datasets", "timeSeriesTables"]
+
         for key in ext_dict.keys():
             if isinstance(ext_dict[key], dict):
-                if key not in ["variables", "samples", "timeUseVariables"]:
+                if key not in obj_keys:
                     ext_dict[key] = _make_snake_ext(ext_dict[key])
         return {_camel_to_snake(k): v for k, v in ext_dict.items()}
 
-    ext_dict = _make_snake_ext(dct)
-    # XXX To Do: When MicrodataExtract is no longer the only extract class,
-    # this method will need to differentiate between the different collection types
-    # since this info isn't available from the api response and so won't be stored in any
-    # dict representation, there needs to be a way to know which collections are micro
-    # and which are not.
-    return MicrodataExtract(**ext_dict)
+    ext_dct = _make_snake_ext(dct)
+    collection_type = _get_collection_type(dct["collection"])
+
+    if collection_type == "microdata":
+        extract = MicrodataExtract(**ext_dct)
+    elif collection_type == "aggregate_data":
+        extract = AggregateDataExtract(**ext_dct)
+    else:
+        raise NotImplementedError("Unrecognized IPUMS collection")
+
+    return extract
 
 
 def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:

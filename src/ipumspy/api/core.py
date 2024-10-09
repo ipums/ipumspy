@@ -25,7 +25,7 @@ from .exceptions import (
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
-from .extract import BaseExtract, MicrodataExtract
+from .extract import BaseExtract, MicrodataExtract, _get_collection_type
 
 
 class ModifiedIpumsExtract(Warning):
@@ -63,22 +63,6 @@ def _extract_and_collection(
                 "If ``extract`` is not a BaseExtract, ``collection`` must be non-null"
             )
     return extract_id, collection
-
-
-def _get_collection_type(collection: str) -> str:
-    collection_types = {
-        "usa": "microdata",
-        "cps": "microdata",
-        "ipumsi": "microdata",
-        "atus": "microdata",
-        "ahtus": "microdata",
-        "mtus": "microdata",
-        "nhis": "microdata",
-        "meps:": "microdata",
-        "nhgis": "aggregate_data",
-    }
-
-    return collection_types[collection]
 
 
 def _prettify_message(response_message: Union[str, List[str]]) -> str:
