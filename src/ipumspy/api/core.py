@@ -152,29 +152,27 @@ class IpumsApiClient:
     def submit_extract(
         self,
         extract: Union[BaseExtract, Dict[str, Any]],
-        collection: Optional[str] = None,
     ) -> BaseExtract:
         """
         Submit an extract request to the IPUMS API
 
         Args:
-            extract: The extract description to submit. May be either an
-                ``IpumsExtract`` object, or the ``details`` of such an
-                object, in which case it must include a key named ``collection``
+            extract: The extract description to submit. May be either an object
+                inheriting from ``BaseExtract``, or a dictionary containing the extract
+                definition.
 
         Returns:
             The number of the extract for the passed user account
         """
-
         if not isinstance(extract, BaseExtract):
             extract = copy.deepcopy(extract)
-            if "microdata" in BaseExtract._collection_type_to_extract:
-                extract = MicrodataExtract(extract)
+            extract = extract_from_dict(extract)
 
         # if no api version was provided on instantiation of extract object
         # or in extract definition dict, assign it to the default
         if extract.api_version is None:
             extract.api_version = self.api_version
+        
         response = self.post(
             f"{self.base_url}/extracts",
             params={"collection": extract.collection, "version": extract.api_version},

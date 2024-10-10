@@ -813,6 +813,26 @@ def test_submit_extract_live(live_api_client: IpumsApiClient):
 
 
 @pytest.mark.vcr
+def test_submit_extract_dict(live_api_client: IpumsApiClient):
+    """
+    Confirm that we can submit an extract as a dictionary
+    """
+    extract_dict = {
+        "collection": "usa",
+        "version": 2,
+        "samples": {"us2017a": {}},
+        "variables": {"AGE": {}},
+        "data_structure": {"hierarchical": {}}
+    }
+
+    extract = live_api_client.submit_extract(extract_dict)
+
+    assert extract._info["status"] == "queued"
+    assert Variable("AGE") in extract.variables
+    assert Sample("us2017a") in extract.samples
+    assert extract_dict["data_structure"] == extract.data_structure
+
+@pytest.mark.vcr
 def test_submit_hierarchical_extract_live(live_api_client: IpumsApiClient):
     """
     Confirm that test extract submits properly
