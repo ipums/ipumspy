@@ -168,6 +168,9 @@ class TimeSeriesTable(IpumsObject):
     years: Optional[List[str]] = field(default_factory=list)
     """Years for which to obtain data for this time series table"""
 
+    def __post_init__(self):
+        self.name = self.name.upper()
+
     def build(self):
         built_tst = self.__dict__.copy()
         # don't repeat the time series table name
