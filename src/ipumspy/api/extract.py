@@ -170,6 +170,7 @@ class TimeSeriesTable(IpumsObject):
 
     def __post_init__(self):
         self.name = self.name.upper()
+        self.years = [str(yr) for yr in self.years]
 
     def build(self):
         built_tst = self.__dict__.copy()
