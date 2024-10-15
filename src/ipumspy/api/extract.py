@@ -165,7 +165,7 @@ class TimeSeriesTable(IpumsObject):
     """IPUMS NHGIS time series table name/id"""
     geog_levels: List[str]  # required parameter
     """Geographic level(s) at which to obtain data for this time series table"""
-    years: Optional[List[str]] = field(default_factory=list)
+    years: Optional[Union[List[str], List[int]]] = field(default_factory=list)
     """Years for which to obtain data for this time series table"""
 
     def __post_init__(self):
@@ -639,8 +639,8 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
     def __init__(
         self,
         collection: str,
-        datasets: Optional[Union[List[str], List[Dataset]]] = [],
-        time_series_tables: Optional[Union[List[str], List[TimeSeriesTable]]] = [],
+        datasets: Optional[List[Dataset]] = [],
+        time_series_tables: Optional[List[TimeSeriesTable]] = [],
         shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
         description: str = "",
         data_format: str = "csv_no_header",
@@ -738,7 +738,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
 
         return built
-
+    
 
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
