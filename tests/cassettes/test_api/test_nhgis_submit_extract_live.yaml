@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: '{"description": "Simple extract for ipumspy unit testing", "dataFormat":
+      "csv_no_header", "collection": "nhgis", "version": 2, "datasets": {"1990_STF1":
+      {"dataTables": ["NP1"], "geogLevels": ["state"], "years": [], "breakdownValues":
+      []}}, "breakdownAndDataTypeLayout": "single_file", "timeSeriesTables": {}, "timeSeriesTableLayout":
+      "time_by_column_layout", "shapefiles": []}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '376'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=nhgis&version=2
+  response:
+    body:
+      string: '{"number":1400,"status":"queued","email":"robe2037@umn.edu","downloadLinks":{},"extractDefinition":{"dataFormat":"csv_no_header","description":"Simple
+        extract for ipumspy unit testing","datasets":{"1990_STF1":{"dataTables":["NP1"],"geogLevels":["state"],"years":[],"breakdownValues":[]}},"timeSeriesTables":{},"timeSeriesTableLayout":"time_by_column_layout","shapefiles":[],"breakdownAndDataTypeLayout":"single_file","version":2,"collection":"nhgis"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '451'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 15 Oct 2024 18:58:19 GMT
+      Etag:
+      - W/"cb53f9e2e778b021c28c18d42f032ac1"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - a4b3d665-bdad-4e78-9d01-4b9630a517bb
+      X-Runtime:
+      - '0.521991'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
