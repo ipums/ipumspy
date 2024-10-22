@@ -22,6 +22,8 @@ Install with ``conda``:
     
     conda install -c conda-forge ipumspy
 
+.. _ipumspy readers:
+
 Read an IPUMS extract
 ---------------------
 
@@ -41,48 +43,76 @@ IPUMS API Wrappers for Python
 
 ``ipumspy`` provides an easy-to-use Python wrapper for IPUMS API endpoints.
 
-Quick Start
-***********
+.. _get an api key:
 
-Once you have created a user account for your data collection of interest generated an API key.
-This quick start example uses `IPUMS USA <https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu>`__. Note that not all IPUMS data collections are available via API. For an up-to-date list of available collections and links to sample and variable information, see the :ref:`collection availability table`.
+Get an API Key
+**************
+
+To interact with the IPUMS API, you'll need to register for access with the IPUMS project you'll be 
+using. If you have not yet registered, you can find the link to register for each 
+project at the top of its website, which can be accessed from the `IPUMS homepage <https://ipums.org>`__.
+
+Once you're registered, you'll be able to create an `API key <https://account.ipums.org/api_keys>`__.
+
+For security reasons, we recommend storing your key in an environment variable rather than including it in your code:
 
 .. code:: python
 
+    import os
+    os.environ["IPUMS_API_KEY"] = "<your-api-key>"
+
+A Simple Example
+****************
+
+To request IPUMS data via API, initialize an API client using your API key:
+
+.. code:: python
+
+    import os
     from pathlib import Path
+    from ipumspy import IpumsApiClient, MicrodataExtract, readers, ddi
 
-    from ipumspy import IpumsApiClient, UsaExtract, readers, ddi
-
-    IPUMS_API_KEY = your_api_key
-    DOWNLOAD_DIR = Path(your_download_dir)
-
+    IPUMS_API_KEY = os.environ.get("IPUMS_API_KEY")
+    
     ipums = IpumsApiClient(IPUMS_API_KEY)
 
-Note that for security reasons it is recommended that you store your IPUMS API key in an environment variable rather than including it in your code.
+Next, create an extract definition that contains the specifications for the data you wish to request and download. 
+For instance, we can request 2012 Puerto Rico Community Survey data for age and sex from 
+`IPUMS USA <https://usa.ipums.org/usa/>`__ with the following:
 
-To define an IPUMS USA extract, you need to pass a list of sample IDs and a list of IPUMS USA variable names.
+.. code:: python
+    
+    # Create an extract definition
+    extract = MicrodataExtract(
+        "usa",
+        description="Sample USA extract",
+        samples=["us2012b"],
+        variables=["AGE", "SEX"],
+    )
 
-IPUMS USA sample IDs can be found on the `IPUMS USA website <https://usa.ipums.org/usa-action/samples/sample_ids>`__.
+.. seealso::
+    The :doc:`IPUMS API client page<ipums_api/index>` contains more detailed information on
+    supported data collections and available extract definition parameters.
+        
 
-IPUMS USA variables can be browsed via the `IPUMS USA extract web UI <https://usa.ipums.org/usa-action/variables/group>`__.
-
-Source variables can be requested using their short or long form variable names. Short form source variable names can be viewed by clicking `Display Options` on the `Select Data` page and selecting the `short` option under `Source variable names`.
+Submit the extract to the IPUMS servers. After waiting for the extract to finish processing, you can download the data:
 
 .. code:: python
 
-    # Submit an API extract request
-    extract = UsaExtract(
-        ["us2012b"],
-        ["AGE", "SEX"],
-    )
+    # Submit the extract request
     ipums.submit_extract(extract)
     print(f"Extract submitted with id {extract.extract_id}")
 
-    # wait for the extract to finish
+    # Wait for the extract to finish
     ipums.wait_for_extract(extract)
 
     # Download the extract
+    DOWNLOAD_DIR = Path(<your_download_dir>)
     ipums.download_extract(extract, download_dir=DOWNLOAD_DIR)
+
+At this point you can load your data using ``ipumspy`` readers described :ref:`above<ipumspy readers>`:
+
+.. code:: python
 
     # Get the DDI
     ddi_file = list(DOWNLOAD_DIR.glob("*.xml"))[0]
@@ -91,50 +121,5 @@ Source variables can be requested using their short or long form variable names.
     # Get the data
     ipums_df = readers.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
 
-If you lose track of the ``extract`` object for any reason, you may check the status
-and download the extract using only the name of the ``collection`` and the ``extract_id``.
-
-.. code:: python
-
-    # check the extract status
-    extract_status = ipums.extract_status(extract=[extract_id], collection=[collection_name])
-    print(f"extract {extract_id} is {extract_status}")
-
-    # when the extract status is "completed", then download
-    ipums.download_extract(extract=[extract_id], collection=[collection_name])
-
-Specifying an Extract as a File
-*******************************
-
-A goal of IPUMS-py is to make it easier to share IPUMS extracts with other researchers.
-For instance, we envision being able to include an ``ipums.yml`` file to your analysis
-code which would allow other researchers to download *exactly* the extract that you
-utilize in your own analysis.
-
-To pull the extract we specified made above, create a file called ``ipums.yml`` that
-contains the following:
-
-.. code:: yaml
-
-    description: Simple IPUMS extract
-    collection: usa
-    api_version: beta
-    samples:
-      - us2012b
-    variables:
-      - AGE
-      - SEX
-
-Then you can run the following code:
-
-.. code:: python
-
-    import yaml
-    from ipumspy import extract_from_dict
-
-    with open("ipums.yml") as infile:
-        extract = extract_from_dict(yaml.safe_load(infile))
-
-Alternatively, you can utilize the :doc:`CLI <cli>`.
-
-For more information on the IPUMS API, visit the `IPUMS developer portal <https://developer.ipums.org/>`__.
+For additional information about the IPUMS API as well as technical documentation, visit the 
+`IPUMS developer portal <https://developer.ipums.org/>`__.

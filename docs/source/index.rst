@@ -3,20 +3,25 @@
 What is IPUMS?
 --------------
 
-IPUMS provides census and survey data from around the world integrated across time and space. IPUMS integration and documentation makes it easy to study change, conduct comparative research, merge information across data types, and analyze individuals within family and community contexts. Data and services available free of charge. More information on IPUMS data collections can be found at `ipums.org <https://ipums.org>`_.
+IPUMS provides census and survey data from around the world integrated across time and space. IPUMS integration and documentation makes 
+it easy to study change, conduct comparative research, merge information across data types, and analyze individuals within family 
+and community contexts. Data and services available free of charge. More information on IPUMS data collections can be 
+found at `ipums.org <https://ipums.org>`_.
 
 What is ipumspy?
 ----------------
 
-``ipumspy`` is a collection of python tools for working with data from `IPUMS <https://ipums.org>`_ and for accessing that data via API.
+``ipumspy`` is a collection of python tools for working with data downloaded from `IPUMS <https://ipums.org>`_ and for accessing that 
+data via the `IPUMS API <https://developer.ipums.org/>`_.
 
-Currently only IPUMS microdata collections are supported; we hope to add support for working with spatial data in the future.
+``ipumspy`` can only be used to request data for IPUMS data collections supported by the IPUMS API. See the :ref:`collection support table` table 
+for a list of currently supported collections. Support for other IPUMS data collections will be added as they become available via API.
 
-``ipumspy`` can only be used to make extract requests for IPUMS data collections that are available via API. These collections are listed in the :ref:`collection availability table` table. Support for other IPUMS data collections will be added as they become available via API.
-For more information about the IPUMS API program, IPUMS account registration, and API keys, see the `IPUMS developer portal <https://developer.ipums.org/docs/apiprogram/>`_.
+For more information about the IPUMS API program, IPUMS account registration, and API keys, see 
+the `IPUMS developer portal <https://developer.ipums.org/docs/apiprogram/>`_.
 
-``ipumspy`` can also be used to read and analyze microdata extracts made through the IPUMS website for collections unavailable via API.
-
+Even for collections not yet supported by the API, ``ipumspy`` can be used to read and analyze
+data downloaded from the IPUMS website.
 
 Releases
 --------
@@ -52,6 +57,7 @@ Indices and tables
 
    getting_started
    ipums_api/index
+   reading_data
    cli
 
 .. toctree::

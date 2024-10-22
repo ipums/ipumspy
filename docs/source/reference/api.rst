@@ -29,6 +29,7 @@ extract class.
 
    ipumspy.api.BaseExtract
    ipumspy.api.MicrodataExtract
+   ipumspy.api.AggregateDataExtract
 
 Other IPUMS Objects
 -------------------
@@ -43,6 +44,9 @@ Helpful data classes for defining IPUMS Extract objects.
    ipumspy.api.Variable
    ipumspy.api.Sample
    ipumspy.api.TimeUseVariable
+   ipumspy.api.Dataset
+   ipumspy.api.TimeSeriesTable
+   ipumspy.api.Shapefile
 
 Importing or Exporting Extract Definitions
 ------------------------------------------
