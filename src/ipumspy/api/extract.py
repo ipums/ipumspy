@@ -142,6 +142,9 @@ class Dataset(IpumsObject):
     breakdown_values: Optional[List[str]] = field(default_factory=list)
     """Breakdown values to apply to this dataset"""
 
+    def __post_init__(self):
+        self.years = [str(yr) for yr in self.years]
+
     def build(self):
         built_dataset = self.__dict__.copy()
         # don't repeat the dataset name
