@@ -149,8 +149,7 @@ are applied to all datasets in the extract. It is not possible to request differ
 datasets in a single extract.
 
 .. note::
-   Currently, NHGIS only supports extent selection for census blocks and block groups. However, extent selection
-   availability may be expanded to more geographic levels in the future.
+   Currently, NHGIS only supports extent selection for census blocks and block groups.
 
 Time Series Tables
 ------------------
