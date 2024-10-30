@@ -87,7 +87,7 @@ in the ``ipums_df`` data frame from above, using the ``"Female"`` label:
     # Filter to records where SEX is Female
     women = ipums_df[ipums_df["SEX"] == sex_info.codes["Female"]]
 
-It is =possible to filter both using labels as well as numeric values.
+It is possible to filter both using labels as well as numeric values.
 The following retains only women over the age of 16 in ``ipums_df``:
 
 .. code:: python
@@ -120,7 +120,9 @@ For instance, to list the names of the files contained in an extract:
 
     fname = "<path/to/zip/file>"
 
+    # a list of individual file names from inside the .zip file
     names = ZipFile(fname).namelist()
+    #> ['nhgis0025_csv/nhgis0025_ds120_1990_county_codebook.txt', 'nhgis0025_csv/nhgis0025_ds120_1990_county.csv']
 
 You can use the names of the containing files to identify the files you wish to load. Here, we use
 pandas to load the compressed csv file:
@@ -129,14 +131,15 @@ pandas to load the compressed csv file:
 
     # Read first data file in the extract
     with ZipFile(fname) as z:
-        with z.open(names[0]) as f:
+        with z.open(names[1]) as f:
             data = pd.read_csv(f)
 
 .. note::
-    IPUMS NHGIS does allow you to request an extract in fixed-width format, but ipumspy does not
-    provide methods to parse these files. If you want to load fixed-width NHGIS data, you will
-    need to parse these files yourself, possibly using the command files for other
-    software libraries that come in NHGIS fixed-width extracts.
+    IPUMS NHGIS does allow you to request an extract in fixed-width format, but ``ipumspy`` does not
+    provide methods to parse these files as it does for Microdata because IPUMS NHGIS does not provide
+    the necessary DDI codebook.
+
+Shapefile data is delivered in a nested zipfile that can also be unpacked using the ``ZipFile`` module and read using third party libraries such as geopandas.
 
 Reading Non-Extractable IPUMS Collections
 -----------------------------------------
