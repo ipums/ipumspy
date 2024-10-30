@@ -54,12 +54,8 @@ project at the top of its website, which can be accessed from the `IPUMS homepag
 
 Once you're registered, you'll be able to create an `API key <https://account.ipums.org/api_keys>`__.
 
-For security reasons, we recommend storing your key in an environment variable rather than including it in your code:
+For security reasons, we recommend storing your key in an environment variable rather than including it in your code. The Conda documentation provides `instructions for saving environment variables <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#saving-environment-variables>`__ in conda environments for different operating systems. The example code on this page assumes that the API key is stored in an environment variable called "IPUMS_API_KEY."
 
-.. code:: python
-
-    import os
-    os.environ["IPUMS_API_KEY"] = "<your-api-key>"
 
 A Simple Example
 ****************
