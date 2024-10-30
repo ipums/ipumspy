@@ -264,8 +264,17 @@ Sharing Extract Definitions
 
 ``ipumspy`` also makes it easier to share IPUMS extracts with collaborators.
 By saving your extract as a standalone file, you can send it to other researchers
-or reviewers, allowing them to generate an identical extract and download *exactly*
-the same data used in your analysis.
+or reviewers, allowing them to generate an identical extract and download 
+the same data used in your analysis. 
+
+Collaborators submitting your extract definition will need to be registered with the 
+data collection represented in the extract and have their own API key to succesfully 
+submit the request. The request will be processed under their account, but the data in the resulting 
+extract will be identical.
+
+.. note::
+    Sharing IPUMS extract definitions using files will ensure that your collaborators are able to submit the same extract definition to the IPUMS extract system. However, IPUMS data are updated to fix errors as we become aware of them and preserving extract definitions in a file do not insulate against these types of changes to data. In other words, if the IPUMS data included in the extract definition change between submission of extracts based on this definition, the resulting downloaded files will not be identical. IPUMS collections keep a log of errata and other changes on their websites.
+
 
 Using JSON
 **********
@@ -290,13 +299,6 @@ themselves:
     extract = define_extract_from_json("my_extract.json")
     ipums.submit_extract(extract)
 
-.. note::
-    Collaborators submitting your extract definition will need to be registered with the
-    data collection represented in the extract and have their own API key to succesfully
-    submit the request.
-
-    The request will be processed under their account, but the data in the resulting
-    extract will be identical.
     
 Using YAML
 **********
