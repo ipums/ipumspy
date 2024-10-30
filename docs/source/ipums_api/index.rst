@@ -144,14 +144,9 @@ AGE, SEX, RACE, STATEFIP, and MARST variables from the 2018 and 2019 American Co
   The available extract definition options vary across collections. See the collection-specific
   documentation for details about specifying more complex extracts for each type:
   
-  :doc:`Microdata extracts<ipums_api_micro/index>`
-    Information on microdata extract parameters, including :class:`Variable<ipumspy.api.extract.Variable>` and
-    :class:`TimeUseVariable<ipumspy.api.extract.TimeUseVariable>` objects
+  :doc:`Microdata extracts<ipums_api_micro/index>` - Information on microdata extract parameters
 
-  :doc:`Aggregate data extracts<ipums_api_aggregate/index>`
-    Information on aggregate data extract parameters, including
-    :class:`Dataset<ipumspy.api.extract.Dataset>` and 
-    :class:`TimeSeriesTable<ipumspy.api.extract.TimeSeriesTable>` objects
+  :doc:`Aggregate data extracts<ipums_api_aggregate/index>` - Information on aggregate data extract parameters
 
 Submit an Extract Request
 -------------------------
