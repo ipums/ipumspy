@@ -5,8 +5,7 @@
 Aggregate Data Extracts
 =======================
 
-In contrast to microdata collections, IPUMS aggregate data collections distribute
-aggregated statistics for a set of geographic units.
+IPUMS aggregate data collections distribute aggregated statistics for a set of geographic units.
 
 Currently, `IPUMS NHGIS <https://www.nhgis.org/>`__ is the only aggregate data collection
 supported by the IPUMS API.
@@ -30,10 +29,14 @@ For example:
 
 .. code:: python
 
+   from ipumspy import AggregateDataExtract, Dataset
+
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS extract example",
-      datasets=[Dataset("1990_STF1", ["NP1", "NP2"], ["county"])],
+      datasets=[
+         Dataset(name="1990_STF1", data_tables=["NP1", "NP2"], geog_levels=["county"])
+      ]
    )
 
 This instantiates an ``AggregateDataExtract`` object for the IPUMS NHGIS data collection
@@ -65,10 +68,10 @@ Use the :class:`Dataset <ipumspy.api.extract.Dataset>` class to specify these pa
 .. code:: python
 
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract",
       datasets=[
-         Dataset("2000_SF1a", data_tables=["NP001A", "NP031A"], geog_levels=["state"])
+         Dataset(name="2000_SF1a", data_tables=["NP001A", "NP031A"], geog_levels=["state"])
       ],
    )
 
@@ -77,11 +80,11 @@ Some datasets span multiple years and require a selection of ``years``:
 .. code:: python
 
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract",
       datasets=[
          Dataset(
-            "1988_1997_CBPa",
+            name="1988_1997_CBPa",
             data_tables=["NT004"],
             geog_levels=["county"],
             years=[1988, 1989, 1990],
@@ -98,11 +101,11 @@ for a dataset with the ``breakdown_values`` keyword argument:
 .. code:: python
 
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract",
       datasets=[
          Dataset(
-               "2000_SF1a",
+               name="2000_SF1a",
                data_tables=["NP001A", "NP031A"],
                geog_levels=["state"],
                breakdown_values=["bs21.ge01", "bs21.ge43"],  # Urban + Rural breakdowns
@@ -132,11 +135,11 @@ a trailing 0):
 .. code:: python
 
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="Extent selection example",
       datasets=[
-         Dataset("2018_2022_ACS5a", ["B01001"], ["blck_grp"]),
-         Dataset("2017_2021_ACS5a", ["B01001"], ["blck_grp"])
+         Dataset(name="2018_2022_ACS5a", data_tables=["B01001"], geog_levels=["blck_grp"]),
+         Dataset(name="2017_2021_ACS5a", data_tables=["B01001"], geog_levels=["blck_grp"])
       ],
       geographic_extents=["010", "050"]
    )
@@ -165,8 +168,10 @@ level for the data:
 
 .. code:: python
 
+   from ipumspy import AggregateDataExtract, TimeSeriesTable
+
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract: time series tables",
       time_series_tables=[TimeSeriesTable("CW3", geog_levels=["county", "state"])],
    )
@@ -177,7 +182,7 @@ You can select a subset of available years with the ``years`` argument:
 .. code:: python
    
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract: time series tables",
       time_series_tables=[
          TimeSeriesTable("CW3", geog_levels=["county", "state"], years=[1990, 2000])
@@ -191,7 +196,7 @@ into separate files (by default, time is arranged across columns).
 .. code:: python
    
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract: time series tables",
       time_series_tables=[
          TimeSeriesTable("CW3", geog_levels=["county", "state"], years=[1990, 2000])
@@ -211,7 +216,7 @@ simply by specifying their names:
 .. code:: python
 
    AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       shapefiles=["us_county_2021_tl2021", "us_county_2020_tl2020"]
    )
 
@@ -226,11 +231,11 @@ datasets:
 
    # Total state-level population from 2000 and 2010 decennial census
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract",
       datasets=[
-         Dataset("2000_SF1a", ["NP001A"], ["state"]),
-         Dataset("2010_SF1a", ["P1"], ["state"]))
+         Dataset(name="2000_SF1a", data_tables=["NP001A"], geog_levels=["state"]),
+         Dataset(name="2010_SF1a", data_tables=["P1"], geog_levels=["state"])
       ],
       shapefiles=["us_state_2000_tl2010", "us_state_2010_tl2010"]
    )
@@ -242,11 +247,11 @@ several ACS years at once using list comprehensions. For instance:
 .. code:: python
 
    acs1_names = ["2017_ACS1", "2018_ACS1", "2019_ACS1"]
-   acs1_specs = [Dataset(name, ["B01001"], ["state"]) for name in acs1_names]
+   acs1_specs = [Dataset(name, data_tables=["B01001"], geog_levels=["state"]) for name in acs1_names]
 
    # Total state-level population from 2017-2019 ACS 1-year estimates
    extract = AggregateDataExtract(
-      "nhgis",
+      collection="nhgis",
       description="An NHGIS example extract",
       datasets=acs1_specs,
    )

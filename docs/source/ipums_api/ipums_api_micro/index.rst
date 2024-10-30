@@ -24,9 +24,9 @@ For example:
 .. code:: python
 
     extract = MicrodataExtract(
-        "usa",
-        ["us2012b"],
-        ["AGE", "SEX"],
+        collection="usa",
+        samples=["us2012b"],
+        variables=["AGE", "SEX"],
         description="An IPUMS extract example"
     )
 
@@ -54,9 +54,9 @@ instead:
 .. code:: python
 
     extract = MicrodataExtract(
-        "usa",
-        ["us2012b"],
-        ["AGE", "SEX"],
+        collection="usa",
+        samples=["us2012b"],
+        variables=["AGE", "SEX"],
         description="An IPUMS extract example",
         data_structure={"hierarchical": {}},
     )
@@ -71,9 +71,9 @@ an IPUMS MEPS extract on round records:
 .. code:: python
 
     extract = MicrodataExtract(
-        "meps",
-        ["mp2016"],
-        ["AGE", "SEX", "PREGNTRD"],
+        collection="meps",
+        samples=["mp2016"],
+        variables=["AGE", "SEX", "PREGNTRD"],
         description="An IPUMS extract example",
         data_structure={"rectangular": {"on": "R"}},
     )
@@ -119,9 +119,9 @@ by using the ``data_format`` argument:
 .. code:: python
 
     extract = MicrodataExtract(
-        "usa",
-        ["us2012b"],
-        ["AGE", "SEX"],
+        collection="usa",
+        samples=["us2012b"],
+        variables=["AGE", "SEX"],
         description="An IPUMS extract example",
         data_format="csv",
     )
@@ -138,9 +138,9 @@ demonstrates adding features to the following IPUMS CPS extract.
 .. code:: python
 
     extract = MicrodataExtract(
-        "cps",
-        ["cps2022_03s"],
-        ["AGE", "SEX", "RACE"],
+        collection="cps",
+        samples=["cps2022_03s"],
+        variables=["AGE", "SEX", "RACE"],
         description="A CPS extract example"
     )
 
@@ -195,9 +195,9 @@ example extract of the 2021 ACS data from IPUMS USA:
 .. code:: python
 
     extract = MicrodataExtract(
-        "usa",
-        ["us2021a"],
-        ["AGE", "SEX", "RACE"],
+        collection="usa",
+        samples=["us2021a"],
+        variables=["AGE", "SEX", "RACE"],
         description="Case selection example"
     )
 
@@ -233,9 +233,9 @@ who matches the case selection criteria. To do so, set the ``case_select_who`` f
 .. code:: python
 
     extract = MicrodataExtract(
-        "usa",
-        ["us2021a"],
-        ["AGE", "SEX", "RACE"],
+        collection="usa",
+        samples=["us2021a"],
+        variables=["AGE", "SEX", "RACE"],
         description="Case selection example",
         case_select_who = "households"
     )
@@ -257,9 +257,9 @@ data quality flags:
 .. code:: python
 
     extract = MicrodataExtract(
-        "cps",
-        ["cps2022_03s"],
-        ["AGE", "SEX", "RACE"],
+        collection="cps",
+        samples=["cps2022_03s"],
+        variables=["AGE", "SEX", "RACE"],
         data_quality_flags=True
     )
 
@@ -292,9 +292,9 @@ data quality flag for RACE (``data_quality_flags``).
 .. code:: python
 
     fancy_extract = MicrodataExtract(
-        "cps",
-        ["cps2022_03s"],
-        [
+        collection="cps",
+        samples=["cps2022_03s"],
+        variables=[
             Variable(name="AGE",
                      attached_characteristics=["spouse"]),
             Variable(name="SEX",
