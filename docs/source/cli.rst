@@ -7,7 +7,7 @@
 Command Line Interface
 ======================
 
-``ipumspy`` allows you to interact with the IPUMS API via the command line. If you
+ipumspy allows you to interact with the IPUMS API via the command line. If you
 have :doc:`installed <getting_started>` with ``pip``, then you should have an ``ipums``
 command available on the command line.
 
@@ -17,14 +17,13 @@ You can explore what commands are available by running the ``--help`` option:
 
     ipums --help
 
-In particular, suppose that you have specified an extract in an ``ipums.yml`` file
-as described in the :doc:`getting started guide <getting_started>`.
+In particular, suppose that you have specified an extract in an ``ipums.yaml`` file
+as described in the :ref:`IPUMS API introduction <using-yaml>`.
 
 .. code:: yaml
 
     description: Simple IPUMS extract
     collection: usa
-    api_version: 2
     samples:
       - us2012b
     variables:
@@ -35,7 +34,7 @@ Then you can submit, wait for, and download the extract in a single line:
 
 .. code:: bash
 
-    ipums submit-and-download -k <IPUMS_API_KEY> ipums.yml
+    ipums submit-and-download -k <IPUMS_API_KEY> ipums.yaml
 
 Much of the rest of the functionality of the library is also available on the command
 line, as this document describes.
@@ -51,14 +50,13 @@ Specifying Multiple Extracts
 ****************************
 
 You may create mutliple files specifying extracts. For instance, in addition to the
-``ipums.yml`` described above, you might also have a file called ``ipums_with_race.yml``
+``ipums.yaml`` described above, you might also have a file called ``ipums_with_race.yaml``
 which contains the following:
 
 .. code:: yaml
 
     description: Another extract
     collection: usa
-    api_version: 2
     samples:
       - us2012b
     variables:
@@ -70,17 +68,16 @@ Then the following command would submit and download this extract:
 
 .. code:: bash
 
-    ipums submit-and-download -k <IPUMS_API_KEY> ipums_with_race.yml
+    ipums submit-and-download -k <IPUMS_API_KEY> ipums_with_race.yaml
 
 Alternatively, the ``submit-and-download`` command also allows you to specify *multiple*
-extracts simultaneously. To do so, specify the ``ipums_multiple.yml`` file as follows:
+extracts simultaneously. To do so, specify the ``ipums_multiple.yaml`` file as follows:
 
 .. code:: yaml
 
     extracts:
     - description: Simple IPUMS extract
       collection: usa
-      api_version: 2
       samples:
         - us2012b
       variables:
@@ -88,7 +85,6 @@ extracts simultaneously. To do so, specify the ``ipums_multiple.yml`` file as fo
         - SEX
     - description: Another extract
       collection: usa
-      api_version: 2
       samples:
         - us2012b
       variables:
@@ -102,7 +98,7 @@ command:
 
 .. code:: bash
 
-    ipums submit-and-download -k <IPUMS_API_KEY> ipums_multiple.yml
+    ipums submit-and-download -k <IPUMS_API_KEY> ipums_multiple.yaml
 
 Step-by-Step
 ************
@@ -114,7 +110,7 @@ functionlaity is available via the ``submit``, ``check``, and ``download`` comma
 
 .. code:: bash
 
-    ipums submit -k <IPUMS_API_KEY> ipums.yml
+    ipums submit -k <IPUMS_API_KEY> ipums.yaml
     # Your extract for collection usa has been successfully submitted with number 10
 
     ipums check -k <IPUMS_API_KEY> 10

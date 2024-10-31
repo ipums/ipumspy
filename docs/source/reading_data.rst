@@ -8,7 +8,7 @@ Reading IPUMS Data
 Reading IPUMS Microdata Extracts
 --------------------------------
 
-Reading IPUMS data into a Pandas data frame using ``ipumspy`` requires a fixed-width or csv IPUMS extract data file and an IPUMS xml DDI file.
+Reading IPUMS data into a pandas data frame using ipumspy requires a fixed-width or csv IPUMS extract data file and an IPUMS xml DDI file.
 
 To read a fixed-width rectangular IPUMS extract:
 
@@ -95,13 +95,15 @@ The following retains only women over the age of 16 in ``ipums_df``:
     adult_women = ipums_df[(ipums_df["SEX"] == sex_info.codes["Female"]) &
                            (ipums_df["AGE"] > 16)]
 
+.. _reading-aggregate-data:
+
 Reading IPUMS Aggregate Data Extracts
 -------------------------------------
 
 By default, extracts for aggregate data projects are provided in csv format, 
 and therefore don't include DDI metadata files found in microdata extracts. While aggregate data
-collections do provide codebook metadata files, they are in text format and are designed to be human
-readable rather used to parse the fixed-width files common for microdata projects.
+collections do provide codebook metadata files, they are in text format and are designed to be 
+human-readable rather used to parse the fixed-width files common for microdata projects.
 
 .. attention::
     Aggregate data codebook files contain the citation information for these collections; if you 
@@ -135,7 +137,7 @@ pandas to load the compressed csv file:
             data = pd.read_csv(f)
 
 .. note::
-    IPUMS NHGIS does allow you to request an extract in fixed-width format, but ``ipumspy`` does not
+    IPUMS NHGIS does allow you to request an extract in fixed-width format, but ipumspy does not
     provide methods to parse these files as it does for Microdata because IPUMS NHGIS does not provide
     the necessary DDI codebook.
 
@@ -145,8 +147,8 @@ Reading Non-Extractable IPUMS Collections
 -----------------------------------------
 
 The `IPUMS YRBSS <https://www.ipums.org/projects/ipums-yrbss>`__ and `IPUMS NYTS <https://www.ipums.org/projects/ipums-nyts>`__ data 
-collections are not accessed through the IPUMS extract system, but are available for download in their entirety. ``ipumspy`` has 
-functionality to download these datasets (:py:meth:`~noextract.download_noextract_data()`) and parse the yml format codebooks 
-that come packaged with the ``ipumspy`` library (:py:meth:`~noextract.read_noextract_codebook()`). This codebook object can 
-then be used to read the downloaded dataset into a Pandas data frame using :py:meth:`~readers.read_microdata()` as with other 
+collections are not accessed through the IPUMS extract system, but are available for download in their entirety. ipumspy has 
+functionality to download these datasets (:py:meth:`~noextract.download_noextract_data()`) and parse the YAML format codebooks 
+that come packaged with the ipumspy library (:py:meth:`~noextract.read_noextract_codebook()`). This codebook object can 
+then be used to read the downloaded dataset into a pandas data frame using :py:meth:`~readers.read_microdata()` as with other 
 IPUMS microdata extracts retrieved via the IPUMS extract system.

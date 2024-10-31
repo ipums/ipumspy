@@ -33,19 +33,19 @@ For example:
 This instantiates a ``MicrodataExtract`` object for the `IPUMS USA <https://usa.ipums.org/usa/>`__ 
 data collection that includes the us2012b (2012 PRCS) sample, and the variables AGE and SEX.
 
-After instantiation, a ``MicrodataExtract`` object can be submitted to the API for processing
-and downloaded as described on the :doc:`IPUMS API page<../../ipums_api/index>`.
+After instantiation, a ``MicrodataExtract`` object can be
+:ref:`submitted to the API <submit-extract>` for processing.
 
 Data Structures
 ---------------
 
 IPUMS microdata extracts can be requested in rectangular, hierarhical, or household-only structures.
 
-- Rectangular data combine data for different record types into single records in the output. 
+- **Rectangular** data combine data for different record types into single records in the output. 
   For instance, rectangular-on-person data provide person-level records with all requested household
   information attached to the persons in that household.
-- Hierarchical data contain separate records for different record types.
-- Household-only data contain household records without any person records.
+- **Hierarchical** data contain separate records for different record types.
+- **Household-only** data contain household records without any person records.
 
 The ``data_structure`` argument defaults to ``{"rectangular": {"on": "P"}}``, which requests a 
 rectangular, person-level extract. The code snippet below requests a hierarchical USA extract 
@@ -170,7 +170,7 @@ Select Cases
 ~~~~~~~~~~~~
 
 IPUMS allows users to restrict the records included in their extract based on values of included 
-variables. In ``ipumspy``, use :meth:`.select_cases` to do so. This method takes a variable name and
+variables. In ipumspy, use :meth:`.select_cases` to do so. This method takes a variable name and
 a list of values for that variable. The resulting extract will only include the records whose data
 for that variable match the indicated values.
 
@@ -182,7 +182,7 @@ IPUMS CPS extract.
     extract.select_cases("SEX", ["2"])
 
 .. note::
-    The :meth:`.select_cases` can only be used with categorical variables, and the indictated
+    :meth:`.select_cases` can only be used with categorical variables, and the indictated
     variables must already be present in the IPUMS extract object.
 
 Detailed Codes
@@ -213,7 +213,7 @@ a general category, like "Two major races", can use general codes:
 However, to identify respondents belonging to more specific categories, you would need
 to use detailed codes instead. For instance, to identify respondents who identify as both
 White and Asian, you can use the detailed codes representing the intersection of White
-and each of the other Asian response options (e.g. Chinese, Japanese, etc.).
+and each of the other Asian response options (e.g., Chinese, Japanese, etc.).
 
 To do this, in addition to specifying the correct detailed codes, set the ``general`` 
 flag to ``False``:

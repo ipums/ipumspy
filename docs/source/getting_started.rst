@@ -27,8 +27,10 @@ Install with ``conda``:
 Read an IPUMS extract
 ---------------------
 
-The following code parses an IPUMS extract DDI xml codebook and data file and returns a pandas data frame.
-Both fixed-width and csv files are supported.
+For microdata collections, ipumspy provides methods to parse DDI xml codebooks and load data files into 
+pandas ``DataFrame`` objects. Both fixed-width and csv files are supported.
+
+For example:
 
 .. code:: python
 
@@ -41,7 +43,7 @@ Both fixed-width and csv files are supported.
 IPUMS API Wrappers for Python
 -----------------------------
 
-``ipumspy`` provides an easy-to-use Python wrapper for IPUMS API endpoints.
+ipumspy provides an easy-to-use Python wrapper for IPUMS API endpoints.
 
 .. _get an api key:
 
@@ -54,8 +56,11 @@ project at the top of its website, which can be accessed from the `IPUMS homepag
 
 Once you're registered, you'll be able to create an `API key <https://account.ipums.org/api_keys>`__.
 
-For security reasons, we recommend storing your key in an environment variable rather than including it in your code. The Conda documentation provides `instructions for saving environment variables <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#saving-environment-variables>`__ in conda environments for different operating systems. The example code on this page assumes that the API key is stored in an environment variable called "IPUMS_API_KEY."
-
+For security reasons, we recommend storing your key in an environment variable rather than including it in your code. 
+The Conda documentation provides 
+`instructions for saving environment variables <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#saving-environment-variables>`__ 
+in conda environments for different operating systems. The example code on this page assumes that the 
+API key is stored in an environment variable called ``IPUMS_API_KEY``.
 
 A Simple Example
 ****************
@@ -80,7 +85,7 @@ For instance, we can request 2012 Puerto Rico Community Survey data for age and 
     
     # Create an extract definition
     extract = MicrodataExtract(
-        "usa",
+        collection="usa",
         description="Sample USA extract",
         samples=["us2012b"],
         variables=["AGE", "SEX"],
@@ -98,6 +103,7 @@ Submit the extract to the IPUMS servers. After waiting for the extract to finish
     # Submit the extract request
     ipums.submit_extract(extract)
     print(f"Extract submitted with id {extract.extract_id}")
+    #> Extract submitted with id 1
 
     # Wait for the extract to finish
     ipums.wait_for_extract(extract)
@@ -106,7 +112,7 @@ Submit the extract to the IPUMS servers. After waiting for the extract to finish
     DOWNLOAD_DIR = Path(<your_download_dir>)
     ipums.download_extract(extract, download_dir=DOWNLOAD_DIR)
 
-At this point you can load your data using ``ipumspy`` readers described :ref:`above<ipumspy readers>`:
+For microdata collections, you can load your data using ipumspy readers described :ref:`above<ipumspy readers>`:
 
 .. code:: python
 
@@ -116,6 +122,9 @@ At this point you can load your data using ``ipumspy`` readers described :ref:`a
 
     # Get the data
     ipums_df = readers.read_microdata(ddi, DOWNLOAD_DIR / ddi.file_description.filename)
+
+Aggregate data collection data can be loaded with other python libraries. See :ref:`reading-aggregate-data` for
+examples.
 
 For additional information about the IPUMS API as well as technical documentation, visit the 
 `IPUMS developer portal <https://developer.ipums.org/>`__.

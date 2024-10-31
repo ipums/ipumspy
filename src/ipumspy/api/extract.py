@@ -132,17 +132,18 @@ class Dataset(IpumsObject):
     """
 
     name: str
-    """IPUMS NHGIS dataset name/id"""
+    """IPUMS dataset name"""
     data_tables: List[str]
-    """IPUMS NHGIS data tables to extract from this dataset"""
+    """IPUMS data tables to extract from this dataset"""
     geog_levels: List[str]
     """Geographic level(s) at which to obtain data for this dataset"""
     years: Optional[List[str]] = field(default_factory=list)
-    """Years for which to obtain data for this dataset"""
+    """Years for which to obtain data for this dataset (use ``['*']`` to select all years)"""
     breakdown_values: Optional[List[str]] = field(default_factory=list)
     """Breakdown values to apply to this dataset"""
 
     def build(self):
+        """Format dataset information for API Extract submission"""
         built_dataset = self.__dict__.copy()
         # don't repeat the dataset name
         built_dataset.pop("name")
@@ -162,9 +163,9 @@ class TimeSeriesTable(IpumsObject):
     """
 
     name: str
-    """IPUMS NHGIS time series table name/id"""
+    """IPUMS time series table name"""
     geog_levels: List[str]  # required parameter
-    """Geographic level(s) at which to obtain data for this time series table"""
+    """Geographic level(s) at which to obtain data for this time series table. Use ``["*"]`` to select all years"""
     years: Optional[Union[List[str], List[int]]] = field(default_factory=list)
     """Years for which to obtain data for this time series table"""
 
@@ -173,6 +174,7 @@ class TimeSeriesTable(IpumsObject):
         self.years = [str(yr) for yr in self.years]
 
     def build(self):
+        """Format time series table information for API Extract submission"""
         built_tst = self.__dict__.copy()
         # don't repeat the time series table name
         built_tst.pop("name")
@@ -190,7 +192,7 @@ class Shapefile(IpumsObject):
     """
 
     name: str
-    """IPUMS NHGIS shapefile name/id"""
+    """IPUMS NHGIS shapefile name"""
 
     def build(self):
         raise NotImplementedError
@@ -507,11 +509,14 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             sample_members: a dictionary of non-default sample members to include for Time Use collections where keys are strings
                             indicating sample member type and values are boolean. This argument is only valid for IPUMS ATUS,
                             MTUS, and AHTUS data collections. Valid keys include 'include_non_respondents' and 'include_household_members'.
+            case_select_who: indicates how to interpret any case selections included for variables in the extract. ``"individuals"``
+                            includes records for all individuals who match the specified case selections, while ``"households"``
+                            includes records for all members of each household that contains an individual who matches the specified case selections.
         """
 
         super().__init__()
         self.collection_type = self.collection_type
-        """IPUMS Collection type"""
+        """IPUMS collection type"""
         self.collection = collection
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)
@@ -650,20 +655,20 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         **kwargs,
     ):
         """
-        Class for defining an IPUMS NHGIS extract request.
+        Class for defining an extract request for an IPUMS aggregate data collection.
 
         Args:
             datasets: list of ``Dataset`` objects
             time_series_tables: list of ``TimeSeriesTable`` objects
-            shapefiles: list of shapefile IDs from IPUMS NHGIS
+            shapefiles: list of shapefile names
             description: short description of your extract
             data_format: desired format of the extract data file. One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
             geographic_extents: Geographic extents to use for all ``datasets`` in the extract definition (for instance, to
-                                to obtain data within a particular state). Use ``*`` to select all available extents. Note that
+                                to obtain data within a particular state). Use ``['*']`` to select all available extents. Note that
                                 not all geographic levels support extent selection.
             tst_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
-                        One of ``"time_by_column_layout"``, ``"time_by_row_layout"``, or ``"time_by_file_layout"``
-            breakdown_and_data_type_layout: desired layout of any `datasets` that have multiple data types or breakdown values. Either
+                        One of ``"time_by_column_layout"`` (default), ``"time_by_row_layout"``, or ``"time_by_file_layout"``.
+            breakdown_and_data_type_layout: desired layout of any ``datasets`` that have multiple data types or breakdown values. Either
                                             ``"single_file"`` (default) or ``"separate files"``
         """
 
@@ -743,14 +748,14 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
     Convert an extract that is currently specified as a dictionary (usually from a file)
-    into a BaseExtract object. If multiple extracts are specified, return a
-    List[BaseExtract] objects.
+    into a ``BaseExtract`` object. If multiple extracts are specified, return a
+    ``List[BaseExtract]``.
 
     Args:
         dct: The dictionary specifying the extract(s)
 
     Returns:
-        The extract(s) specified by dct
+        The extract(s) specified by ``dct``
     """
     if "extracts" in dct:
         # We are returning several extracts
@@ -786,7 +791,7 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
 def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:
     """
     Convert an extract object to a dictionary (usually to write to a file).
-    If multiple extracts are specified, return a dict object.
+    If multiple extracts are specified, return a ``dict`` object.
 
     Args:
         extract: A submitted IPUMS extract object or list of submitted IPUMS extract objects

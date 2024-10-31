@@ -5,7 +5,7 @@
 IPUMS API
 =========
 
-``ipumspy`` provides a framework for users to submit extract requests and download IPUMS data via the IPUMS API.
+ipumspy provides a framework for users to submit extract requests and download IPUMS data via the IPUMS API.
 
 API Assets
 ----------
@@ -93,7 +93,7 @@ available features for all collections currently supported by the API:
     While the IPUMS API does not yet provide comprehensive metadata for microdata collections, you can use
     :py:meth:`.get_all_sample_info` to retrieve a dictionary of available sample IDs.
 
-Note that ``ipumspy`` may not necessarily support all the functionality currently supported by
+Note that ipumspy may not necessarily support all the functionality currently supported by
 the IPUMS API. See the `API documentation <https://developer.ipums.org/>`__ for more information 
 about its latest features.
 
@@ -134,7 +134,7 @@ AGE, SEX, RACE, STATEFIP, and MARST variables from the 2018 and 2019 American Co
 .. code:: python
     
     extract = MicrodataExtract(
-        "usa",
+        collection="usa",
         description="Sample USA extract",
         samples=["us2018a", "us2019a"],
         variables=["AGE", "SEX", "RACE", "STATEFIP", "MARST"],
@@ -147,6 +147,8 @@ AGE, SEX, RACE, STATEFIP, and MARST variables from the 2018 and 2019 American Co
   :doc:`Microdata extracts<ipums_api_micro/index>` - Information on microdata extract parameters
 
   :doc:`Aggregate data extracts<ipums_api_aggregate/index>` - Information on aggregate data extract parameters
+
+.. _submit-extract:
 
 Submit an Extract Request
 -------------------------
@@ -257,7 +259,7 @@ re-create and re-submit the old extract.
 Sharing Extract Definitions
 ---------------------------
 
-``ipumspy`` also makes it easier to share IPUMS extracts with collaborators.
+ipumspy also makes it easier to share IPUMS extracts with collaborators.
 By saving your extract as a standalone file, you can send it to other researchers
 or reviewers, allowing them to generate an identical extract and download 
 the same data used in your analysis. 
@@ -268,7 +270,14 @@ submit the request. The request will be processed under their account, but the d
 extract will be identical.
 
 .. note::
-    Sharing IPUMS extract definitions using files will ensure that your collaborators are able to submit the same extract definition to the IPUMS extract system. However, IPUMS data are updated to fix errors as we become aware of them and preserving extract definitions in a file do not insulate against these types of changes to data. In other words, if the IPUMS data included in the extract definition change between submission of extracts based on this definition, the resulting downloaded files will not be identical. IPUMS collections keep a log of errata and other changes on their websites.
+    Sharing IPUMS extract definitions using files will ensure that your collaborators are able to submit the 
+    same extract definition to the IPUMS extract system. However, IPUMS data are updated to fix errors as we 
+    become aware of them and preserving extract definitions in a file do not insulate against these types of 
+    changes to data. 
+    
+    In other words, if the IPUMS data included in the extract definition change between 
+    submission of extracts based on this definition, the resulting downloaded files will not be identical. 
+    IPUMS collections keep a log of errata and other changes on their websites.
 
 
 Using JSON
@@ -280,7 +289,7 @@ Use the following to save your extract object in JSON format:
 
     save_extract_as_json(extract, filename="my_extract.json")
 
-If you send this file to a collaborator, they can load it into ``ipumspy`` and submit it
+If you send this file to a collaborator, they can load it into ipumspy and submit it
 themselves:
 
 .. code:: python
@@ -294,7 +303,8 @@ themselves:
     extract = define_extract_from_json("my_extract.json")
     ipums.submit_extract(extract)
 
-    
+.. _using-yaml:
+
 Using YAML
 **********
 
@@ -316,7 +326,7 @@ the extract we made above, we could save a file called ``ipums.yaml``
       - STATEFIP
       - MARST
 
-We can load the file into ``ipumspy`` by parsing the file into a dictionary
+We can load the file into ipumspy by parsing the file into a dictionary
 and then converting the dictionary to a
 :class:`MicrodataExtract<ipumspy.api.extract.MicrodataExtract>` object.
 
@@ -329,7 +339,7 @@ and then converting the dictionary to a
         extract = extract_from_dict(yaml.safe_load(infile))
 
 .. tip::
-    You can also use the ``ipumspy`` :doc:`CLI<../cli>` to easily submit extract requests for
+    You can also use the ipumspy :doc:`CLI<../cli>` to easily submit extract requests for
     definitions saved in YAML format.
     
 .. _extract-histories:
@@ -337,7 +347,7 @@ and then converting the dictionary to a
 Extract Histories
 -----------------
 
-``ipumspy`` offers two ways to peruse your extract history for a given IPUMS data collection.
+ipumspy offers two ways to peruse your extract history for a given IPUMS data collection.
 
 :meth:`.get_previous_extracts()` can be used to retrieve your most recent extracts for a 
 given collection. By default, it retrieves your previous 10 extracts, but you can adjust

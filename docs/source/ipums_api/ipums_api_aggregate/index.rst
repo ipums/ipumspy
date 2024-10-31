@@ -18,7 +18,7 @@ Construct an extract for an IPUMS aggregate data collection using the
 An ``AggregateDataExtract`` must contain an IPUMS collection ID 
 and at least one data source. IPUMS NHGIS provides 3 different types of data sources:
 
-- Datasets + data tables
+- Datasets/data tables
 - Time series tables
 - Shapefiles
 
@@ -43,14 +43,16 @@ This instantiates an ``AggregateDataExtract`` object for the IPUMS NHGIS data co
 that includes a request for county-level data from tables NP1 (total population) and NP2 (total families) of 
 the 1990 STF 1 decennial census file.
 
-After instantiation, an ``AggregateDataExtract`` object can be submitted to the API for processing
-and downloaded as described on the :doc:`IPUMS API page<../../ipums_api/index>`.
+After instantiation, an ``AggregateDataExtract`` object can be
+:ref:`submitted to the API <submit-extract>` for processing.
 
 .. note::
    The IPUMS API provides a set of metadata endpoints for aggregate data collections that allow you
    to browse available data sources and identify their associated API codes.
 
-   ``ipumspy`` does not yet support these endpoints, but this support is planned for the near future.
+   You can also browse metadata interactively through the `NHGIS Data Finder <https://data2.nhgis.org/main>`_.
+
+   *TODO: cross-link to metadata docs when available*
 
 Datasets + Data Tables
 ----------------------
@@ -58,7 +60,8 @@ Datasets + Data Tables
 An IPUMS **dataset** contains a collection of **data tables** that each correspond to a particular tabulated summary statistic. 
 A dataset is distinguished by the years, geographic levels, and topics that it covers. For instance, 2021 1-year data from the 
 American Community Survey (ACS) is encapsulated in a single dataset. In other cases, a single census product will be split into 
-multiple datasets.
+multiple datasets, typically based on the lowest-level geography for which a set of tables is available. See the 
+`NHGIS documentation <https://www.nhgis.org/overview-nhgis-datasets>`_ for more details.
 
 To request data contained in an IPUMS dataset, you need to specify the name of the dataset, name of the data table(s) to request
 from that dataset, and the geographic level at which those tables should be aggregated.
@@ -149,12 +152,12 @@ are applied to all datasets in the extract. It is not possible to request differ
 datasets in a single extract.
 
 .. note::
-   Currently, NHGIS only supports extent selection for census blocks and block groups.
+   Currently, NHGIS only supports state-level extent selection for census blocks and block groups.
 
 Time Series Tables
 ------------------
 
-IPUMS NHGIS also provides **time series tables**, which are longitudinal data sources that link comparable statistics from multiple
+IPUMS NHGIS also provides `time series tables <https://www.nhgis.org/time-series-tables>`_—longitudinal data sources that link comparable statistics from multiple
 U.S. censuses in a single package. A table is comprised of one or more related time series, each 
 of which describes a single summary statistic measured at multiple times for a given geographic level.
 
@@ -239,14 +242,16 @@ datasets:
       shapefiles=["us_state_2000_tl2010", "us_state_2010_tl2010"]
    )
 
-In some cases, data table codes are consistent across datasets. This is the case for the American Community Survey
+In some cases, data table codes are consistent across datasets. This is often the case for the American Community Survey
 (ACS) datasets. This makes it easy to build an extract request for a specific data table for
 several ACS years at once using list comprehensions. For instance:
 
 .. code:: python
 
    acs1_names = ["2017_ACS1", "2018_ACS1", "2019_ACS1"]
-   acs1_specs = [Dataset(name, data_tables=["B01001"], geog_levels=["state"]) for name in acs1_names]
+   acs1_specs = [
+      Dataset(name, data_tables=["B01001"], geog_levels=["state"]) for name in acs1_names
+   ]
 
    # Total state-level population from 2017-2019 ACS 1-year estimates
    extract = AggregateDataExtract(
@@ -259,11 +264,11 @@ Data Format
 -----------
 
 By default, NHGIS extracts are provided in CSV format with only a single header row.
-However, you can request that your CSV data include a second, more descriptive header
-row by setting ``data_format="csv_header"``. 
+If you like, you can request that your CSV data include a second header row containing
+a description of each column's contents by setting ``data_format="csv_header"``.
 
 You can also request your data in
 fixed-width format if so desired. Note that unlike for microdata projects, NHGIS does
-not provide DDI codebook files (in XML format), which allow ``ipumspy`` to parse
+not provide DDI codebook files (in XML format), which allow ipumspy to parse
 microdata fixed-width files. Thus, loading an NHGIS fixed width file will require
 manual work to parse the file correctly.
