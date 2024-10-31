@@ -281,6 +281,15 @@ def _get_collection_type(collection: str) -> str:
 
     return collection_types[collection]
 
+def _camel_to_snake(key):
+    # don't mess with case for boolean values
+    if isinstance(key, bool):
+        return key
+    cap_idx = [0] + [key.index(i) for i in key if i.isupper()]
+    parts_list = [key[i:j].lower() for i, j in zip(cap_idx, cap_idx[1:] + [None])]
+    snake = "_".join(parts_list)
+    return snake
+
 
 class BaseExtract:
     _collection_type_to_extract: Dict[(str, str), Type[BaseExtract]] = {}
@@ -758,15 +767,6 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
-
-    def _camel_to_snake(key):
-        # don't mess with case for boolean values
-        if isinstance(key, bool):
-            return key
-        cap_idx = [0] + [key.index(i) for i in key if i.isupper()]
-        parts_list = [key[i:j].lower() for i, j in zip(cap_idx, cap_idx[1:] + [None])]
-        snake = "_".join(parts_list)
-        return snake
 
     def _make_snake_ext(ext_dict):
         obj_keys = ["variables", "samples", "timeUseVariables", "datasets", "timeSeriesTables"]

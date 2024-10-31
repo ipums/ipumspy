@@ -25,7 +25,13 @@ from .exceptions import (
     IpumsTimeoutException,
     TransientIpumsApiException,
 )
-from .extract import BaseExtract, MicrodataExtract, _get_collection_type, extract_from_dict
+from .extract import (
+    BaseExtract,
+    _get_collection_type,
+    extract_from_dict,
+    _camel_to_snake,
+)
+from .metadata import IpumsMetadata
 
 
 class ModifiedIpumsExtract(Warning):
@@ -172,7 +178,7 @@ class IpumsApiClient:
         # or in extract definition dict, assign it to the default
         if extract.api_version is None:
             extract.api_version = self.api_version
-        
+
         response = self.post(
             f"{self.base_url}/extracts",
             params={"collection": extract.collection, "version": extract.api_version},
@@ -570,3 +576,46 @@ class IpumsApiClient:
         for item in samples["data"]:
             samples_dict[item["name"]] = item["description"]
         return samples_dict
+
+    def get_metadata_catalog(
+        self, collection: str, metadata_type: str, page_size: Optional[int] = 2500
+    ) -> Generator[Dict, None, None]:
+        """
+        Retrieve a catalog containing a summary of all resources of a given type for a given IPUMS collection
+
+        Args:
+            collection: the name of the IPUMS collection to retrieve metadata for
+            metadata_type: name of the type of metadata to retrieve for this collection
+            page_size: The number of items to return per page. Default to maximum page size, 2500.
+
+        Yields:
+            An iterator of metadata pages
+        """
+
+        yield from self._get_pages(collection, f"metadata/{metadata_type}", page_size)
+
+    def get_metadata(self, obj: IpumsMetadata = None):
+        """
+        Retrieve detailed metadata for a specific IPUMS resource
+
+        Args:
+            obj: metadata object specifying the IPUMS resource for which to retrieve metadata
+
+        Returns:
+            An object of the same class as ``obj`` with attributes containing the metadata receieved from the API
+        """
+
+        metadata_resp = self.get(
+            f"{self.base_url}/{obj._path}",
+            params={
+                "collection": obj.collection,
+                "pageSize": 2500,
+                "version": self.api_version,
+            },
+        ).json()
+
+        metadata_resp = {_camel_to_snake(k): v for (k, v) in metadata_resp.items()}
+        metadata_class = IpumsMetadata._metadata_type[obj.metadata_type]
+        metadata = metadata_class(collection=obj.collection, **metadata_resp)
+
+        return metadata

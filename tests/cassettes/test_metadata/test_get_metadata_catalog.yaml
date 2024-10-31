@@ -1,0 +1,118 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/metadata/datasets?collection=nhgis&version=2&pageSize=5
+  response:
+    body:
+      string: '{"data":[{"name":"1790_cPop","group":"1790 Census","description":"Population
+        Data [US, States \u0026 Counties]","sequence":101},{"name":"1800_cPop","group":"1800
+        Census","description":"Population Data [US, States \u0026 Counties]","sequence":201},{"name":"1810_cPop","group":"1810
+        Census","description":"Population Data [US, States \u0026 Counties]","sequence":301},{"name":"1820_cPop","group":"1820
+        Census","description":"Population Data [US, States \u0026 Counties]","sequence":401},{"name":"1830_cPop","group":"1830
+        Census","description":"Population Data [US, States \u0026 Counties]","sequence":501}],"pageNumber":1,"pageSize":5,"totalCount":261,"links":{"previousPage":null,"nextPage":"https://api.ipums.org/metadata/datasets?collection=nhgis\u0026pageNumber=2\u0026pageSize=5\u0026version=2"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '799'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 08 Nov 2024 20:58:05 GMT
+      Etag:
+      - W/"c7e3011132a3184ed0b17d1f992a9334"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 6308a60b-5d61-4e24-8bde-09146b0bf72e
+      X-Runtime:
+      - '0.011387'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/metadata/samples?collection=usa&version=2&pageSize=5
+  response:
+    body:
+      string: '{"data":[{"name":"us1850a","description":"1850 1%"},{"name":"us1850c","description":"1850
+        100% sample (Revised November 2023)"},{"name":"us1860a","description":"1860
+        1%"},{"name":"us1860b","description":"1860 1% sample with black oversample"},{"name":"us1860c","description":"1860
+        100% sample (Revised November 2023)"}],"pageNumber":1,"pageSize":5,"totalCount":146,"links":{"previousPage":null,"nextPage":"https://api.ipums.org/metadata/samples?collection=usa\u0026pageNumber=2\u0026pageSize=5\u0026version=2"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '511'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 08 Nov 2024 20:58:05 GMT
+      Etag:
+      - W/"407985790e783a8f7798ff151b8e4acc"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - bcf284b7-8e5e-4f92-a784-ec8e49426a02
+      X-Runtime:
+      - '0.113665'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
