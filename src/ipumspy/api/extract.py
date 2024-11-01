@@ -281,11 +281,14 @@ def _get_collection_type(collection: str) -> str:
 
     return collection_types[collection]
 
+
 def _camel_to_snake(key):
     # don't mess with case for boolean values
     if isinstance(key, bool):
         return key
-    cap_idx = [0] + [key.index(i) for i in key if i.isupper()]
+    cap_idx = [0] + [
+        key.index(l, i) for i, l in enumerate(key) if l.isupper() and i != 0
+    ]
     parts_list = [key[i:j].lower() for i, j in zip(cap_idx, cap_idx[1:] + [None])]
     snake = "_".join(parts_list)
     return snake
