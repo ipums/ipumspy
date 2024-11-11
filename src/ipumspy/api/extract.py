@@ -707,7 +707,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         self.geographic_extents = geographic_extents
         self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
         self.tst_layout = tst_layout
-        
+
         self.api_version = (
             self.extract_api_version(kwargs)
             if len(kwargs.keys()) > 0
@@ -753,7 +753,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
 
         return built
-    
+
 
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
@@ -772,7 +772,13 @@ def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtrac
         return [extract_from_dict(extract) for extract in dct["extracts"]]
 
     def _make_snake_ext(ext_dict):
-        obj_keys = ["variables", "samples", "timeUseVariables", "datasets", "timeSeriesTables"]
+        obj_keys = [
+            "variables",
+            "samples",
+            "timeUseVariables",
+            "datasets",
+            "timeSeriesTables",
+        ]
 
         for key in ext_dict.keys():
             if isinstance(ext_dict[key], dict):
