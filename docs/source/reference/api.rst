@@ -29,6 +29,7 @@ extract class.
 
    ipumspy.api.BaseExtract
    ipumspy.api.MicrodataExtract
+   ipumspy.api.AggregateDataExtract
 
 Other IPUMS Objects
 -------------------
@@ -43,9 +44,13 @@ Helpful data classes for defining IPUMS Extract objects.
    ipumspy.api.Variable
    ipumspy.api.Sample
    ipumspy.api.TimeUseVariable
+   ipumspy.api.Dataset
+   ipumspy.api.TimeSeriesTable
+   ipumspy.api.Shapefile
 
 Importing or Exporting Extract Definitions
 ------------------------------------------
+
 There are two convenience methods to transform ipumspy extract objects to dictionary 
 objects and from dictonary objects to ipumspy extract objects.
 
@@ -58,6 +63,20 @@ objects and from dictonary objects to ipumspy extract objects.
    ipumspy.api.extract_to_dict
    ipumspy.api.extract.save_extract_as_json
    ipumspy.api.extract.define_extract_from_json
+
+IPUMS Metadata
+--------------
+
+Use these classes to request IPUMS metadata via the IPUMS API.
+
+.. autosummary::
+   :toctree: generated
+   :template: class.rst
+   :nosignatures:
+
+   ipumspy.api.metadata.DatasetMetadata
+   ipumspy.api.metadata.DataTableMetadata
+   ipumspy.api.metadata.TimeSeriesTableMetadata
 
 Exceptions
 ----------

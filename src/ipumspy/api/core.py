@@ -93,8 +93,9 @@ class IpumsApiClient:
         Args:
             api_key: User's IPUMS API key
             base_url: IPUMS API url
+            api_version: IPUMS API version
             num_retries: number of times a request will be retried before
-                        raising `TransientIpumsApiException`
+                        raising ``TransientIpumsApiException``
             session: requests session object
 
         """
@@ -207,8 +208,7 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
 
         Returns:
-            str: The status of the request. Valid statuses are:
-                 'queued', 'started', 'completed', 'failed', or 'not found'
+            str: The status of the request. Valid statuses are: 'queued', 'started', 'completed', 'failed', or 'not found'
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
@@ -250,7 +250,7 @@ class IpumsApiClient:
                 extract data file.
             sas_command_file: Set to True to download the SAS command file with the
                 extract data file.
-            R_command_file: Set to True to download the R command file with the
+            r_command_file: Set to True to download the R command file with the
                 extract data file.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
@@ -437,11 +437,12 @@ class IpumsApiClient:
         """
         Returns details about a past IPUMS extract
 
-        extract: The extract to download. This extract must have been submitted.
+        Args:
+            extract: The extract to download. This extract must have been submitted.
                 Alternatively, can be an extract id. If an extract id is provided, you
                 must supply the collection name
-        collection: The name of the collection to pull the extract from. If None,
-            then ``extract`` must be a ``BaseExtract``
+            collection: The name of the collection to pull the extract from. If None,
+                then ``extract`` must be a ``BaseExtract``
 
         Returns:
             An IPUMS extract definition
@@ -490,13 +491,14 @@ class IpumsApiClient:
         collection: Optional[str] = None,
     ) -> bool:
         """
-        Returns True if the IPUMS extract's files have been expired from the cache.
+        Returns ``True`` if the IPUMS extract's files have been expired from the cache.
 
-        extract: An extract object. This extract must have been submitted.
-                 Alternatively, can be an extract id. If an extract id is provided, you
-                 must supply the collection name
-        collection: The name of the collection to pull the extract from. If None,
-            then ``extract`` must be a ``BaseExtract``
+        Args:
+            extract: An extract object. This extract must have been submitted.
+                    Alternatively, can be an extract id. If an extract id is provided, you
+                    must supply the collection name.
+            collection: The name of the collection to pull the extract from. If None,
+                    then ``extract`` must be a ``BaseExtract``.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
         extract_definition = self.get_extract_info(extract_id, collection)

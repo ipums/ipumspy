@@ -4,12 +4,12 @@ Classes for requesting IPUMS metadata via the IPUMS API
 
 from dataclasses import dataclass
 from typing import Dict, List, Optional
-
+from abc import ABC
 
 @dataclass
-class IpumsMetadata:
+class IpumsMetadata(ABC):
     """
-    Basic object to request and store metadata for an IPUMS resource
+    Basic class to request and store metadata for an arbitrary IPUMS resource
     """
 
     _metadata_type = {}
@@ -23,15 +23,17 @@ class IpumsMetadata:
 @dataclass
 class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
     """
-    Object to request and store metadata for an IPUMS dataset
+    Class to request and store metadata for an IPUMS dataset
+
+    Args:
+        collection: name of an IPUMS data collection
+        name: Name of an IPUMS dataset associated with the indicated collection
     """
 
     collection: str
     """name of an IPUMS data collection"""
     name: str
     """IPUMS NHGIS dataset name"""
-    description: Optional[str] = None
-    """description of the dataset"""
     nhgis_id: Optional[str] = None
     """NHGIS ID used in NHGIS files to reference the dataset"""
     group: Optional[str] = None
@@ -67,11 +69,14 @@ class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
     def __post_init__(self):
         self._path = f"metadata/datasets/{self.name}"
 
-
 @dataclass
 class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
     """
-    Object to request and store metadata for an IPUMS time series table
+    Class to request and store metadata for an IPUMS time series table
+
+    Args:
+        collection: IPUMS collection associated with this time series table
+        name: Name of the time series table for which to retrieve metadata
     """
 
     collection: str
@@ -104,7 +109,12 @@ class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
 @dataclass
 class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
     """
-    Object to request and store metadata for an IPUMS data table
+    Class to request and store metadata for an IPUMS data table
+
+    Args:
+        collection: IPUMS collection associated with this data table
+        name: Name of the data table for which to retrieve metadata
+        dataset_name: Name of the dataset containing this data table
     """
 
     collection: str
