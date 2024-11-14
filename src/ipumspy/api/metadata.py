@@ -6,18 +6,19 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional
 from abc import ABC
 
+
 @dataclass
 class IpumsMetadata(ABC):
     """
     Basic class to request and store metadata for an arbitrary IPUMS resource
     """
 
-    _metadata_type = {}
+    _metadata_classes = {}
 
     def __init_subclass__(cls, metadata_type: str, **kwargs):
         super().__init_subclass__(**kwargs)
         cls.metadata_type = metadata_type
-        IpumsMetadata._metadata_type[metadata_type] = cls
+        IpumsMetadata._metadata_classes[metadata_type] = cls
 
 
 @dataclass
@@ -68,6 +69,7 @@ class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
 
     def __post_init__(self):
         self._path = f"metadata/datasets/{self.name}"
+
 
 @dataclass
 class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):

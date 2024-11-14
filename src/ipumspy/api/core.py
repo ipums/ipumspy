@@ -617,7 +617,7 @@ class IpumsApiClient:
         ).json()
 
         metadata_resp = {_camel_to_snake(k): v for (k, v) in metadata_resp.items()}
-        metadata_class = IpumsMetadata._metadata_type[obj.metadata_type]
+        metadata_class = IpumsMetadata._metadata_classes[obj.metadata_type]
         metadata = metadata_class(collection=obj.collection, **metadata_resp)
 
         return metadata
