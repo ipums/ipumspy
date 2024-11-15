@@ -2,12 +2,12 @@
 Classes for requesting IPUMS metadata via the IPUMS API
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 from abc import ABC
 
 
-@dataclass
+@dataclass(init=False)
 class IpumsMetadata(ABC):
     """
     Basic class to request and store metadata for an arbitrary IPUMS resource
@@ -15,13 +15,16 @@ class IpumsMetadata(ABC):
 
     _metadata_classes = {}
 
+    def __init__(self, **kwargs):
+        pass
+
     def __init_subclass__(cls, metadata_type: str, **kwargs):
         super().__init_subclass__(**kwargs)
         cls.metadata_type = metadata_type
         IpumsMetadata._metadata_classes[metadata_type] = cls
 
 
-@dataclass
+@dataclass(init=False)
 class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
     """
     Class to request and store metadata for an IPUMS dataset
@@ -35,43 +38,48 @@ class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
     """name of an IPUMS data collection"""
     name: str
     """IPUMS NHGIS dataset name"""
-    nhgis_id: Optional[str] = None
+    nhgis_id: Optional[str] = field(default=None, init=False)
     """NHGIS ID used in NHGIS files to reference the dataset"""
-    group: Optional[str] = None
+    group: Optional[str] = field(default=None, init=False)
     """group of datasets to which the dataset belongs"""
-    sequence: Optional[str] = None
+    sequence: Optional[str] = field(default=None, init=False)
     """order in which the dataset will appear in the metadata API and extracts"""
-    has_multiple_data_types: Optional[bool] = None
+    has_multiple_data_types: Optional[bool] = field(default=None, init=False)
     """
     logical indicating whether multiple data types exist for the dataset 
         (for example, ACS datasets include both estimates and margins of error)
     """
-    data_tables: Optional[List[Dict]] = None
+    data_tables: Optional[List[Dict]] = field(default=None, init=False)
     """
     dictionary containing names, codes, and descriptions for all data tables 
         available for the dataset
     """
-    geog_levels: Optional[List[Dict]] = None
+    geog_levels: Optional[List[Dict]] = field(default=None, init=False)
     """
     dictionary containing names, descriptions, and extent information for the geographic 
         levels available for the dataset
     """
-    geographic_instances: Optional[List[Dict]] = None
+    geographic_instances: Optional[List[Dict]] = field(default=None, init=False)
     """
     dictionary containing names and descriptions for all valid geographic extents 
         for the dataset
     """
-    breakdowns: Optional[List[Dict]] = None
+    breakdowns: Optional[List[Dict]] = field(default=None, init=False)
     """
     dictionary containing names, types, descriptions, and breakdown values for all breakdowns 
         available for the dataset.
     """
 
-    def __post_init__(self):
+    def __init__(self, collection, name, **kwargs):
+        self.collection = collection
+        self.name = name
         self._path = f"metadata/datasets/{self.name}"
 
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
-@dataclass
+
+@dataclass(init=False)
 class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
     """
     Class to request and store metadata for an IPUMS time series table
@@ -85,9 +93,9 @@ class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
     """name of an IPUMS data collection"""
     name: str
     """IPUMS NHGIS time series table name"""
-    description: Optional[str] = None
+    description: Optional[str] = field(default=None, init=False)
     """description of the time series table"""
-    geographic_integration: Optional[str] = None
+    geographic_integration: Optional[str] = field(default=None, init=False)
     """
     The method by which the time series table aligns geographic units
         across time. Nominal integration indicates that geographic units 
@@ -95,20 +103,25 @@ class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
         Standardized integration indicates that data from multiple time 
         points are standardized to the indicated year's census units
     """
-    sequence: Optional[str] = None
+    sequence: Optional[str] = field(default=None, init=False)
     """order in which the time series table will appear in the metadata API and extracts"""
-    time_series: Optional[List[Dict]] = None
+    time_series: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing names and descriptions for the individual time series available for the time series table"""
-    years: Optional[List[Dict]] = None
+    years: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing information on the available data years for the time series table"""
-    geog_levels: Optional[List[Dict]] = None
+    geog_levels: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing names and descriptions for the geographic levels available for the time series table"""
 
-    def __post_init__(self):
+    def __init__(self, collection, name, **kwargs):
+        self.collection = collection
+        self.name = name
         self._path = f"metadata/time_series_tables/{self.name}"
 
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
-@dataclass
+
+@dataclass(init=False)
 class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
     """
     Class to request and store metadata for an IPUMS data table
@@ -125,19 +138,25 @@ class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
     """IPUMS data table name"""
     dataset_name: str
     """name of the dataset to which this data table belongs"""
-    description: Optional[str] = None
+    description: Optional[str] = field(default=None, init=False)
     """description of the data table"""
-    universe: Optional[str] = None
+    universe: Optional[str] = field(default=None, init=False)
     """the statistical population measured by this data table"""
-    nhgis_code: Optional[str] = None
+    nhgis_code: Optional[str] = field(default=None, init=False)
     """
     the code identifying the data table in the extract. Variables in the extract 
         data will include column names prefixed with this code
     """
-    sequence: Optional[str] = None
+    sequence: Optional[str] = field(default=None, init=False)
     """order in which the data table will appear in the metadata API and extracts"""
-    variables: Optional[List[Dict]] = None
+    variables: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing variable descriptions and codes for the variables included in the data table"""
 
-    def __post_init__(self):
+    def __init__(self, collection, name, dataset_name, **kwargs):
+        self.collection = collection
+        self.name = name
+        self.dataset_name = dataset_name
         self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
