@@ -7,25 +7,28 @@ from typing import Dict, List, Optional
 from abc import ABC
 
 
-@dataclass(init=False)
+@dataclass
 class IpumsMetadata(ABC):
     """
     Basic class to request and store metadata for an arbitrary IPUMS resource
     """
+    
+    def populate(self, metadata_response_dict: dict):
+        """
+        Update IpumsMetadata objects with attributes from API response
 
-    _metadata_classes = {}
+        Args:
+            metadata_response_dict: json response from IPUMS metadata API
+        """
+        for attribute in metadata_response_dict.keys():
+            if hasattr(self, attribute):
+                setattr(self, attribute, metadata_response_dict[attribute])
+            else:
+                raise KeyError(f"{type(self).__name__} has no attribute '{attribute}'.")
 
-    def __init__(self, **kwargs):
-        pass
 
-    def __init_subclass__(cls, metadata_type: str, **kwargs):
-        super().__init_subclass__(**kwargs)
-        cls.metadata_type = metadata_type
-        IpumsMetadata._metadata_classes[metadata_type] = cls
-
-
-@dataclass(init=False)
-class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
+@dataclass
+class DatasetMetadata(IpumsMetadata):
     """
     Class to request and store metadata for an IPUMS dataset
 
@@ -42,6 +45,8 @@ class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
     """NHGIS ID used in NHGIS files to reference the dataset"""
     group: Optional[str] = field(default=None, init=False)
     """group of datasets to which the dataset belongs"""
+    description: Optional[str] = field(default=None, init=False)
+    """description of the dataset from IPUMS"""
     sequence: Optional[str] = field(default=None, init=False)
     """order in which the dataset will appear in the metadata API and extracts"""
     has_multiple_data_types: Optional[bool] = field(default=None, init=False)
@@ -70,17 +75,13 @@ class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
         available for the dataset.
     """
 
-    def __init__(self, collection, name, **kwargs):
-        self.collection = collection
-        self.name = name
+    def __post_init__(self):
         self._path = f"metadata/datasets/{self.name}"
 
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
 
-@dataclass(init=False)
-class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
+@dataclass
+class TimeSeriesTableMetadata(IpumsMetadata):
     """
     Class to request and store metadata for an IPUMS time series table
 
@@ -112,17 +113,12 @@ class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
     geog_levels: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing names and descriptions for the geographic levels available for the time series table"""
 
-    def __init__(self, collection, name, **kwargs):
-        self.collection = collection
-        self.name = name
+    def __post_init__(self):
         self._path = f"metadata/time_series_tables/{self.name}"
 
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
-
-@dataclass(init=False)
-class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
+@dataclass
+class DataTableMetadata(IpumsMetadata):
     """
     Class to request and store metadata for an IPUMS data table
 
@@ -152,11 +148,5 @@ class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
     variables: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing variable descriptions and codes for the variables included in the data table"""
 
-    def __init__(self, collection, name, dataset_name, **kwargs):
-        self.collection = collection
-        self.name = name
-        self.dataset_name = dataset_name
-        self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
-
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+    def __post_init__(self):
+        self._path = self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
