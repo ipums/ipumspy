@@ -4,7 +4,7 @@ Classes for requesting IPUMS metadata via the IPUMS API
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 @dataclass
@@ -25,6 +25,17 @@ class IpumsMetadata(ABC):
                 setattr(self, attribute, metadata_response_dict[attribute])
             else:
                 raise KeyError(f"{type(self).__name__} has no attribute '{attribute}'.")
+    
+    @property
+    @abstractmethod
+    def supported_collections(self):
+        pass
+    
+    def _validate_collection(self):
+        if self.collection not in self.supported_collections:
+            raise ValueError(f"{type(self).__name__} is not a valid metadata type for the {self.collection} collection.")
+
+    
 
 
 @dataclass
@@ -34,15 +45,15 @@ class DatasetMetadata(IpumsMetadata):
 
     Args:
         collection: name of an IPUMS data collection
-        name: Name of an IPUMS dataset associated with the indicated collection
+        name: Name of an IPUMS dataset included in the collection
     """
 
     collection: str
-    """name of an IPUMS data collection"""
+    """name of an IPUMS data collection. Currently only available for IPUMS NHGIS"""
     name: str
-    """IPUMS NHGIS dataset name"""
+    """IPUMS dataset name from an IPUMS aggregate data collection"""
     nhgis_id: Optional[str] = field(default=None, init=False)
-    """NHGIS ID used in NHGIS files to reference the dataset"""
+    """ID used in IPUMS files to reference the dataset"""
     group: Optional[str] = field(default=None, init=False)
     """group of datasets to which the dataset belongs"""
     description: Optional[str] = field(default=None, init=False)
@@ -77,6 +88,11 @@ class DatasetMetadata(IpumsMetadata):
 
     def __post_init__(self):
         self._path = f"metadata/datasets/{self.name}"
+        self._validate_collection()
+        
+    @property
+    def supported_collections(self):
+        return ["nhgis"]
 
 
 
@@ -86,14 +102,14 @@ class TimeSeriesTableMetadata(IpumsMetadata):
     Class to request and store metadata for an IPUMS time series table
 
     Args:
-        collection: IPUMS collection associated with this time series table
+        collection: IPUMS collection that contains time series tables
         name: Name of the time series table for which to retrieve metadata
     """
 
     collection: str
-    """name of an IPUMS data collection"""
+    """name of an IPUMS data collection. Only available for IPUMS NHGIS"""
     name: str
-    """IPUMS NHGIS time series table name"""
+    """IPUMS time series table name from an IPUMS aggregate data collection."""
     description: Optional[str] = field(default=None, init=False)
     """description of the time series table"""
     geographic_integration: Optional[str] = field(default=None, init=False)
@@ -115,6 +131,13 @@ class TimeSeriesTableMetadata(IpumsMetadata):
 
     def __post_init__(self):
         self._path = f"metadata/time_series_tables/{self.name}"
+        self._validate_collection()
+        
+    @property
+    def supported_collections(self):
+        return ["nhgis"]
+        
+        
 
 
 @dataclass
@@ -150,3 +173,8 @@ class DataTableMetadata(IpumsMetadata):
 
     def __post_init__(self):
         self._path = self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
+        self._validate_collection()
+        
+    @property
+    def supported_collections(self):
+        return ["nhgis"]
