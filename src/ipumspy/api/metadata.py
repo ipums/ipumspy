@@ -4,44 +4,60 @@ Classes for requesting IPUMS metadata via the IPUMS API
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
-@dataclass(init=False)
+@dataclass
 class IpumsMetadata(ABC):
     """
     Basic class to request and store metadata for an arbitrary IPUMS resource
     """
+    
+    def populate(self, metadata_response_dict: dict):
+        """
+        Update IpumsMetadata objects with attributes from API response
 
-    _metadata_classes = {}
-
-    def __init__(self, **kwargs):
+        Args:
+            metadata_response_dict: json response from IPUMS metadata API
+        """
+        for attribute in metadata_response_dict.keys():
+            if hasattr(self, attribute):
+                setattr(self, attribute, metadata_response_dict[attribute])
+            else:
+                raise KeyError(f"{type(self).__name__} has no attribute '{attribute}'.")
+    
+    @property
+    @abstractmethod
+    def supported_collections(self):
         pass
+    
+    def _validate_collection(self):
+        if self.collection not in self.supported_collections:
+            raise ValueError(f"{type(self).__name__} is not a valid metadata type for the {self.collection} collection.")
 
-    def __init_subclass__(cls, metadata_type: str, **kwargs):
-        super().__init_subclass__(**kwargs)
-        cls.metadata_type = metadata_type
-        IpumsMetadata._metadata_classes[metadata_type] = cls
+    
 
 
-@dataclass(init=False)
-class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
+@dataclass
+class DatasetMetadata(IpumsMetadata):
     """
     Class to request and store metadata for an IPUMS dataset
 
     Args:
         collection: name of an IPUMS data collection
-        name: Name of an IPUMS dataset associated with the indicated collection
+        name: Name of an IPUMS dataset included in the collection
     """
 
     collection: str
-    """name of an IPUMS data collection"""
+    """name of an IPUMS data collection. Currently only available for IPUMS NHGIS"""
     name: str
-    """IPUMS NHGIS dataset name"""
+    """IPUMS dataset name from an IPUMS aggregate data collection"""
     nhgis_id: Optional[str] = field(default=None, init=False)
-    """NHGIS ID used in NHGIS files to reference the dataset"""
+    """ID used in IPUMS files to reference the dataset"""
     group: Optional[str] = field(default=None, init=False)
     """group of datasets to which the dataset belongs"""
+    description: Optional[str] = field(default=None, init=False)
+    """description of the dataset from IPUMS"""
     sequence: Optional[str] = field(default=None, init=False)
     """order in which the dataset will appear in the metadata API and extracts"""
     has_multiple_data_types: Optional[bool] = field(default=None, init=False)
@@ -70,29 +86,30 @@ class DatasetMetadata(IpumsMetadata, metadata_type="dataset"):
         available for the dataset.
     """
 
-    def __init__(self, collection, name, **kwargs):
-        self.collection = collection
-        self.name = name
+    def __post_init__(self):
         self._path = f"metadata/datasets/{self.name}"
+        self._validate_collection()
+        
+    @property
+    def supported_collections(self):
+        return ["nhgis"]
 
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
 
-@dataclass(init=False)
-class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
+@dataclass
+class TimeSeriesTableMetadata(IpumsMetadata):
     """
     Class to request and store metadata for an IPUMS time series table
 
     Args:
-        collection: IPUMS collection associated with this time series table
+        collection: IPUMS collection that contains time series tables
         name: Name of the time series table for which to retrieve metadata
     """
 
     collection: str
-    """name of an IPUMS data collection"""
+    """name of an IPUMS data collection. Only available for IPUMS NHGIS"""
     name: str
-    """IPUMS NHGIS time series table name"""
+    """IPUMS time series table name from an IPUMS aggregate data collection."""
     description: Optional[str] = field(default=None, init=False)
     """description of the time series table"""
     geographic_integration: Optional[str] = field(default=None, init=False)
@@ -112,17 +129,19 @@ class TimeSeriesTableMetadata(IpumsMetadata, metadata_type="time_series_table"):
     geog_levels: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing names and descriptions for the geographic levels available for the time series table"""
 
-    def __init__(self, collection, name, **kwargs):
-        self.collection = collection
-        self.name = name
+    def __post_init__(self):
         self._path = f"metadata/time_series_tables/{self.name}"
+        self._validate_collection()
+        
+    @property
+    def supported_collections(self):
+        return ["nhgis"]
+        
+        
 
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
-
-@dataclass(init=False)
-class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
+@dataclass
+class DataTableMetadata(IpumsMetadata):
     """
     Class to request and store metadata for an IPUMS data table
 
@@ -152,11 +171,10 @@ class DataTableMetadata(IpumsMetadata, metadata_type="data_table"):
     variables: Optional[List[Dict]] = field(default=None, init=False)
     """dictionary containing variable descriptions and codes for the variables included in the data table"""
 
-    def __init__(self, collection, name, dataset_name, **kwargs):
-        self.collection = collection
-        self.name = name
-        self.dataset_name = dataset_name
-        self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
-
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+    def __post_init__(self):
+        self._path = self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
+        self._validate_collection()
+        
+    @property
+    def supported_collections(self):
+        return ["nhgis"]

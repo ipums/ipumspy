@@ -62,3 +62,9 @@ def test_get_metadata(live_api_client: IpumsApiClient):
 
     assert len(ds.data_tables) == 100
     assert len(dt.variables) == 49
+    
+
+def test_collection_validity():
+    with pytest.raises(ValueError) as exc_info:
+        ds = DatasetMetadata("usa", "1990_STF1")
+    assert exc_info.value.args[0] == "DatasetMetadata is not a valid metadata type for the usa collection."
