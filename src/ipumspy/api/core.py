@@ -583,12 +583,12 @@ class IpumsApiClient:
         self, collection: str, metadata_type: str, page_size: Optional[int] = 2500
     ) -> Generator[Dict, None, None]:
         """
-        Retrieve a catalog containing a summary of all resources of a given type for a given IPUMS collection
+        Retrieve a catalog containing a summary of all resources of a given type for a given IPUMS collection.
 
         Args:
-            collection: the name of the IPUMS collection to retrieve metadata for
-            metadata_type: name of the type of metadata to retrieve for this collection
-            page_size: The number of items to return per page. Default to maximum page size, 2500.
+            collection: The name of the IPUMS collection to retrieve metadata for
+            metadata_type: Name of the type of metadata to retrieve for this collection
+            page_size: Number of items to return per page. Defaults to maximum page size, 2500.
 
         Yields:
             An iterator of metadata pages
@@ -596,12 +596,12 @@ class IpumsApiClient:
 
         yield from self._get_pages(collection, f"metadata/{metadata_type}", page_size)
 
-    def get_metadata(self, obj: IpumsMetadata = None):
+    def get_metadata(self, obj: IpumsMetadata):
         """
-        Retrieve detailed metadata for a specific IPUMS resource
+        Retrieve detailed metadata for a specific IPUMS resource.
 
         Args:
-            obj: metadata object specifying the IPUMS resource for which to retrieve metadata
+            obj: Metadata object specifying the IPUMS resource for which to retrieve metadata
 
         Returns:
             An object of the same class as ``obj`` with attributes containing the metadata receieved from the API

@@ -52,8 +52,6 @@ After instantiation, an ``AggregateDataExtract`` object can be
 
    You can also browse metadata interactively through the `NHGIS Data Finder <https://data2.nhgis.org/main>`_.
 
-   *TODO: cross-link to metadata docs when available*
-
 Datasets + Data Tables
 ----------------------
 
@@ -124,8 +122,37 @@ For datasets with multiple breakdowns or data types (e.g., the American Communit
 and margins of error), you can request that the data for each be provided in separate files or together in a
 single file using the ``breakdown_and_data_type_layout`` argument.
 
+Dataset + Data Table Metadata
++++++++++++++++++++++++++++++
+
+Use the :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` class to browse the available
+specification options for a particular dataset and identify the codes to use when
+requesting data from the API:
+
+.. code:: python
+
+   from ipumspy import IpumsApiClient, DatasetMetadata
+
+   ipums = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
+
+   ds = ipums.get_metadata(DatasetMetadata("nhgis", "2000_SF1a"))
+
+The returned object will contain the metadata for the requested dataset. For example:
+
+.. code:: python
+
+   # Description of the dataset
+   ds.description
+
+   # Dictionary of data table codes for this dataset
+   ds.data_tables
+
+   # etc...
+
+You can also request metadata for individual data tables using the same workflow with the :class:`DataTableMetadata <ipumspy.api.metadata.DataTableMetadata>` class.
+
 Geographic Extent Selection
-***************************
++++++++++++++++++++++++++++
 
 When working with small geographies it can be computationally intensive to work with
 nationwide data. To avoid this problem, you can request data from a specific geographic area 
@@ -147,12 +174,13 @@ a trailing 0):
       geographic_extents=["010", "050"]
    )
 
+.. tip::
+   You can see available extent selection API codes, if any, in the ``geographic_instances`` attribute of
+   a submitted :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` object.
+
 Note that extent selection is *not* a dataset-specific parameter. That is, the selected extents
 are applied to all datasets in the extract. It is not possible to request different extents for different
 datasets in a single extract.
-
-.. note::
-   Currently, NHGIS only supports state-level extent selection for census blocks and block groups.
 
 Time Series Tables
 ------------------
@@ -205,6 +233,9 @@ into separate files (by default, time is arranged across columns).
       ],
       tst_layout="time_by_row_layout",
    )
+
+As with datasets and data tables, you can request metadata about the available specification options
+for a specific time series table using the :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` class.
 
 Shapefiles
 ----------
@@ -272,3 +303,32 @@ fixed-width format if so desired. Note that unlike for microdata projects, NHGIS
 not provide DDI codebook files (in XML format), which allow ipumspy to parse
 microdata fixed-width files. Thus, loading an NHGIS fixed width file will require
 manual work to parse the file correctly.
+
+Supplemental Data
+-----------------
+
+IPUMS NHGIS also provides some data products via direct download, without the need to create
+an extract request. These sources are available via the IPUMS API. However, since you access
+these files directly, you must know a file's URL before you can download it.
+
+Many NHGIS supplemental data files can be found under the "Supplemental Data" heading on the left side of the
+`NHGIS homepage <https://www.nhgis.org/>`_.  See the IPUMS 
+`developer documentation page <https://developer.ipums.org/docs/v2/apiprogram/apis/nhgis/#ipums-nhgis-supplemental-data>`_ 
+for all supported supplemental data endpoints and advice on how to convert file URLs found on the website into
+acceptable API request URLs.
+
+Once you've identified a file's location, you can use the :py:meth:`.get` method to download it. For
+instance, to download a state-level NHGIS crosswalk file, we could use the following:
+
+.. code:: python
+
+   file_name = "nhgis_blk2010_blk2020_10.zip"
+   url = f"{ipums.base_url}/supplemental-data/nhgis/crosswalks/nhgis_blk2010_blk2020_state/{file_name}"
+
+   download_path = "<your-download-path-here>"
+
+   with ipums.get(url, stream=True) as response:
+      with open(download_path, "wb") as outfile:
+         for chunk in response.iter_content(chunk_size=8192):
+               outfile.write(chunk)
+

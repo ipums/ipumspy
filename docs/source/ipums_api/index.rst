@@ -89,10 +89,6 @@ available features for all collections currently supported by the API:
       - **X**
       - **X**
 
-.. tip::
-    While the IPUMS API does not yet provide comprehensive metadata for microdata collections, you can use
-    :py:meth:`.get_all_sample_info` to retrieve a dictionary of available sample IDs.
-
 Note that ipumspy may not necessarily support all the functionality currently supported by
 the IPUMS API. See the `API documentation <https://developer.ipums.org/>`__ for more information 
 about its latest features.
@@ -141,12 +137,87 @@ AGE, SEX, RACE, STATEFIP, and MARST variables from the 2018 and 2019 American Co
     )
 
 .. seealso::
-  The available extract definition options vary across collections. See the collection-specific
-  documentation for details about specifying more complex extracts for each type:
-  
-  :doc:`Microdata extracts<ipums_api_micro/index>` - Information on microdata extract parameters
+  The available extract definition options vary across collections. See the 
+  :doc:`microdata extracts<ipums_api_micro/index>` and :doc:`aggregate data extracts<ipums_api_aggregate/index>`
+  pages for more information about the available extract parameters for each type.
 
-  :doc:`Aggregate data extracts<ipums_api_aggregate/index>` - Information on aggregate data extract parameters
+.. _ipums-metadata:
+
+IPUMS Metadata
+**************
+
+You can use the IPUMS API metadata endpoints to identify the codes you can use to include
+particular data sources in your extract request.
+
+The IPUMS API provides access to two different types of metadata. The first provides a listing of all
+available data sources of a given type (see the :ref:`table <metadata support table>` below for supported types). 
+These records can be accessed with :py:meth:`.get_metadata_catalog`.
+
+This method returns a generator of metadata pages, allowing you to iterate through and search for 
+particular data sources. For instance, to identify all available IPUMS NHGIS data tables that
+contain data referring to "Urban Population", we could do the following:
+
+.. code:: python
+
+  urb_dts = []
+
+  # Identify all data tables referring to "Urban Population"
+  for page in ipums.get_metadata_catalog("nhgis", metadata_type="data_tables"):
+      for dt in page["data"]:
+          if "Urban Population" in dt["description"]:
+              urb_dts.append(dt)
+
+The IPUMS API also provides access to detailed metadata about individual data sources. Request
+this metadata by using an ``IpumsMetadata`` object to indicate the individual data source
+for which to retrieve metadata. For instance, to request metadata for IPUMS NHGIS time series table "A00":
+
+.. code:: python
+
+  tst = TimeSeriesTableMetadata("nhgis", "A00")
+
+Submit the request to the IPUMS API with :py:meth:`.get_metadata`. The returned object will contain the 
+metadata obtained for the requested data source:
+
+.. code:: python
+
+  ipums.get_metadata(tst)
+
+  tst.description
+  #> 'Total Population'
+
+The following table summarizes the currently available metadata endpoints:
+
+.. _metadata support table:
+
+.. list-table:: Supported metadata endpoints
+    :widths: 2 3 5
+    :header-rows: 1
+    :align: center
+
+    * - Metadata type
+      - Supported collections
+      - Detailed metadata class analog
+    * - ``datasets``
+      - IPUMS NHGIS
+      - :py:class:`~ipumspy.api.metadata.DatasetMetadata`
+    * - ``data_tables``
+      - IPUMS NHGIS
+      - :py:class:`~ipumspy.api.metadata.DataTableMetadata`
+    * - ``time_series_tables``
+      - IPUMS NHGIS
+      - :py:class:`~ipumspy.api.metadata.TimeSeriesTableMetadata`
+    * - ``shapefiles``
+      - IPUMS NHGIS
+      -
+    * - ``samples``
+      - Microdata collections
+      -
+
+.. note::
+  Currently, comprehensive IPUMS API metadata is only available for IPUMS NHGIS.
+  For microdata collections, only sample information is available. You can also obtain a dictionary 
+  of sample codes with :py:meth:`.get_all_sample_info`.
+
 
 .. _submit-extract:
 
