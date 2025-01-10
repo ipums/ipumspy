@@ -123,7 +123,7 @@ pygments_style = "friendly"
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-html_logo = "_static/ipums-h-n-rgb.png"
+html_logo = "_static/ipumspy-logo.png"
 html_favicon = "_static/ipums-favicon-152x152.png"
 html_theme_options = {
     "light_css_variables": {

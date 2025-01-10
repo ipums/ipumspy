@@ -125,7 +125,7 @@ single file using the ``breakdown_and_data_type_layout`` argument.
 Dataset + Data Table Metadata
 +++++++++++++++++++++++++++++
 
-Use the :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` class to browse the available
+Use the :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` data class to browse the available
 specification options for a particular dataset and identify the codes to use when
 requesting data from the API:
 
@@ -149,7 +149,7 @@ The returned object will contain the metadata for the requested dataset. For exa
 
    # etc...
 
-You can also request metadata for individual data tables using the same workflow with the :class:`DataTableMetadata <ipumspy.api.metadata.DataTableMetadata>` class.
+You can also request metadata for individual data tables using the same workflow with the :class:`DataTableMetadata <ipumspy.api.metadata.DataTableMetadata>` data class.
 
 Geographic Extent Selection
 +++++++++++++++++++++++++++
@@ -317,10 +317,12 @@ Many NHGIS supplemental data files can be found under the "Supplemental Data" he
 for all supported supplemental data endpoints and advice on how to convert file URLs found on the website into
 acceptable API request URLs.
 
-Once you've identified a file's location, you can use the :py:meth:`.get` method to download it. For
+Once you've identified a file's location, you can use the``ipumspy`` :py:meth:`.get` method to download it. For
 instance, to download a state-level NHGIS crosswalk file, we could use the following:
 
 .. code:: python
+
+   ipums = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
 
    file_name = "nhgis_blk2010_blk2020_10.zip"
    url = f"{ipums.base_url}/supplemental-data/nhgis/crosswalks/nhgis_blk2010_blk2020_state/{file_name}"

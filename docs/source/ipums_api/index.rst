@@ -144,7 +144,18 @@ AGE, SEX, RACE, STATEFIP, and MARST variables from the 2018 and 2019 American Co
 .. _ipums-metadata:
 
 IPUMS Metadata
-**************
+--------------
+
+Microdata Collections
+*********************
+
+.. note::
+  Currently, comprehensive IPUMS API metadata is only available for IPUMS NHGIS.
+  For microdata collections, only sample information is available. You can also obtain a dictionary 
+  of sample codes with :py:meth:`.get_all_sample_info`.
+
+Aggregate Data Collections
+**************************
 
 You can use the IPUMS API metadata endpoints to identify the codes you can use to include
 particular data sources in your extract request.
@@ -209,15 +220,6 @@ The following table summarizes the currently available metadata endpoints:
     * - ``shapefiles``
       - IPUMS NHGIS
       -
-    * - ``samples``
-      - Microdata collections
-      -
-
-.. note::
-  Currently, comprehensive IPUMS API metadata is only available for IPUMS NHGIS.
-  For microdata collections, only sample information is available. You can also obtain a dictionary 
-  of sample codes with :py:meth:`.get_all_sample_info`.
-
 
 .. _submit-extract:
 

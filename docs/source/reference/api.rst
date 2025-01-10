@@ -67,7 +67,7 @@ objects and from dictonary objects to ipumspy extract objects.
 IPUMS Metadata
 --------------
 
-Use these classes to request IPUMS metadata via the IPUMS API.
+Use these classes and methods to request IPUMS metadata for aggregate data collections via the IPUMS API.
 
 .. autosummary::
    :toctree: generated
@@ -95,3 +95,4 @@ Several different exceptions may be raised when interacting with the IPUMS API.
    ipumspy.api.exceptions.IpumsAPIAuthenticationError
    ipumspy.api.exceptions.BadIpumsApiRequest
    ipumspy.api.exceptions.IpumsExtractNotSubmitted
+   ipumspy.api.exceptions.IpumsApiRateLimitException
