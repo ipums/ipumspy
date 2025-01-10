@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ipumspy"
-version = "0.5.1"
+version = "0.6.0"
 description = "A collection of tools for working with IPUMS data"
 authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
            "Renae Rodgers <rodge103@umn.edu>"]
@@ -10,11 +10,11 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pandas = "^1.5.2"
-numpy = "^1.24.4"
+python = "^3.9"
+pandas = "^2.2.3"
+numpy = "^2.0.0"
 click = "^8.0.0"
-pyarrow = "^14.0.2"
+pyarrow = "^18.1.0"
 requests = {extras = ["use_chardet_on_py3"], version = "^2.26.0"}
 importlib-metadata = "^4.13.0"
 PyYAML = "^6.0.1"
@@ -26,7 +26,7 @@ isort = "^5.8.0"
 mypy = "^1.0.1"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.2.2"
+pytest = "^8.3.4"
 pytest-cov = "^4.0.0"
 python-dotenv = "^1.0.0"
 fastapi = "^0.109.2"
