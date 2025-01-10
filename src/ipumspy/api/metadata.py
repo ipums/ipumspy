@@ -13,7 +13,7 @@ class IpumsMetadata(ABC):
     Class to request and store metadata for an arbitrary IPUMS resource. Use a subclass to request
     metadata for a particular type of resource.
     """
-    
+
     def populate(self, metadata_response_dict: dict):
         """
         Update IpumsMetadata objects with attributes from API response.
@@ -26,7 +26,7 @@ class IpumsMetadata(ABC):
                 setattr(self, attribute, metadata_response_dict[attribute])
             else:
                 raise KeyError(f"{type(self).__name__} has no attribute '{attribute}'.")
-    
+
     @property
     @abstractmethod
     def supported_collections(self):
@@ -34,12 +34,12 @@ class IpumsMetadata(ABC):
         Collections that support this metadata class
         """
         pass
-    
+
     def _validate_collection(self):
         if self.collection not in self.supported_collections:
-            raise ValueError(f"{type(self).__name__} is not a valid metadata type for the {self.collection} collection.")
-
-    
+            raise ValueError(
+                f"{type(self).__name__} is not a valid metadata type for the {self.collection} collection."
+            )
 
 
 @dataclass
@@ -93,11 +93,10 @@ class DatasetMetadata(IpumsMetadata):
     def __post_init__(self):
         self._path = f"metadata/datasets/{self.name}"
         self._validate_collection()
-        
+
     @property
     def supported_collections(self):
         return ["nhgis"]
-
 
 
 @dataclass
@@ -134,12 +133,10 @@ class TimeSeriesTableMetadata(IpumsMetadata):
     def __post_init__(self):
         self._path = f"metadata/time_series_tables/{self.name}"
         self._validate_collection()
-        
+
     @property
     def supported_collections(self):
         return ["nhgis"]
-        
-        
 
 
 @dataclass
@@ -174,9 +171,11 @@ class DataTableMetadata(IpumsMetadata):
     """Dictionary containing variable descriptions and codes for the variables included in the data table"""
 
     def __post_init__(self):
-        self._path = self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
+        self._path = self._path = (
+            f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
+        )
         self._validate_collection()
-        
+
     @property
     def supported_collections(self):
         return ["nhgis"]

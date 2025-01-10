@@ -11,6 +11,7 @@ from ipumspy.api.metadata import (
 
 from ipumspy.api.exceptions import IpumsApiRateLimitException
 
+
 @pytest.fixture(scope="function")
 def live_api_client(environment_variables) -> IpumsApiClient:
     live_client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
@@ -63,19 +64,24 @@ def test_get_metadata(live_api_client: IpumsApiClient):
 
     assert len(ds.data_tables) == 100
     assert len(dt.variables) == 49
-    
+
 
 def test_collection_validity():
     with pytest.raises(ValueError) as exc_info:
         ds = DatasetMetadata("usa", "1990_STF1")
-    assert exc_info.value.args[0] == "DatasetMetadata is not a valid metadata type for the usa collection."
+    assert (
+        exc_info.value.args[0]
+        == "DatasetMetadata is not a valid metadata type for the usa collection."
+    )
 
 
 @pytest.mark.vcr
 @pytest.mark.slow
 def test_ipums_api_rate_limit_exception(live_api_client: IpumsApiClient):
     with pytest.raises(IpumsApiRateLimitException) as exc_info:
-        for page in live_api_client.get_metadata_catalog("nhgis", metadata_type="data_tables", page_size=5):
+        for page in live_api_client.get_metadata_catalog(
+            "nhgis", metadata_type="data_tables", page_size=5
+        ):
             for dt in page["data"]:
                 continue
     assert exc_info.value.args[0] == "You have exceeded the API rate limit."

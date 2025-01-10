@@ -144,7 +144,9 @@ class IpumsApiClient:
                     "Page not found. Perhaps you passed the wrong extract id or an invalid page size?"
                 )
             elif response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
-                raise IpumsApiRateLimitException("You have exceeded the API rate limit.")
+                raise IpumsApiRateLimitException(
+                    "You have exceeded the API rate limit."
+                )
             else:
                 error_details = _prettify_message(response.json()["detail"])
                 raise IpumsApiException(error_details)

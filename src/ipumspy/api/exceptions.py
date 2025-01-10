@@ -40,5 +40,6 @@ class BadIpumsApiRequest(IpumsApiException):
 class IpumsExtractNotSubmitted(IpumsApiException):
     """Represents the case when an extract needs to be submitted before the operation can be performed"""
 
+
 class IpumsApiRateLimitException(IpumsApiException):
     """Represents a request that exceeds the IPUMS API rate limit"""
