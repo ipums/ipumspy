@@ -11,6 +11,25 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.6.0
+-----
+
+* New Features
+
+  * Support for IPUMS NHGIS extract API, including
+
+    * :py:class:`~ipumspy.api.extract.AggregateDataExtract` class has been added to support IPUMS NHGIS extracts
+    * Support for downloading IPUMS NHGIS supplemental datasets via API
+  
+  * Support for IPUMS NHGIS metadata API, including
+
+    * :py:meth:`~ipumspy.api.IpumsApiClient.get_metadata()` method to request IPUMS NHGIS metadata from the IPUMS API
+    * :py:class:`~ipumspy.api.metadata.DatasetMetadata`, :py:class:`~ipumspy.api.metadata.TimeSeriesTableMetadata`, and :py:class:`~ipumspy.api.metadata.DataTableMetadata` classes to request and store metadata for different types of IPUMS NHGIS data
+    * :py:meth:`~ipumspy.api.IpumsApiClient.get_metadata_catalog()` generator to retrieve an inventory for a given type of metadata resource.
+
+  * Added :py:class:`~ipumspy.api.exceptions.IpumsApiRateLimitException` for requests that exceed the IPUMS API rate limit.
+
+
 0.5.1
 -----
 2024-07-01
