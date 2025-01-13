@@ -19,6 +19,8 @@ This project adheres to `Semantic Versioning`_.
   * Support for IPUMS NHGIS extract API, including
 
     * :py:class:`~ipumspy.api.extract.AggregateDataExtract` class has been added to support IPUMS NHGIS extracts
+    * :py:class:`~ipumspy.api.extract.Dataset`, :py:class:`~ipumspy.api.extract.TimeSeriesTable`, and 
+      :py:class:`~ipumspy.api.extract.Shapefile` classes have been added for use when constructing IPUMS NHGIS extract requests.
     * Support for downloading IPUMS NHGIS supplemental datasets via API
   
   * Support for IPUMS NHGIS metadata API, including
@@ -29,6 +31,9 @@ This project adheres to `Semantic Versioning`_.
 
   * Added :py:class:`~ipumspy.api.exceptions.IpumsApiRateLimitException` for requests that exceed the IPUMS API rate limit.
 
+* Bug Fixes
+
+  * Fixed bug in ``initial_wait_time`` argument that prevented the use of ``submit-and-download`` command via the command line
 
 0.5.1
 -----
