@@ -50,7 +50,13 @@ class IpumsObject(ABC):
 @dataclass
 class Variable(IpumsObject):
     """
-    IPUMS variable object to include in an IPUMS extract object.
+    IPUMS variable object to include in a ``MicrodataExtract`` object.
+
+    Args:
+        name: IPUMS variable name
+        case_selections: Case selection specifications
+        attached_characteristics: Attach characteristics specifications
+        data_quality_flags: Flag to include the variable's associated data quality flags if they exist
     """
 
     name: str
@@ -58,11 +64,11 @@ class Variable(IpumsObject):
     preselected: Optional[bool] = False
     """Whether the variable is preselected. Defaults to False."""
     case_selections: Optional[Dict[str, List]] = field(default_factory=dict)
-    """Case selection specifications."""
+    """Case selection specifications"""
     attached_characteristics: Optional[List[str]] = field(default_factory=list)
-    """Attach characteristics specifications."""
+    """Attach characteristics specifications"""
     data_quality_flags: Optional[bool] = False
-    """Flag to include the variable's associated data quality flags if they exist."""
+    """Flag to include the variable's associated data quality flags if they exist"""
 
     def __post_init__(self):
         self.name = self.name.upper()
@@ -82,7 +88,10 @@ class Variable(IpumsObject):
 @dataclass
 class Sample(IpumsObject):
     """
-    IPUMS sample object to include in an IPUMS extract object.
+    IPUMS sample object to include in a ``MicrodataExtract`` object.
+
+    Args:
+        id: IPUMS sample id
     """
 
     id: str
@@ -94,13 +103,22 @@ class Sample(IpumsObject):
         self.id = self.id.lower()
 
     def build(self):
+        """Format Sample information for API Extract submission"""
         raise NotImplementedError
 
 
 @dataclass
 class TimeUseVariable(IpumsObject):
+    """
+    IPUMS time use variable to include in a ``MicrodataExtract`` object.
+
+    Args:
+        name: IPUMS time use variable name
+        owner: email address associated with your IPUMS account. Only required for user-defined time use variables.
+    """
+
     name: str
-    """IPUMS Time Use Variable name"""
+    """IPUMS time use variable name"""
     owner: Optional[str] = ""
     """email address associated with your IPUMS account. Only required for user-defined Time Use Variables."""
 
@@ -123,6 +141,98 @@ class TimeUseVariable(IpumsObject):
         else:
             built_tuv.pop("owner")
         return built_tuv
+
+
+@dataclass
+class Dataset(IpumsObject):
+    """
+    IPUMS dataset object to include in an ``AggregateDataExtract`` object.
+
+    Args:
+        name: IPUMS dataset name
+        data_tables: IPUMS data tables to extract from this dataset
+        geog_levels: Geographic level(s) at which to obtain data for this dataset
+        years: Years for which to obtain data for this dataset (use ``['*']`` to select all years)
+        breakdown_values: Breakdown values to apply to this dataset
+    """
+
+    name: str
+    """IPUMS dataset name"""
+    data_tables: List[str]
+    """IPUMS data tables to extract from this dataset"""
+    geog_levels: List[str]
+    """Geographic level(s) at which to obtain data for this dataset"""
+    years: Optional[List[str]] = field(default_factory=list)
+    """Years for which to obtain data for this dataset (use ``['*']`` to select all years)"""
+    breakdown_values: Optional[List[str]] = field(default_factory=list)
+    """Breakdown values to apply to this dataset"""
+
+    def __post_init__(self):
+        self.years = [str(yr) for yr in self.years]
+
+    def build(self):
+        """Format dataset information for API Extract submission"""
+        built_dataset = self.__dict__.copy()
+        # don't repeat the dataset name
+        built_dataset.pop("name")
+        # adhere to API schema camelCase convention
+        built_dataset["dataTables"] = built_dataset.pop("data_tables")
+        built_dataset["geogLevels"] = built_dataset.pop("geog_levels")
+        built_dataset["years"] = built_dataset.pop("years")
+        built_dataset["breakdownValues"] = built_dataset.pop("breakdown_values")
+
+        return built_dataset
+
+
+@dataclass
+class TimeSeriesTable(IpumsObject):
+    """
+    IPUMS time series table object to include in an ``AggregateDataExtract`` object.
+
+    Args:
+        name: IPUMS time series table name
+        geog_levels: Geographic level(s) at which to obtain data for this time series table. Use ``["*"]`` to select all years
+        years: Years for which to obtain data for this time series table
+    """
+
+    name: str
+    """IPUMS time series table name"""
+    geog_levels: List[str]  # required parameter
+    """Geographic level(s) at which to obtain data for this time series table"""
+    years: Optional[Union[List[str], List[int]]] = field(default_factory=list)
+    """Years for which to obtain data for this time series table"""
+
+    def __post_init__(self):
+        self.name = self.name.upper()
+        self.years = [str(yr) for yr in self.years]
+
+    def build(self):
+        """Format time series table information for API Extract submission"""
+        built_tst = self.__dict__.copy()
+        # don't repeat the time series table name
+        built_tst.pop("name")
+        # adhere to API schema camelCase convention
+        built_tst["geogLevels"] = built_tst.pop("geog_levels")
+        built_tst["years"] = built_tst.pop("years")
+
+        return built_tst
+
+
+@dataclass
+class Shapefile(IpumsObject):
+    """
+    IPUMS shapefile object to include in an ``AggregateDataExtract`` object.
+
+    Args:
+        name: IPUMS shapefile name
+    """
+
+    name: str
+    """IPUMS shapefile name"""
+
+    def build(self):
+        """Format shapefile information for API Extract submission"""
+        raise NotImplementedError
 
 
 def _unpack_samples_dict(dct: dict) -> List[Sample]:
@@ -157,6 +267,67 @@ def _unpack_tuv_dict(dct: dict) -> List[TimeUseVariable]:
             tuv_obj.update("owner", dct[i]["owner"])
         tuvs.append(tuv_obj)
     return tuvs
+
+
+def _unpack_dataset_dict(dct: dict) -> List[Dataset]:
+    datasets = []
+    for dataset in dct.keys():
+        dataset_obj = Dataset(
+            name=dataset,
+            data_tables=dct[dataset]["dataTables"],
+            geog_levels=dct[dataset]["geogLevels"],
+        )
+        if "years" in dct[dataset]:
+            dataset_obj.update("years", dct[dataset]["years"])
+        if "breakdownValues" in dct[dataset]:
+            dataset_obj.update("breakdown_values", dct[dataset]["breakdownValues"])
+        datasets.append(dataset_obj)
+    return datasets
+
+
+def _unpack_tst_dict(dct: dict) -> List[TimeSeriesTable]:
+    time_series_tables = []
+    for time_series_table in dct.keys():
+        time_series_table_obj = TimeSeriesTable(
+            name=time_series_table, geog_levels=dct[time_series_table]["geogLevels"]
+        )
+        if "years" in dct[time_series_table]:
+            time_series_table_obj.update("years", dct[time_series_table]["years"])
+        time_series_tables.append(time_series_table_obj)
+
+    return time_series_tables
+
+
+def _unpack_shapefiles_dict(dct: dict) -> List[Shapefile]:
+    return [Shapefile(name=shapefile) for shapefile in dct.keys()]
+
+
+def _get_collection_type(collection: str) -> str:
+    collection_types = {
+        "usa": "microdata",
+        "cps": "microdata",
+        "ipumsi": "microdata",
+        "atus": "microdata",
+        "ahtus": "microdata",
+        "mtus": "microdata",
+        "nhis": "microdata",
+        "meps:": "microdata",
+        "nhgis": "aggregate_data",
+    }
+
+    return collection_types[collection]
+
+
+def _camel_to_snake(key):
+    # don't mess with case for boolean values
+    if isinstance(key, bool):
+        return key
+    cap_idx = [0] + [
+        key.index(l, i) for i, l in enumerate(key) if l.isupper() and i != 0
+    ]
+    parts_list = [key[i:j].lower() for i, j in zip(cap_idx, cap_idx[1:] + [None])]
+    snake = "_".join(parts_list)
+    return snake
 
 
 class BaseExtract:
@@ -201,7 +372,7 @@ class BaseExtract:
     @property
     def extract_id(self) -> int:
         """
-        str:The extract id associated with this extract, assigned by the ``IpumsApiClient``
+        str: The extract id associated with this extract, assigned by the ``IpumsApiClient``
 
         Raises ``ValueError`` if the extract has no id number (probably because it has
         not be submitted to IPUMS)
@@ -265,6 +436,16 @@ class BaseExtract:
         elif isinstance(list_arg, dict) and arg_obj is TimeUseVariable:
             args = _unpack_tuv_dict(list_arg)
             return args
+        elif isinstance(list_arg, dict) and arg_obj is Dataset:
+            args = _unpack_dataset_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is TimeSeriesTable:
+            args = _unpack_tst_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is Shapefile:
+            args = _unpack_shapefiles_dict(list_arg)
+            return args
+
         # Make sure extracts don't get built with duplicate variables or samples
         # if the argument is a list of objects, make sure there are not objects with duplicate names
         elif all(isinstance(i, arg_obj) for i in list_arg):
@@ -377,11 +558,14 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             sample_members: a dictionary of non-default sample members to include for Time Use collections where keys are strings
                             indicating sample member type and values are boolean. This argument is only valid for IPUMS ATUS,
                             MTUS, and AHTUS data collections. Valid keys include 'include_non_respondents' and 'include_household_members'.
+            case_select_who: indicates how to interpret any case selections included for variables in the extract. ``"individuals"``
+                            includes records for all individuals who match the specified case selections, while ``"households"``
+                            includes records for all members of each household that contains an individual who matches the specified case selections.
         """
 
         super().__init__()
         self.collection_type = self.collection_type
-        """IPUMS Collection type (microdata currently the only valid value)"""
+        """IPUMS collection type"""
         self.collection = collection
         self.samples = self._validate_list_args(samples, Sample)
         self.variables = self._validate_list_args(variables, Variable)
@@ -505,51 +689,156 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             )
 
 
+class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
+    def __init__(
+        self,
+        collection: str,
+        datasets: Optional[List[Dataset]] = [],
+        time_series_tables: Optional[List[TimeSeriesTable]] = [],
+        shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
+        description: str = "",
+        data_format: str = "csv_no_header",
+        geographic_extents: Optional[List[str]] = None,
+        tst_layout: str = "time_by_column_layout",
+        breakdown_and_data_type_layout: str = "single_file",
+        **kwargs,
+    ):
+        """
+        Class for defining an extract request for an IPUMS aggregate data collection.
+
+        Args:
+            datasets: list of ``Dataset`` objects
+            time_series_tables: list of ``TimeSeriesTable`` objects
+            shapefiles: list of shapefile names
+            description: short description of your extract
+            data_format: desired format of the extract data file. One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
+            geographic_extents: Geographic extents to use for all ``datasets`` in the extract definition (for instance, to
+                                to obtain data within a particular state). Use ``['*']`` to select all available extents. Note that
+                                not all geographic levels support extent selection.
+            tst_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
+                        One of ``"time_by_column_layout"`` (default), ``"time_by_row_layout"``, or ``"time_by_file_layout"``.
+            breakdown_and_data_type_layout: desired layout of any ``datasets`` that have multiple data types or breakdown values. Either
+                                            ``"single_file"`` (default) or ``"separate files"``
+        """
+
+        super().__init__()
+
+        self.collection = collection
+        self.collection_type = self.collection_type
+        """IPUMS collection type"""
+
+        self.datasets = self._validate_list_args(datasets, Dataset)
+        self.time_series_tables = self._validate_list_args(
+            time_series_tables, TimeSeriesTable
+        )
+        self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
+
+        if (
+            len(self.datasets) == 0
+            and len(self.time_series_tables) == 0
+            and len(self.shapefiles) == 0
+        ):
+            raise ValueError(
+                "At least one dataset, time series table, or shapefile must be specified."
+            )
+
+        self.description = description
+        self.data_format = data_format
+        self.geographic_extents = geographic_extents
+        self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
+        self.tst_layout = tst_layout
+
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
+        """IPUMS API version number"""
+
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
+
+    def build(self) -> Dict[str, Any]:
+        """
+        Convert the object into a dictionary to be passed to the IPUMS API
+        as a JSON string
+        """
+
+        built = {
+            "description": self.description,
+            "dataFormat": self.data_format,
+            "collection": self.collection,
+            "version": self.api_version,
+            **self.kwargs,
+        }
+
+        if self.datasets is not None:
+            built["datasets"] = {
+                dataset.name: dataset.build() for dataset in self.datasets
+            }
+            built["breakdownAndDataTypeLayout"] = self.breakdown_and_data_type_layout
+
+            if self.geographic_extents is not None:
+                built["geographicExtents"] = self.geographic_extents
+
+        if self.time_series_tables is not None:
+            built["timeSeriesTables"] = {
+                tst.name.upper(): tst.build() for tst in self.time_series_tables
+            }
+            built["timeSeriesTableLayout"] = self.tst_layout
+
+        if self.shapefiles is not None:
+            built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
+
+        return built
+
+
 def extract_from_dict(dct: Dict[str, Any]) -> Union[BaseExtract, List[BaseExtract]]:
     """
     Convert an extract that is currently specified as a dictionary (usually from a file)
-    into a BaseExtract object. If multiple extracts are specified, return a
-    List[BaseExtract] objects.
+    into a ``BaseExtract`` object. If multiple extracts are specified, return a
+    ``List[BaseExtract]``.
 
     Args:
         dct: The dictionary specifying the extract(s)
 
     Returns:
-        The extract(s) specified by dct
+        The extract(s) specified by ``dct``
     """
     if "extracts" in dct:
         # We are returning several extracts
         return [extract_from_dict(extract) for extract in dct["extracts"]]
 
-    def _camel_to_snake(key):
-        # don't mess with case for boolean values
-        if isinstance(key, bool):
-            return key
-        cap_idx = [0] + [key.index(i) for i in key if i.isupper()]
-        parts_list = [key[i:j].lower() for i, j in zip(cap_idx, cap_idx[1:] + [None])]
-        snake = "_".join(parts_list)
-        return snake
-
     def _make_snake_ext(ext_dict):
+        obj_keys = [
+            "variables",
+            "samples",
+            "timeUseVariables",
+            "datasets",
+            "timeSeriesTables",
+        ]
+
         for key in ext_dict.keys():
             if isinstance(ext_dict[key], dict):
-                if key not in ["variables", "samples", "timeUseVariables"]:
+                if key not in obj_keys:
                     ext_dict[key] = _make_snake_ext(ext_dict[key])
         return {_camel_to_snake(k): v for k, v in ext_dict.items()}
 
-    ext_dict = _make_snake_ext(dct)
-    # XXX To Do: When MicrodataExtract is no longer the only extract class,
-    # this method will need to differentiate between the different collection types
-    # since this info isn't available from the api response and so won't be stored in any
-    # dict representation, there needs to be a way to know which collections are micro
-    # and which are not.
-    return MicrodataExtract(**ext_dict)
+    ext_dct = _make_snake_ext(dct)
+    collection_type = _get_collection_type(dct["collection"])
+
+    extract_class = BaseExtract._collection_type_to_extract[collection_type]
+    extract = extract_class(**ext_dct)
+
+    return extract
 
 
 def extract_to_dict(extract: Union[BaseExtract, List[BaseExtract]]) -> Dict[str, Any]:
     """
     Convert an extract object to a dictionary (usually to write to a file).
-    If multiple extracts are specified, return a dict object.
+    If multiple extracts are specified, return a ``dict`` object.
 
     Args:
         extract: A submitted IPUMS extract object or list of submitted IPUMS extract objects

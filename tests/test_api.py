@@ -16,6 +16,7 @@ from ipumspy import api, readers
 from ipumspy.api import (
     IpumsApiClient,
     MicrodataExtract,
+    AggregateDataExtract,
     extract_from_dict,
     extract_to_dict,
     define_extract_from_json,
@@ -23,6 +24,9 @@ from ipumspy.api import (
     Variable,
     Sample,
     TimeUseVariable,
+    Dataset,
+    TimeSeriesTable,
+    Shapefile,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
@@ -63,6 +67,42 @@ def api_client(environment_variables, mock_api: str) -> IpumsApiClient:
 def live_api_client(environment_variables) -> IpumsApiClient:
     live_client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
     return live_client
+
+
+@pytest.fixture()
+def simple_nhgis_extract() -> AggregateDataExtract:
+    extract = AggregateDataExtract(
+        "nhgis",
+        description="Simple extract for ipumspy unit testing",
+        datasets=[Dataset("1990_STF1", ["NP1"], ["state"])],
+    )
+
+    return extract
+
+
+@pytest.fixture()
+def complex_nhgis_extract() -> AggregateDataExtract:
+    extract = AggregateDataExtract(
+        "nhgis",
+        description="Complex extract for ipumspy unit testing",
+        datasets=[
+            Dataset("2010_SF1a", ["P1", "P2"], ["block"]),
+            Dataset(
+                "2010_SF2a",
+                ["PCT1"],
+                ["state"],
+                breakdown_values=["bs32.ge89", "bs33.ch002"],
+            ),
+        ],
+        time_series_tables=[TimeSeriesTable("CW3", ["nation", "state"], ["2000"])],
+        shapefiles=["us_state_1970_tl2000"],
+        data_format="csv_header",
+        geographic_extents=["010", "020"],
+        tst_layout="time_by_row_layout",
+        breakdown_and_data_type_layout="separate_files",
+    )
+
+    return extract
 
 
 def test_usa_build_extract():
@@ -342,6 +382,38 @@ def test_attach_characteristics_feature_errors(live_api_client: IpumsApiClient):
     )
 
 
+@pytest.mark.vcr
+def test_nhgis_feature_errors(live_api_client: IpumsApiClient):
+    """
+    Test that illegal Dataset and TimeSeriesTable objects throw appropriate errors
+    """
+    extract = AggregateDataExtract(
+        "nhgis",
+        datasets=[Dataset("a", "b", "c", "d")],
+        time_series_tables=[TimeSeriesTable("a", "b")],
+    )
+
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+
+    assert (
+        "The property '#/datasets/a/dataTables' of type string did not match the following type: array"
+        in str(exc_info.value)
+    )
+    assert (
+        "The property '#/datasets/a/geogLevels' of type string did not match the following type: array"
+        in str(exc_info.value)
+    )
+    assert (
+        "The property '#/datasets/a/years' of type string did not match the following type: array"
+        in str(exc_info.value)
+    )
+    assert (
+        "The property '#/timeSeriesTables/A/geogLevels' of type string did not match the following type: array"
+        in str(exc_info.value)
+    )
+
+
 def test_cps_build_extract():
     """
     Confirm that test extract formatted correctly
@@ -535,6 +607,61 @@ def test_atus_build_extract():
         exc_info.value.args[0]
         == "Time use variables are unavailable for the IPUMS CPS data collection"
     )
+
+
+def test_nhgis_build_extract(
+    simple_nhgis_extract: AggregateDataExtract,
+    complex_nhgis_extract: AggregateDataExtract,
+):
+    """
+    Test NHGIS extract build structure
+    """
+    assert complex_nhgis_extract.build() == {
+        "description": "Complex extract for ipumspy unit testing",
+        "dataFormat": "csv_header",
+        "collection": "nhgis",
+        "version": None,
+        "datasets": {
+            "2010_SF1a": {
+                "dataTables": ["P1", "P2"],
+                "geogLevels": ["block"],
+                "years": [],
+                "breakdownValues": [],
+            },
+            "2010_SF2a": {
+                "dataTables": ["PCT1"],
+                "geogLevels": ["state"],
+                "years": [],
+                "breakdownValues": ["bs32.ge89", "bs33.ch002"],
+            },
+        },
+        "breakdownAndDataTypeLayout": "separate_files",
+        "geographicExtents": ["010", "020"],
+        "timeSeriesTables": {
+            "CW3": {"geogLevels": ["nation", "state"], "years": ["2000"]}
+        },
+        "timeSeriesTableLayout": "time_by_row_layout",
+        "shapefiles": ["us_state_1970_tl2000"],
+    }
+
+    assert simple_nhgis_extract.build() == {
+        "description": "Simple extract for ipumspy unit testing",
+        "dataFormat": "csv_no_header",
+        "collection": "nhgis",
+        "version": None,
+        "datasets": {
+            "1990_STF1": {
+                "dataTables": ["NP1"],
+                "geogLevels": ["state"],
+                "years": [],
+                "breakdownValues": [],
+            }
+        },
+        "breakdownAndDataTypeLayout": "single_file",
+        "timeSeriesTables": {},
+        "timeSeriesTableLayout": "time_by_column_layout",
+        "shapefiles": [],
+    }
 
 
 @pytest.mark.vcr
@@ -770,6 +897,32 @@ def test_extract_from_dict(fixtures_path: Path):
     )
 
 
+def test_nhgis_extract_from_dict(fixtures_path: Path):
+    """
+    Test that we can convert extract stored as YAML/dictionary to AggregateDataExtract
+    """
+    with open(fixtures_path / "nhgis_extract_v2.yml") as infile:
+        extract = extract_from_dict(yaml.safe_load(infile))
+
+        assert isinstance(extract[0], AggregateDataExtract)
+
+        for item in extract:
+            assert item.collection == "nhgis"
+            assert item.datasets == [
+                Dataset(
+                    name="1990_STF1", data_tables=["NP1", "NP2"], geog_levels=["county"]
+                ),
+                Dataset(name="2010_SF1a", data_tables=["P1"], geog_levels=["state"]),
+            ]
+            assert item.time_series_tables == [
+                TimeSeriesTable(name="CW3", geog_levels=["state"], years=["1990"])
+            ]
+            assert item.tst_layout == "time_by_column_layout"
+            assert item.shapefiles == [Shapefile(name="us_state_1790_tl2000")]
+            assert item.data_format == "csv_header"
+            assert item.api_version == 2
+
+
 def test_extract_to_dict(fixtures_path: Path):
     # reconstitute the extract object from pickle
     with open(fixtures_path / "usa_00196_extract_obj.pkl", "rb") as infile:
@@ -793,6 +946,40 @@ def test_extract_to_dict(fixtures_path: Path):
     }
 
 
+def test_nhgis_extract_to_dict(fixtures_path: Path):
+    """
+    Test that we can convert AggregateDataExtract to dictionary
+    """
+    with open(fixtures_path / "nhgis_extract_v2.pkl", "rb") as infile:
+        extract = pickle.load(infile)
+
+    # export extract to dict
+    dct = extract_to_dict(extract)
+
+    assert dct["collection"] == "nhgis"
+    assert dct["datasets"] == {
+        "2010_SF1a": {
+            "dataTables": ["P1"],
+            "geogLevels": ["state"],
+            "years": [],
+            "breakdownValues": ["bs32.ge00"],
+        },
+        "1990_STF1": {
+            "dataTables": ["NP1", "NP2"],
+            "geogLevels": ["county"],
+            "years": [],
+            "breakdownValues": ["bs09.ge00"],
+        },
+    }
+    assert dct["timeSeriesTables"] == {
+        "CW3": {"geogLevels": ["state"], "years": ["1990"]}
+    }
+    assert dct["version"] == 2
+    assert dct["shapefiles"] == ["us_state_1790_tl2000"]
+    assert dct["dataFormat"] == "csv_header"
+    assert dct["timeSeriesTableLayout"] == "time_by_column_layout"
+
+
 @pytest.mark.vcr
 def test_submit_extract_live(live_api_client: IpumsApiClient):
     """
@@ -806,6 +993,42 @@ def test_submit_extract_live(live_api_client: IpumsApiClient):
 
     live_api_client.submit_extract(extract)
     assert live_api_client.extract_status(extract) == "queued"
+
+
+@pytest.mark.vcr
+def test_nhgis_submit_extract_live(
+    live_api_client: IpumsApiClient, simple_nhgis_extract: AggregateDataExtract
+):
+    """
+    Test that NHGIS extracts can be submitted
+    """
+    extract = simple_nhgis_extract
+
+    live_api_client.submit_extract(extract)
+
+    assert extract._info["status"] == "queued"
+    assert extract.extract_id > 0
+
+
+@pytest.mark.vcr
+def test_submit_extract_dict(live_api_client: IpumsApiClient):
+    """
+    Confirm that we can submit an extract as a dictionary
+    """
+    extract_dict = {
+        "collection": "usa",
+        "version": 2,
+        "samples": {"us2017a": {}},
+        "variables": {"AGE": {}},
+        "data_structure": {"hierarchical": {}},
+    }
+
+    extract = live_api_client.submit_extract(extract_dict)
+
+    assert extract._info["status"] == "queued"
+    assert Variable("AGE") in extract.variables
+    assert Sample("us2017a") in extract.samples
+    assert extract_dict["data_structure"] == extract.data_structure
 
 
 @pytest.mark.vcr
@@ -888,6 +1111,20 @@ def test_download_extract_r(live_api_client: IpumsApiClient, tmpdir: Path):
         collection="usa", extract="196", r_command_file=True, download_dir=tmpdir
     )
     assert (tmpdir / "usa_00196.R").exists()
+
+
+@pytest.mark.vcr
+def test_nhgis_download_extract(
+    live_api_client: IpumsApiClient,
+    tmpdir: Path,
+):
+    """
+    Test that NHGIS extract files can be downloaded
+    """
+    live_api_client.download_extract(
+        collection="nhgis", extract="1383", download_dir=tmpdir
+    )
+    assert (tmpdir / "nhgis1383_csv.zip").exists()
 
 
 def test_define_extract_from_json(fixtures_path: Path):
@@ -1244,6 +1481,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         },
         "collection": "cps",
         "version": 2,
+        "caseSelectWho": "individuals",
     }
 
     ipumsi_ext = live_api_client.get_extract_by_id(6, "ipumsi")
@@ -1311,6 +1549,7 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
         },
         "collection": "ipumsi",
         "version": 2,
+        "caseSelectWho": "individuals",
     }
 
     # extract with warnings

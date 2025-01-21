@@ -225,7 +225,7 @@ def submit_and_download_command(
     api_key: str,
     output_dir: Optional[str],
     num_retries: int,
-    inital_wait_time: float,
+    initial_wait_time: float,
     max_wait_time: float,
     timeout: Optional[float],
 ):
@@ -252,7 +252,7 @@ def submit_and_download_command(
         try:
             api_client.wait_for_extract(
                 ext,
-                inital_wait_time=float(inital_wait_time),
+                inital_wait_time=float(initial_wait_time),
                 max_wait_time=float(max_wait_time),
                 timeout=timeout if timeout is not None else float(timeout),
             )

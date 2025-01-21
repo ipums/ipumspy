@@ -1,0 +1,25 @@
+extracts:
+  - description: NHGIS extract from YAML
+    collection: nhgis
+    version: 2
+    datasets:
+      1990_STF1:
+        dataTables:
+          - NP1
+          - NP2
+        geogLevels:
+          - county
+      2010_SF1a:
+        dataTables:
+          - P1
+        geogLevels:
+          - state
+    timeSeriesTables:
+      CW3: 
+        geogLevels:
+          - state
+        years:
+          - "1990"
+    shapefiles:
+      - us_state_1790_tl2000
+    dataFormat: csv_header

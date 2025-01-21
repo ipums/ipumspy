@@ -83,7 +83,7 @@ class VariableDescription:
     @property
     def pandas_type(self) -> type:
         """
-        The Pandas type of this variable. This supports the recently added nullable
+        The pandas type of this variable. This supports the recently added nullable
         pandas dtypes, and so the integer type is "Int64" and the string type is
         "string" (instead of "object")
         """

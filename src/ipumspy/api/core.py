@@ -24,8 +24,15 @@ from .exceptions import (
     IpumsNotFound,
     IpumsTimeoutException,
     TransientIpumsApiException,
+    IpumsApiRateLimitException,
 )
-from .extract import BaseExtract, MicrodataExtract
+from .extract import (
+    BaseExtract,
+    _get_collection_type,
+    extract_from_dict,
+    _camel_to_snake,
+)
+from .metadata import IpumsMetadata
 
 
 class ModifiedIpumsExtract(Warning):
@@ -87,8 +94,9 @@ class IpumsApiClient:
         Args:
             api_key: User's IPUMS API key
             base_url: IPUMS API url
+            api_version: IPUMS API version
             num_retries: number of times a request will be retried before
-                        raising `TransientIpumsApiException`
+                        raising ``TransientIpumsApiException``
             session: requests session object
 
         """
@@ -135,6 +143,10 @@ class IpumsApiClient:
                 raise IpumsNotFound(
                     "Page not found. Perhaps you passed the wrong extract id or an invalid page size?"
                 )
+            elif response.status_code == HTTPStatus.TOO_MANY_REQUESTS:
+                raise IpumsApiRateLimitException(
+                    "You have exceeded the API rate limit."
+                )
             else:
                 error_details = _prettify_message(response.json()["detail"])
                 raise IpumsApiException(error_details)
@@ -152,29 +164,27 @@ class IpumsApiClient:
     def submit_extract(
         self,
         extract: Union[BaseExtract, Dict[str, Any]],
-        collection: Optional[str] = None,
     ) -> BaseExtract:
         """
         Submit an extract request to the IPUMS API
 
         Args:
-            extract: The extract description to submit. May be either an
-                ``IpumsExtract`` object, or the ``details`` of such an
-                object, in which case it must include a key named ``collection``
+            extract: The extract description to submit. May be either an object
+                inheriting from ``BaseExtract``, or a dictionary containing the extract
+                definition.
 
         Returns:
             The number of the extract for the passed user account
         """
-
         if not isinstance(extract, BaseExtract):
             extract = copy.deepcopy(extract)
-            if "microdata" in BaseExtract._collection_type_to_extract:
-                extract = MicrodataExtract(extract)
+            extract = extract_from_dict(extract)
 
         # if no api version was provided on instantiation of extract object
         # or in extract definition dict, assign it to the default
         if extract.api_version is None:
             extract.api_version = self.api_version
+
         response = self.post(
             f"{self.base_url}/extracts",
             params={"collection": extract.collection, "version": extract.api_version},
@@ -203,8 +213,7 @@ class IpumsApiClient:
                 then ``extract`` must be a ``BaseExtract``
 
         Returns:
-            str: The status of the request. Valid statuses are:
-                 'queued', 'started', 'completed', 'failed', or 'not found'
+            str: The status of the request. Valid statuses are: 'queued', 'started', 'completed', 'failed', or 'not found'
         """
         extract_id, collection = _extract_and_collection(extract, collection)
 
@@ -246,10 +255,11 @@ class IpumsApiClient:
                 extract data file.
             sas_command_file: Set to True to download the SAS command file with the
                 extract data file.
-            R_command_file: Set to True to download the R command file with the
+            r_command_file: Set to True to download the R command file with the
                 extract data file.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
+        collection_type = _get_collection_type(collection)
 
         # if download_dir specified check if it exists
         download_dir = Path(download_dir or Path.cwd())
@@ -282,25 +292,46 @@ class IpumsApiClient:
         )
 
         download_links = response.json()["downloadLinks"]
-        try:
-            # if the extract has been expired, the download_links element will be
-            # an empty dict
-            data_url = download_links["data"]["url"]
-            ddi_url = download_links["ddiCodebook"]["url"]
-            download_urls = [data_url, ddi_url]
 
-            if stata_command_file:
-                _url = download_links["stataCommandFile"]["url"]
-                download_urls.append(_url)
-            if spss_command_file:
-                _url = download_links["spssCommandFile"]["url"]
-                download_urls.append(_url)
-            if sas_command_file:
-                _url = download_links["sasCommandFile"]["url"]
-                download_urls.append(_url)
-            if r_command_file:
-                _url = download_links["rCommandFile"]["url"]
-                download_urls.append(_url)
+        try:
+            if collection_type == "aggregate_data":
+                # Aggregate data links will include a tableData url, gisData url, or both
+                download_urls = []
+
+                # If neither tableData nor gisData in download links, extract has likely expired
+                valid_links = [
+                    link in ["tableData", "gisData"] for link in download_links
+                ]
+
+                if not any(valid_links):
+                    raise KeyError()  # Trigger exception to get consistent error message for aggregate data and microdata
+
+                if "tableData" in download_links:
+                    tabledata_url = download_links["tableData"]["url"]
+                    download_urls.append(tabledata_url)
+
+                if "gisData" in download_links:
+                    gisData_url = download_links["gisData"]["url"]
+                    download_urls.append(gisData_url)
+            else:
+                # if the extract has been expired, the download_links element will be
+                # an empty dict
+                data_url = download_links["data"]["url"]
+                ddi_url = download_links["ddiCodebook"]["url"]
+                download_urls = [data_url, ddi_url]
+
+                if stata_command_file:
+                    _url = download_links["stataCommandFile"]["url"]
+                    download_urls.append(_url)
+                if spss_command_file:
+                    _url = download_links["spssCommandFile"]["url"]
+                    download_urls.append(_url)
+                if sas_command_file:
+                    _url = download_links["sasCommandFile"]["url"]
+                    download_urls.append(_url)
+                if r_command_file:
+                    _url = download_links["rCommandFile"]["url"]
+                    download_urls.append(_url)
 
         except KeyError:
             if isinstance(extract, BaseExtract):
@@ -313,6 +344,7 @@ class IpumsApiClient:
                     f"IPUMS {collection} extract {extract_id} has expired and its files have been deleted.\n"
                     f"Use `get_extract_by_id()` and `submit_extract()` to resubmit this definition as a new extract request."
                 )
+
         for url in download_urls:
             file_name = url.split("/")[-1]
             download_path = download_dir / file_name
@@ -410,11 +442,12 @@ class IpumsApiClient:
         """
         Returns details about a past IPUMS extract
 
-        extract: The extract to download. This extract must have been submitted.
+        Args:
+            extract: The extract to download. This extract must have been submitted.
                 Alternatively, can be an extract id. If an extract id is provided, you
                 must supply the collection name
-        collection: The name of the collection to pull the extract from. If None,
-            then ``extract`` must be a ``BaseExtract``
+            collection: The name of the collection to pull the extract from. If None,
+                then ``extract`` must be a ``BaseExtract``
 
         Returns:
             An IPUMS extract definition
@@ -453,8 +486,7 @@ class IpumsApiClient:
             An IPUMS extract object
         """
         extract_def = self.get_extract_info(extract_id, collection)
-        if "microdata" in BaseExtract._collection_type_to_extract:
-            extract = MicrodataExtract(**extract_def["extractDefinition"])
+        extract = extract_from_dict(extract_def["extractDefinition"])
 
         return extract
 
@@ -464,13 +496,14 @@ class IpumsApiClient:
         collection: Optional[str] = None,
     ) -> bool:
         """
-        Returns True if the IPUMS extract's files have been expired from the cache.
+        Returns ``True`` if the IPUMS extract's files have been expired from the cache.
 
-        extract: An extract object. This extract must have been submitted.
-                 Alternatively, can be an extract id. If an extract id is provided, you
-                 must supply the collection name
-        collection: The name of the collection to pull the extract from. If None,
-            then ``extract`` must be a ``BaseExtract``
+        Args:
+            extract: An extract object. This extract must have been submitted.
+                    Alternatively, can be an extract id. If an extract id is provided, you
+                    must supply the collection name.
+            collection: The name of the collection to pull the extract from. If None,
+                    then ``extract`` must be a ``BaseExtract``.
         """
         extract_id, collection = _extract_and_collection(extract, collection)
         extract_definition = self.get_extract_info(extract_id, collection)
@@ -550,3 +583,44 @@ class IpumsApiClient:
         for item in samples["data"]:
             samples_dict[item["name"]] = item["description"]
         return samples_dict
+
+    def get_metadata_catalog(
+        self, collection: str, metadata_type: str, page_size: Optional[int] = 2500
+    ) -> Generator[Dict, None, None]:
+        """
+        Retrieve a catalog containing a summary of all resources of a given type for a given IPUMS collection.
+
+        Args:
+            collection: The name of the IPUMS collection to retrieve metadata for
+            metadata_type: Name of the type of metadata to retrieve for this collection
+            page_size: Number of items to return per page. Defaults to maximum page size, 2500.
+
+        Yields:
+            An iterator of metadata pages
+        """
+
+        yield from self._get_pages(collection, f"metadata/{metadata_type}", page_size)
+
+    def get_metadata(self, obj: IpumsMetadata):
+        """
+        Retrieve detailed metadata for a specific IPUMS resource.
+
+        Args:
+            obj: Metadata object specifying the IPUMS resource for which to retrieve metadata
+
+        Returns:
+            An object of the same class as ``obj`` with attributes containing the metadata receieved from the API
+        """
+
+        metadata_resp = self.get(
+            f"{self.base_url}/{obj._path}",
+            params={
+                "collection": obj.collection,
+                "pageSize": 2500,
+                "version": self.api_version,
+            },
+        ).json()
+
+        metadata_resp = {_camel_to_snake(k): v for (k, v) in metadata_resp.items()}
+        obj.populate(metadata_resp)
+        return obj

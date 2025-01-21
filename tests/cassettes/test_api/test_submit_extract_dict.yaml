@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: '{"description": "My IPUMS USA extract", "dataFormat": "fixed_width", "dataStructure":
+      {"hierarchical": {}}, "samples": {"us2017a": {}}, "variables": {"AGE": {"preselected":
+      false, "caseSelections": {}, "attachedCharacteristics": [], "dataQualityFlags":
+      false}}, "collection": "usa", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '296'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=usa&version=2
+  response:
+    body:
+      string: '{"number":417,"status":"queued","email":"robe2037@umn.edu","downloadLinks":{},"extractDefinition":{"version":2,"dataStructure":{"hierarchical":{}},"dataFormat":"fixed_width","caseSelectWho":"individuals","description":"My
+        IPUMS USA extract","samples":{"us2017a":{}},"variables":{"RECTYPE":{},"YEAR":{"preselected":true},"SAMPLE":{"preselected":true},"SERIAL":{"preselected":true},"CBSERIAL":{"preselected":true},"HHWT":{"preselected":true},"CLUSTER":{"preselected":true},"STRATA":{"preselected":true},"GQ":{"preselected":true},"PERNUM":{"preselected":true},"PERWT":{"preselected":true},"AGE":{}},"collection":"usa"}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '616'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 10 Oct 2024 18:24:43 GMT
+      Etag:
+      - W/"8a8924f9ff94f2543d9629f891197846"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - aaa058c3-4e1c-4f65-a480-23c8241952cb
+      X-Runtime:
+      - '0.937330'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
