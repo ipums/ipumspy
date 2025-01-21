@@ -33,7 +33,9 @@ This project adheres to `Semantic Versioning`_.
 
 * Bug Fixes
 
-  * Fixed bug in ``initial_wait_time`` argument that prevented the use of ``submit-and-download`` command via the command line
+  * Fixed bug in ``initial_wait_time`` argument that prevented the use of ``submit-and-download`` command via the command line interface
+
+* The minimum supported Python version is now 3.9
 
 0.5.1
 -----
