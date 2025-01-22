@@ -133,7 +133,7 @@ pandas to load the compressed csv file:
 
     # Read first data file in the extract
     with ZipFile(fname) as z:
-        with z.open(names[1]) as f:
+        with z.open(names[0]) as f:
             data = pd.read_csv(f)
 
 .. note::
