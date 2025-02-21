@@ -130,7 +130,7 @@ class TimeSeriesTableMetadata(IpumsMetadata):
     geog_levels: Optional[List[Dict]] = field(default=None, init=False)
     """Dictionary containing names and descriptions for the geographic levels available for the time series table"""
     geographic_instances: Optional[List[Dict]] = field(default=None, init=False)
-    """Dictionary containing names and descriptions for all valid geographic extents for the dataset"""
+    """Dictionary containing names and descriptions for all valid geographic extents available for any year in the time series table"""
 
     
     def __post_init__(self):
