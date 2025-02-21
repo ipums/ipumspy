@@ -81,8 +81,8 @@ class DatasetMetadata(IpumsMetadata):
     """
     geographic_instances: Optional[List[Dict]] = field(default=None, init=False)
     """
-    Dictionary containing names and descriptions for all valid geographic extents 
-        for the dataset
+    Dictionary containing names and descriptions for the geographic extents available for the
+        dataset, if any
     """
     breakdowns: Optional[List[Dict]] = field(default=None, init=False)
     """
