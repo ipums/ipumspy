@@ -151,37 +151,6 @@ The returned object will contain the metadata for the requested dataset. For exa
 
 You can also request metadata for individual data tables using the same workflow with the :class:`DataTableMetadata <ipumspy.api.metadata.DataTableMetadata>` data class.
 
-Geographic Extent Selection
-+++++++++++++++++++++++++++
-
-When working with small geographies it can be computationally intensive to work with
-nationwide data. To avoid this problem, you can request data from a specific geographic area 
-using the ``geographic_extents`` argument.
-
-The following extract requests ACS 5-year sex-by-age counts at the census block group level, but
-only includes block groups that fall within Alabama and Arkansas (identified by their FIPS codes with
-a trailing 0):
-
-.. code:: python
-
-   extract = AggregateDataExtract(
-      collection="nhgis",
-      description="Extent selection example",
-      datasets=[
-         Dataset(name="2018_2022_ACS5a", data_tables=["B01001"], geog_levels=["blck_grp"]),
-         Dataset(name="2017_2021_ACS5a", data_tables=["B01001"], geog_levels=["blck_grp"])
-      ],
-      geographic_extents=["010", "050"]
-   )
-
-.. tip::
-   You can see available extent selection API codes, if any, in the ``geographic_instances`` attribute of
-   a submitted :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` object.
-
-Note that extent selection is *not* a dataset-specific parameter. That is, the selected extents
-are applied to all datasets in the extract. It is not possible to request different extents for different
-datasets in a single extract.
-
 Time Series Tables
 ------------------
 
@@ -236,6 +205,37 @@ into separate files (by default, time is arranged across columns).
 
 As with datasets and data tables, you can request metadata about the available specification options
 for a specific time series table using the :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` class.
+
+Geographic Extent Selection
+---------------------------
+
+When working with small geographies it can be computationally intensive to work with
+nationwide data. To avoid this problem, you can request data from a specific geographic area 
+using the ``geographic_extents`` argument
+
+The following extract requests ACS 5-year sex-by-age counts at the census block group level, but
+only includes block groups that fall within Alabama and Arkansas (identified by their FIPS codes with
+a trailing 0):
+
+.. code:: python
+
+   extract = AggregateDataExtract(
+      collection="nhgis",
+      description="Extent selection example",
+      datasets=[
+         Dataset(name="2018_2022_ACS5a", data_tables=["B01001"], geog_levels=["blck_grp"]),
+         Dataset(name="2017_2021_ACS5a", data_tables=["B01001"], geog_levels=["blck_grp"])
+      ],
+      geographic_extents=["010", "050"]
+   )
+
+.. tip::
+   You can see available extent selection API codes, if any, in the ``geographic_instances`` attribute of
+   a submitted :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` or 
+   :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` object.
+
+Note that the selected extents are applied to all datasets and time series tables in an extract. 
+It is not possible to request different extents for different data sources in a single extract.
 
 Shapefiles
 ----------
@@ -317,7 +317,7 @@ Many NHGIS supplemental data files can be found under the "Supplemental Data" he
 for all supported supplemental data endpoints and advice on how to convert file URLs found on the website into
 acceptable API request URLs.
 
-Once you've identified a file's location, you can use the``ipumspy`` :py:meth:`.get` method to download it. For
+Once you've identified a file's location, you can use the ipumspy :py:meth:`.get` method to download it. For
 instance, to download a state-level NHGIS crosswalk file, we could use the following:
 
 .. code:: python

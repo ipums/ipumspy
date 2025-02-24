@@ -712,9 +712,9 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             shapefiles: list of shapefile names
             description: short description of your extract
             data_format: desired format of the extract data file. One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
-            geographic_extents: Geographic extents to use for all ``datasets`` in the extract definition (for instance, to
-                                to obtain data within a particular state). Use ``['*']`` to select all available extents. Note that
-                                not all geographic levels support extent selection.
+            geographic_extents: Geographic extents to use for all ``datasets`` and ``time_series_tables`` in the extract definition (for instance, to
+                                to obtain data within a particular state). Note that geographic extent selection is only supported for geographies
+                                that nest within states.
             tst_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
                         One of ``"time_by_column_layout"`` (default), ``"time_by_row_layout"``, or ``"time_by_file_layout"``.
             breakdown_and_data_type_layout: desired layout of any ``datasets`` that have multiple data types or breakdown values. Either

@@ -10,6 +10,13 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+0.6.1
+-----
+
+* The IPUMS API now supports geographic extent selection for NHGIS time series tables.
+  Accordingly, a `geographic_instances` attribute has been added to the 
+  :py:class:`~ipumspy.api.metadata.TimeSeriesTableMetadata` class to store retrieved
+  geographic extent metadata for a given time series table.
 
 0.6.0
 -----
