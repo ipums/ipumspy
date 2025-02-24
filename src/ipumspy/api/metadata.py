@@ -132,7 +132,6 @@ class TimeSeriesTableMetadata(IpumsMetadata):
     geographic_instances: Optional[List[Dict]] = field(default=None, init=False)
     """Dictionary containing names and descriptions for all valid geographic extents available for any year in the time series table"""
 
-    
     def __post_init__(self):
         self._path = f"metadata/time_series_tables/{self.name}"
         self._validate_collection()
