@@ -232,7 +232,8 @@ a trailing 0):
 .. tip::
    You can see available extent selection API codes, if any, in the ``geographic_instances`` attribute of
    a submitted :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` or 
-   :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` object.
+   :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` object. The 
+   ``geog_levels`` attribute indicates whether a given geographic level supports extent selection.
 
 Note that the selected extents are applied to all datasets and time series tables in an extract. 
 It is not possible to request different extents for different data sources in a single extract.
