@@ -265,7 +265,7 @@ At this point, you can safely download the extract:
 .. code:: python
 
 	DOWNLOAD_DIR = Path("<your_download_dir>")
-	ipums.download_extract(extract, path=DOWNLOAD_DIR)
+	ipums.download_extract(extract, download_dir=DOWNLOAD_DIR)
 
 Extract Status
 --------------
