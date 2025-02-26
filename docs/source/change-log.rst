@@ -12,6 +12,7 @@ This project adheres to `Semantic Versioning`_.
 
 0.6.1
 -----
+2025-02-25
 
 * The IPUMS API now supports geographic extent selection for NHGIS time series tables.
   Accordingly, a ``geographic_instances`` attribute has been added to the 
