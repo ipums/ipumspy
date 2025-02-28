@@ -125,6 +125,9 @@ single file using the ``breakdown_and_data_type_layout`` argument.
 Dataset + Data Table Metadata
 +++++++++++++++++++++++++++++
 
+You can obtain a listing of datasets and data tables as well as detailed information about individual
+datasets and data tables via the :ref:`IPUMS Metadata API <ipums-metadata>`.
+
 Use the :class:`DatasetMetadata <ipumspy.api.metadata.DatasetMetadata>` data class to browse the available
 specification options for a particular dataset and identify the codes to use when
 requesting data from the API:
@@ -203,8 +206,12 @@ into separate files (by default, time is arranged across columns).
       tst_layout="time_by_row_layout",
    )
 
-As with datasets and data tables, you can request metadata about the available specification options
-for a specific time series table using the :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` class.
+Time Series Table Metadata
+++++++++++++++++++++++++++
+
+As with datasets and data tables, you can request :ref:`metadata <ipums-metadata>` about the available specification options
+for a specific time series table using the :class:`TimeSeriesTableMetadata <ipumspy.api.metadata.TimeSeriesTableMetadata>` class
+with :py:meth:`.get_metadata`.
 
 Geographic Extent Selection
 ---------------------------
@@ -253,6 +260,13 @@ simply by specifying their names:
       collection="nhgis",
       shapefiles=["us_county_2021_tl2021", "us_county_2020_tl2020"]
    )
+
+Shapefile Metadata
+++++++++++++++++++
+
+You can access a listing of shapefile API codes and descriptions via the :ref:`IPUMS Metadata API <ipums-metadata>` 
+using :py:meth:`.get_metadata_catalog` with ``metadata_type="shapefiles"``. The IPUMS API does not provide 
+detailed metadata for individual shapefiles.
 
 Multiple Data Sources
 ---------------------
