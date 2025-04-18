@@ -311,7 +311,7 @@ def _get_collection_type(collection: str) -> str:
         "ahtus": "microdata",
         "mtus": "microdata",
         "nhis": "microdata",
-        "meps:": "microdata",
+        "meps": "microdata",
         "nhgis": "aggregate_data",
     }
 
