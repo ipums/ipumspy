@@ -10,6 +10,13 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+0.6.2
+-----
+2025-04-18
+
+* A typo that was preventing IPUMS MEPS extracts from downloading was corrected. 
+
+
 0.6.1
 -----
 2025-02-25
