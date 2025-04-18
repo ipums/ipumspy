@@ -74,6 +74,8 @@ To request IPUMS data via API, initialize an API client using your API key:
     from pathlib import Path
     from ipumspy import IpumsApiClient, MicrodataExtract, readers, ddi
 
+    # This assumes you have set up an environmental variable called 
+    # "IPUMS_API_KEY" to store your IPUMS API key
     IPUMS_API_KEY = os.environ.get("IPUMS_API_KEY")
     
     ipums = IpumsApiClient(IPUMS_API_KEY)
