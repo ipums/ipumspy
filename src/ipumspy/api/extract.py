@@ -150,6 +150,26 @@ class Dataset(IpumsObject):
 
     Args:
         name: IPUMS dataset name
+    """
+
+    name: str
+    """IPUMS dataset name"""
+
+    def build(self):
+        """Format dataset information for API Extract submission"""
+        built_dataset = self.__dict__.copy()
+        # don't repeat the dataset name
+        built_dataset.pop("name")
+
+        return built_dataset
+    
+@dataclass
+class NhgisDataset(Dataset):
+    """
+    IPUMS dataset object to include in an ``AggregateDataExtract`` object.
+
+    Args:
+        name: IPUMS dataset name
         data_tables: IPUMS data tables to extract from this dataset
         geog_levels: Geographic level(s) at which to obtain data for this dataset
         years: Years for which to obtain data for this dataset (use ``['*']`` to select all years)
@@ -182,7 +202,35 @@ class Dataset(IpumsObject):
         built_dataset["breakdownValues"] = built_dataset.pop("breakdown_values")
 
         return built_dataset
+    
+@dataclass
+class IhgisDataset(Dataset):
+    """
+    IPUMS dataset object to include in an ``AggregateDataExtract`` object.
 
+    Args:
+        name: IPUMS dataset name
+        data_tables: IPUMS data tables to extract from this dataset
+        tabulation_geographies: Geographic level(s) at which to obtain data for this dataset
+    """
+
+    name: str
+    """IPUMS dataset name"""
+    data_tables: List[str]
+    """IPUMS data tables to extract from this dataset"""
+    tabulation_geographies: List[str]
+    """Geographic level(s) at which to obtain data for this dataset"""
+   
+    def build(self):
+        """Format dataset information for API Extract submission"""
+        built_dataset = self.__dict__.copy()
+        # don't repeat the dataset name
+        built_dataset.pop("name")
+        # adhere to API schema camelCase convention
+        built_dataset["dataTables"] = built_dataset.pop("data_tables")
+        built_dataset["tabulationGeographies"] = built_dataset.pop("tabulation_geographies")
+
+        return built_dataset
 
 @dataclass
 class TimeSeriesTable(IpumsObject):
@@ -269,10 +317,10 @@ def _unpack_tuv_dict(dct: dict) -> List[TimeUseVariable]:
     return tuvs
 
 
-def _unpack_dataset_dict(dct: dict) -> List[Dataset]:
+def _unpack_nhgis_dataset_dict(dct: dict) -> List[NhgisDataset]:
     datasets = []
     for dataset in dct.keys():
-        dataset_obj = Dataset(
+        dataset_obj = NhgisDataset(
             name=dataset,
             data_tables=dct[dataset]["dataTables"],
             geog_levels=dct[dataset]["geogLevels"],
@@ -284,6 +332,25 @@ def _unpack_dataset_dict(dct: dict) -> List[Dataset]:
         datasets.append(dataset_obj)
     return datasets
 
+def _unpack_ihgis_dataset_dict(dct: dict) -> List[IhgisDataset]:
+    datasets = []
+    for dataset in dct.keys():
+        dataset_obj = IhgisDataset(
+            name=dataset,
+            data_tables=dct[dataset]["dataTables"],
+            tabulation_geographies=dct[dataset]["tabulationGeographies"],
+        )
+        datasets.append(dataset_obj)
+    return datasets
+
+def _unpack_dataset_dict(dct: dict) -> List[Dataset]:
+    datasets = []
+    for dataset in dct.keys():
+        dataset_obj = Dataset(
+            name=dataset,
+        )
+        datasets.append(dataset_obj)
+    return datasets
 
 def _unpack_tst_dict(dct: dict) -> List[TimeSeriesTable]:
     time_series_tables = []
@@ -313,6 +380,7 @@ def _get_collection_type(collection: str) -> str:
         "nhis": "microdata",
         "meps": "microdata",
         "nhgis": "aggregate_data",
+        "ihgis": "aggregate_data"
     }
 
     return collection_types[collection]
@@ -435,6 +503,12 @@ class BaseExtract:
             return args
         elif isinstance(list_arg, dict) and arg_obj is TimeUseVariable:
             args = _unpack_tuv_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is NhgisDataset:
+            args = _unpack_nhgis_dataset_dict(list_arg)
+            return args
+        elif isinstance(list_arg, dict) and arg_obj is IhgisDataset:
+            args = _unpack_ihgis_dataset_dict(list_arg)
             return args
         elif isinstance(list_arg, dict) and arg_obj is Dataset:
             args = _unpack_dataset_dict(list_arg)
@@ -726,26 +800,27 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         self.collection_type = self.collection_type
         """IPUMS collection type"""
 
-        self.datasets = self._validate_list_args(datasets, Dataset)
+        if collection == "nhgis":
+            self.datasets = self._validate_list_args(datasets, NhgisDataset)
+            self.data_format = data_format
+            self.geographic_extents = geographic_extents
+            self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
+            self.tst_layout = tst_layout
+        elif collection == "ihgis":
+            self.datasets = self._validate_list_args(datasets, IhgisDataset)
+        else:
+            self.datasets = self._validate_list_args(datasets, Dataset)
+            self.data_format = data_format
+            self.geographic_extents = geographic_extents
+            self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
+            self.tst_layout = tst_layout
+
         self.time_series_tables = self._validate_list_args(
             time_series_tables, TimeSeriesTable
         )
         self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
 
-        if (
-            len(self.datasets) == 0
-            and len(self.time_series_tables) == 0
-            and len(self.shapefiles) == 0
-        ):
-            raise ValueError(
-                "At least one dataset, time series table, or shapefile must be specified."
-            )
-
         self.description = description
-        self.data_format = data_format
-        self.geographic_extents = geographic_extents
-        self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
-        self.tst_layout = tst_layout
 
         self.api_version = (
             self.extract_api_version(kwargs)
@@ -767,7 +842,6 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 
         built = {
             "description": self.description,
-            "dataFormat": self.data_format,
             "collection": self.collection,
             "version": self.api_version,
             **self.kwargs,
@@ -777,19 +851,22 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             built["datasets"] = {
                 dataset.name: dataset.build() for dataset in self.datasets
             }
+
+        if self.collection == "nhgis":
+            built["dataFormat"] = self.data_format
             built["breakdownAndDataTypeLayout"] = self.breakdown_and_data_type_layout
 
             if self.geographic_extents is not None:
                 built["geographicExtents"] = self.geographic_extents
 
-        if self.time_series_tables is not None:
-            built["timeSeriesTables"] = {
-                tst.name.upper(): tst.build() for tst in self.time_series_tables
-            }
-            built["timeSeriesTableLayout"] = self.tst_layout
+            if self.time_series_tables is not None:
+                built["timeSeriesTables"] = {
+                    tst.name.upper(): tst.build() for tst in self.time_series_tables
+                }
+                built["timeSeriesTableLayout"] = self.tst_layout
 
-        if self.shapefiles is not None:
-            built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
+            if self.shapefiles is not None:
+                built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
 
         return built
 
