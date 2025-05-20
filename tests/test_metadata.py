@@ -4,8 +4,10 @@ import pytest
 from ipumspy.api import IpumsApiClient
 
 from ipumspy.api.metadata import (
-    DatasetMetadata,
-    DataTableMetadata,
+    NhgisDatasetMetadata,
+    NhgisDataTableMetadata,
+    IhgisDatasetMetadata,
+    IhgisDataTableMetadata,
     TimeSeriesTableMetadata,
 )
 
@@ -49,29 +51,53 @@ def test_get_metadata_catalog(live_api_client: IpumsApiClient):
 
 
 @pytest.mark.vcr
-def test_get_metadata(live_api_client: IpumsApiClient):
-    ds = DatasetMetadata("nhgis", "1990_STF1")
-    dt = DataTableMetadata("nhgis", "B01001", "2017_2021_ACS5a")
+def test_get_nhgis_metadata(live_api_client: IpumsApiClient):
+    ds = NhgisDatasetMetadata("1990_STF1")
+    dt = NhgisDataTableMetadata("B01001", "2017_2021_ACS5a")
+    tt = TimeSeriesTableMetadata("nhgis", "CW3")
+
+    ds = live_api_client.get_metadata(ds)
+    dt = live_api_client.get_metadata(dt)
+    tt = live_api_client.get_metadata(tt)
+
+    assert isinstance(ds, NhgisDatasetMetadata)
+    assert isinstance(dt, NhgisDataTableMetadata)
+    assert isinstance(tt, TimeSeriesTableMetadata)
+
+    assert ds.description == "STF 1 - 100% Data"
+    assert dt.description == "Sex by Age"
+    assert tt.description == "Persons by Age [22]"
+
+    assert len(ds.data_tables) == 100
+    assert len(dt.variables) == 49
+    assert len(tt.time_series) == 22
+
+# TODO: Enable test when IHGIS released to live. Currently only on demo
+'''
+@pytest.mark.vcr
+def test_get_ihgis_metadata(live_api_client: IpumsApiClient):
+    ds = IhgisDatasetMetadata("KZ2009pop")
+    dt = IhgisDataTableMetadata("KZ2009pop.AAA")
 
     ds = live_api_client.get_metadata(ds)
     dt = live_api_client.get_metadata(dt)
 
-    assert isinstance(ds, DatasetMetadata)
-    assert isinstance(dt, DataTableMetadata)
+    assert isinstance(ds, IhgisDatasetMetadata)
+    assert isinstance(dt, IhgisDataTableMetadata)
 
-    assert ds.description == "STF 1 - 100% Data"
-    assert dt.description == "Sex by Age"
+    assert ds.description == "Results of the 2009 National Population Census of the Republic of Kazakhstan"
+    assert dt.label == "Urban and rural population"
 
-    assert len(ds.data_tables) == 100
-    assert len(dt.variables) == 49
-
+    assert len(ds.data_tables) == 6
+    assert len(dt.variables) == 9
+'''
 
 def test_collection_validity():
     with pytest.raises(ValueError) as exc_info:
-        ds = DatasetMetadata("usa", "1990_STF1")
+        ds = TimeSeriesTableMetadata("usa", "CW3")
     assert (
         exc_info.value.args[0]
-        == "DatasetMetadata is not a valid metadata type for the usa collection."
+        == "TimeSeriesTableMetadata is not a valid metadata type for the usa collection."
     )
 
 
