@@ -144,27 +144,7 @@ class TimeUseVariable(IpumsObject):
 
 
 @dataclass
-class Dataset(IpumsObject):
-    """
-    IPUMS dataset object to include in an ``AggregateDataExtract`` object.
-
-    Args:
-        name: IPUMS dataset name
-    """
-
-    name: str
-    """IPUMS dataset name"""
-
-    def build(self):
-        """Format dataset information for API Extract submission"""
-        built_dataset = self.__dict__.copy()
-        # don't repeat the dataset name
-        built_dataset.pop("name")
-
-        return built_dataset
-    
-@dataclass
-class NhgisDataset(Dataset):
+class NhgisDataset(IpumsObject):
     """
     IPUMS dataset object to include in an ``AggregateDataExtract`` object.
 
@@ -204,7 +184,7 @@ class NhgisDataset(Dataset):
         return built_dataset
     
 @dataclass
-class IhgisDataset(Dataset):
+class IhgisDataset(IpumsObject):
     """
     IPUMS dataset object to include in an ``AggregateDataExtract`` object.
 
@@ -339,15 +319,6 @@ def _unpack_ihgis_dataset_dict(dct: dict) -> List[IhgisDataset]:
             name=dataset,
             data_tables=dct[dataset]["dataTables"],
             tabulation_geographies=dct[dataset]["tabulationGeographies"],
-        )
-        datasets.append(dataset_obj)
-    return datasets
-
-def _unpack_dataset_dict(dct: dict) -> List[Dataset]:
-    datasets = []
-    for dataset in dct.keys():
-        dataset_obj = Dataset(
-            name=dataset,
         )
         datasets.append(dataset_obj)
     return datasets
@@ -509,9 +480,6 @@ class BaseExtract:
             return args
         elif isinstance(list_arg, dict) and arg_obj is IhgisDataset:
             args = _unpack_ihgis_dataset_dict(list_arg)
-            return args
-        elif isinstance(list_arg, dict) and arg_obj is Dataset:
-            args = _unpack_dataset_dict(list_arg)
             return args
         elif isinstance(list_arg, dict) and arg_obj is TimeSeriesTable:
             args = _unpack_tst_dict(list_arg)
@@ -767,7 +735,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
     def __init__(
         self,
         collection: str,
-        datasets: Optional[List[Dataset]] = [],
+        datasets: Optional[List[NhgisDataset] | List[IhgisDataset]] = [],
         time_series_tables: Optional[List[TimeSeriesTable]] = [],
         shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
         description: str = "",
@@ -781,7 +749,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         Class for defining an extract request for an IPUMS aggregate data collection.
 
         Args:
-            datasets: list of ``Dataset`` objects
+            datasets: list of ``NhgisDataset`` if ``collection="nhgis"`` or ``IhgisDataset`` objects if ``collection="ihgis"``
             time_series_tables: list of ``TimeSeriesTable`` objects
             shapefiles: list of shapefile names
             description: short description of your extract
@@ -806,20 +774,20 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             self.geographic_extents = geographic_extents
             self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
             self.tst_layout = tst_layout
+
+            self.time_series_tables = self._validate_list_args(
+                time_series_tables, TimeSeriesTable
+            )
+            self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
         elif collection == "ihgis":
             self.datasets = self._validate_list_args(datasets, IhgisDataset)
-        else:
-            self.datasets = self._validate_list_args(datasets, Dataset)
-            self.data_format = data_format
-            self.geographic_extents = geographic_extents
-            self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
-            self.tst_layout = tst_layout
-
-        self.time_series_tables = self._validate_list_args(
-            time_series_tables, TimeSeriesTable
-        )
-        self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
-
+            self.data_format = None
+            self.geographic_extents = None
+            self.breakdown_and_data_type_layout = None
+            self.tst_layout = None
+            self.time_series_tables = None
+            self.shapefiles = None
+        
         self.description = description
 
         self.api_version = (
@@ -852,21 +820,23 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
                 dataset.name: dataset.build() for dataset in self.datasets
             }
 
-        if self.collection == "nhgis":
+        if self.data_format is not None:
             built["dataFormat"] = self.data_format
+        
+        if self.breakdown_and_data_type_layout is not None:
             built["breakdownAndDataTypeLayout"] = self.breakdown_and_data_type_layout
 
-            if self.geographic_extents is not None:
-                built["geographicExtents"] = self.geographic_extents
+        if self.geographic_extents is not None:
+            built["geographicExtents"] = self.geographic_extents
 
-            if self.time_series_tables is not None:
-                built["timeSeriesTables"] = {
-                    tst.name.upper(): tst.build() for tst in self.time_series_tables
-                }
-                built["timeSeriesTableLayout"] = self.tst_layout
+        if self.time_series_tables is not None:
+            built["timeSeriesTables"] = {
+                tst.name.upper(): tst.build() for tst in self.time_series_tables
+            }
+            built["timeSeriesTableLayout"] = self.tst_layout
 
-            if self.shapefiles is not None:
-                built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
+        if self.shapefiles is not None:
+            built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
 
         return built
 
