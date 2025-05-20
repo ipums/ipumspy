@@ -490,7 +490,7 @@ class BaseExtract:
         # before diving into any duplicate validation, make sure the list argument the user provided
         # is only strings or only IPUMS objects. Raise a useful error and ask the user to fix themselves
         if not all(isinstance(i, str) for i in list_arg) and not all(
-            isinstance(i, IpumsObject) for i in list_arg
+            isinstance(i, arg_obj) for i in list_arg
         ):
             raise TypeError(
                 f"The items in {list_arg} must all be string type or {arg_obj} type."
