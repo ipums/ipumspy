@@ -146,7 +146,7 @@ class TimeUseVariable(IpumsObject):
 @dataclass
 class NhgisDataset(IpumsObject):
     """
-    IPUMS dataset object to include in an ``AggregateDataExtract`` object.
+    IPUMS dataset object to include in an ``NhgisExtract`` object.
 
     Args:
         name: IPUMS dataset name
@@ -186,7 +186,7 @@ class NhgisDataset(IpumsObject):
 @dataclass
 class IhgisDataset(IpumsObject):
     """
-    IPUMS dataset object to include in an ``AggregateDataExtract`` object.
+    IPUMS dataset object to include in an ``IhgisExtract`` object.
 
     Args:
         name: IPUMS dataset name
@@ -215,7 +215,7 @@ class IhgisDataset(IpumsObject):
 @dataclass
 class TimeSeriesTable(IpumsObject):
     """
-    IPUMS time series table object to include in an ``AggregateDataExtract`` object.
+    IPUMS time series table object to include in an ``NhgisExtract`` object.
 
     Args:
         name: IPUMS time series table name
@@ -249,7 +249,7 @@ class TimeSeriesTable(IpumsObject):
 @dataclass
 class Shapefile(IpumsObject):
     """
-    IPUMS shapefile object to include in an ``AggregateDataExtract`` object.
+    IPUMS shapefile object to include in an ``NhgisExtract`` object.
 
     Args:
         name: IPUMS shapefile name
@@ -350,8 +350,8 @@ def _get_collection_type(collection: str) -> str:
         "mtus": "microdata",
         "nhis": "microdata",
         "meps": "microdata",
-        "nhgis": "aggregate_data",
-        "ihgis": "aggregate_data"
+        "nhgis": "nhgis",
+        "ihgis": "ihgis"
     }
 
     return collection_types[collection]
@@ -735,11 +735,10 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             )
 
 
-class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
+class NhgisExtract(BaseExtract, collection_type="nhgis"):
     def __init__(
         self,
-        collection: str,
-        datasets: Optional[List[NhgisDataset] | List[IhgisDataset]] = [],
+        datasets: Optional[List[NhgisDataset]] = [],
         time_series_tables: Optional[List[TimeSeriesTable]] = [],
         shapefiles: Optional[Union[List[str], List[Shapefile]]] = [],
         description: str = "",
@@ -750,10 +749,10 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         **kwargs,
     ):
         """
-        Class for defining an extract request for an IPUMS aggregate data collection.
+        Class for defining an extract request for IPUMS NHGIS
 
         Args:
-            datasets: list of ``NhgisDataset`` if ``collection="nhgis"`` or ``IhgisDataset`` objects if ``collection="ihgis"``
+            datasets: list of ``NhgisDataset`` objects
             time_series_tables: list of ``TimeSeriesTable`` objects
             shapefiles: list of shapefile names
             description: short description of your extract
@@ -768,29 +767,19 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 
         super().__init__()
 
-        self.collection = collection
+        self.collection = "nhgis"
         self.collection_type = self.collection_type
         """IPUMS collection type"""
+        self.datasets = self._validate_list_args(datasets, NhgisDataset)
+        self.data_format = data_format
+        self.geographic_extents = geographic_extents
+        self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
+        self.tst_layout = tst_layout
 
-        if collection == "nhgis":
-            self.datasets = self._validate_list_args(datasets, NhgisDataset)
-            self.data_format = data_format
-            self.geographic_extents = geographic_extents
-            self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
-            self.tst_layout = tst_layout
-
-            self.time_series_tables = self._validate_list_args(
-                time_series_tables, TimeSeriesTable
-            )
-            self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
-        elif collection == "ihgis":
-            self.datasets = self._validate_list_args(datasets, IhgisDataset)
-            self.data_format = None
-            self.geographic_extents = None
-            self.breakdown_and_data_type_layout = None
-            self.tst_layout = None
-            self.time_series_tables = None
-            self.shapefiles = None
+        self.time_series_tables = self._validate_list_args(
+            time_series_tables, TimeSeriesTable
+        )
+        self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
         
         self.description = description
 
@@ -841,6 +830,60 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 
         if self.shapefiles is not None:
             built["shapefiles"] = [shapefile.name for shapefile in self.shapefiles]
+
+        return built
+
+class IhgisExtract(BaseExtract, collection_type="ihgis"):
+    def __init__(
+        self,
+        datasets: Optional[List[IhgisDataset]] = [],
+        description: str = "",
+        **kwargs,
+    ):
+        """
+        Class for defining an extract request for IPUMS IHGIS
+
+        Args:
+            datasets: list of ``IhgisDataset`` objects
+            description: short description of your extract
+        """
+
+        super().__init__()
+
+        self.collection = "ihgis"
+        self.collection_type = self.collection_type
+        """IPUMS collection type"""
+        self.datasets = self._validate_list_args(datasets, IhgisDataset)
+        self.description = description
+
+        self.api_version = (
+            self.extract_api_version(kwargs)
+            if len(kwargs.keys()) > 0
+            else self.api_version
+        )
+        """IPUMS API version number"""
+
+        # check kwargs for conflicts with defaults
+        self._kwarg_warning(kwargs)
+        # make the kwargs camelCase
+        self.kwargs = self._snake_to_camel(kwargs)
+
+    def build(self) -> Dict[str, Any]:
+        """
+        Convert the object into a dictionary to be passed to the IPUMS API
+        as a JSON string
+        """
+
+        built = {
+            "description": self.description,
+            "collection": self.collection,
+            "version": self.api_version,
+            **self.kwargs,
+        }
+
+        built["datasets"] = {
+            dataset.name: dataset.build() for dataset in self.datasets
+        }
 
         return built
 

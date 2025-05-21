@@ -294,7 +294,7 @@ class IpumsApiClient:
         download_links = response.json()["downloadLinks"]
 
         try:
-            if collection_type == "aggregate_data":
+            if collection_type == "nhgis":
                 # Aggregate data links will include a tableData url, gisData url, or both
                 download_urls = []
 
@@ -313,6 +313,10 @@ class IpumsApiClient:
                 if "gisData" in download_links:
                     gisData_url = download_links["gisData"]["url"]
                     download_urls.append(gisData_url)
+            elif collection_type == "ihgis":
+                download_urls = []
+                tabledata_url = download_links["tableData"]["url"]
+                download_urls.append(tabledata_url)
             else:
                 # if the extract has been expired, the download_links element will be
                 # an empty dict

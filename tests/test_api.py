@@ -16,7 +16,8 @@ from ipumspy import api, readers
 from ipumspy.api import (
     IpumsApiClient,
     MicrodataExtract,
-    AggregateDataExtract,
+    NhgisExtract,
+    IhgisExtract,
     extract_from_dict,
     extract_to_dict,
     define_extract_from_json,
@@ -71,9 +72,8 @@ def live_api_client(environment_variables) -> IpumsApiClient:
 
 
 @pytest.fixture()
-def simple_nhgis_extract() -> AggregateDataExtract:
-    extract = AggregateDataExtract(
-        "nhgis",
+def simple_nhgis_extract() -> NhgisExtract:
+    extract = NhgisExtract(
         description="Simple extract for ipumspy unit testing",
         datasets=[NhgisDataset("1990_STF1", ["NP1"], ["state"])],
     )
@@ -82,9 +82,8 @@ def simple_nhgis_extract() -> AggregateDataExtract:
 
 
 @pytest.fixture()
-def complex_nhgis_extract() -> AggregateDataExtract:
-    extract = AggregateDataExtract(
-        "nhgis",
+def complex_nhgis_extract() -> NhgisExtract:
+    extract = NhgisExtract(
         description="Complex extract for ipumspy unit testing",
         datasets=[
             NhgisDataset("2010_SF1a", ["P1", "P2"], ["block"]),
@@ -106,9 +105,8 @@ def complex_nhgis_extract() -> AggregateDataExtract:
     return extract
 
 @pytest.fixture()
-def ihgis_extract() -> AggregateDataExtract:
-    extract = AggregateDataExtract(
-        "ihgis",
+def ihgis_extract() -> IhgisExtract:
+    extract = IhgisExtract(
         description="IHGIS extract for ipumspy unit testing",
         datasets = [
             IhgisDataset(
@@ -403,8 +401,7 @@ def test_nhgis_feature_errors(live_api_client: IpumsApiClient):
     """
     Test that illegal Dataset and TimeSeriesTable objects throw appropriate errors
     """
-    extract = AggregateDataExtract(
-        "nhgis",
+    extract = NhgisExtract(
         datasets=[NhgisDataset("a", "b", "c", "d")],
         time_series_tables=[TimeSeriesTable("a", "b")],
     )
@@ -626,8 +623,8 @@ def test_atus_build_extract():
 
 
 def test_nhgis_build_extract(
-    simple_nhgis_extract: AggregateDataExtract,
-    complex_nhgis_extract: AggregateDataExtract,
+    simple_nhgis_extract: NhgisExtract,
+    complex_nhgis_extract: NhgisExtract,
 ):
     """
     Test NHGIS extract build structure
@@ -679,7 +676,7 @@ def test_nhgis_build_extract(
         "shapefiles": [],
     }
 
-def test_ihgis_build_extract(ihgis_extract: AggregateDataExtract):
+def test_ihgis_build_extract(ihgis_extract: IhgisExtract):
     assert ihgis_extract.build() == {
         "description": "IHGIS extract for ipumspy unit testing",
         "collection": "ihgis",
@@ -928,12 +925,12 @@ def test_extract_from_dict(fixtures_path: Path):
 
 def test_nhgis_extract_from_dict(fixtures_path: Path):
     """
-    Test that we can convert extract stored as YAML/dictionary to AggregateDataExtract
+    Test that we can convert extract stored as YAML/dictionary to NhgisExtract
     """
     with open(fixtures_path / "nhgis_extract_v2.yml") as infile:
         extract = extract_from_dict(yaml.safe_load(infile))
 
-        assert isinstance(extract[0], AggregateDataExtract)
+        assert isinstance(extract[0], NhgisExtract)
 
         for item in extract:
             assert item.collection == "nhgis"
@@ -977,7 +974,7 @@ def test_extract_to_dict(fixtures_path: Path):
 
 def test_nhgis_extract_to_dict(fixtures_path: Path):
     """
-    Test that we can convert AggregateDataExtract to dictionary
+    Test that we can convert NhgisExtract to dictionary
     """
     with open(fixtures_path / "nhgis_extract_v2.pkl", "rb") as infile:
         extract = pickle.load(infile)
@@ -1026,7 +1023,7 @@ def test_submit_extract_live(live_api_client: IpumsApiClient):
 
 @pytest.mark.vcr
 def test_nhgis_submit_extract_live(
-    live_api_client: IpumsApiClient, simple_nhgis_extract: AggregateDataExtract
+    live_api_client: IpumsApiClient, simple_nhgis_extract: NhgisExtract
 ):
     """
     Test that NHGIS extracts can be submitted
