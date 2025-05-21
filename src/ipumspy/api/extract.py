@@ -447,10 +447,14 @@ class BaseExtract:
             camelized = "".join([k.capitalize() for k in key_list[1:]])
             # prepend the first part
             camel_key = f"{key_list[0]}{camelized}"
-            # add the camelCase key
-            kwarg_dict[camel_key] = kwarg_dict[key]
-            # pop the snake_case key
-            kwarg_dict.pop(key)
+            
+            # Only replace the key if it has changed, otherwise it gets dropped
+            if camel_key != key:
+                # add the camelCase key
+                kwarg_dict[camel_key] = kwarg_dict[key]
+                # pop the snake_case key
+                kwarg_dict.pop(key)
+        
         return kwarg_dict
 
     def _validate_list_args(self, list_arg, arg_obj):
