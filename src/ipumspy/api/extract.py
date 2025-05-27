@@ -742,6 +742,24 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             self._update_variable_feature(
                 variable, "case_selections", {"detailed": values}
             )
+            
+    def adjust_monetary_values(
+        self, variable: Union[Variable, str, List[Variable], List[str]]
+    ):
+        """
+        A method to update existing IPUMS Extract Variable objects to include that
+        variable's inflation-adjusted version in the extract if possible. This feature
+        is only applicable to variables representing dollar amounts.
+
+        Args:
+            variable: a Variable object or a string variable name
+
+        """
+        if isinstance(variable, list):
+            for v in variable:
+                self._update_variable_feature(v, "adjust_monetary_values", True)
+        else:
+            self._update_variable_feature(variable, "adjust_monetary_values", True)
 
 
 class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):

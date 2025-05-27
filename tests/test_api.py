@@ -202,7 +202,7 @@ def test_usa_attach_characteristics():
 
 def test_usa_add_data_quality_flags():
     """
-    Confirm that attach_characteristics updates extract definition correctly
+    Confirm that add_data_quality_flags updates extract definition correctly
     """
     extract = MicrodataExtract(
         "usa",
@@ -1820,3 +1820,46 @@ def test_get_pages(live_api_client: IpumsApiClient):
         live_api_client._get_pages(collection="usa", endpoint="extracts", page_size=5)
     )
     assert len(page1["data"]) == 5
+    
+    
+def test_cps_adjust_monetary_values():
+    """
+    Confirm that adjust monetary values updates are happening correctly
+    """
+    extract = MicrodataExtract(
+        "cps",
+        ["cps2012_03s"],
+        ["AGE", "SEX", "HOURWAGE"],
+    )
+    extract.adjust_monetary_values("HOURWAGE")
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"cps2012_03s": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "HOURWAGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": True,
+            },
+        },
+        "description": "My IPUMS CPS extract",
+        "dataFormat": "fixed_width",
+        "collection": "cps",
+        "version": None,
+    }
