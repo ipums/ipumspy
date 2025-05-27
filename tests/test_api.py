@@ -142,12 +142,14 @@ def test_usa_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -176,12 +178,14 @@ def test_usa_attach_characteristics():
                 "caseSelections": {},
                 "attachedCharacteristics": ["father"],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -215,18 +219,21 @@ def test_usa_add_data_quality_flags():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": True,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -252,18 +259,21 @@ def test_usa_add_data_quality_flags():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": True,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": True,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -293,12 +303,14 @@ def test_usa_select_cases():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {"general": ["1"]},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -317,12 +329,14 @@ def test_usa_select_cases():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {"detailed": ["100"]},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -451,12 +465,14 @@ def test_cps_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS CPS extract",
@@ -486,12 +502,14 @@ def test_ipumsi_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "collection": "ipumsi",
@@ -517,12 +535,14 @@ def test_atus_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "timeUseVariables": {"BLS_PCARE": {}},
@@ -548,12 +568,14 @@ def test_atus_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "timeUseVariables": {"BLS_PCARE": {}},
@@ -584,12 +606,14 @@ def test_atus_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "timeUseVariables": {
@@ -864,6 +888,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -871,6 +896,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -878,6 +904,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         # data structure not currently an extract attribute...
@@ -898,6 +925,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=["mother"],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -905,6 +933,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -912,6 +941,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         # data structure not currently an extract attribute...
@@ -1174,6 +1204,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1181,6 +1212,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1188,6 +1220,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         assert item.api_version == 2
@@ -1205,6 +1238,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=["mother"],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1212,6 +1246,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1219,6 +1254,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         assert item.api_version == 2
@@ -1250,6 +1286,7 @@ def test_extract_from_api_response_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="AGE",
@@ -1257,6 +1294,7 @@ def test_extract_from_api_response_json(fixtures_path: Path):
                 case_selections={"general": [1, 2, 3]},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1264,6 +1302,7 @@ def test_extract_from_api_response_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=True,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1345,6 +1384,7 @@ def test_validate_list_args():
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1352,6 +1392,7 @@ def test_validate_list_args():
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1359,6 +1400,7 @@ def test_validate_list_args():
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
     )
@@ -1429,7 +1471,7 @@ def test_validate_list_args():
         )
     assert (
         exc_info.value.args[0]
-        == "The items in [Variable(name='AGE', preselected=False, case_selections={}, attached_characteristics=[], data_quality_flags=False), 'SEX'] must all be string type or <class 'ipumspy.api.extract.Variable'> type."
+        == "The items in [Variable(name='AGE', preselected=False, case_selections={}, attached_characteristics=[], data_quality_flags=False, adjust_monetary_values=False), 'SEX'] must all be string type or <class 'ipumspy.api.extract.Variable'> type."
     )
 
 
@@ -1451,66 +1493,77 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SERIAL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "MONTH": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "HWTFINL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "CPSID": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "PERNUM": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "WTFINL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "CPSIDP": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "AGE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "collection": "cps",
@@ -1531,54 +1584,63 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "YEAR": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SAMPLE": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SERIAL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "HHWT": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "PERNUM": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "PERWT": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "AGE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "collection": "ipumsi",

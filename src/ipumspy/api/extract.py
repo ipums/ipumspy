@@ -69,6 +69,8 @@ class Variable(IpumsObject):
     """Attach characteristics specifications"""
     data_quality_flags: Optional[bool] = False
     """Flag to include the variable's associated data quality flags if they exist"""
+    adjust_monetary_values: Optional[bool] = False
+    """Flag to include the variable's associated inflation-adjusted equivalent, if possible"""
 
     def __post_init__(self):
         self.name = self.name.upper()
@@ -82,6 +84,7 @@ class Variable(IpumsObject):
         built_var["caseSelections"] = built_var.pop("case_selections")
         built_var["attachedCharacteristics"] = built_var.pop("attached_characteristics")
         built_var["dataQualityFlags"] = built_var.pop("data_quality_flags")
+        built_var["adjustMonetaryValues"] = built_var.pop("adjust_monetary_values")
         return built_var
 
 
