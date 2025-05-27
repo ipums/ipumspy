@@ -105,21 +105,23 @@ def complex_nhgis_extract() -> AggregateDataExtract:
 
     return extract
 
+
 @pytest.fixture()
 def ihgis_extract() -> AggregateDataExtract:
     extract = AggregateDataExtract(
         "ihgis",
         description="IHGIS extract for ipumspy unit testing",
-        datasets = [
+        datasets=[
             IhgisDataset(
-                "KZ2009pop", 
-                data_tables = ["KZ2009pop.AAA", "KZ2009pop.AAB"], 
-                tabulation_geographies = ["KZ2009pop.g0", "KZ2009pop.g1"]
+                "KZ2009pop",
+                data_tables=["KZ2009pop.AAA", "KZ2009pop.AAB"],
+                tabulation_geographies=["KZ2009pop.g0", "KZ2009pop.g1"],
             )
-        ]
+        ],
     )
 
     return extract
+
 
 def test_usa_build_extract():
     """
@@ -679,6 +681,7 @@ def test_nhgis_build_extract(
         "shapefiles": [],
     }
 
+
 def test_ihgis_build_extract(ihgis_extract: AggregateDataExtract):
     assert ihgis_extract.build() == {
         "description": "IHGIS extract for ipumspy unit testing",
@@ -941,7 +944,9 @@ def test_nhgis_extract_from_dict(fixtures_path: Path):
                 NhgisDataset(
                     name="1990_STF1", data_tables=["NP1", "NP2"], geog_levels=["county"]
                 ),
-                NhgisDataset(name="2010_SF1a", data_tables=["P1"], geog_levels=["state"]),
+                NhgisDataset(
+                    name="2010_SF1a", data_tables=["P1"], geog_levels=["state"]
+                ),
             ]
             assert item.time_series_tables == [
                 TimeSeriesTable(name="CW3", geog_levels=["state"], years=["1990"])

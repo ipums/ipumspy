@@ -72,8 +72,9 @@ def test_get_nhgis_metadata(live_api_client: IpumsApiClient):
     assert len(dt.variables) == 49
     assert len(tt.time_series) == 22
 
+
 # TODO: Enable test when IHGIS released to live. Currently only on demo
-'''
+"""
 @pytest.mark.vcr
 def test_get_ihgis_metadata(live_api_client: IpumsApiClient):
     ds = IhgisDatasetMetadata("KZ2009pop")
@@ -90,7 +91,8 @@ def test_get_ihgis_metadata(live_api_client: IpumsApiClient):
 
     assert len(ds.data_tables) == 6
     assert len(dt.variables) == 9
-'''
+"""
+
 
 def test_collection_validity():
     with pytest.raises(ValueError) as exc_info:

@@ -96,7 +96,8 @@ class NhgisDatasetMetadata(IpumsMetadata):
     @property
     def supported_collections(self):
         return ["nhgis"]
-    
+
+
 @dataclass
 class IhgisDatasetMetadata(IpumsMetadata):
     """
@@ -253,14 +254,13 @@ class NhgisDataTableMetadata(IpumsMetadata):
     """Dictionary containing variable descriptions and codes for the variables included in the data table"""
 
     def __post_init__(self):
-        self._path = (
-            f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
-        )
+        self._path = f"metadata/datasets/{self.dataset_name}/data_tables/{self.name}"
         self._validate_collection()
 
     @property
     def supported_collections(self):
         return ["nhgis"]
+
 
 @dataclass
 class IhgisDataTableMetadata(IpumsMetadata):
@@ -270,7 +270,7 @@ class IhgisDataTableMetadata(IpumsMetadata):
     Args:
         name: Name of an IPUMS IHGIS data table
     """
-    
+
     name: str
     """IPUMS data table name"""
     dataset_name: Optional[str] = field(default=None, init=False)
@@ -296,9 +296,7 @@ class IhgisDataTableMetadata(IpumsMetadata):
     """Dictionary containing variable descriptions and codes for the variables included in the data table"""
 
     def __post_init__(self):
-        self._path = (
-            f"metadata/data_tables/{self.name}"
-        )
+        self._path = f"metadata/data_tables/{self.name}"
         self._validate_collection()
 
     @property

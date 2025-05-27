@@ -182,7 +182,8 @@ class NhgisDataset(IpumsObject):
         built_dataset["breakdownValues"] = built_dataset.pop("breakdown_values")
 
         return built_dataset
-    
+
+
 @dataclass
 class IhgisDataset(IpumsObject):
     """
@@ -200,7 +201,7 @@ class IhgisDataset(IpumsObject):
     """IPUMS data tables to extract from this dataset"""
     tabulation_geographies: List[str]
     """Geographic level(s) at which to obtain data for this dataset"""
-   
+
     def build(self):
         """Format dataset information for API Extract submission"""
         built_dataset = self.__dict__.copy()
@@ -208,9 +209,12 @@ class IhgisDataset(IpumsObject):
         built_dataset.pop("name")
         # adhere to API schema camelCase convention
         built_dataset["dataTables"] = built_dataset.pop("data_tables")
-        built_dataset["tabulationGeographies"] = built_dataset.pop("tabulation_geographies")
+        built_dataset["tabulationGeographies"] = built_dataset.pop(
+            "tabulation_geographies"
+        )
 
         return built_dataset
+
 
 @dataclass
 class TimeSeriesTable(IpumsObject):
@@ -312,6 +316,7 @@ def _unpack_nhgis_dataset_dict(dct: dict) -> List[NhgisDataset]:
         datasets.append(dataset_obj)
     return datasets
 
+
 def _unpack_ihgis_dataset_dict(dct: dict) -> List[IhgisDataset]:
     datasets = []
     for dataset in dct.keys():
@@ -322,6 +327,7 @@ def _unpack_ihgis_dataset_dict(dct: dict) -> List[IhgisDataset]:
         )
         datasets.append(dataset_obj)
     return datasets
+
 
 def _unpack_tst_dict(dct: dict) -> List[TimeSeriesTable]:
     time_series_tables = []
@@ -351,7 +357,7 @@ def _get_collection_type(collection: str) -> str:
         "nhis": "microdata",
         "meps": "microdata",
         "nhgis": "aggregate_data",
-        "ihgis": "aggregate_data"
+        "ihgis": "aggregate_data",
     }
 
     return collection_types[collection]
@@ -447,14 +453,14 @@ class BaseExtract:
             camelized = "".join([k.capitalize() for k in key_list[1:]])
             # prepend the first part
             camel_key = f"{key_list[0]}{camelized}"
-            
+
             # Only replace the key if it has changed, otherwise it gets dropped
             if camel_key != key:
                 # add the camelCase key
                 kwarg_dict[camel_key] = kwarg_dict[key]
                 # pop the snake_case key
                 kwarg_dict.pop(key)
-        
+
         return kwarg_dict
 
     def _validate_list_args(self, list_arg, arg_obj):
@@ -791,7 +797,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             self.tst_layout = None
             self.time_series_tables = None
             self.shapefiles = None
-        
+
         self.description = description
 
         self.api_version = (
@@ -826,7 +832,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
 
         if self.data_format is not None:
             built["dataFormat"] = self.data_format
-        
+
         if self.breakdown_and_data_type_layout is not None:
             built["breakdownAndDataTypeLayout"] = self.breakdown_and_data_type_layout
 
