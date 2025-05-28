@@ -1863,3 +1863,34 @@ def test_cps_adjust_monetary_values():
         "collection": "cps",
         "version": None,
     }
+    
+
+@pytest.mark.vcr
+def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
+    """Confirm correct errors raised by trying to adjust a non-monetary variable"""
+    extract = MicrodataExtract(
+        "cps",
+        ["cps2012_03s"],
+        ["AGE", "SEX", "HOURWAGE"],
+    )
+    extract.adjust_monetary_values("SEX")
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert (
+        exc_info.value.args[0]
+        == "Monetary value adjustment is not supported for SEX."
+    )
+    
+    extract = MicrodataExtract(
+        "atus",
+        ["at2012"],
+        ["AGE", "SEX", "EARNWEEK"],
+    )
+    
+    extract.adjust_monetary_values("EARNWEEK")
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert (
+        exc_info.value.args[0]
+        == "Monetary value adjustment is not supported for IPUMS ATUS"
+    )
