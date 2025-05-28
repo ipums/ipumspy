@@ -57,6 +57,7 @@ class Variable(IpumsObject):
         case_selections: Case selection specifications
         attached_characteristics: Attach characteristics specifications
         data_quality_flags: Flag to include the variable's associated data quality flags if they exist
+        adjust_monetary_values: Flag to include the variable's associated inflation-adjusted equivalent, if possible
     """
 
     name: str
@@ -69,6 +70,8 @@ class Variable(IpumsObject):
     """Attach characteristics specifications"""
     data_quality_flags: Optional[bool] = False
     """Flag to include the variable's associated data quality flags if they exist"""
+    adjust_monetary_values: Optional[bool] = False
+    """Flag to include the variable's associated inflation-adjusted equivalent, if possible"""
 
     def __post_init__(self):
         self.name = self.name.upper()
@@ -82,6 +85,7 @@ class Variable(IpumsObject):
         built_var["caseSelections"] = built_var.pop("case_selections")
         built_var["attachedCharacteristics"] = built_var.pop("attached_characteristics")
         built_var["dataQualityFlags"] = built_var.pop("data_quality_flags")
+        built_var["adjustMonetaryValues"] = built_var.pop("adjust_monetary_values")
         return built_var
 
 
@@ -739,6 +743,24 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             self._update_variable_feature(
                 variable, "case_selections", {"detailed": values}
             )
+            
+    def adjust_monetary_values(
+        self, variable: Union[Variable, str, List[Variable], List[str]]
+    ):
+        """
+        A method to update existing IPUMS Extract Variable objects to include that
+        variable's inflation-adjusted version in the extract if possible. This feature
+        is only applicable to variables representing dollar amounts.
+
+        Args:
+            variable: a Variable object or a string variable name
+
+        """
+        if isinstance(variable, list):
+            for v in variable:
+                self._update_variable_feature(v, "adjust_monetary_values", True)
+        else:
+            self._update_variable_feature(variable, "adjust_monetary_values", True)
 
 
 class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):

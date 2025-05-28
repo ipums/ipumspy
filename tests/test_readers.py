@@ -896,6 +896,7 @@ def test_read_extract_description(fixtures_path: Path):
         "caseSelections": {"general": [1, 2, 3]},
         "attachedCharacteristics": [],
         "dataQualityFlags": False,
+        "adjustMonetaryValues": False,
     }
 
     # Check that something that is neither YAML nor JSON yields a ValueError
