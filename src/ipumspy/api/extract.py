@@ -57,6 +57,7 @@ class Variable(IpumsObject):
         case_selections: Case selection specifications
         attached_characteristics: Attach characteristics specifications
         data_quality_flags: Flag to include the variable's associated data quality flags if they exist
+        adjust_monetary_values: Flag to include the variable's associated inflation-adjusted equivalent, if possible
     """
 
     name: str
