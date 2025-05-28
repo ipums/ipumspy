@@ -29,7 +29,7 @@ mypy = "^1.0.1"
 pytest = "^8.3.4"
 pytest-cov = "^4.0.0"
 python-dotenv = "^1.0.0"
-fastapi = "^0.109.2"
+fastapi = "^0.115.12"
 uvicorn = {extras = ["standard"], version = "^0.34.1"}
 pytest-recording = "^0.12.2"
 vcrpy = "^4.2.1"
