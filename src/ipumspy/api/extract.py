@@ -811,6 +811,15 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
                 time_series_tables, TimeSeriesTable
             )
             self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
+            
+            if (
+                len(self.datasets) == 0
+                and len(self.time_series_tables) == 0
+                and len(self.shapefiles) == 0
+            ):
+                raise ValueError(
+                    "At least one dataset, time series table, or shapefile must be specified."
+                )
         elif collection == "ihgis":
             self.datasets = self._validate_list_args(datasets, IhgisDataset)
             self.data_format = None
