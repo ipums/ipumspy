@@ -287,11 +287,14 @@ Inflation adjusted values are only available for continuous variables that repre
 
     extract = MicrodataExtract(
         collection="cps",
-        samples=["cps2022_03s"],
-        variables=["AGE", "SEX", "INCTOT"],
+        samples=["cps2022_03b"],
+        variables=["AGE", "SEX", "HOURWAGE"],
     )
 
-    extract.adjust_monetary_values("INCTOT")
+    extract.adjust_monetary_values("HOURWAGE")
+
+.. note::
+    The Adjust Monetary Values feature is not currently available for IPUMS CPS ASEC variables.
 
 .. _Using Variable Objects to Include Extract Features:
 
@@ -318,7 +321,7 @@ data quality flag for RACE (``data_quality_flags``), and an inflation-adjusted v
                      case_selections={"general": ["2"]}),
             Variable(name="RACE",
                      data_quality_flags=True),
-            Variable(name="INCTOT",
+            Variable(name="HOURWAGE",
                      adjust_monetary_values=True),
          ],
          description="A fancy CPS extract",
