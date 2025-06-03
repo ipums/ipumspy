@@ -88,6 +88,11 @@ available features for all collections currently supported by the API:
       - ``nhgis``
       - **X**
       - **X**
+    * - `IPUMS IHGIS <https://ihgis.ipums.org/>`__
+      - Aggregate data
+      - ``ihgis``
+      - **X**
+      - **X**
 
 Note that ipumspy may not necessarily support all the functionality currently supported by
 the IPUMS API. See the `API documentation <https://developer.ipums.org/>`__ for more information 
@@ -195,29 +200,44 @@ metadata obtained for the requested data source:
   tst.description
   #> 'Total Population'
 
-The following table summarizes the currently available metadata endpoints:
+The following table summarizes the currently available metadata endpoints. Endpoints listed
+in the **Metadata type** column can be used with the indicated collection in :py:meth:`.get_metadata_catalog`.
+Classes listed in the **Detailed metadata class** column can be used to obtain detailed metadata for
+individual data sources of that type.
 
 .. _metadata support table:
 
 .. list-table:: Supported metadata endpoints
-    :widths: 2 3 5
+    :widths: 3 2 5
     :header-rows: 1
     :align: center
 
-    * - Metadata type
-      - Supported collections
-      - Detailed metadata class analog
-    * - ``datasets``
-      - IPUMS NHGIS
-      - :py:class:`~ipumspy.api.metadata.DatasetMetadata`
-    * - ``data_tables``
-      - IPUMS NHGIS
-      - :py:class:`~ipumspy.api.metadata.DataTableMetadata`
-    * - ``time_series_tables``
-      - IPUMS NHGIS
+    * - Collection
+      - Metadata type
+      - Detailed metadata class
+    * - NHGIS
+      - ``datasets``
+      - :py:class:`~ipumspy.api.metadata.NhgisDatasetMetadata`
+    * - NHGIS
+      - ``data_tables``
+      - :py:class:`~ipumspy.api.metadata.NhgisDataTableMetadata`
+    * - NHGIS
+      - ``time_series_tables``
       - :py:class:`~ipumspy.api.metadata.TimeSeriesTableMetadata`
-    * - ``shapefiles``
-      - IPUMS NHGIS
+    * - NHGIS
+      - ``shapefiles``
+      -
+    * -
+      -
+      -
+    * - IHGIS
+      - ``datasets``
+      - :py:class:`~ipumspy.api.metadata.IhgisDatasetMetadata`
+    * - IHGIS
+      - ``data_tables``
+      - :py:class:`~ipumspy.api.metadata.IhgisDataTableMetadata`
+    * - IHGIS
+      - ``tabulation_geographies``
       -
 
 .. _submit-extract:

@@ -743,7 +743,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             self._update_variable_feature(
                 variable, "case_selections", {"detailed": values}
             )
-            
+
     def adjust_monetary_values(
         self, variable: Union[Variable, str, List[Variable], List[str]]
     ):
@@ -781,16 +781,16 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         Class for defining an extract request for an IPUMS aggregate data collection.
 
         Args:
-            datasets: list of ``NhgisDataset`` if ``collection="nhgis"`` or ``IhgisDataset`` objects if ``collection="ihgis"``
-            time_series_tables: list of ``TimeSeriesTable`` objects
-            shapefiles: list of shapefile names
+            datasets: list of ``NhgisDataset`` objects (for NHGIS extracts) or ``IhgisDataset`` objects (for IHGIS extracts)
+            time_series_tables: list of ``TimeSeriesTable`` objects (for NHGIS extracts)
+            shapefiles: list of shapefile names (for NHGIS extracts)
             description: short description of your extract
-            data_format: desired format of the extract data file. One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
-            geographic_extents: Geographic extents to use for all ``datasets`` and ``time_series_tables`` in the extract definition (for instance, to
-                                to obtain data within a particular state).
+            data_format: desired format of the extract data file (for NHGIS extracts). One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
+            geographic_extents: Geographic extents to use for all ``datasets`` and ``time_series_tables`` in an NHGIS extract definition (for instance, to
+                                to obtain data within a particular state)
             tst_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
-                        One of ``"time_by_column_layout"`` (default), ``"time_by_row_layout"``, or ``"time_by_file_layout"``.
-            breakdown_and_data_type_layout: desired layout of any ``datasets`` that have multiple data types or breakdown values. Either
+                        One of ``"time_by_column_layout"`` (default), ``"time_by_row_layout"``, or ``"time_by_file_layout"``
+            breakdown_and_data_type_layout: desired layout of any ``datasets`` that have multiple data types or breakdown values in an NHGIS extract definition. Either
                                             ``"single_file"`` (default) or ``"separate files"``
         """
 
@@ -811,7 +811,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
                 time_series_tables, TimeSeriesTable
             )
             self.shapefiles = self._validate_list_args(shapefiles, Shapefile)
-            
+
             if (
                 len(self.datasets) == 0
                 and len(self.time_series_tables) == 0
