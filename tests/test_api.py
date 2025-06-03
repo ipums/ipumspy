@@ -1820,8 +1820,8 @@ def test_get_pages(live_api_client: IpumsApiClient):
         live_api_client._get_pages(collection="usa", endpoint="extracts", page_size=5)
     )
     assert len(page1["data"]) == 5
-    
-    
+
+
 def test_cps_adjust_monetary_values():
     """
     Confirm that adjust monetary values updates are happening correctly
@@ -1863,7 +1863,7 @@ def test_cps_adjust_monetary_values():
         "collection": "cps",
         "version": None,
     }
-    
+
 
 @pytest.mark.vcr
 def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
@@ -1877,16 +1877,15 @@ def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(extract)
     assert (
-        exc_info.value.args[0]
-        == "Monetary value adjustment is not supported for SEX."
+        exc_info.value.args[0] == "Monetary value adjustment is not supported for SEX."
     )
-    
+
     extract = MicrodataExtract(
         "atus",
         ["at2012"],
         ["AGE", "SEX", "EARNWEEK"],
     )
-    
+
     extract.adjust_monetary_values("EARNWEEK")
     with pytest.raises(BadIpumsApiRequest) as exc_info:
         live_api_client.submit_extract(extract)
