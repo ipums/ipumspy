@@ -26,6 +26,8 @@ This project adheres to `Semantic Versioning`_.
 
     * :py:class:`~ipumspy.api.metadata.IhgisDatasetMetadata`
 
+  * Support for the Monetary Value Adjustment feature on select variables from IPUMS USA and IPUMS CPS
+
 * Breaking Changes
 
   * :py:class:`~ipumspy.api.extract.Dataset` has been renamed :py:class:`~ipumspy.api.extract.NhgisDataset`
