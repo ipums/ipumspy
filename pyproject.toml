@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ipumspy"
-version = "0.6.2"
+version = "0.7.0"
 description = "A collection of tools for working with IPUMS data"
 authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
            "Renae Rodgers <rodge103@umn.edu>"]
