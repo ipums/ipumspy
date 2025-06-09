@@ -10,6 +10,31 @@ This project adheres to `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
+
+0.7.0
+-----
+2025-06-09
+
+* New Features
+
+  * Support for IPUMS IHGIS extract API, including
+
+    * Support for IPUMS IHGIS has been added to :py:class:`~ipumspy.api.extract.AggregateDataExtract`
+    * :py:class:`~ipumspy.api.extract.IhgisDataset` added for use when constructing IPUMS IHGIS extract requests.
+  
+  * Support for IPUMS IHGIS metadata API, including
+
+    * :py:class:`~ipumspy.api.metadata.IhgisDatasetMetadata`
+    * :py:class:`~ipumspy.api.metadata.IhgisDataTableMetadata`
+
+  * Support for the Monetary Value Adjustment feature on select variables from IPUMS USA and IPUMS CPS
+
+* Breaking Changes
+
+  * :py:class:`~ipumspy.api.extract.Dataset` has been renamed :py:class:`~ipumspy.api.extract.NhgisDataset`
+  * :py:class:`~ipumspy.api.metadata.DatasetMetadata` has been renamed :py:class:`~ipumspy.api.metadata.NhgisDatasetMetadata`
+  * :py:class:`~ipumspy.api.metadata.DataTableMetadata` has been renamed :py:class:`~ipumspy.api.metadata.NhgisDatasetMetadata`
+
 0.6.2
 -----
 2025-04-18

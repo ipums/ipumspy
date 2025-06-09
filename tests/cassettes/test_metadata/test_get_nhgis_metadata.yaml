@@ -122,24 +122,24 @@ interactions:
         of Value","universe":"Specified owner-occupied housing units","nhgisCode":"ETT","sequence":97,"datasetName":"1990_STF1","nVariables":3},{"name":"NH53","description":"Imputation
         of Price Asked","universe":"Specified Vacant-for-Sale Only Housing Units","nhgisCode":"ETU","sequence":98,"datasetName":"1990_STF1","nVariables":3},{"name":"NH54","description":"Imputation
         of Contract Rent","universe":"Specified renter-occupied housing units","nhgisCode":"ETV","sequence":99,"datasetName":"1990_STF1","nVariables":4},{"name":"NH55","description":"Imputation
-        of Meals Included in Rent","universe":"Specified renter-occupied housing units","nhgisCode":"ETW","sequence":100,"datasetName":"1990_STF1","nVariables":4}],"geogLevels":[{"name":"nation","description":"Nation","hasGeogExtentSelection":false,"sequence":1},{"name":"region","description":"Region","hasGeogExtentSelection":false,"sequence":2},{"name":"division","description":"Division","hasGeogExtentSelection":false,"sequence":3},{"name":"state","description":"State","hasGeogExtentSelection":false,"sequence":4},{"name":"state_260","description":"American
-        Indian Area/Alaska Native Area/Hawaiian Home Land--State","hasGeogExtentSelection":false,"sequence":5},{"name":"state_262","description":"American
-        Indian Area/Alaska Native Area (Reservation or Statistical Entity Only)--State","hasGeogExtentSelection":false,"sequence":7},{"name":"state_264","description":"American
-        Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land--State","hasGeogExtentSelection":false,"sequence":8},{"name":"state_381","description":"Metropolitan
-        Statistical Area/Consolidated Metropolitan Statistical Area--State","hasGeogExtentSelection":false,"sequence":13},{"name":"state_386","description":"Metropolitan
+        of Meals Included in Rent","universe":"Specified renter-occupied housing units","nhgisCode":"ETW","sequence":100,"datasetName":"1990_STF1","nVariables":4}],"geogLevels":[{"name":"nation","description":"Nation","hasGeogExtentSelection":false,"sequence":1},{"name":"region","description":"Region","hasGeogExtentSelection":false,"sequence":2},{"name":"division","description":"Division","hasGeogExtentSelection":false,"sequence":3},{"name":"state","description":"State","hasGeogExtentSelection":true,"sequence":4},{"name":"state_260","description":"American
+        Indian Area/Alaska Native Area/Hawaiian Home Land--State","hasGeogExtentSelection":true,"sequence":5},{"name":"state_262","description":"American
+        Indian Area/Alaska Native Area (Reservation or Statistical Entity Only)--State","hasGeogExtentSelection":true,"sequence":7},{"name":"state_264","description":"American
+        Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land--State","hasGeogExtentSelection":true,"sequence":8},{"name":"state_381","description":"Metropolitan
+        Statistical Area/Consolidated Metropolitan Statistical Area--State","hasGeogExtentSelection":true,"sequence":13},{"name":"state_386","description":"Metropolitan
         Statistical Area/Consolidated Metropolitan Statistical Area--Primary Metropolitan
-        Statistical Area--State","hasGeogExtentSelection":false,"sequence":14},{"name":"state_410","description":"Urban
-        Area--State","hasGeogExtentSelection":false,"sequence":22},{"name":"county","description":"State--County","hasGeogExtentSelection":false,"sequence":25},{"name":"county_155","description":"State--Place--County","hasGeogExtentSelection":false,"sequence":27},{"name":"county_510_103","description":"State--Congressional
-        District (1993-1995, 103rd Congress)--County","hasGeogExtentSelection":false,"sequence":36},{"name":"county_270","description":"American
-        Indian Area/Alaska Native Area/Hawaiian Home Land--State--County","hasGeogExtentSelection":false,"sequence":53},{"name":"county_272","description":"American
-        Indian Area/Alaska Native Area (Reservation or Statistical Entity Only)--State--County","hasGeogExtentSelection":false,"sequence":54},{"name":"county_274","description":"American
-        Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land--State--County","hasGeogExtentSelection":false,"sequence":55},{"name":"county_383","description":"Metropolitan
-        Statistical Area/Consolidated Metropolitan Statistical Area--State--County","hasGeogExtentSelection":false,"sequence":58},{"name":"county_387","description":"Metropolitan
+        Statistical Area--State","hasGeogExtentSelection":true,"sequence":14},{"name":"state_410","description":"Urban
+        Area--State","hasGeogExtentSelection":true,"sequence":22},{"name":"county","description":"State--County","hasGeogExtentSelection":true,"sequence":25},{"name":"county_155","description":"State--Place--County","hasGeogExtentSelection":true,"sequence":27},{"name":"county_510_103","description":"State--Congressional
+        District (1993-1995, 103rd Congress)--County","hasGeogExtentSelection":true,"sequence":36},{"name":"county_270","description":"American
+        Indian Area/Alaska Native Area/Hawaiian Home Land--State--County","hasGeogExtentSelection":true,"sequence":53},{"name":"county_272","description":"American
+        Indian Area/Alaska Native Area (Reservation or Statistical Entity Only)--State--County","hasGeogExtentSelection":true,"sequence":54},{"name":"county_274","description":"American
+        Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land--State--County","hasGeogExtentSelection":true,"sequence":55},{"name":"county_383","description":"Metropolitan
+        Statistical Area/Consolidated Metropolitan Statistical Area--State--County","hasGeogExtentSelection":true,"sequence":58},{"name":"county_387","description":"Metropolitan
         Statistical Area/Consolidated Metropolitan Statistical Area--Primary Metropolitan
-        Statistical Area--State--County","hasGeogExtentSelection":false,"sequence":59},{"name":"county_430","description":"Urban
-        Area--State--County","hasGeogExtentSelection":false,"sequence":63},{"name":"tract","description":"State--County--Census
-        Tract","hasGeogExtentSelection":false,"sequence":66},{"name":"tract_080","description":"State--County--County
-        Subdivision--Place/Remainder--Census Tract","hasGeogExtentSelection":false,"sequence":67},{"name":"blck_grp","description":"State--County--Census
+        Statistical Area--State--County","hasGeogExtentSelection":true,"sequence":59},{"name":"county_430","description":"Urban
+        Area--State--County","hasGeogExtentSelection":true,"sequence":63},{"name":"tract","description":"State--County--Census
+        Tract","hasGeogExtentSelection":true,"sequence":66},{"name":"tract_080","description":"State--County--County
+        Subdivision--Place/Remainder--Census Tract","hasGeogExtentSelection":true,"sequence":67},{"name":"blck_grp","description":"State--County--Census
         Tract--Block Group","hasGeogExtentSelection":true,"sequence":85},{"name":"blck_grp_595_101","description":"State--County--County
         Subdivision--Place/Remainder--Census Tract--Congressional District (1987-1993,
         100th-102nd Congress)--American Indian/Alaska Native Area/Remainder--Reservation/Trust
@@ -150,33 +150,33 @@ interactions:
         Lands/Remainder--Alaska Native Regional Corporation/Remainder--Urbanized Area/Remainder--Urban/Rural--Block
         Group [1990 partition]","hasGeogExtentSelection":true,"sequence":90},{"name":"block","description":"State--County--Census
         Tract--Block","hasGeogExtentSelection":true,"sequence":95},{"name":"cty_sub","description":"State--County--County
-        Subdivision","hasGeogExtentSelection":false,"sequence":102},{"name":"cty_sub_521_103","description":"State--Congressional
+        Subdivision","hasGeogExtentSelection":true,"sequence":102},{"name":"cty_sub_521_103","description":"State--Congressional
         District (1993-1995, 103rd Congress)--County--County Subdivision [10000 or
-        more persons]","hasGeogExtentSelection":false,"sequence":113},{"name":"cty_sub_440","description":"Urban
-        Area--State--County--County Subdivision","hasGeogExtentSelection":false,"sequence":131},{"name":"place","description":"State--Place","hasGeogExtentSelection":false,"sequence":148},{"name":"place_070","description":"State--County--County
-        Subdivision--Place/Remainder","hasGeogExtentSelection":false,"sequence":155},{"name":"place_531_103","description":"State--Congressional
-        District (1993-1995, 103rd Congress)--Place [10000 or more persons]","hasGeogExtentSelection":false,"sequence":164},{"name":"place_382","description":"Metropolitan
+        more persons]","hasGeogExtentSelection":true,"sequence":113},{"name":"cty_sub_440","description":"Urban
+        Area--State--County--County Subdivision","hasGeogExtentSelection":true,"sequence":131},{"name":"place","description":"State--Place","hasGeogExtentSelection":true,"sequence":148},{"name":"place_070","description":"State--County--County
+        Subdivision--Place/Remainder","hasGeogExtentSelection":true,"sequence":155},{"name":"place_531_103","description":"State--Congressional
+        District (1993-1995, 103rd Congress)--Place [10000 or more persons]","hasGeogExtentSelection":true,"sequence":164},{"name":"place_382","description":"Metropolitan
         Statistical Area/Consolidated Metropolitan Statistical Area--State--Central
-        City","hasGeogExtentSelection":false,"sequence":193},{"name":"place_341","description":"Metropolitan
+        City","hasGeogExtentSelection":true,"sequence":193},{"name":"place_341","description":"Metropolitan
         Statistical Area/Consolidated Metropolitan Statistical Area--Primary Metropolitan
-        Statistical Area--State--Central City","hasGeogExtentSelection":false,"sequence":194},{"name":"place_460","description":"Urban
-        Area--State--Central Place","hasGeogExtentSelection":false,"sequence":197},{"name":"place_450","description":"Urban
-        Area--State--County--County Subdivision--Place/Remainder","hasGeogExtentSelection":false,"sequence":198},{"name":"c_city","description":"State--Consolidated
-        City","hasGeogExtentSelection":false,"sequence":201},{"name":"c_city_541_103","description":"State--Congressional
-        District (1993-1995, 103rd Congress)--Consolidated City [10000 or more persons]","hasGeogExtentSelection":false,"sequence":208},{"name":"cd103rd","description":"State--Congressional
-        District (1993-1995, 103rd Congress)","hasGeogExtentSelection":false,"sequence":221},{"name":"cd101st","description":"State--Congressional
-        District (1987-1993, 100th-102nd Congress)","hasGeogExtentSelection":false,"sequence":222},{"name":"anrc","description":"Alaska
+        Statistical Area--State--Central City","hasGeogExtentSelection":true,"sequence":194},{"name":"place_460","description":"Urban
+        Area--State--Central Place","hasGeogExtentSelection":true,"sequence":197},{"name":"place_450","description":"Urban
+        Area--State--County--County Subdivision--Place/Remainder","hasGeogExtentSelection":true,"sequence":198},{"name":"c_city","description":"State--Consolidated
+        City","hasGeogExtentSelection":true,"sequence":201},{"name":"c_city_541_103","description":"State--Congressional
+        District (1993-1995, 103rd Congress)--Consolidated City [10000 or more persons]","hasGeogExtentSelection":true,"sequence":208},{"name":"cd103rd","description":"State--Congressional
+        District (1993-1995, 103rd Congress)","hasGeogExtentSelection":true,"sequence":221},{"name":"cd101st","description":"State--Congressional
+        District (1987-1993, 100th-102nd Congress)","hasGeogExtentSelection":true,"sequence":222},{"name":"anrc","description":"Alaska
         Native Regional Corporation","hasGeogExtentSelection":false,"sequence":257},{"name":"anrc_560_103","description":"State--Congressional
-        District (1993-1995, 103rd Congress)--Alaska Native Regional Corporation","hasGeogExtentSelection":false,"sequence":265},{"name":"aianhh","description":"American
+        District (1993-1995, 103rd Congress)--Alaska Native Regional Corporation","hasGeogExtentSelection":true,"sequence":265},{"name":"aianhh","description":"American
         Indian Area/Alaska Native Area/Hawaiian Home Land","hasGeogExtentSelection":false,"sequence":268},{"name":"aianhh_550_103","description":"State--Congressional
         District (1993-1995, 103rd Congress)--American Indian Area/Alaska Native Area/Hawaiian
-        Home Land","hasGeogExtentSelection":false,"sequence":282},{"name":"res_only","description":"American
+        Home Land","hasGeogExtentSelection":true,"sequence":282},{"name":"res_only","description":"American
         Indian Area/Alaska Native Area (Reservation or Statistical Entity Only)","hasGeogExtentSelection":false,"sequence":285},{"name":"res_only_551_103","description":"State--Congressional
         District (1993-1995, 103rd Congress)--American Indian Area/Alaska Native Area
-        (Reservation or Statistical Entity Only)","hasGeogExtentSelection":false,"sequence":292},{"name":"trust","description":"American
+        (Reservation or Statistical Entity Only)","hasGeogExtentSelection":true,"sequence":292},{"name":"trust","description":"American
         Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land","hasGeogExtentSelection":false,"sequence":295},{"name":"trust_552_103","description":"State--Congressional
         District (1993-1995, 103rd Congress)--American Indian Area (Off-Reservation
-        Trust Land Only)/Hawaiian Home Land","hasGeogExtentSelection":false,"sequence":302},{"name":"msa_cmsa","description":"Metropolitan
+        Trust Land Only)/Hawaiian Home Land","hasGeogExtentSelection":true,"sequence":302},{"name":"msa_cmsa","description":"Metropolitan
         Statistical Area/Consolidated Metropolitan Statistical Area","hasGeogExtentSelection":false,"sequence":346},{"name":"pmsa_385","description":"Metropolitan
         Statistical Area/Consolidated Metropolitan Statistical Area--Primary Metropolitan
         Statistical Area","hasGeogExtentSelection":false,"sequence":354},{"name":"urb_area","description":"Urban
@@ -239,13 +239,13 @@ interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Content-Length:
-      - '31294'
+      - '31258'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 11 Nov 2024 20:52:11 GMT
+      - Tue, 20 May 2025 13:31:55 GMT
       Etag:
-      - W/"1d5c2dc8d7bfe618e8c7f9991a0dc4ce"
+      - W/"58815ca6068c89e6b02430c2237e0c8a"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -265,9 +265,9 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 0931b24f-99f6-4ca3-a532-b48eaa411bdc
+      - ce31c738-fb4a-4f17-8833-04949405ecc7
       X-Runtime:
-      - '0.012075'
+      - '0.028710'
       X-Xss-Protection:
       - '0'
     status:
@@ -321,7 +321,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 11 Nov 2024 20:52:11 GMT
+      - Tue, 20 May 2025 13:31:56 GMT
       Etag:
       - W/"cca984aa65af831c2d9b54dd5aa8c148"
       Referrer-Policy:
@@ -343,9 +343,93 @@ interactions:
       X-Ratelimit-Reset:
       - '0'
       X-Request-Id:
-      - 8a5e8815-5a51-492a-855a-69a659cdaf5d
+      - bfc70b9f-2746-4015-854a-7304894f9fdd
       X-Runtime:
-      - '0.010915'
+      - '0.035479'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-ipumspy:0.5.1.github.com/ipums/ipumspy
+    method: GET
+    uri: https://api.ipums.org/metadata/time_series_tables/CW3?collection=nhgis&pageSize=2500&version=2
+  response:
+    body:
+      string: '{"name":"CW3","description":"Persons by Age [22]","geographicIntegration":"Standardized
+        to 2010","sequence":103.05,"timeSeries":[{"name":"AA","description":"Persons:
+        Under 5 years","sequence":1},{"name":"AB","description":"Persons: 5 to 9 years","sequence":2},{"name":"AC","description":"Persons:
+        10 to 14 years","sequence":3},{"name":"AD","description":"Persons: 15 to 17
+        years","sequence":4},{"name":"AE","description":"Persons: 18 and 19 years","sequence":5},{"name":"AF","description":"Persons:
+        20 years","sequence":6},{"name":"AG","description":"Persons: 21 years","sequence":7},{"name":"AH","description":"Persons:
+        22 to 24 years","sequence":8},{"name":"AI","description":"Persons: 25 to 29
+        years","sequence":9},{"name":"AJ","description":"Persons: 30 to 34 years","sequence":10},{"name":"AK","description":"Persons:
+        35 to 39 years","sequence":11},{"name":"AL","description":"Persons: 40 to
+        44 years","sequence":12},{"name":"AM","description":"Persons: 45 to 49 years","sequence":13},{"name":"AN","description":"Persons:
+        50 to 54 years","sequence":14},{"name":"AO","description":"Persons: 55 to
+        59 years","sequence":15},{"name":"AP","description":"Persons: 60 and 61 years","sequence":16},{"name":"AQ","description":"Persons:
+        62 to 64 years","sequence":17},{"name":"AR","description":"Persons: 65 to
+        69 years","sequence":18},{"name":"AS","description":"Persons: 70 to 74 years","sequence":19},{"name":"AT","description":"Persons:
+        75 to 79 years","sequence":20},{"name":"AU","description":"Persons: 80 to
+        84 years","sequence":21},{"name":"AV","description":"Persons: 85 years and
+        over","sequence":22}],"years":[{"name":"1990","description":"1990","sequence":108},{"name":"2000","description":"2000","sequence":118},{"name":"2010","description":"2010","sequence":131}],"geogLevels":[{"name":"state","description":"State","hasGeogExtentSelection":true,"sequence":4},{"name":"county","description":"State--County","hasGeogExtentSelection":true,"sequence":25},{"name":"tract","description":"State--County--Census
+        Tract","hasGeogExtentSelection":true,"sequence":66},{"name":"blck_grp","description":"State--County--Census
+        Tract--Block Group","hasGeogExtentSelection":true,"sequence":85},{"name":"cty_sub","description":"State--County--County
+        Subdivision","hasGeogExtentSelection":true,"sequence":102},{"name":"place","description":"State--Place","hasGeogExtentSelection":true,"sequence":148},{"name":"cd111th","description":"State--Congressional
+        District (2007-2013, 110th-112th Congress)","hasGeogExtentSelection":true,"sequence":217},{"name":"cbsa","description":"Metropolitan
+        Statistical Area/Micropolitan Statistical Area","hasGeogExtentSelection":false,"sequence":338},{"name":"urb_area","description":"Urban
+        Area","hasGeogExtentSelection":false,"sequence":372},{"name":"zcta","description":"5-Digit
+        ZIP Code Tabulation Area","hasGeogExtentSelection":false,"sequence":382}],"geographicInstances":[{"name":"010","description":"Alabama"},{"name":"020","description":"Alaska"},{"name":"040","description":"Arizona"},{"name":"050","description":"Arkansas"},{"name":"060","description":"California"},{"name":"080","description":"Colorado"},{"name":"090","description":"Connecticut"},{"name":"100","description":"Delaware"},{"name":"110","description":"District
+        of Columbia"},{"name":"120","description":"Florida"},{"name":"130","description":"Georgia"},{"name":"150","description":"Hawaii"},{"name":"160","description":"Idaho"},{"name":"170","description":"Illinois"},{"name":"180","description":"Indiana"},{"name":"190","description":"Iowa"},{"name":"200","description":"Kansas"},{"name":"210","description":"Kentucky"},{"name":"220","description":"Louisiana"},{"name":"230","description":"Maine"},{"name":"240","description":"Maryland"},{"name":"250","description":"Massachusetts"},{"name":"260","description":"Michigan"},{"name":"270","description":"Minnesota"},{"name":"280","description":"Mississippi"},{"name":"290","description":"Missouri"},{"name":"300","description":"Montana"},{"name":"310","description":"Nebraska"},{"name":"320","description":"Nevada"},{"name":"330","description":"New
+        Hampshire"},{"name":"340","description":"New Jersey"},{"name":"350","description":"New
+        Mexico"},{"name":"360","description":"New York"},{"name":"370","description":"North
+        Carolina"},{"name":"380","description":"North Dakota"},{"name":"390","description":"Ohio"},{"name":"400","description":"Oklahoma"},{"name":"410","description":"Oregon"},{"name":"420","description":"Pennsylvania"},{"name":"440","description":"Rhode
+        Island"},{"name":"450","description":"South Carolina"},{"name":"460","description":"South
+        Dakota"},{"name":"470","description":"Tennessee"},{"name":"480","description":"Texas"},{"name":"490","description":"Utah"},{"name":"500","description":"Vermont"},{"name":"510","description":"Virginia"},{"name":"530","description":"Washington"},{"name":"540","description":"West
+        Virginia"},{"name":"550","description":"Wisconsin"},{"name":"560","description":"Wyoming"}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Length:
+      - '4977'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 20 May 2025 13:31:56 GMT
+      Etag:
+      - W/"dd47221979c8c14bd5eabbd81fd84108"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - bfe81e17-d159-4887-a69f-a1f09cb97749
+      X-Runtime:
+      - '0.062186'
       X-Xss-Protection:
       - '0'
     status:

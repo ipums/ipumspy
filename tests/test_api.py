@@ -24,7 +24,8 @@ from ipumspy.api import (
     Variable,
     Sample,
     TimeUseVariable,
-    Dataset,
+    NhgisDataset,
+    IhgisDataset,
     TimeSeriesTable,
     Shapefile,
 )
@@ -74,7 +75,7 @@ def simple_nhgis_extract() -> AggregateDataExtract:
     extract = AggregateDataExtract(
         "nhgis",
         description="Simple extract for ipumspy unit testing",
-        datasets=[Dataset("1990_STF1", ["NP1"], ["state"])],
+        datasets=[NhgisDataset("1990_STF1", ["NP1"], ["state"])],
     )
 
     return extract
@@ -86,8 +87,8 @@ def complex_nhgis_extract() -> AggregateDataExtract:
         "nhgis",
         description="Complex extract for ipumspy unit testing",
         datasets=[
-            Dataset("2010_SF1a", ["P1", "P2"], ["block"]),
-            Dataset(
+            NhgisDataset("2010_SF1a", ["P1", "P2"], ["block"]),
+            NhgisDataset(
                 "2010_SF2a",
                 ["PCT1"],
                 ["state"],
@@ -100,6 +101,23 @@ def complex_nhgis_extract() -> AggregateDataExtract:
         geographic_extents=["010", "020"],
         tst_layout="time_by_row_layout",
         breakdown_and_data_type_layout="separate_files",
+    )
+
+    return extract
+
+
+@pytest.fixture()
+def ihgis_extract() -> AggregateDataExtract:
+    extract = AggregateDataExtract(
+        "ihgis",
+        description="IHGIS extract for ipumspy unit testing",
+        datasets=[
+            IhgisDataset(
+                "KZ2009pop",
+                data_tables=["KZ2009pop.AAA", "KZ2009pop.AAB"],
+                tabulation_geographies=["KZ2009pop.g0", "KZ2009pop.g1"],
+            )
+        ],
     )
 
     return extract
@@ -124,12 +142,14 @@ def test_usa_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -158,12 +178,14 @@ def test_usa_attach_characteristics():
                 "caseSelections": {},
                 "attachedCharacteristics": ["father"],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -180,7 +202,7 @@ def test_usa_attach_characteristics():
 
 def test_usa_add_data_quality_flags():
     """
-    Confirm that attach_characteristics updates extract definition correctly
+    Confirm that add_data_quality_flags updates extract definition correctly
     """
     extract = MicrodataExtract(
         "usa",
@@ -197,18 +219,21 @@ def test_usa_add_data_quality_flags():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": True,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -234,18 +259,21 @@ def test_usa_add_data_quality_flags():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": True,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": True,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -275,12 +303,14 @@ def test_usa_select_cases():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {"general": ["1"]},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -299,12 +329,14 @@ def test_usa_select_cases():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {"detailed": ["100"]},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS USA extract",
@@ -389,7 +421,7 @@ def test_nhgis_feature_errors(live_api_client: IpumsApiClient):
     """
     extract = AggregateDataExtract(
         "nhgis",
-        datasets=[Dataset("a", "b", "c", "d")],
+        datasets=[NhgisDataset("a", "b", "c", "d")],
         time_series_tables=[TimeSeriesTable("a", "b")],
     )
 
@@ -433,12 +465,14 @@ def test_cps_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "description": "My IPUMS CPS extract",
@@ -468,12 +502,14 @@ def test_ipumsi_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "collection": "ipumsi",
@@ -499,12 +535,14 @@ def test_atus_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "timeUseVariables": {"BLS_PCARE": {}},
@@ -530,12 +568,14 @@ def test_atus_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "timeUseVariables": {"BLS_PCARE": {}},
@@ -566,12 +606,14 @@ def test_atus_build_extract():
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "timeUseVariables": {
@@ -661,6 +703,20 @@ def test_nhgis_build_extract(
         "timeSeriesTables": {},
         "timeSeriesTableLayout": "time_by_column_layout",
         "shapefiles": [],
+    }
+
+
+def test_ihgis_build_extract(ihgis_extract: AggregateDataExtract):
+    assert ihgis_extract.build() == {
+        "description": "IHGIS extract for ipumspy unit testing",
+        "collection": "ihgis",
+        "version": None,
+        "datasets": {
+            "KZ2009pop": {
+                "dataTables": ["KZ2009pop.AAA", "KZ2009pop.AAB"],
+                "tabulationGeographies": ["KZ2009pop.g0", "KZ2009pop.g1"],
+            },
+        },
     }
 
 
@@ -832,6 +888,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -839,6 +896,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -846,6 +904,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         # data structure not currently an extract attribute...
@@ -866,6 +925,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=["mother"],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -873,6 +933,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -880,6 +941,7 @@ def test_extract_from_dict(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         # data structure not currently an extract attribute...
@@ -909,10 +971,12 @@ def test_nhgis_extract_from_dict(fixtures_path: Path):
         for item in extract:
             assert item.collection == "nhgis"
             assert item.datasets == [
-                Dataset(
+                NhgisDataset(
                     name="1990_STF1", data_tables=["NP1", "NP2"], geog_levels=["county"]
                 ),
-                Dataset(name="2010_SF1a", data_tables=["P1"], geog_levels=["state"]),
+                NhgisDataset(
+                    name="2010_SF1a", data_tables=["P1"], geog_levels=["state"]
+                ),
             ]
             assert item.time_series_tables == [
                 TimeSeriesTable(name="CW3", geog_levels=["state"], years=["1990"])
@@ -1140,6 +1204,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1147,6 +1212,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1154,6 +1220,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         assert item.api_version == 2
@@ -1171,6 +1238,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=["mother"],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1178,6 +1246,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1185,6 +1254,7 @@ def test_define_extract_from_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
         assert item.api_version == 2
@@ -1216,6 +1286,7 @@ def test_extract_from_api_response_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="AGE",
@@ -1223,6 +1294,7 @@ def test_extract_from_api_response_json(fixtures_path: Path):
                 case_selections={"general": [1, 2, 3]},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1230,6 +1302,7 @@ def test_extract_from_api_response_json(fixtures_path: Path):
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=True,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1311,6 +1384,7 @@ def test_validate_list_args():
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="SEX",
@@ -1318,6 +1392,7 @@ def test_validate_list_args():
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
             Variable(
                 name="RACE",
@@ -1325,6 +1400,7 @@ def test_validate_list_args():
                 case_selections={},
                 attached_characteristics=[],
                 data_quality_flags=False,
+                adjust_monetary_values=False,
             ),
         ]
     )
@@ -1395,7 +1471,7 @@ def test_validate_list_args():
         )
     assert (
         exc_info.value.args[0]
-        == "The items in [Variable(name='AGE', preselected=False, case_selections={}, attached_characteristics=[], data_quality_flags=False), 'SEX'] must all be string type or <class 'ipumspy.api.extract.Variable'> type."
+        == "The items in [Variable(name='AGE', preselected=False, case_selections={}, attached_characteristics=[], data_quality_flags=False, adjust_monetary_values=False), 'SEX'] must all be string type or <class 'ipumspy.api.extract.Variable'> type."
     )
 
 
@@ -1417,66 +1493,77 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SERIAL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "MONTH": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "HWTFINL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "CPSID": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "PERNUM": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "WTFINL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "CPSIDP": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "AGE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "RACE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "collection": "cps",
@@ -1497,54 +1584,63 @@ def test_get_extract_by_id(live_api_client: IpumsApiClient):
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "YEAR": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SAMPLE": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SERIAL": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "HHWT": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "PERNUM": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "PERWT": {
                 "preselected": True,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "AGE": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
             "SEX": {
                 "preselected": False,
                 "caseSelections": {},
                 "attachedCharacteristics": [],
                 "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
             },
         },
         "collection": "ipumsi",
@@ -1724,3 +1820,76 @@ def test_get_pages(live_api_client: IpumsApiClient):
         live_api_client._get_pages(collection="usa", endpoint="extracts", page_size=5)
     )
     assert len(page1["data"]) == 5
+
+
+def test_cps_adjust_monetary_values():
+    """
+    Confirm that adjust monetary values updates are happening correctly
+    """
+    extract = MicrodataExtract(
+        "cps",
+        ["cps2012_03s"],
+        ["AGE", "SEX", "HOURWAGE"],
+    )
+    extract.adjust_monetary_values("HOURWAGE")
+    assert extract.build() == {
+        "dataStructure": {"rectangular": {"on": "P"}},
+        "samples": {"cps2012_03s": {}},
+        "variables": {
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "HOURWAGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "attachedCharacteristics": [],
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": True,
+            },
+        },
+        "description": "My IPUMS CPS extract",
+        "dataFormat": "fixed_width",
+        "collection": "cps",
+        "version": None,
+    }
+
+
+@pytest.mark.vcr
+def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
+    """Confirm correct errors raised by trying to adjust a non-monetary variable"""
+    extract = MicrodataExtract(
+        "cps",
+        ["cps2012_03s"],
+        ["AGE", "SEX", "HOURWAGE"],
+    )
+    extract.adjust_monetary_values("SEX")
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert (
+        exc_info.value.args[0] == "Monetary value adjustment is not supported for SEX."
+    )
+
+    extract = MicrodataExtract(
+        "atus",
+        ["at2012"],
+        ["AGE", "SEX", "EARNWEEK"],
+    )
+
+    extract.adjust_monetary_values("EARNWEEK")
+    with pytest.raises(BadIpumsApiRequest) as exc_info:
+        live_api_client.submit_extract(extract)
+    assert (
+        exc_info.value.args[0]
+        == "Monetary value adjustment is not supported for IPUMS ATUS"
+    )

@@ -592,7 +592,7 @@ class IpumsApiClient:
 
         Args:
             collection: The name of the IPUMS collection to retrieve metadata for
-            metadata_type: Name of the type of metadata to retrieve for this collection
+            metadata_type: Name of the type of metadata to retrieve for this collection. Valid values for the NHGIS collection include 'datasets', 'data_tables', 'shapefiles', and 'time_series_tables'; valid values for the IHGIS collection include 'datasets', 'data_tables', and 'tabulation_geographies'.
             page_size: Number of items to return per page. Defaults to maximum page size, 2500.
 
         Yields:

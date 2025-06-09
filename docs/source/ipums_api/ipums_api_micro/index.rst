@@ -276,6 +276,26 @@ Data quality flags can also be selected for specific variables using the :meth:`
     # note that this method will also accept a list!
     extract.add_data_quality_flags(["AGE", "SEX"])
 
+Adjust Monetary Values
+~~~~~~~~~~~~~~~~~~~~~~
+
+IPUMS CPS and IPUMS USA offer the option to standardize income or other dollar values to 2010 dollars. This option both retains the original IPUMS variable in your extract and adds a new, adjusted variable called ``<VARIABLE NAME>_cpiu_2010`` that contains the inflation-adjusted values. Further information on the Adjust Monetary Values feature can be found on the `IPUMS CPS <https://cps.ipums.org/cps/adjusted_monetary_values.shtml>`_ and `IPUMS USA <https://usa.ipums.org/usa/adjusted_monetary_values.shtml>`_ websites.
+
+Inflation adjusted values are only available for continuous variables that represent dollar amounts and can be selected using the :meth:`.adjust_monetary_values()` method.
+
+.. code:: python
+
+    extract = MicrodataExtract(
+        collection="cps",
+        samples=["cps2022_03b"],
+        variables=["AGE", "SEX", "HOURWAGE"],
+    )
+
+    extract.adjust_monetary_values("HOURWAGE")
+
+.. note::
+    The Adjust Monetary Values feature is not currently available for IPUMS CPS ASEC variables.
+
 .. _Using Variable Objects to Include Extract Features:
 
 Variable Objects
@@ -286,8 +306,8 @@ defining a :class:`MicrodataExtract<ipumspy.api.extract.MicrodataExtract>` using
 :class:`Variable<ipumspy.api.extract.Variable>` objects. 
 
 The example below defines an IPUMS CPS extract that includes a variable for the age of 
-the spouse (``attached_characteristics``), limits the sample to women (``case_selections``), and includes the 
-data quality flag for RACE (``data_quality_flags``).
+the spouse (``attached_characteristics``), limits the sample to women (``case_selections``), includes the 
+data quality flag for RACE (``data_quality_flags``), and an inflation-adjusted version of INCTOT (``adjust_monetary_values``).
 
 .. code:: python
 
@@ -300,7 +320,9 @@ data quality flag for RACE (``data_quality_flags``).
             Variable(name="SEX",
                      case_selections={"general": ["2"]}),
             Variable(name="RACE",
-                     data_quality_flags=True)
+                     data_quality_flags=True),
+            Variable(name="HOURWAGE",
+                     adjust_monetary_values=True),
          ],
          description="A fancy CPS extract",
     )

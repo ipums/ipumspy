@@ -44,7 +44,8 @@ Helpful data classes for defining IPUMS Extract objects.
    ipumspy.api.Variable
    ipumspy.api.Sample
    ipumspy.api.TimeUseVariable
-   ipumspy.api.Dataset
+   ipumspy.api.NhgisDataset
+   ipumspy.api.IhgisDataset
    ipumspy.api.TimeSeriesTable
    ipumspy.api.Shapefile
 
@@ -74,8 +75,10 @@ Use these classes and methods to request IPUMS metadata for aggregate data colle
    :template: class.rst
    :nosignatures:
 
-   ipumspy.api.metadata.DatasetMetadata
-   ipumspy.api.metadata.DataTableMetadata
+   ipumspy.api.metadata.NhgisDatasetMetadata
+   ipumspy.api.metadata.IhgisDatasetMetadata
+   ipumspy.api.metadata.NhgisDataTableMetadata
+   ipumspy.api.metadata.IhgisDataTableMetadata
    ipumspy.api.metadata.TimeSeriesTableMetadata
 
 Exceptions

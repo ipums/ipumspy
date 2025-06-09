@@ -1,0 +1,133 @@
+interactions:
+- request:
+    body: '{"description": "My IPUMS CPS extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"cps2012_03s": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false, "adjustMonetaryValues": false}, "SEX": {"preselected":
+      false, "caseSelections": {}, "attachedCharacteristics": [], "dataQualityFlags":
+      false, "adjustMonetaryValues": true}, "HOURWAGE": {"preselected": false, "caseSelections":
+      {}, "attachedCharacteristics": [], "dataQualityFlags": false, "adjustMonetaryValues":
+      false}}, "collection": "cps", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '627'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.6.2.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=cps&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Monetary value adjustment is not supported for SEX."]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '142'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 28 May 2025 15:46:19 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 7a274944-f227-408a-9570-a6d9e2df9c9c
+      X-Runtime:
+      - '0.691613'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+- request:
+    body: '{"description": "My IPUMS ATUS extract", "dataFormat": "fixed_width", "dataStructure":
+      {"rectangular": {"on": "P"}}, "samples": {"at2012": {}}, "variables": {"AGE":
+      {"preselected": false, "caseSelections": {}, "attachedCharacteristics": [],
+      "dataQualityFlags": false, "adjustMonetaryValues": false}, "SEX": {"preselected":
+      false, "caseSelections": {}, "attachedCharacteristics": [], "dataQualityFlags":
+      false, "adjustMonetaryValues": false}, "EARNWEEK": {"preselected": false, "caseSelections":
+      {}, "attachedCharacteristics": [], "dataQualityFlags": false, "adjustMonetaryValues":
+      true}}, "collection": "atus", "version": 2}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '624'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-ipumspy:0.6.2.github.com/ipums/ipumspy
+    method: POST
+    uri: https://api.ipums.org/extracts?collection=atus&version=2
+  response:
+    body:
+      string: '{"type":"SemanticValidationError","status":{"code":400,"name":"Bad
+        Request"},"detail":["Monetary value adjustment is not supported for IPUMS
+        ATUS"]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - '148'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 28 May 2025 15:46:19 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - nginx/1.22.1
+      Vary:
+      - Origin
+      - Accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Ratelimit-Limit:
+      - '-1'
+      X-Ratelimit-Remaining:
+      - '0'
+      X-Ratelimit-Reset:
+      - '0'
+      X-Request-Id:
+      - 53660b57-cfcd-46e1-9699-6ad7d2dd4203
+      X-Runtime:
+      - '0.517223'
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 400
+      message: Bad Request
+version: 1

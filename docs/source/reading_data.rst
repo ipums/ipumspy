@@ -136,11 +136,6 @@ pandas to load the compressed csv file:
         with z.open(names[0]) as f:
             data = pd.read_csv(f)
 
-.. note::
-    IPUMS NHGIS does allow you to request an extract in fixed-width format, but ipumspy does not
-    provide methods to parse these files as it does for Microdata because IPUMS NHGIS does not provide
-    the necessary DDI codebook.
-
 Shapefile data is delivered in a nested zipfile that can also be unpacked using the ``ZipFile`` module and read using third party libraries such as geopandas.
 
 Reading Non-Extractable IPUMS Collections
