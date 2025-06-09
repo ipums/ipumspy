@@ -13,7 +13,7 @@ This project adheres to `Semantic Versioning`_.
 
 0.7.0
 -----
-2025-06-6
+2025-06-09
 
 * New Features
 
