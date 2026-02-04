@@ -360,6 +360,7 @@ def _get_collection_type(collection: str) -> str:
         "mtus": "microdata",
         "nhis": "microdata",
         "meps": "microdata",
+        "dhs": "microdata",
         "nhgis": "aggregate_data",
         "ihgis": "aggregate_data",
     }
@@ -680,7 +681,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             }
 
         # XXX shoehorn fix until server-side bug is fixed
-        if self.collection == "meps":
+        if self.collection == "meps" or self.collection == "dhs":
             for variable in built["variables"].keys():
                 built["variables"][variable].pop("attachedCharacteristics")
 
