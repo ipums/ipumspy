@@ -11,6 +11,18 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.8.0
+-----
+2026-02-?
+
+* New Features
+
+  * Support for IPUMS DHS extract API
+
+* Breaking Changes
+
+  * Dropped support for Python 3.9
+
 0.7.0
 -----
 2025-06-09
