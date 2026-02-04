@@ -223,7 +223,7 @@ def _get_common_vars(ddi: ddi_definitions.Codebook, data_description: List):
         if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
         # if sorted(desc.rectype.split(" ")) == sorted(all_rectypes)
     ]
-    
+
     return common_vars
 
 
