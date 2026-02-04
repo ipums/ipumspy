@@ -181,7 +181,7 @@ def _assert_meps_000019(data: pd.DataFrame):
     ).all()
 
 
-def _assert_meps_00020_dict(data: pd.DataFrame):
+def _assert_meps_00045_dict(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for hierarchical MEPS files"""
     # P df
     assert len(data) == 34655
@@ -282,7 +282,7 @@ def _assert_meps_00020_dict(data: pd.DataFrame):
     ).all()
 
 
-def _assert_meps_00020_df(data: pd.DataFrame):
+def _assert_meps_00045_df(data: pd.DataFrame):
     """Run all the checks for the data frame returned by our readers for hierarchical files"""
     assert len(data) == 595853
     assert len(data.columns) == 51
@@ -524,10 +524,10 @@ def test_can_read_hierarchical_df_dat_gz(fixtures_path: Path):
 
     _assert_atus_00035_df
 
-    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00020.xml")
-    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "meps_00020.dat.gz")
+    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00045.xml")
+    data = readers.read_hierarchical_microdata(ddi, fixtures_path / "meps_00045.dat.gz")
 
-    _assert_meps_00020_df
+    _assert_meps_00045_df
 
 
 def test_can_read_hierarchical_dict_dat_gz(fixtures_path: Path):
@@ -549,12 +549,12 @@ def test_can_read_hierarchical_dict_dat_gz(fixtures_path: Path):
 
     _assert_atus_00035_dict
 
-    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00020.xml")
+    ddi = readers.read_ipums_ddi(fixtures_path / "meps_00045.xml")
     data = readers.read_hierarchical_microdata(
-        ddi, fixtures_path / "meps_00020.dat.gz", as_dict=True
+        ddi, fixtures_path / "meps_00045.dat.gz", as_dict=True
     )
 
-    _assert_meps_00020_dict
+    _assert_meps_00045_dict
 
 
 def test_can_read_rectangular_dat_gz(fixtures_path: Path):
