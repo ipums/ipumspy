@@ -73,6 +73,11 @@ available features for all collections currently supported by the API:
       - ``mtus``
       - **X**
       - 
+    * - `IPUMS DHS <https://www.idhsdata.org/idhs/index.shtml>`__
+      - Microdata
+      - ``dhs``
+      - **X**
+      - 
     * - `IPUMS NHIS <https://nhis.ipums.org/nhis/>`__
       - Microdata
       - ``nhis``

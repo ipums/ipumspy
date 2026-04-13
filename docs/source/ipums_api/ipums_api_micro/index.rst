@@ -95,7 +95,7 @@ The table below shows the available data structures and the IPUMS data collectio
       - all IPUMS microdata collections
     * - hierarchical
       - ``data_structure={"hierarchical": {}}``
-      - all IPUMS microdata collections
+      - ``usa``, ``cps``, ``atus``, ``ahtus``, ``mtus``, ``nhis``, ``meps``, ``ipumsi``
     * - rectangular on Activity
       - ``data_structure={"rectangular": {"on": "A"}}``
       - ``atus``, ``ahtus``, ``mtus``
@@ -132,7 +132,7 @@ Extract Features
 ----------------
 
 Certain features of a :class:`MicrodataExtract<ipumspy.api.extract.MicrodataExtract>` can be 
-added or updated before an extract request is submitted. This section 
+added or updated before an extract request is submitted. Note that not all features are availale for every IPUMS data collection. For example, case selection is not a feature of IPUMS Time Use data and automatic inclusion of data quality flags is not a feature of IPUMS DHS. Details regarding available extract features for each IPUMS data collection can be found at the `IPUMS developer portal <https://developer.ipums.org/docs/v2/apiprogram/apis/microdata/>`_. This section 
 demonstrates adding features to the following IPUMS CPS extract.
 
 .. code:: python

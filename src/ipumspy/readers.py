@@ -217,16 +217,11 @@ def _get_common_vars(ddi: ddi_definitions.Codebook, data_description: List):
     # these are delimited by spaces within the string attribute
     # this list would probably be a useful thing to have as a file-level attribute...
 
-    # XXX: this is to work around an issue with the Health Surveys DDI specifically.
-    # Revert to previous method of using the file_description rectypes once this
-    # DDI issue is fixed
-    rectype_desc = [desc for desc in data_description if desc.name == "RECTYPE"][0]
-    all_rectypes = rectype_desc.rectype.split(" ")
     common_vars = [
         desc.name
         for desc in data_description
-        # if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
-        if sorted(desc.rectype.split(" ")) == sorted(all_rectypes)
+        if sorted(desc.rectype.split(" ")) == sorted(ddi.file_description.rectypes)
+        # if sorted(desc.rectype.split(" ")) == sorted(all_rectypes)
     ]
 
     return common_vars
@@ -355,14 +350,8 @@ def read_hierarchical_microdata(
     else:
         df_dict = {}
         common_vars = _get_common_vars(ddi, data_description)
-        # XXX: this is to work around an issue with the Health Surveys DDI specifically.
-        # Revert to previous method of using the file_description rectypes once this
-        # DDI issue is fixed
-        rectype_desc = [desc for desc in data_description if desc.name == "RECTYPE"][0]
-        all_rectypes = rectype_desc.rectype.split(" ")
 
-        # for rectype in ddi.file_description.rectypes:
-        for rectype in all_rectypes:
+        for rectype in ddi.file_description.rectypes:
             rectype_vars = _get_rectype_vars(
                 ddi, rectype, common_vars, data_description
             )

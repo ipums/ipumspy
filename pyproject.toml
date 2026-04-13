@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ipumspy"
-version = "0.7.0"
+version = "0.8.0"
 description = "A collection of tools for working with IPUMS data"
 authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
            "Renae Rodgers <rodge103@umn.edu>"]
@@ -10,29 +10,29 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 pandas = "^2.2.3"
 numpy = "^2.0.0"
 click = "^8.0.0"
-pyarrow = "^18.1.0"
-requests = {extras = ["use_chardet_on_py3"], version = "^2.26.0"}
+pyarrow = "^23.0.0"
+requests = {extras = ["use_chardet_on_py3"], version = "^2.32.5"}
 importlib-metadata = "^4.13.0"
 PyYAML = "^6.0.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "^24.4.0"
 pylint = "^2.7.4"
 isort = "^5.8.0"
 mypy = "^1.0.1"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.3.4"
+pytest = "^9.0.0"
 pytest-cov = "^4.0.0"
 python-dotenv = "^1.0.0"
-fastapi = "^0.115.12"
-uvicorn = {extras = ["standard"], version = "^0.34.1"}
-pytest-recording = "^0.12.2"
-vcrpy = "^4.2.1"
+fastapi = "^0.128.1"
+uvicorn = {extras = ["standard"], version = "^0.40.0"}
+pytest-recording = "^0.13.4"
+vcrpy = "^8.0.0"
 
 [tool.poetry.group.docs]
 optional=true
