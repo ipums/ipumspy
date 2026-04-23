@@ -116,7 +116,7 @@ def test_get_variable_info_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
     # And does it raise a ValueError if the variable does not exist?
     with pytest.raises(ValueError):
         cps_ddi_hierarchical.get_variable_info("foo")
-        
+
 
 def test_ddi_codebook_rectangular(cps_ddi: ddi.Codebook):
     # sample descriptions/names
@@ -274,14 +274,12 @@ def test_ddi_codebook_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
         "\n"
         "(4) Use it for GOOD -- never for EVIL."
     )
-    
-    
+
+
 def test_complex_ddi_codebook_hierarchical(atus_ddi_hierarchical: ddi.Codebook):
     """Test ddi with more than two record types"""
     # sample descriptions/names
-    assert atus_ddi_hierarchical.samples_description == [
-        "ATUS 2024"
-    ]
+    assert atus_ddi_hierarchical.samples_description == ["ATUS 2024"]
 
     # doi
     assert atus_ddi_hierarchical.ipums_doi == "DOI:10.18128/D060.V3.3"
@@ -293,7 +291,7 @@ def test_complex_ddi_codebook_hierarchical(atus_ddi_hierarchical: ddi.Codebook):
     assert atus_ddi_hierarchical.file_description.structure == "hierarchical"
 
     # rectypes
-    assert atus_ddi_hierarchical.file_description.rectypes == ['1', '2', '3', '4']
+    assert atus_ddi_hierarchical.file_description.rectypes == ["1", "2", "3", "4"]
 
     # rectype idvar
     assert atus_ddi_hierarchical.file_description.rectype_idvar == "RECTYPE"
