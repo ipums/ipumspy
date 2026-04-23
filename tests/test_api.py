@@ -159,6 +159,55 @@ def test_usa_build_extract():
     }
 
 
+def test_mtus_build_extract():
+    """Make sure unsuported attachCharacteristics elements are removed"""
+    extract = MicrodataExtract(
+        collection="mtus",
+        description="API testing",
+        samples=["us2023a"],
+        variables=["SEX", "AGE", "EMPINCLM", "CLOCKST"],
+        time_use_variables=["ACT_PCARE", "ACT_NOREC"],
+        data_structure={"hierarchical": {}},
+        data_format="fixed_width",
+    )
+
+    assert extract.build() == {
+        "description": "API testing",
+        "dataFormat": "fixed_width",
+        "dataStructure": {"hierarchical": {}},
+        "samples": {"us2023a": {}},
+        "variables": {
+            "SEX": {
+                "preselected": False,
+                "caseSelections": {},
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "AGE": {
+                "preselected": False,
+                "caseSelections": {},
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "EMPINCLM": {
+                "preselected": False,
+                "caseSelections": {},
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+            "CLOCKST": {
+                "preselected": False,
+                "caseSelections": {},
+                "dataQualityFlags": False,
+                "adjustMonetaryValues": False,
+            },
+        },
+        "collection": "mtus",
+        "version": None,
+        "timeUseVariables": {"ACT_PCARE": {}, "ACT_NOREC": {}},
+    }
+
+
 def test_usa_attach_characteristics():
     """
     Confirm that attach_characteristics updates extract definition correctly

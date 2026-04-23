@@ -231,9 +231,11 @@ class FileDescription:
             rts = [rectype.attrib["rectype"] for rectype in file_rectypes]
         except KeyError:
             rts = []
-        # rectype get rectype id var and rectype key var
+        # (old ddi ordering of record types): rectype get rectype id var and rectype key var
         # these should be the same across record types for all collections
-        # so we should be fine to just grab the first appearance of recidvar and keyvar
+        # so we should be fine to just grab the last appearance of recidvar and keyvar
+        # (the first appearance now is the top level record type, which does not have
+        # the keyvar attribute - so now grabbing from the last record type in the hierarchy)
         try:
             rectype_idvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib[
                 "recidvar"
@@ -241,9 +243,21 @@ class FileDescription:
             rectype_keyvar = elt.find("./ddi:fileStrc/ddi:recGrp", namespaces).attrib[
                 "keyvar"
             ]
+        # (new ddi ordering of rectypes): if we get a key error, the first appearance now is
+        # the top level record type, which does not have the keyvar attribute -
+        # so now grabbing from the last record type in the hierarchy
+        except KeyError:
+            rectype_idvar = elt.findall("./ddi:fileStrc/ddi:recGrp", namespaces)[
+                -1
+            ].attrib["recidvar"]
+            rectype_keyvar = elt.findall("./ddi:fileStrc/ddi:recGrp", namespaces)[
+                -1
+            ].attrib["keyvar"]
+        # if we get an Attribute Error, this is a rectangular file
         except AttributeError:
             rectype_idvar = ""
             rectype_keyvar = ""
+
         return cls(
             filename=elt.find("./ddi:fileName", namespaces).text,
             description=elt.find("./ddi:fileCont", namespaces).text,

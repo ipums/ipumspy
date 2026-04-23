@@ -681,7 +681,7 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
             }
 
         # XXX shoehorn fix until server-side bug is fixed
-        if self.collection == "meps" or self.collection == "dhs":
+        if self.collection in ["meps", "dhs", "mtus", "ahtus"]:
             for variable in built["variables"].keys():
                 built["variables"][variable].pop("attachedCharacteristics")
 

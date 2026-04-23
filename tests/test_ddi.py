@@ -32,10 +32,10 @@ def cps_ddi_hierarchical(fixtures_path: Path) -> ddi.Codebook:
     return readers.read_ipums_ddi(fixtures_path / "cps_00421.xml")
 
 
-# not implemented yet
-# @pytest.fixture(scope="function")
-# def cps_df_hierarchical(fixtures_path: Path, cps_ddi_hierarchical: ddi.Codebook) -> pd.DataFrame:
-#     return readers.read_microdata(cps_ddi_hierarchical, fixtures_path / "cps_00421.dat.gz")
+@pytest.fixture(scope="function")
+def atus_ddi_hierarchical(fixtures_path: Path) -> ddi.Codebook:
+    """DDI with rectypes in order of hierarchy"""
+    return readers.read_ipums_ddi(fixtures_path / "atus_00040.xml")
 
 
 def test_get_variable_info_rectangular(cps_ddi: ddi.Codebook):
@@ -271,6 +271,81 @@ def test_ddi_codebook_hierarchical(cps_ddi_hierarchical: ddi.Codebook):
         "funding for the IPUMS depends on our ability "
         "to  show our sponsor agencies that researchers "
         "are using the data for productive  purposes.\n"
+        "\n"
+        "(4) Use it for GOOD -- never for EVIL."
+    )
+
+
+def test_complex_ddi_codebook_hierarchical(atus_ddi_hierarchical: ddi.Codebook):
+    """Test ddi with more than two record types"""
+    # sample descriptions/names
+    assert atus_ddi_hierarchical.samples_description == ["ATUS 2024"]
+
+    # doi
+    assert atus_ddi_hierarchical.ipums_doi == "DOI:10.18128/D060.V3.3"
+
+    # data format
+    assert atus_ddi_hierarchical.file_description.format == "fixed length fields"
+
+    # data structure
+    assert atus_ddi_hierarchical.file_description.structure == "hierarchical"
+
+    # rectypes
+    assert atus_ddi_hierarchical.file_description.rectypes == ["1", "2", "3", "4"]
+
+    # rectype idvar
+    assert atus_ddi_hierarchical.file_description.rectype_idvar == "RECTYPE"
+
+    # rectype keyvar
+    assert atus_ddi_hierarchical.file_description.rectype_keyvar == "CASEID"
+
+    # data collection
+    assert atus_ddi_hierarchical.ipums_collection == "atus"
+
+    # citation
+    assert atus_ddi_hierarchical.ipums_citation == (
+        "Publications and research reports based on the "
+        "ATUS database must cite it appropriately. "
+        "The citation should include the following:\n"
+        "\n"
+        "Sarah M. Flood, Liana C. Sayer, and Daniel Backman. "
+        "American Time Use Survey Data Extract Builder: Version 3.3 [dataset]. "
+        "College Park, MD: University of Maryland and Minneapolis, MN: IPUMS, 2025. "
+        "https://doi.org/10.18128/D060.V3.3\n"
+        "\n"
+        "The licensing agreement for use of ATUS "
+        "data requires that users supply us with the "
+        "title and full citation for any publications, "
+        "research reports, or educational materials "
+        "making use of the data or documentation. Please "
+        "add your citation to the IPUMS bibliography: "
+        "http://bibliography.ipums.org/"
+    )
+
+    # terms of use
+    assert atus_ddi_hierarchical.ipums_conditions == (
+        "Users of ATUS data must agree to abide by "
+        "the conditions of use. A user's license is "
+        "valid for one year and may be renewed.  Users "
+        "must agree to the following conditions:\n"
+        "\n"
+        "(1) No fees may be charged for use or "
+        "distribution of the data.  All persons are "
+        "granted a limited license to use these data, "
+        "but you may not charge a fee for the data if "
+        "you distribute it to others.\n"
+        "\n"
+        "(2) Cite IPUMS appropriately.  For information "
+        "on proper citation, refer to the citation "
+        "requirement section of this DDI document.\n"
+        "\n"
+        "(3) Tell us about any work you do using the "
+        "IPUMS.  Publications, research reports, or "
+        "presentations making use of ATUS should "
+        "be added to our Bibliography. Continued "
+        "funding for the IPUMS depends on our ability "
+        "to show our sponsor agencies that researchers "
+        "are using the data for productive purposes.\n"
         "\n"
         "(4) Use it for GOOD -- never for EVIL."
     )
