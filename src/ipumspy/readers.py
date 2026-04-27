@@ -330,15 +330,19 @@ def read_hierarchical_microdata(
         pandas data frame or a dictionary of pandas data frames
     """
     # RECTYPE must be included if subset list is specified
+    # add it if it is missing
     if subset is not None:
-        if "RECTYPE" not in subset:
-            raise ValueError(
-                "RECTYPE must be included in the subset list for hierarchical extracts."
-            )
-        else:
-            data_description = [
-                desc for desc in ddi.data_description if desc.name in subset
-            ]
+        if ddi.file_description.rectype_idvar not in subset:
+            subset.append(ddi.file_description.rectype_idvar)
+            warnings.warn(f"{ddi.file_description.rectype_idvar} is required to read hierarchical microdata; this variable has been added to the `subset`.")
+        # add the file's keyvar if not included in the subset
+        if ddi.file_description.rectype_keyvar not in subset:
+            subset.append(ddi.file_description.rectype_keyvar)
+            warnings.warn(f"{ddi.file_description.rectype_keyvar} is required to read hierarchical microdata; this variable has been added to the `subset`.")
+        
+        data_description = [
+            desc for desc in ddi.data_description if desc.name in subset
+        ]
     else:
         data_description = ddi.data_description
 
@@ -378,7 +382,7 @@ def read_hierarchical_microdata(
             )
 
             # filter out non-relevant rectype records
-            df_dict[rectype] = rectype_df[rectype_df["RECTYPE"] == rectype].copy()
+            df_dict[rectype] = rectype_df[rectype_df[ddi.file_description.rectype_idvar] == rectype].copy()
 
             # Now that the non-relevant rows have been dropped, make data types correct
             if dtype is None:
@@ -400,78 +404,14 @@ def read_hierarchical_microdata(
         if as_dict:
             return df_dict
         else:
-            dtype_str = {desc.name: pd.StringDtype() for desc in data_description}
-            # read the hierarchical file
-            df = pd.concat(
-                [
-                    df
-                    for df in _read_microdata(
-                        ddi=ddi,
-                        filename=filename,
-                        encoding=encoding,
-                        dtype=dtype_str,
-                        subset=subset,
-                        **kwargs,
-                    )
-                ]
-            )
-
-            # for each rectype, nullify variables that belong to other rectypes
-            for rectype in df_dict.keys():
-                # create a list of variables that are for rectypes other than the current rectype
-                # and are not included in the list of varaibles that are common across rectypes
-                non_rt_cols = [
-                    cols
-                    for rt in df_dict.keys()
-                    for cols in df_dict[rt].columns
-                    if rt != rectype and cols not in common_vars
-                ]
-                dtype_rt = dtype
-                if dtype_rt is None:
-                    # this fix means that _fix_float_dtypes is actually being called both from within
-                    # _read_microdata() and this method, which is not ideal, but is also the least disruptive
-                    # solution I have found so far.
-                    dtype_rt = {
-                        desc.name: desc.pandas_type
-                        for desc in data_description
-                        if desc.name in non_rt_cols
-                    }
-
-                for col in non_rt_cols:
-                    # maintain data type when "nullifying" variables from other record types
-                    if dtype_rt[col] == pd.Int64Dtype():
-                        df[col] = np.where(df["RECTYPE"] == rectype, pd.NA, df[col])
-                        df[col] = df[col].astype(
-                            _fix_float_dtypes({col: dtype_rt[col]}, df[[col]].copy())
-                        )
-                    elif (
-                        dtype_rt[col] == pd.StringDtype()
-                        or dtype_rt[col] == str
-                        or dtype_rt[col] == "string"
-                    ):
-                        df[col] = np.where(df["RECTYPE"] == rectype, "", df[col])
-                        df[col] = df[col].astype(pd.StringDtype())
-                    elif (
-                        dtype_rt[col].dtype == float
-                        or dtype_rt[col] == pd.Float64Dtype()
-                        or dtype_rt[col] == np.float64
-                    ):
-                        df[col] = np.where(df["RECTYPE"] == rectype, np.nan, df[col])
-                        df[col] = df[col].astype(dtype_rt[col])
-                    # this should (theoretically) never be hit... unless someone specifies an illegal data type
-                    # themselves, but that should also be caught before this stage.
-                    else:
-                        raise TypeError(
-                            f"Data type {df[col].dtype} for {col} is not an allowed type."
-                        )
-            # XXX common vars are defaulting to pandas. This is probably fine, but could be more flexible.
-            common_dtype = {
-                desc.name: desc.pandas_type
-                for desc in data_description
-                if desc.name in common_vars
-            }
-            for col in common_vars:
-                df[col] = df[col].astype(common_dtype[col])
+            df = pd.concat([df_dict[k] for k in df_dict.keys()])
+            # XXX the rectype_keyvar is not always enough to correctly sort the hierarchical extracts
+            # as it may only be unique within sample. 
+            # Save the pandas index to follow the original file order to use as a temporary sort key
+            df["idx"] = df.index
+            df = df.sort_values(
+                by=["idx"]
+            ).drop(columns="idx")
 
             return df
 
