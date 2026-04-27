@@ -334,12 +334,16 @@ def read_hierarchical_microdata(
     if subset is not None:
         if ddi.file_description.rectype_idvar not in subset:
             subset.append(ddi.file_description.rectype_idvar)
-            warnings.warn(f"{ddi.file_description.rectype_idvar} is required to read hierarchical microdata; this variable has been added to the `subset`.")
+            warnings.warn(
+                f"{ddi.file_description.rectype_idvar} is required to read hierarchical microdata; this variable has been added to the `subset`."
+            )
         # add the file's keyvar if not included in the subset
         if ddi.file_description.rectype_keyvar not in subset:
             subset.append(ddi.file_description.rectype_keyvar)
-            warnings.warn(f"{ddi.file_description.rectype_keyvar} is required to read hierarchical microdata; this variable has been added to the `subset`.")
-        
+            warnings.warn(
+                f"{ddi.file_description.rectype_keyvar} is required to read hierarchical microdata; this variable has been added to the `subset`."
+            )
+
         data_description = [
             desc for desc in ddi.data_description if desc.name in subset
         ]
@@ -382,7 +386,9 @@ def read_hierarchical_microdata(
             )
 
             # filter out non-relevant rectype records
-            df_dict[rectype] = rectype_df[rectype_df[ddi.file_description.rectype_idvar] == rectype].copy()
+            df_dict[rectype] = rectype_df[
+                rectype_df[ddi.file_description.rectype_idvar] == rectype
+            ].copy()
 
             # Now that the non-relevant rows have been dropped, make data types correct
             if dtype is None:
@@ -406,12 +412,10 @@ def read_hierarchical_microdata(
         else:
             df = pd.concat([df_dict[k] for k in df_dict.keys()])
             # XXX the rectype_keyvar is not always enough to correctly sort the hierarchical extracts
-            # as it may only be unique within sample. 
+            # as it may only be unique within sample.
             # Save the pandas index to follow the original file order to use as a temporary sort key
             df["idx"] = df.index
-            df = df.sort_values(
-                by=["idx"]
-            ).drop(columns="idx")
+            df = df.sort_values(by=["idx"]).drop(columns="idx")
 
             return df
 
