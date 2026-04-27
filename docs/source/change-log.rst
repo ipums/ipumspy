@@ -11,9 +11,19 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.8.1
+-----
+2026-04-23
+
+* Bug Fixes
+
+  * ``ipumspy`` now accomodates a re-rodering of record types in the ``fileStr`` section of the DDI created by the IPUMS extract system.
+  * The building of extract requests for IPUMS MTUS and AHTUS now correctly accounts for the fact that ``attach_characteristics`` is not a supported feature on these data collections.
+
+
 0.8.0
 -----
-2026-02-?
+2026-04-13
 
 * New Features
 
