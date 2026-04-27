@@ -938,11 +938,14 @@ def test_subset_option(fixtures_path: Path):
     )
 
     _assert_cps_hierarchical_subset_dict(data)
-    
+
     # warn when the rectype var is not included in the subset
     with pytest.warns() as record:
         data = readers.read_hierarchical_microdata(
             ddi, fixtures_path / "cps_00421.dat.gz", subset=["MISH", "AGE"]
         )
-        
-    assert str(record[0].message) == "RECTYPE is required to read hierarchical microdata; this variable has been added to the `subset`."
+
+    assert (
+        str(record[0].message)
+        == "RECTYPE is required to read hierarchical microdata; this variable has been added to the `subset`."
+    )
