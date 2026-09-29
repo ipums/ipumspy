@@ -1,62 +1,51 @@
-[tool.poetry]
+[project]
 name = "ipumspy"
-version = "0.8.2"
+version = "1.0.0"
 description = "A collection of tools for working with IPUMS data"
-authors = ["Kevin H. Wilson <kevin_wilson@brown.edu>",
-           "Renae Rodgers <rodge103@umn.edu>"]
-license = "Mozilla Public License 2.0 (MPL 2.0)"
-packages = [
-    { include = "ipumspy", from = "src" }
+authors = [
+    { name = "Kevin H. Wilson", email = "kevin_wilson@brown.edu" },
+    { name = "Renae Rodgers", email = "rodge103@umn.edu" }
+]
+license = { text = "Mozilla Public License 2.0 (MPL 2.0)" }
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=2.2.3",
+    "numpy>=2.0.0",
+    "click>=8.0.0",
+    "pyarrow>=23.0.0",
+    "requests[use_chardet_on_py3]>=2.32.5",
+    "importlib-metadata>=4.13.0",
+    "PyYAML>=6.0.1",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-pandas = "^2.2.3"
-numpy = "^2.0.0"
-click = "^8.0.0"
-pyarrow = "^23.0.0"
-requests = {extras = ["use_chardet_on_py3"], version = "^2.32.5"}
-importlib-metadata = "^4.13.0"
-PyYAML = "^6.0.1"
-
-[tool.poetry.group.dev.dependencies]
-black = "^24.4.0"
-pylint = "^2.7.4"
-isort = "^5.8.0"
-mypy = "^1.0.1"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^9.0.0"
-pytest-cov = "^4.0.0"
-python-dotenv = "^1.0.0"
-fastapi = "^0.128.1"
-uvicorn = {extras = ["standard"], version = "^0.40.0"}
-pytest-recording = "^0.13.4"
-vcrpy = "^8.0.0"
-
-[tool.poetry.group.docs]
-optional=true
-
-[tool.poetry.group.docs.dependencies]
-beautifulsoup4 = "^4.12.3"
-Sphinx = "^6.1.3"
-sphinx-autodoc-typehints = "^1.22.0"
-sphinx-copybutton = "^0.5.0"
-myst-parser = "^0.19.1"
-furo = "^2022.12.7"
-
-[tool.poetry.extras]
-docs = [
-    "beautifulsoup4",
-    "Sphinx",
-    "sphinx-autodoc-typehints",
-    "sphinx-copybutton",
-    "myst-parser",
-    "furo",
-]
-
-[tool.poetry.scripts]
+[project.scripts]
 ipums = "ipumspy.cli:cli"
+
+# PEP 735 standard for development environment dependency management
+[dependency-groups]
+dev = [
+    "black>=24.4.0",
+    "pylint>=2.7.4",
+    "isort>=5.8.0",
+    "mypy>=1.0.1",
+]
+test = [
+    "pytest>=9.0.0",
+    "pytest-cov>=4.0.0",
+    "python-dotenv>=1.0.0",
+    "fastapi>=0.128.1",
+    "uvicorn[standard]>=0.40.0",
+    "pytest-recording>=0.13.4",
+    "vcrpy>=8.0.0",
+]
+docs = [
+    "beautifulsoup4>=4.12.3",
+    "Sphinx>=6.1.3",
+    "sphinx-autodoc-typehints>=1.22.0",
+    "sphinx-copybutton>=0.5.0",
+    "myst-parser>=0.19.1",
+    "furo>=2022.12.7",
+]
 
 [tool.isort]
 multi_line_output = 3
@@ -76,14 +65,20 @@ disable = "C0330, C0326, R0912, R0913, R0914, R0915"
 max-line-length = "88"
 
 [tool.pytest.ini_options]
-markers = [ "slow: Run with --runslow",
-            "integration: Run with --runint" ]
+markers = [ 
+    "slow: Run with --runslow",
+    "integration: Run with --runint" 
+]
 
 [tool.coverage.run]
 omit = [
     "*/tests/*",
 ]
 
+# Standard modern build backend (Hatchling is standard and pairs great with uv)
 [build-system]
-requires = ["poetry>=1.4"]
-build-backend = "poetry.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ipumspy"]
