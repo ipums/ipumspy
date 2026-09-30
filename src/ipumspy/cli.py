@@ -6,6 +6,7 @@
 """
 A CLI for accessing IPUMS utilities
 """
+
 from typing import Optional, Tuple
 
 import click
