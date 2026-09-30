@@ -27,7 +27,7 @@ jobs:
 
       # Ensures dependencies align strictly to your uv.lock file
       - name: Install dependencies
-        run: uv sync --frozen
+        run: uv sync --frozen --group test
 
       # - name: Run mypy
       #   run: uv run mypy src
@@ -39,4 +39,4 @@ jobs:
         env:
           # now has creds to run integration tests
           IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
-        run: uv run py.test --runint
+        run: uv run pytest --runint
