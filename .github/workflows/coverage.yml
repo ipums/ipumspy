@@ -23,7 +23,7 @@ jobs:
 
       # Installs all required packages pinned to your uv.lock
       - name: Install dependencies
-        run: uv sync --frozen
+        run: uv sync --frozen --group test
 
       - name: Generate Report
         env:
