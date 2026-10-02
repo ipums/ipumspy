@@ -14,35 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      # Installs uv and sets up native dependency caching automatically
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.11
+          enable-cache: true
+          python-version: "3.14"
 
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.4.0
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Load cache
-        uses: actions/cache@v4
-        id: cache
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-3.9-${{ hashFiles('**/poetry.lock') }}
-
+      # Installs all required packages pinned to your uv.lock
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction
+        run: uv sync --frozen --group test
 
       - name: Generate Report
         env:
           # now has creds to run integration tests
           IPUMS_API_KEY: ${{ secrets.IPUMS_API_KEY }}
-        # this runs successfully at the command line and generates a report
-        run: poetry run py.test --runint --cov=ipumspy --cov-report=xml
+        run: uv run pytest --runint --cov=ipumspy --cov-report=xml
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
