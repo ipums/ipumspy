@@ -24,3 +24,19 @@ We appreciate pull requests that follow these guidelines:
 3) Please add your name and affiliation to the NOTICE.txt file.
 
 4) Summarize your changes in the [change log](https://github.com/ipums/ipumspy/tree/master/docs/source/change-log.rst). This package adheres to [semantic versioning](https://semver.org/)
+
+## Development setup
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+`uv sync --locked` from the repository root. This installs the package in editable
+mode and the development and test dependencies. Python 3.11 or newer is required.
+
+Run tests with `uv run pytest` and check formatting with `uv run black . --check`.
+API tests use recorded responses and a local mock server. To prevent new API
+requests while testing, use
+`IPUMS_API_KEY=offline-test-key uv run pytest --record-mode=none`.
+Build documentation with `uv run --extra docs sphinx-build -b html docs/source docs/_build/html`,
+and build release artifacts with `uv build`.
+
+After changing dependencies in `pyproject.toml`, run `uv lock` and commit the
+updated `uv.lock` alongside the configuration change.
