@@ -27,6 +27,8 @@ This project adheres to `Semantic Versioning`_.
 * Development
 
   * Migrate packaging, dependency management, CI, and documentation builds from Poetry to uv.
+  * Replace Black with the Ruff formatter in development, CI, and pre-commit.
+  * Replace isort with Ruff import sorting while preserving existing import order.
 
 0.8.2
 -----

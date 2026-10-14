@@ -6,6 +6,7 @@
 """
 Utilities for interacting with the IPUMS file format
 """
+
 import gzip
 import io
 import sys

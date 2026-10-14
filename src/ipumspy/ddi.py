@@ -6,6 +6,7 @@
 """
 Utilities for working with IPUMS DDI formats
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -36,7 +36,7 @@ jobs:
       #   run: uv run --locked mypy src
 
       - name: Check styling
-        run: uv run --locked black . --check
+        run: uv run --locked ruff format --check .
 
       - name: Run tests
         env:
