@@ -6,6 +6,7 @@
 """
 Functions for reading and processing IPUMS data
 """
+
 import copy
 import json
 import re

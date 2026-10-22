@@ -31,7 +31,11 @@ Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
 `uv sync --locked` from the repository root. This installs the package in editable
 mode and the development and test dependencies. Python 3.11 or newer is required.
 
-Run tests with `uv run pytest` and check formatting with `uv run black . --check`.
+Run tests with `uv run pytest` and check formatting with `uv run ruff format --check .`.
+Apply formatting with `uv run ruff format .`.
+Check import ordering with `uv run ruff check .`, and sort imports in a file with
+`uv run ruff check --fix path/to/file.py`. Existing imports have been left in
+their current order; CI and pre-commit enforce formatting only.
 API tests use recorded responses and a local mock server. To prevent new API
 requests while testing, use
 `IPUMS_API_KEY=offline-test-key uv run pytest --record-mode=none`.
