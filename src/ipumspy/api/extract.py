@@ -28,7 +28,6 @@ class ModifiedExtractWarning(Warning):
 
 @dataclass
 class IpumsObject(ABC):
-
     def update(self, attribute: str, value: Any):
         """
         Update Variable features
