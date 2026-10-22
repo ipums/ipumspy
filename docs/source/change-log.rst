@@ -11,6 +11,23 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.9.0
+-----
+2026-10-14
+
+* Breaking Changes
+
+  * Python 3.11 or newer is now required.
+
+* Compatibility
+
+  * Explicitly allow Python 3.14 and 3.15, including PyArrow releases with Python 3.15 wheels.
+  * Allow pandas 3 while retaining support for pandas 2.2.3 and newer.
+
+* Development
+
+  * Migrate packaging, dependency management, CI, and documentation builds from Poetry to uv.
+
 0.8.2
 -----
 2026-04-27
