@@ -4,17 +4,17 @@ Wrappers for payloads to ship to the IPUMS API
 
 from __future__ import annotations
 
+import inspect
+import json
 import warnings
+from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Type, Union
 
 import requests
-import json
-import inspect
-from abc import ABC, abstractmethod
 
 from ipumspy.ddi import Codebook
 
-from dataclasses import dataclass, field
 from .exceptions import IpumsExtractNotSubmitted
 
 
@@ -785,7 +785,7 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
             time_series_tables: list of ``TimeSeriesTable`` objects (for NHGIS extracts)
             shapefiles: list of shapefile names (for NHGIS extracts)
             description: short description of your extract
-            data_format: desired format of the extract data file (for NHGIS extracts). One of ``"csv_no_header"``, ``"csv_header"``, or ``"fixed_width"``.
+            data_format: desired format of the extract data file (for NHGIS extracts). One of ``"csv_no_header"``, ``"csv_header"``, or ``"csv_with_control_files"``.
             geographic_extents: Geographic extents to use for all ``datasets`` and ``time_series_tables`` in an NHGIS extract definition (for instance, to
                                 to obtain data within a particular state)
             tst_layout: desired data layout for all  ``time_series_tables`` in the extract definition.
@@ -803,6 +803,14 @@ class AggregateDataExtract(BaseExtract, collection_type="aggregate_data"):
         if collection == "nhgis":
             self.datasets = self._validate_list_args(datasets, NhgisDataset)
             self.data_format = data_format
+            # XXX "fixed_width" data format is now deprecated and replaced with "csv_with_control_files"
+            # but the API still accepts "fixed_width" as a data format, returning a .csv file with control files instead
+            if data_format == "fixed_width":
+                warnings.warn(
+                    "The 'fixed_width' data format is deprecated for IPUMS NHGIS extracts and will not be a valid value for the `data_format` argument. In place of fixed-width data, NHGIS extracts now procide .csv files with command files for stats packages; these can be requested with `data_format='csv_with_control_files'`. `data_format='fixed_width'` now returns a .csv file with command files for stats packages",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
             self.geographic_extents = geographic_extents
             self.breakdown_and_data_type_layout = breakdown_and_data_type_layout
             self.tst_layout = tst_layout

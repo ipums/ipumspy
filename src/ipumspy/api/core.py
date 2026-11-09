@@ -8,7 +8,7 @@ import warnings
 from functools import wraps
 from http import HTTPStatus
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union, Generator
+from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 import requests
 from requests.models import Response
@@ -19,18 +19,18 @@ from .exceptions import (
     BadIpumsApiRequest,
     IpumsAPIAuthenticationError,
     IpumsApiException,
+    IpumsApiRateLimitException,
     IpumsExtractFailure,
     IpumsExtractNotReady,
     IpumsNotFound,
     IpumsTimeoutException,
     TransientIpumsApiException,
-    IpumsApiRateLimitException,
 )
 from .extract import (
     BaseExtract,
+    _camel_to_snake,
     _get_collection_type,
     extract_from_dict,
-    _camel_to_snake,
 )
 from .metadata import IpumsMetadata
 
@@ -598,6 +598,10 @@ class IpumsApiClient:
         Yields:
             An iterator of metadata pages
         """
+        # XXX shoe horn the lower-than-usual max page size for the ihgis topcis
+        # endpoint. REMOVE when fixed on server side
+        if metadata_type == "topics":
+            page_size = 1500
 
         yield from self._get_pages(collection, f"metadata/{metadata_type}", page_size)
 

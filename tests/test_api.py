@@ -1,40 +1,39 @@
+import json
 import os
 import pickle
 import subprocess
-import time
-import yaml
-import json
-import pickle
 import tempfile
+import time
 import warnings
 from pathlib import Path
 
 import pytest
 import vcr
+import yaml
 
 from ipumspy import api, readers
 from ipumspy.api import (
+    AggregateDataExtract,
+    IhgisDataset,
     IpumsApiClient,
     MicrodataExtract,
-    AggregateDataExtract,
+    NhgisDataset,
+    Sample,
+    Shapefile,
+    TimeSeriesTable,
+    TimeUseVariable,
+    Variable,
+    define_extract_from_json,
     extract_from_dict,
     extract_to_dict,
-    define_extract_from_json,
     save_extract_as_json,
-    Variable,
-    Sample,
-    TimeUseVariable,
-    NhgisDataset,
-    IhgisDataset,
-    TimeSeriesTable,
-    Shapefile,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
     IpumsApiException,
+    IpumsExtractNotReady,
     IpumsExtractNotSubmitted,
     IpumsNotFound,
-    IpumsExtractNotReady,
 )
 
 
