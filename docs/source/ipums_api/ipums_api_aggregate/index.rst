@@ -352,17 +352,12 @@ several ACS years at once using list comprehensions. For instance:
 Data Format
 -----------
 
-By default, NHGIS extracts are provided in CSV format with only a single header row.
+By default, NHGIS table data are provided in CSV format with only a single header row.
 If you like, you can request that your CSV data include a second header row containing
 a description of each column's contents by setting ``data_format="csv_header"``.
 
-While you can also request your data in
-fixed-width format, NHGIS is likely to phase out support for this format in the
-future. We therefore suggest that you request data in CSV format.
-Also note that unlike for microdata projects, NHGIS does
-not provide DDI codebook files (in XML format), which allow ipumspy to parse
-microdata fixed-width files. Thus, loading an NHGIS fixed width file will require
-manual work to parse the file correctly.
+To request syntax files for SPSS, SAS, and Stata with your extract, set ``data_format="csv_with_control_files"``. 
+These syntax files are not used by any ipumspy functions.
 
 Supplemental Data
 -----------------
