@@ -685,7 +685,7 @@ def test_atus_build_extract():
         )
     assert (
         exc_info.value.args[0]
-        == "The items in ['BLS_PCARE', TimeUseVariable(name='user_tuv', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."
+        == "The items in ['BLS_PCARE', TimeUseVariable(name='user_TUV', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."
     )
 
     with pytest.raises(ValueError) as exc_info:

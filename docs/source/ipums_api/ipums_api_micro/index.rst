@@ -380,6 +380,9 @@ specify the ``owner`` field, which must contain the email associated with your I
         description="User-defined time use variable example"
     )
 
+.. attention::
+    Note that User-defined Time Use Variable naming is case-sensitive and names of these variables must be specified exactly as they were named when created in the IPUMS Time Use extract system.
+
 IPUMS ATUS Sample Members
 -------------------------
 

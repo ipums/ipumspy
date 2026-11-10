@@ -125,9 +125,6 @@ class TimeUseVariable(IpumsObject):
     owner: Optional[str] = ""
     """email address associated with your IPUMS account. Only required for user-defined Time Use Variables."""
 
-    def __post_init__(self):
-        self.name = self.name.lower()
-
     def build(self):
         """Format Time Use Variable information for API Extract submission"""
         built_tuv = self.__dict__.copy()
@@ -675,9 +672,13 @@ class MicrodataExtract(BaseExtract, collection_type="microdata"):
         }
 
         if self.time_use_variables is not None:
-            built["timeUseVariables"] = {
-                tuv.name.upper(): tuv.build() for tuv in self.time_use_variables
-            }
+            built["timeUseVariables"] = {}
+            # XXX case-sensitive user-defined TUV names
+            for tuv in self.time_use_variables:
+                if tuv.owner == "":
+                    built["timeUseVariables"][tuv.name.upper()] = tuv.build()
+                else:
+                    built["timeUseVariables"][tuv.name] = tuv.build()
 
         # XXX shoehorn fix until server-side bug is fixed
         if self.collection in ["meps", "dhs", "mtus", "ahtus"]:
