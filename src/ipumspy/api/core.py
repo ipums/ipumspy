@@ -8,6 +8,7 @@ import warnings
 from functools import wraps
 from http import HTTPStatus
 from pathlib import Path
+import json
 from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 import requests
@@ -113,6 +114,12 @@ class IpumsApiClient:
                 "Authorization": api_key,
             }
         )
+        
+        if "internal" in base_url:
+            self.base_url = "https://api.ipums.org"
+            self.extract_path = f"{self.base_url}/internal-extracts"
+        else:
+            self.extract_path = f"{self.base_url}/extracts"
 
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
@@ -186,7 +193,7 @@ class IpumsApiClient:
             extract.api_version = self.api_version
 
         response = self.post(
-            f"{self.base_url}/extracts",
+            f"{self.extract_path}",
             params={"collection": extract.collection, "version": extract.api_version},
             json=extract.build(),
         )
@@ -219,7 +226,7 @@ class IpumsApiClient:
 
         try:
             response = self.get(
-                f"{self.base_url}/extracts/{extract_id}",
+                f"{self.extract_path}/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             )
         except IpumsNotFound:
@@ -287,7 +294,7 @@ class IpumsApiClient:
             )
 
         response = self.get(
-            f"{self.base_url}/extracts/{extract_id}",
+            f"{self.extract_path}/{extract_id}",
             params={"collection": collection, "version": self.api_version},
         )
 
@@ -425,7 +432,7 @@ class IpumsApiClient:
         """
         # TODO: Wrap results in Extract objects.
         output = self.get(
-            f"{self.base_url}/extracts",
+            f"{self.extract_path}",
             params={
                 "collection": collection,
                 "pageSize": limit,
@@ -458,7 +465,7 @@ class IpumsApiClient:
             return extract._info
         else:
             extract_info = self.get(
-                f"{self.base_url}/extracts/{extract_id}",
+                f"{self.extract_path}/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             ).json()
             new_line = "\n"
