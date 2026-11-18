@@ -3,12 +3,12 @@ Core utilities for interacting with the IPUMS API
 """
 
 import copy
+import json
 import time
 import warnings
 from functools import wraps
 from http import HTTPStatus
 from pathlib import Path
-import json
 from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 import requests
@@ -114,7 +114,7 @@ class IpumsApiClient:
                 "Authorization": api_key,
             }
         )
-        
+
         if "internal" in base_url:
             self.base_url = "https://api.ipums.org"
             self.extract_path = f"{self.base_url}/internal-extracts"
