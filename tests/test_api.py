@@ -58,8 +58,7 @@ def mock_api() -> str:
 
 @pytest.fixture(scope="function")
 def api_client(environment_variables, mock_api: str) -> IpumsApiClient:
-    client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
-    client.base_url = mock_api
+    client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"), base_url=mock_api)
     return client
 
 
@@ -800,7 +799,6 @@ def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
         ["us2012b"],
         ["AGE", "SEX"],
     )
-
     api_client.submit_extract(extract)
     assert extract.extract_id == 10
 
