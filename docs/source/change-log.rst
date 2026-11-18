@@ -13,7 +13,7 @@ This project adheres to `Semantic Versioning`_.
 
 0.10.0
 ------
-2026-11-XX
+2026-11-19
 
 * Deprecations
 
