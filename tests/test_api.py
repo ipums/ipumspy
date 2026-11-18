@@ -1939,3 +1939,7 @@ def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
         exc_info.value.args[0]
         == "Monetary value adjustment is not supported for IPUMS ATUS"
     )
+
+
+def test_extract_path(api_client: IpumsApiClient):
+    assert api_client.extract_path == "http://127.0.0.1:8989/extracts"
