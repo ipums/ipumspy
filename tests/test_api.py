@@ -68,6 +68,12 @@ def live_api_client(environment_variables) -> IpumsApiClient:
     return live_client
 
 
+@pytest.fixture(scope="function")
+def int_api_client(environment_variables, mock_api: str) -> IpumsApiClient:
+    client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"), base_url="internal")
+    return client
+
+
 @pytest.fixture()
 def simple_nhgis_extract() -> AggregateDataExtract:
     extract = AggregateDataExtract(
@@ -492,6 +498,18 @@ def test_nhgis_feature_errors(live_api_client: IpumsApiClient):
         in str(exc_info.value)
     )
 
+
+def test_nhgis_data_format_deprecation_warning():
+    with pytest.warns(DeprecationWarning, match="data format is deprecated for IPUMS NHGIS") as record:
+        extract = AggregateDataExtract(
+            "nhgis",
+            datasets=[NhgisDataset("a", "b", "c", "d")],
+            time_series_tables=[TimeSeriesTable("a", "b")],
+            data_format="fixed_width"
+        )
+        if not record:
+            pytest.fail("Expected DeprecationWarning.")
+        
 
 def test_cps_build_extract():
     """
@@ -1941,5 +1959,7 @@ def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
     )
 
 
-def test_extract_path(api_client: IpumsApiClient):
+def test_extract_path(api_client: IpumsApiClient, int_api_client: IpumsApiClient, live_api_client: IpumsApiClient):
     assert api_client.extract_path == "http://127.0.0.1:8989/extracts"
+    assert int_api_client.extract_path == "https://api.ipums.org/internal-extracts"
+    assert live_api_client.extract_path == "https://api.ipums.org/extracts"
