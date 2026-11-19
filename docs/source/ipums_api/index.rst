@@ -244,6 +244,9 @@ individual data sources of that type.
     * - IHGIS
       - ``tabulation_geographies``
       -
+    * - IHGIS
+      - ``topics``
+      - :py:class:`~ipumspy.api.metadata.IhgisDataTableMetadata`
 
 .. _submit-extract:
 
