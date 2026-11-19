@@ -13,10 +13,10 @@ import re
 import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Iterator, List, Optional, Union, Dict
+from typing import Dict, Iterator, List, Optional, Union
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import yaml
 
 from ipumspy import noextract

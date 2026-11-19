@@ -1,8 +1,8 @@
 import gzip
 import importlib.resources as pkg_resources
+from typing import Optional
 
 import requests
-from typing import Optional
 import yaml
 
 from ipumspy.types import FilenameType

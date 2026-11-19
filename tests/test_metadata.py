@@ -1,17 +1,16 @@
 import os
+
 import pytest
 
 from ipumspy.api import IpumsApiClient
-
+from ipumspy.api.exceptions import IpumsApiRateLimitException
 from ipumspy.api.metadata import (
-    NhgisDatasetMetadata,
-    NhgisDataTableMetadata,
     IhgisDatasetMetadata,
     IhgisDataTableMetadata,
+    NhgisDatasetMetadata,
+    NhgisDataTableMetadata,
     TimeSeriesTableMetadata,
 )
-
-from ipumspy.api.exceptions import IpumsApiRateLimitException
 
 
 @pytest.fixture(scope="function")

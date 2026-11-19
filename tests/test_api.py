@@ -1,40 +1,39 @@
+import json
 import os
 import pickle
 import subprocess
-import time
-import yaml
-import json
-import pickle
 import tempfile
+import time
 import warnings
 from pathlib import Path
 
 import pytest
 import vcr
+import yaml
 
 from ipumspy import api, readers
 from ipumspy.api import (
+    AggregateDataExtract,
+    IhgisDataset,
     IpumsApiClient,
     MicrodataExtract,
-    AggregateDataExtract,
+    NhgisDataset,
+    Sample,
+    Shapefile,
+    TimeSeriesTable,
+    TimeUseVariable,
+    Variable,
+    define_extract_from_json,
     extract_from_dict,
     extract_to_dict,
-    define_extract_from_json,
     save_extract_as_json,
-    Variable,
-    Sample,
-    TimeUseVariable,
-    NhgisDataset,
-    IhgisDataset,
-    TimeSeriesTable,
-    Shapefile,
 )
 from ipumspy.api.exceptions import (
     BadIpumsApiRequest,
     IpumsApiException,
+    IpumsExtractNotReady,
     IpumsExtractNotSubmitted,
     IpumsNotFound,
-    IpumsExtractNotReady,
 )
 
 
@@ -59,8 +58,7 @@ def mock_api() -> str:
 
 @pytest.fixture(scope="function")
 def api_client(environment_variables, mock_api: str) -> IpumsApiClient:
-    client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
-    client.base_url = mock_api
+    client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"), base_url=mock_api)
     return client
 
 
@@ -68,6 +66,12 @@ def api_client(environment_variables, mock_api: str) -> IpumsApiClient:
 def live_api_client(environment_variables) -> IpumsApiClient:
     live_client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"))
     return live_client
+
+
+@pytest.fixture(scope="function")
+def int_api_client(environment_variables, mock_api: str) -> IpumsApiClient:
+    client = IpumsApiClient(os.environ.get("IPUMS_API_KEY"), base_url="internal")
+    return client
 
 
 @pytest.fixture()
@@ -495,6 +499,20 @@ def test_nhgis_feature_errors(live_api_client: IpumsApiClient):
     )
 
 
+def test_nhgis_data_format_deprecation_warning():
+    with pytest.warns(
+        DeprecationWarning, match="data format is deprecated for IPUMS NHGIS"
+    ) as record:
+        extract = AggregateDataExtract(
+            "nhgis",
+            datasets=[NhgisDataset("a", "b", "c", "d")],
+            time_series_tables=[TimeSeriesTable("a", "b")],
+            data_format="fixed_width",
+        )
+        if not record:
+            pytest.fail("Expected DeprecationWarning.")
+
+
 def test_cps_build_extract():
     """
     Confirm that test extract formatted correctly
@@ -686,7 +704,7 @@ def test_atus_build_extract():
         )
     assert (
         exc_info.value.args[0]
-        == "The items in ['BLS_PCARE', TimeUseVariable(name='user_tuv', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."
+        == "The items in ['BLS_PCARE', TimeUseVariable(name='user_TUV', owner='newuser@gmail.com')] must all be string type or <class 'ipumspy.api.extract.TimeUseVariable'> type."
     )
 
     with pytest.raises(ValueError) as exc_info:
@@ -801,7 +819,6 @@ def test_submit_extract_and_wait_for_extract(api_client: IpumsApiClient):
         ["us2012b"],
         ["AGE", "SEX"],
     )
-
     api_client.submit_extract(extract)
     assert extract.extract_id == 10
 
@@ -1942,3 +1959,13 @@ def test_adjust_monetary_values_errors(live_api_client: IpumsApiClient):
         exc_info.value.args[0]
         == "Monetary value adjustment is not supported for IPUMS ATUS"
     )
+
+
+def test_extract_path(
+    api_client: IpumsApiClient,
+    int_api_client: IpumsApiClient,
+    live_api_client: IpumsApiClient,
+):
+    assert api_client.extract_path == "http://127.0.0.1:8989/extracts"
+    assert int_api_client.extract_path == "https://api.ipums.org/internal-extracts"
+    assert live_api_client.extract_path == "https://api.ipums.org/extracts"

@@ -159,7 +159,7 @@ IPUMS Metadata
 Microdata Collections
 *********************
 
-Currently, comprehensive IPUMS API metadata is only available for IPUMS NHGIS.
+Currently, a comprehensive IPUMS metadata APIis only available for aggregate data collections: IPUMS NHGIS and IPUMS IHGIS.
 For microdata collections, only sample information is available. You can obtain a dictionary 
 of sample codes with :py:meth:`.get_all_sample_info`.
 

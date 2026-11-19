@@ -1,6 +1,6 @@
 [project]
 name = "ipumspy"
-version = "0.9.0"
+version = "0.10.0"
 description = "A collection of tools for working with IPUMS data"
 readme = "README.md"
 authors = [
@@ -50,7 +50,7 @@ test = [
     "pytest>=9.0.0,<10",
     "pytest-cov>=4.0.0,<5",
     "python-dotenv>=1.0.0,<2",
-    "fastapi>=0.128.1,<0.129",
+    "fastapi>=0.164.0,<0.165",
     "uvicorn[standard]>=0.40.0,<0.41",
     "pytest-recording>=0.13.4,<0.14",
     "vcrpy>=8.0.0,<9",

@@ -11,6 +11,23 @@ This project adheres to `Semantic Versioning`_.
 .. _Semantic Versioning: http://semver.org/
 
 
+0.10.0
+------
+2026-11-19
+
+* Deprecations
+
+  * ``fixed_width`` is now a deprecated ``data_format`` for IPUMS NHGIS extracts and will raise an error in future versions. Users should request data format ``csv_with_control_files`` to get stats package syntax files.
+
+* New Features
+
+  * :py:class:`~ipumspy.api.metadata.IhgisDataTableMetadata` now has a ``topics`` attribute. 
+  * IHGIS ``topics`` can now be retrieved with the :py:meth:`~ipumspy.api.IpumsApiClient.get_metadata_catalog()`
+
+* Bug Fixes
+
+  * An error was fixed in which user-created :py:class:`~ipumspy.api.extract.TimeUseVariable` names were not case-sensitive; User-created :py:class:`~ipumspy.api.extract.TimeUseVariable` names must match the case used when the variable was created.
+
 0.9.0
 -----
 2026-10-14

@@ -3,12 +3,13 @@ Core utilities for interacting with the IPUMS API
 """
 
 import copy
+import json
 import time
 import warnings
 from functools import wraps
 from http import HTTPStatus
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union, Generator
+from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 import requests
 from requests.models import Response
@@ -19,18 +20,18 @@ from .exceptions import (
     BadIpumsApiRequest,
     IpumsAPIAuthenticationError,
     IpumsApiException,
+    IpumsApiRateLimitException,
     IpumsExtractFailure,
     IpumsExtractNotReady,
     IpumsNotFound,
     IpumsTimeoutException,
     TransientIpumsApiException,
-    IpumsApiRateLimitException,
 )
 from .extract import (
     BaseExtract,
+    _camel_to_snake,
     _get_collection_type,
     extract_from_dict,
-    _camel_to_snake,
 )
 from .metadata import IpumsMetadata
 
@@ -114,6 +115,12 @@ class IpumsApiClient:
             }
         )
 
+        if "internal" in base_url:
+            self.base_url = "https://api.ipums.org"
+            self.extract_path = f"{self.base_url}/internal-extracts"
+        else:
+            self.extract_path = f"{self.base_url}/extracts"
+
     @retry_on_transient_error
     def request(self, method: str, *args, **kwargs) -> requests.Response:
         """
@@ -186,7 +193,7 @@ class IpumsApiClient:
             extract.api_version = self.api_version
 
         response = self.post(
-            f"{self.base_url}/extracts",
+            f"{self.extract_path}",
             params={"collection": extract.collection, "version": extract.api_version},
             json=extract.build(),
         )
@@ -219,7 +226,7 @@ class IpumsApiClient:
 
         try:
             response = self.get(
-                f"{self.base_url}/extracts/{extract_id}",
+                f"{self.extract_path}/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             )
         except IpumsNotFound:
@@ -287,7 +294,7 @@ class IpumsApiClient:
             )
 
         response = self.get(
-            f"{self.base_url}/extracts/{extract_id}",
+            f"{self.extract_path}/{extract_id}",
             params={"collection": collection, "version": self.api_version},
         )
 
@@ -425,7 +432,7 @@ class IpumsApiClient:
         """
         # TODO: Wrap results in Extract objects.
         output = self.get(
-            f"{self.base_url}/extracts",
+            f"{self.extract_path}",
             params={
                 "collection": collection,
                 "pageSize": limit,
@@ -458,7 +465,7 @@ class IpumsApiClient:
             return extract._info
         else:
             extract_info = self.get(
-                f"{self.base_url}/extracts/{extract_id}",
+                f"{self.extract_path}/{extract_id}",
                 params={"collection": collection, "version": self.api_version},
             ).json()
             new_line = "\n"
@@ -598,6 +605,10 @@ class IpumsApiClient:
         Yields:
             An iterator of metadata pages
         """
+        # XXX shoe horn the lower-than-usual max page size for the ihgis topcis
+        # endpoint. REMOVE when fixed on server side
+        if metadata_type == "topics":
+            page_size = 1500
 
         yield from self._get_pages(collection, f"metadata/{metadata_type}", page_size)
 

@@ -2,9 +2,9 @@
 Classes for requesting IPUMS metadata via the IPUMS API
 """
 
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
-from abc import ABC, abstractmethod
 
 
 @dataclass
@@ -294,6 +294,8 @@ class IhgisDataTableMetadata(IpumsMetadata):
     """Explanatory footnotes associated with the table"""
     variables: Optional[str] = field(default=None, init=False)
     """Dictionary containing variable descriptions and codes for the variables included in the data table"""
+    topics: Optional[str] = field(default=None, init=False)
+    """List of topics associated with the data table"""
 
     def __post_init__(self):
         self._path = f"metadata/data_tables/{self.name}"
